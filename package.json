@@ -1,0 +1,30 @@
+{
+	"name": "laguntza-fisioterapia",
+	"version": "3.1.0",
+	"private": false,
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:treefarmstudio/laguntza-fisioterapia"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"format": "npx prettier -w .",
+		"check-updates": "npm-check-updates -u --dep dev"
+	},
+	"devDependencies": {
+		"@astrojs/lit": "^4.3.0",
+		"@astrojs/mdx": "^4.1.1",
+		"@astrojs/sitemap": "^3.2.1",
+		"@iconify-json/ic": "^1.2.2",
+		"@iconify-json/mdi": "^1.2.3",
+		"@webcomponents/template-shadowroot": "^0.2.1",
+		"astro": "^5.4.3",
+		"astro-icon": "^1.1.5",
+		"date-fns": "^4.1.0",
+		"lit": "^3.2.1",
+		"prettier-plugin-astro": "^0.14.1"
+	}
+}
