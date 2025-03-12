@@ -2,20 +2,20 @@
 import { SkipLink } from '@components/odyssey-theme';
 import BaseHead from '../components/head/BaseHead.astro';
 import type { Props as BaseHeadProps } from '../components/head/BaseHead.astro';
-import { ClientRouter } from 'astro:transitions';
+import { getLangFromUrl } from '@i18n/utils';
 
 export interface Props {
 	seo?: BaseHeadProps;
 }
 
 const { seo } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
 ---
 
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<BaseHead {...seo} />
 	</head>
-	<ClientRouter />
 
 	<body>
 		<SkipLink />
