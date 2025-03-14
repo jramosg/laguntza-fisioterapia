@@ -10,46 +10,50 @@ const t = useTranslations(lang);
 ---
 
 <script type="module">
-	const bodyElement = document.querySelector('body');
-	const menuButton = document.querySelector('#menuButton');
-	const navHeader = document.querySelector('#laguntzaFisioterapiaNavHeader');
-	const menuButtonIconHam = document.querySelector('#menuButtonIconHam');
-	const menuButtonIconClose = document.querySelector('#menuButtonIconClose');
-	let scrollPosition = 0;
+	document.addEventListener('astro:page-load', () => {
+		const bodyElement = document.querySelector('body');
+		const menuButton = document.querySelector('#menuButton');
+		const navHeader = document.querySelector('#laguntzaFisioterapiaNavHeader');
+		const menuButtonIconHam = document.querySelector('#menuButtonIconHam');
+		const menuButtonIconClose = document.querySelector('#menuButtonIconClose');
+		const navItems = document.querySelectorAll('.header-nav__item');
 
-	function toggleMenu() {
-		console.log('eee click');
-		menuButtonIconHam.toggleAttribute('hidden');
-		menuButtonIconClose.toggleAttribute('hidden');
+		let scrollPosition = 0;
 
-		if (navHeader.hasAttribute('mobile-menu-open', true)) {
-			menuButton.title = 'Open Main Menu';
-			// unlock scroll position
-			bodyElement.style.removeProperty('overflow');
-			bodyElement.style.removeProperty('position');
-			bodyElement.style.removeProperty('top');
-			bodyElement.style.removeProperty('width');
-			window.scrollTo(0, scrollPosition);
-		} else {
-			menuButton.title = 'Close Main Menu';
-			// lock scroll position
-			scrollPosition = window.pageYOffset;
-			bodyElement.style.overflow = 'hidden';
-			bodyElement.style.position = 'fixed';
-			bodyElement.style.top = `-${scrollPosition}px`;
-			bodyElement.style.width = '100%';
+		menuButton.addEventListener('click', toggleMenu);
+
+		function toggleMenu() {
+			menuButtonIconHam.toggleAttribute('hidden');
+			menuButtonIconClose.toggleAttribute('hidden');
+			navItems.forEach((item, index) => {
+				item.style.setProperty('--delay', `${0.15 + index * 0.1}s`);
+			});
+			if (navHeader.hasAttribute('mobile-menu-open', true)) {
+				menuButton.title = 'Open Main Menu';
+				// add delay to menu nav items
+
+				// unlock scroll position
+				bodyElement.style.removeProperty('overflow');
+				bodyElement.style.removeProperty('position');
+				bodyElement.style.removeProperty('top');
+				bodyElement.style.removeProperty('width');
+				window.scrollTo(0, scrollPosition);
+			} else {
+				menuButton.title = 'Close Main Menu';
+				// lock scroll position
+				scrollPosition = window.pageYOffset;
+				bodyElement.style.overflow = 'hidden';
+				bodyElement.style.position = 'fixed';
+				bodyElement.style.top = `-${scrollPosition}px`;
+				bodyElement.style.width = '100%';
+			}
+
+			navHeader.toggleAttribute('mobile-menu-open');
 		}
-
-		navHeader.toggleAttribute('mobile-menu-open');
-	}
-	menuButton.addEventListener('click', toggleMenu);
-
-	document.querySelectorAll('.header-nav__item').forEach(item => {
-		item.addEventListener('click', toggleMenu);
 	});
 </script>
+
 <header
-	transition:persist
 	id="laguntzaFisioterapiaNavHeader"
 	class={`${rightMenu ? 'header--right' : ``.trim()}`}
 >
@@ -78,10 +82,8 @@ const t = useTranslations(lang);
 					<nav>
 						<ul>
 							{navData.map(navItem => (
-								<li>
-									<a class="header-nav__item" href={`/${lang}${navItem.slug}`}>
-										{navItem.title}
-									</a>
+								<li class="header-nav__item">
+									<a href={`/${lang}${navItem.slug}`}>{navItem.title}</a>
 								</li>
 							))}
 						</ul>
@@ -168,19 +170,22 @@ const t = useTranslations(lang);
 			z-index: 100;
 		}
 		.header-nav__container {
-			width: 100%;
+			width: 0%;
 			height: 100%;
 			background-color: var(--theme-bg);
-			display: none;
+			visibility: hidden;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
 			position: fixed;
 			inset: 0;
 			z-index: 99;
+			transition: width 0.3s ease-in-out;
 		}
 		header[mobile-menu-open] .header-nav__container {
 			display: flex;
+			visibility: visible;
+			width: 100%;
 		}
 		header[mobile-menu-open] nav ul {
 			align-items: center;
@@ -189,6 +194,14 @@ const t = useTranslations(lang);
 		header[mobile-menu-open] nav ul li {
 			font-size: var(--font-size-lg);
 			margin-bottom: 1rem;
+		}
+		.header-nav__item {
+			transition: opacity 0.5s ease-in-out;
+			transition-delay: var(--delay);
+			opacity: 0;
+		}
+		header[mobile-menu-open] .header-nav__item {
+			opacity: 1;
 		}
 	}
 </style>
