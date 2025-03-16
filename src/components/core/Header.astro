@@ -1,8 +1,14 @@
 ---
+import { Nav } from '@config/nav';
 import { getLangFromUrl, useTranslations, switchLanguage } from '@i18n/utils';
 
 import { Icon } from 'astro-icon/components';
-const { navData, rightMenu } = Astro.props;
+
+type Props = {
+	navData: Nav;
+	rightMenu?: boolean;
+};
+const { navData, rightMenu }: Props = Astro.props;
 
 const url = Astro.url;
 const lang = getLangFromUrl(url);
@@ -83,7 +89,7 @@ const t = useTranslations(lang);
 						<ul>
 							{navData.map(navItem => (
 								<li class="header-nav__item">
-									<a href={`/${lang}${navItem.slug}`}>{navItem.title}</a>
+									<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
 								</li>
 							))}
 						</ul>

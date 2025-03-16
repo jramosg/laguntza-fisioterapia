@@ -1,5 +1,5 @@
 ---
-import settings from '../../config/settings.js';
+import {settings} from '@config/settings';
 import ThemeProvider from '../theme-switcher/ThemeProvider.astro';
 
 import '../../styles/index.css';
@@ -13,11 +13,6 @@ export interface Props {
 	image?: string;
 }
 
-console.log(
-	'canonical',
-	Astro.props.canonicalURL,
-	new URL(Astro.url.pathname, Astro.site),
-);
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const title = Astro.props.title || settings.title;
@@ -37,6 +32,8 @@ const image = new URL(Astro.props.image || './social.png', Astro.site); // TODO
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
+<!-- Author -->
+<meta name="author" content="Trukun" />
 <!-- Generator -->
 <meta name="generator" content={Astro.generator} />
 <!-- Open Graph / Facebook -->
@@ -44,7 +41,7 @@ const image = new URL(Astro.props.image || './social.png', Astro.site); // TODO
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={image} /> 
+<meta property="og:image" content={image} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -53,8 +50,7 @@ const image = new URL(Astro.props.image || './social.png', Astro.site); // TODO
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={image} />
 
-<!-- For Demonstration of the themes -->
-{settings.enableThemeSwitcher && <ThemeProvider />}
+<ThemeProvider />
 
 <ClientRouter />
 

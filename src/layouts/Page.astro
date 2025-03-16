@@ -3,17 +3,16 @@ import { Header, Button, Footer } from '@components/odyssey-theme';
 import Layout from './Base.astro';
 import type { Props as BaseHeadProps } from '../components/head/BaseHead.astro';
 import Logo from '../components/Logo.astro';
-import settings from '../config/settings';
+import {settings} from '@config/settings';
 import { footerLists, footerSocials } from '../config/footer';
 
 export interface Props {
 	seo?: BaseHeadProps;
 }
 
-import { nav } from '../config/nav.js';
+import { nav } from '@config/nav';
 
 const { seo } = Astro.props as Props;
-console.log(seo)
 ---
 
 <Layout {seo}>
@@ -33,7 +32,6 @@ console.log(seo)
 		{footerLists}
 		{footerSocials}
 		copyrightName={settings.name}
-		showPlug={settings.showPlug}
 	>
 		<Logo slot="logo" />
 	</Footer>

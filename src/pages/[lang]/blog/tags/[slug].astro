@@ -2,28 +2,38 @@
 import Layout from '@layouts/Page.astro';
 import { Container } from '@components/odyssey-theme';
 import { generateTagData } from '@utils/helpers.js';
-import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
+import { MDXInstance } from 'astro';
+import { settings } from '@config/settings';
+import { Langs } from '@i18n/ui';
+import type { Slug } from '@types';
 
-const lang = getLangFromUrl(Astro.url);
-console.log('sligggg', lang);
+type Paths = Array<{
+	params: { slug: Slug; lang: Langs };
+	props: { tag: string; posts: MDXInstance<Record<string, any>>[] };
+}>;
 
-export async function getStaticPaths() {
+type Categories = {
+	slug: Slug;
+	title: string;
+};
+
+export async function getStaticPaths(): Promise<Paths> {
 	const allPosts = await Astro.glob(`@pages/es/blog/posts/*.mdx`);
 	const sortedPosts = allPosts.sort(
 		(a, b) =>
 			new Date(b.frontmatter.date).valueOf() -
 			new Date(a.frontmatter.date).valueOf(),
 	);
-	const allCategoriesUnique = new Set();
+	const allCategoriesUnique: Set<string> = new Set();
 
 	sortedPosts.forEach(post => {
 		post.frontmatter.tags &&
-			post.frontmatter.tags.map(tag => {
+			post.frontmatter.tags.map((tag: string) => {
 				allCategoriesUnique.add(tag);
 			});
 	});
 
-	const allCategoriesData = generateTagData(allCategoriesUnique);
+	const allCategoriesData: Categories[] = generateTagData(allCategoriesUnique);
 	// map through the categories array
 	return allCategoriesData.map(tag => {
 		// filter the posts that match the given category
@@ -31,7 +41,7 @@ export async function getStaticPaths() {
 			post.frontmatter.tags.includes(tag.title),
 		);
 		return {
-			params: { slug: tag.slug, lang: 'es' },
+			params: { lang: 'es', slug: tag.slug },
 			props: {
 				tag: tag.title,
 				posts: posts,
@@ -43,7 +53,7 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 
 const seo = {
-	title: `${tag} | Astro Odyssey`,
+	title: `${tag} | ${settings.title}`,
 };
 ---
 

@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { Container, Button } from '@components/odyssey-theme';
-import settings from '../../../config/settings.js';
+import { settings } from '@config/settings';
 import { ThemeSwitcher } from '../../theme-switcher/theme-switcher';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 const lang = getLangFromUrl(Astro.url);
