@@ -18,6 +18,8 @@
 			"@pages/*": ["pages/*"],
 			"@styles/*": ["styles/*"],
 			"@i18n/*": ["i18n/*"],
+			"@images/*": ["images/*"],
+
 			"@types": ["types"]
 		}
 	}

@@ -21,9 +21,15 @@ const lang = getLangFromUrl(Astro.url);
 		<SkipLink />
 		<slot name="announcement-bar" />
 		<slot name="header" />
-		<main id="content">
+		<main id="content" class="main-content">
 			<slot />
 		</main>
 		<slot name="footer" />
 	</body>
 </html>
+
+<style>
+	.main-content {
+		padding-top: var(--header-height);
+	}
+</style>

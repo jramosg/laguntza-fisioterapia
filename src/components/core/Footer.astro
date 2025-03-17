@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import Container from '../core/Container.astro';
 import { FooterLists, FooterSocials } from '@config/footer';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 type Props = {
 	footerSocials: FooterSocials;
@@ -13,6 +14,9 @@ type Props = {
 
 const { footerSocials, footerLists, copyrightName, background, color }: Props =
 	Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <footer
@@ -51,7 +55,13 @@ const { footerSocials, footerLists, copyrightName, background, color }: Props =
 						<ul class="footer-link__list">
 							{list.items.map(item => (
 								<li>
-									<a href={item.slug}>{item.title}</a>
+									<a
+										href={'href' in item ? item.href : item.slug}
+										target={'href' in item ? '_blank' : ''}
+										rel={'href' in item ? 'noopener noreferrer' : ''}
+									>
+										{t(item.title)}
+									</a>
 								</li>
 							))}
 						</ul>

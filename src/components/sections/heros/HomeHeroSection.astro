@@ -4,6 +4,10 @@ import { Container, Button } from '@components/odyssey-theme';
 import { settings } from '@config/settings';
 import { ThemeSwitcher } from '../../theme-switcher/theme-switcher';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import { Image, Picture } from 'astro:assets';
+
+import jokin from '@images/jokin.jpg';
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
@@ -13,11 +17,8 @@ const t = useTranslations(lang);
 		<div class="hero-section__text">
 			<h1>{t('Kaixo!')}</h1>
 			<p>
-				A marketing website theme built with <a
-					href="https://astro.build"
-					target="_blank"
-					rel="noreferrer">Astro</a
-				> and carefully crafted for startups and businesses.
+				Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+				bla bla bla
 			</p>
 			<div class="hero-btns__container">
 				<Button href="/theme/get-started" customIcon
@@ -31,13 +32,7 @@ const t = useTranslations(lang);
 			{settings.enableThemeSwitcher && <ThemeSwitcher client:only />}
 		</div>
 		<div class="hero-section__image">
-			<picture>
-				<img
-					src="/assets/images/home/classic-hero.jpg"
-					alt="Astro Odyssey"
-					id="home-hero-image"
-				/>
-			</picture>
+			<Picture src={jokin} alt="Jokin Ramos" id="home-hero-image" />
 		</div>
 	</section>
 </Container>
