@@ -1,12 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { Container, Button } from '@components/odyssey-theme';
-import { settings } from '@config/settings';
-import { ThemeSwitcher } from '../../theme-switcher/theme-switcher';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
-import { Image, Picture } from 'astro:assets';
+import { Picture } from 'astro:assets';
 
-import jokin from '@images/jokin.jpg';
+import jokin from '@images/jokin.webp';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -17,19 +15,8 @@ const t = useTranslations(lang);
 		<div class="hero-section__text">
 			<h1>{t('Kaixo!')}</h1>
 			<p>
-				Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-				bla bla bla
+				{t('home-hero-desc')}
 			</p>
-			<div class="hero-btns__container">
-				<Button href="/theme/get-started" customIcon
-					>Get Started
-					<Fragment slot="icon">
-						<Icon name="ic:baseline-chevron-right" />
-					</Fragment>
-				</Button>
-				<Button href="/theme/style-guide" unelevated>Style Guide</Button>
-			</div>
-			{settings.enableThemeSwitcher && <ThemeSwitcher client:only />}
 		</div>
 		<div class="hero-section__image">
 			<Picture src={jokin} alt="Jokin Ramos" id="home-hero-image" />
@@ -51,11 +38,6 @@ const t = useTranslations(lang);
 		max-width: 25rem;
 	}
 	.hero-btns__container {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-	.hero-btns__container {
 		margin-right: 1rem;
 	}
 	.hero-section__image {
@@ -67,6 +49,16 @@ const t = useTranslations(lang);
 		max-height: 80vh;
 		object-fit: cover;
 		border-radius: var(--theme-shape-radius);
+		mask-image: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 1) 50%,
+			rgba(0, 0, 0, 0) 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 1) 50%,
+			rgba(0, 0, 0, 0) 100%
+		);
 	}
 	@media (max-width: 768px) {
 		.hero-section__section {

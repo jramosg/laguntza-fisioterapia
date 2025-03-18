@@ -13,7 +13,7 @@ export const footerSocials = [
 
 export const footerLists = [
 	{
-		title: 'Company',
+		title: 'Laguntza fisioterapia',
 		items: [
 			{
 				title: 'nav.about',
