@@ -5,6 +5,7 @@
 		"baseUrl": "src",
 		"strict": true,
 		"noImplicitAny": true,
+		"strictNullChecks": true,
 		// Add type definitions for our Vite runtime.
 		"types": ["astro/client"],
 		"paths": {
