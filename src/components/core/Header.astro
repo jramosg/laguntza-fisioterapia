@@ -20,8 +20,6 @@ const t = useTranslations(lang);
 		const bodyElement = document.querySelector('body');
 		const menuButton = document.querySelector('#menuButton');
 		const navHeader = document.querySelector('#laguntzaFisioterapiaNavHeader');
-		const menuButtonIconHam = document.querySelector('#menuButtonIconHam');
-		const menuButtonIconClose = document.querySelector('#menuButtonIconClose');
 
 		let scrollPosition = 0;
 
@@ -39,8 +37,7 @@ const t = useTranslations(lang);
 		});
 
 		function toggleMenu() {
-			menuButtonIconHam.toggleAttribute('hidden');
-			menuButtonIconClose.toggleAttribute('hidden');
+
 			if (navHeader.hasAttribute('mobile-menu-open', true)) {
 				menuButton.title = 'Open Main Menu';
 				// add delay to menu nav items
@@ -77,11 +74,11 @@ const t = useTranslations(lang);
 	</div>
 	<div class="header-logo-menu__container">
 		<button id="menuButton" title="Open Main Menu">
-			<span id="menuButtonIconHam">
-				<Icon name="ic:baseline-menu" width="24px" height="24px" />
-			</span>
-			<span id="menuButtonIconClose" hidden>
+			<span id="menuButtonIconClose" class="menu-button-icon">
 				<Icon name="ic:baseline-close" width="24px" height="24px" />
+			</span>
+			<span id="menuButtonIconHam" class="menu-button-icon">
+				<Icon name="ic:baseline-menu" width="24px" height="24px" />
 			</span>
 		</button>
 		<a class="header-logo__link" href={`/${lang}`}>
@@ -149,6 +146,7 @@ const t = useTranslations(lang);
 		height: 4rem;
 		opacity: 0.9;
 		backdrop-filter: blur(10px);
+		background-color: var(--theme-bg);
 	}
 	.header-nav__container--scrolled .language-select__container {
 		font-size: 0px;
@@ -161,6 +159,7 @@ const t = useTranslations(lang);
 		display: none;
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent;
+		--icon-size: 24px;
 	}
 	#menuButton > span {
 		color: var(--theme-on-bg);
@@ -197,8 +196,14 @@ const t = useTranslations(lang);
 
 	@media (max-width: 768px) {
 		#menuButton {
-			display: block;
+			display: flex;
 			z-index: 100;
+			width: 26px;
+			overflow: clip;
+		}
+		.menu-button-icon {
+			transform: translateX(-25px);
+			transition: transform 0.3s ease-in-out;
 		}
 		.header-nav__container {
 			width: 0%;
@@ -235,6 +240,10 @@ const t = useTranslations(lang);
 		}
 		header[mobile-menu-open] .header-nav__item {
 			opacity: 1;
+		}
+
+		header[mobile-menu-open] .menu-button-icon {
+			transform: translateX(0px);
 		}
 	}
 </style>
