@@ -22,13 +22,12 @@ const t = useTranslations(lang);
 		const navHeader = document.querySelector('#laguntzaFisioterapiaNavHeader');
 		const menuButtonIconHam = document.querySelector('#menuButtonIconHam');
 		const menuButtonIconClose = document.querySelector('#menuButtonIconClose');
-		const navItems = document.querySelectorAll('.header-nav__item');
 
 		let scrollPosition = 0;
 
 		menuButton.addEventListener('click', toggleMenu);
 
-		addEventListener('scroll', event => {
+		addEventListener('scroll', () => {
 			if (
 				window.scrollY > 60 &&
 				!navHeader.hasAttribute('mobile-menu-open', true)
@@ -42,9 +41,6 @@ const t = useTranslations(lang);
 		function toggleMenu() {
 			menuButtonIconHam.toggleAttribute('hidden');
 			menuButtonIconClose.toggleAttribute('hidden');
-			navItems.forEach((item, index) => {
-				item.style.setProperty('--delay', `${0.15 + index * 0.1}s`);
-			});
 			if (navHeader.hasAttribute('mobile-menu-open', true)) {
 				menuButton.title = 'Open Main Menu';
 				// add delay to menu nav items
@@ -98,8 +94,11 @@ const t = useTranslations(lang);
 				navData && (
 					<nav>
 						<ul>
-							{navData.map(navItem => (
-								<li class="header-nav__item">
+							{navData.map((navItem, index) => (
+								<li
+									class="header-nav__item"
+									style={`--delay: ${0.15 + index * 0.1}s`}
+								>
 									<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
 								</li>
 							))}
@@ -126,6 +125,7 @@ const t = useTranslations(lang);
 		top: 0;
 		z-index: 200;
 		transition: all 0.3s ease-in-out;
+		background-color: var(--theme-surface-1);
 	}
 	header.header--right {
 		display: grid;
@@ -211,6 +211,8 @@ const t = useTranslations(lang);
 			position: fixed;
 			inset: 0;
 			z-index: 99;
+			top: var(--header-height);
+			padding-bottom: var(--header-height);
 			transition: width 0.3s ease-in-out;
 		}
 		header[mobile-menu-open] .header-nav__container {
