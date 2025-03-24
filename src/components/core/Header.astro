@@ -37,7 +37,6 @@ const t = useTranslations(lang);
 		});
 
 		function toggleMenu() {
-
 			if (navHeader.hasAttribute('mobile-menu-open', true)) {
 				menuButton.title = 'Open Main Menu';
 				// add delay to menu nav items
@@ -122,7 +121,7 @@ const t = useTranslations(lang);
 		top: 0;
 		z-index: 200;
 		transition: all 0.3s ease-in-out;
-		background-color: var(--theme-surface-1);
+		background-color: var(--theme-bg);
 	}
 	header.header--right {
 		display: grid;
@@ -146,7 +145,7 @@ const t = useTranslations(lang);
 		height: 4rem;
 		opacity: 0.9;
 		backdrop-filter: blur(10px);
-		background-color: var(--theme-bg);
+		background-color: var(--theme-surface-1);
 	}
 	.header-nav__container--scrolled .language-select__container {
 		font-size: 0px;
@@ -216,7 +215,7 @@ const t = useTranslations(lang);
 			position: fixed;
 			inset: 0;
 			z-index: 99;
-			top: var(--header-height);
+			top: calc(var(--header-height) - 1px);
 			padding-bottom: var(--header-height);
 			transition: width 0.3s ease-in-out;
 		}

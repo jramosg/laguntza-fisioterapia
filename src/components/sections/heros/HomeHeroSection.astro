@@ -1,6 +1,5 @@
 ---
-import { Icon } from 'astro-icon/components';
-import { Container, Button } from '@components/odyssey-theme';
+import { Container } from '@components/odyssey-theme';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import { Picture } from 'astro:assets';
 
@@ -64,5 +63,20 @@ const t = useTranslations(lang);
 		.hero-section__section {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	@keyframes fadeUp {
+		from {
+			opacity: 0;
+			transform: translateY(500px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		animation: none;
 	}
 </style>

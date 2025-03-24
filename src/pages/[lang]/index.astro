@@ -1,32 +1,59 @@
 ---
 import { Container, FeatureCard } from '@components/odyssey-theme';
-import { Image } from 'astro:assets';
 import Layout from '@layouts/Page.astro';
 import HomeHeroSection from '@components/sections/heros/HomeHeroSection.astro';
-import { getStaticLangPaths } from '@i18n/utils';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations,
+} from '@i18n/utils';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const elements = document.querySelectorAll('.fade-up');
+		console.log(elements);
+		const observer = new IntersectionObserver(entries => {
+			entries.forEach(entry => {
+				console.log('obersved!', entry.isIntersecting);
+				if (entry.isIntersecting) {
+					console.log(entry.target);
+					entry.target.classList.add('visible');
+				}
+			});
+		});
+
+		elements.forEach(el => {
+			observer.observe(el);
+		});
+	});
+</script>
 <Layout>
 	<HomeHeroSection />
 	<Container>
 		<section class="feature-card__section">
-			<h2>Landing Pages</h2>
-			<p>
-				Use one of our landing pages to jumpstart your website or ad campaign.
+			<h2 class="fade-up">{t('Bla bla bla')}</h2>
+			<p class="fade-up">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+				justo nunc, scelerisque et nibh vitae, ultrices molestie purus. Aenean
+				luctus quam non pretium hendrerit.
 			</p>
 			<div class="feature-card__grid">
 				<FeatureCard
 					href="/landing-pages/landing-1"
-					title="Landing Page 1"
+					title="Lorem ipsum dolor 1"
 					imgSrc="/assets/images/home/screenshots/landing-1"
 				/>
 				<FeatureCard
 					href="/landing-pages/landing-2"
-					title="Landing Page 2"
+					title="Lorem ipsum dolor 2"
 					imgSrc="/assets/images/home/screenshots/landing-2"
 				/>
 			</div>
@@ -34,7 +61,7 @@ export function getStaticPaths() {
 	</Container>
 
 	<Container>
-		<section class="feature-card__section">
+		<section class="feature-card__section fade-up">
 			<h2>Company Pages</h2>
 			<p>
 				Use one of our prebuilt company pages for your about page, contact page,
