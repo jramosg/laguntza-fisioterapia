@@ -1,0 +1,58 @@
+---
+const buttonProps = Astro.props;
+---
+
+<button class="burger" {...buttonProps}>
+	<span class="burger-icon"></span>
+</button>
+<style>
+	.burger {
+		height: 40px;
+		display: grid;
+		place-items: center;
+		cursor: pointer;
+	}
+	.burger-icon {
+		position: relative;
+		width: 32px;
+	}
+
+	.burger-icon::before,
+	.burger-icon::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		width: 16px;
+	}
+
+	.burger-icon,
+	.burger-icon::before,
+	.burger-icon::after {
+		display: block;
+		border-radius: 2px;
+		height: 2px;
+		background-color: var(--theme-on-bg);
+		transition: transform 0.3s ease-in-out;
+	}
+
+	.burger-icon::before {
+		top: -8px;
+		left: 0;
+	}
+
+	.burger-icon::after {
+		top: 8px;
+		left: 16px;
+	}
+
+	.burger[open] .burger-icon {
+		transform: rotate(-45deg);
+	}
+	.burger[open] .burger-icon::before {
+		transform: rotate(90deg) translate(16px, -9px);
+	}
+
+	.burger[open] .burger-icon::after {
+		transform: rotate(90deg) translate(-16px, 7px);
+	}
+</style>

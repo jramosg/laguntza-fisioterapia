@@ -1,9 +1,9 @@
 ---
 import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
+import Burger from '@components/buttons/Burger.astro';
 import { Nav } from '@config/nav';
 import { getLangFromUrl, useTranslations, switchLanguage } from '@i18n/utils';
 
-import { Icon } from 'astro-icon/components';
 import 'theme-toggles/css/classic.css';
 
 type Props = {
@@ -17,52 +17,6 @@ const lang = getLangFromUrl(url);
 const t = useTranslations(lang);
 ---
 
-<script type="module">
-	document.addEventListener('astro:page-load', () => {
-		const bodyElement = document.querySelector('body');
-		const menuButton = document.querySelector('#menuButton');
-		const navHeader = document.querySelector('#laguntzaFisioterapiaNavHeader');
-
-		let scrollPosition = 0;
-
-		menuButton.addEventListener('click', toggleMenu);
-
-		addEventListener('scroll', () => {
-			if (
-				window.scrollY > 60 &&
-				!navHeader.hasAttribute('mobile-menu-open', true)
-			) {
-				navHeader.classList.add('header-nav__container--scrolled');
-			} else {
-				navHeader.classList.remove('header-nav__container--scrolled');
-			}
-		});
-
-		function toggleMenu() {
-			if (navHeader.hasAttribute('mobile-menu-open', true)) {
-				menuButton.title = 'Open Main Menu';
-
-				// unlock scroll position
-				bodyElement.style.removeProperty('overflow');
-				bodyElement.style.removeProperty('position');
-				bodyElement.style.removeProperty('top');
-				bodyElement.style.removeProperty('width');
-				window.scrollTo(0, scrollPosition);
-			} else {
-				menuButton.title = 'Close Main Menu';
-				// lock scroll position
-				scrollPosition = window.pageYOffset;
-				bodyElement.style.overflow = 'hidden';
-				bodyElement.style.position = 'fixed';
-				bodyElement.style.top = `-${scrollPosition}px`;
-				bodyElement.style.width = '100%';
-			}
-
-			navHeader.toggleAttribute('mobile-menu-open');
-		}
-	});
-</script>
-
 <header
 	id="laguntzaFisioterapiaNavHeader"
 	class={`${rightMenu ? 'header--right' : ``.trim()}`}
@@ -73,14 +27,12 @@ const t = useTranslations(lang);
 		>
 	</div>
 	<div class="header-logo-menu__container">
-		<button id="menuButton" title="Open Main Menu">
-			<span id="menuButtonIconClose" class="menu-button-icon">
-				<Icon name="ic:baseline-close" width="24px" height="24px" />
-			</span>
-			<span id="menuButtonIconHam" class="menu-button-icon">
-				<Icon name="ic:baseline-menu" width="24px" height="24px" />
-			</span>
-		</button>
+		<Burger
+			id="menuButton"
+			aria-label={t('Menua ireki')}
+			data-open-label={t('Menua ireki')}
+			data-close-label={t('Menua itxi')}
+		/>
 		<a class="header-logo__link" href={`/${lang}`}>
 			<slot name="logo" />
 		</a>
@@ -89,29 +41,38 @@ const t = useTranslations(lang);
 		<ThemeSwitcher client:load />
 	</div>
 	<div class="header-nav__container">
-		<slot name="nav">
-			{
-				navData && (
-					<nav>
-						<ul>
-							{navData.map((navItem, index) => (
-								<li
-									class="header-nav__item"
-									style={`--delay: ${0.15 + index * 0.1}s`}
-								>
-									<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
-								</li>
-							))}
-						</ul>
-					</nav>
-				)
-			}
-		</slot>
+		<nav>
+			<ul>
+				{
+					navData.map(navItem => (
+						<li class="header-nav__item">
+							<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
 	</div>
 	<div class="header-action-item__container">
 		<slot name="action-item" />
 	</div>
 </header>
+<div id="mobile-menu">
+	<nav>
+		<ul>
+			{
+				navData.map((navItem, index) => (
+					<li
+						class="header-nav__item"
+						style={`--delay: ${0.15 + index * 0.1}s`}
+					>
+						<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+</div>
 
 <style>
 	header {
@@ -139,11 +100,8 @@ const t = useTranslations(lang);
 	.header-logo-menu__container {
 		display: flex;
 		align-items: center;
-		z-index: 100;
 	}
-	.header-action-item__container {
-		z-index: 100;
-	}
+
 	.header-nav__container--scrolled {
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 		height: 4rem;
@@ -160,14 +118,9 @@ const t = useTranslations(lang);
 		background-color: transparent;
 		margin-right: 0.5rem;
 		display: none;
-		cursor: pointer;
-		-webkit-tap-highlight-color: transparent;
-		--icon-size: 24px;
+		z-index: 100;
 	}
-	#menuButton > span {
-		color: var(--theme-on-bg);
-		vertical-align: middle;
-	}
+
 	nav {
 		display: flex;
 	}
@@ -201,56 +154,113 @@ const t = useTranslations(lang);
 		margin-right: 1rem;
 	}
 
+	#mobile-menu {
+		position: fixed;
+		inset: 0;
+		top: var(--header-height);
+		z-index: 0;
+		background-color: var(--theme-bg);
+		width: 0%;
+		z-index: 50;
+		display: flex;
+		transition: width 0.3s ease-in-out;
+	}
+
+	#mobile-menu nav {
+		display: block;
+		width: 100%;
+	}
+
+	#mobile-menu ul {
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		display: flex;
+		height: 100%;
+	}
+	#mobile-menu[open] {
+		width: 100%;
+	}
+	#mobile-menu a {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	#mobile-menu[open] a {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.5s ease-in-out;
+		transition-delay: var(--delay);
+	}
+
+	#mobile-menu nav ul li {
+		font-size: var(--font-size-lg);
+		margin-bottom: 1rem;
+	}
+
 	@media (max-width: 768px) {
+		.header-nav__container {
+			display: none;
+		}
 		#menuButton {
 			display: flex;
-			z-index: 100;
-			width: 26px;
-			overflow: clip;
-		}
-		.menu-button-icon {
-			transform: translateX(-25px);
-			transition: transform 0.3s ease-in-out;
-		}
-		.header-nav__container {
-			width: 0%;
-			height: 100%;
-			background-color: var(--theme-bg);
-			visibility: hidden;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			position: fixed;
-			inset: 0;
-			z-index: 99;
-			top: calc(var(--header-height) - 1px);
-			padding-bottom: var(--header-height);
-			transition: width 0.3s ease-in-out;
-		}
-		header[mobile-menu-open] .header-nav__container {
-			display: flex;
-			visibility: visible;
-			width: 100%;
-		}
-		header[mobile-menu-open] nav ul {
-			align-items: center;
-			flex-direction: column;
-		}
-		header[mobile-menu-open] nav ul li {
-			font-size: var(--font-size-lg);
-			margin-bottom: 1rem;
-		}
-		.header-nav__item {
-			transition: opacity 0.5s ease-in-out;
-			transition-delay: var(--delay);
-			opacity: 0;
-		}
-		header[mobile-menu-open] .header-nav__item {
-			opacity: 1;
-		}
-
-		header[mobile-menu-open] .menu-button-icon {
-			transform: translateX(0px);
 		}
 	}
 </style>
+
+<script type="module">
+	document.addEventListener('astro:page-load', () => {
+		const bodyElement = document.querySelector('body');
+		const menuButton = document.querySelector('#menuButton');
+		const navHeader = document.querySelector('#laguntzaFisioterapiaNavHeader');
+		let timeoutId = null;
+		const mobileMenu = document.getElementById('mobile-menu');
+		let scrollPosition = 0;
+		const { openLabel, closeLabel } = menuButton.dataset;
+
+		menuButton.addEventListener('click', toggleMenu);
+		addEventListener('scroll', () => {
+			if (
+				window.scrollY > 60 &&
+				!navHeader.hasAttribute('mobile-menu-open', true)
+			) {
+				navHeader.classList.add('header-nav__container--scrolled');
+			} else {
+				navHeader.classList.remove('header-nav__container--scrolled');
+			}
+		});
+
+		const resetBodyStyles = () => {
+			bodyElement.style.removeProperty('overflow');
+			bodyElement.style.removeProperty('position');
+			bodyElement.style.removeProperty('top');
+			bodyElement.style.removeProperty('width');
+		};
+
+		const applyBodyStyles = () => {
+			bodyElement.style.overflow = 'hidden';
+			bodyElement.style.position = 'fixed';
+			bodyElement.style.top = `${0}px`;
+			bodyElement.style.width = '100%';
+		};
+
+		function toggleMenu() {
+			if (mobileMenu.hasAttribute('open', true)) {
+				menuButton.title = openLabel;
+				menuButton.setAttribute('aria-label', openLabel);
+				resetBodyStyles();
+				window.scrollTo({ left: 0, top: scrollPosition, behavior: 'instant' });
+				clearTimeout(timeoutId);
+				menuButton.setAttribute('aria-label', 'Abrir menú');
+			} else {
+				scrollPosition = window.pageYOffset;
+				timeoutId = window.setTimeout(applyBodyStyles, 300);
+				menuButton.title = closeLabel;
+				menuButton.setAttribute('aria-label', closeLabel);
+			}
+
+			menuButton.toggleAttribute('open');
+			mobileMenu.toggleAttribute('open');
+		}
+	});
+</script>
