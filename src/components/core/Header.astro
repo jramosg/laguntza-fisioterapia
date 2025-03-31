@@ -1,8 +1,10 @@
 ---
+import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 import { Nav } from '@config/nav';
 import { getLangFromUrl, useTranslations, switchLanguage } from '@i18n/utils';
 
 import { Icon } from 'astro-icon/components';
+import 'theme-toggles/css/classic.css';
 
 type Props = {
 	navData: Nav;
@@ -39,7 +41,6 @@ const t = useTranslations(lang);
 		function toggleMenu() {
 			if (navHeader.hasAttribute('mobile-menu-open', true)) {
 				menuButton.title = 'Open Main Menu';
-				// add delay to menu nav items
 
 				// unlock scroll position
 				bodyElement.style.removeProperty('overflow');
@@ -84,6 +85,9 @@ const t = useTranslations(lang);
 			<slot name="logo" />
 		</a>
 	</div>
+	<div class="theme-toggle-container">
+		<ThemeSwitcher client:load />
+	</div>
 	<div class="header-nav__container">
 		<slot name="nav">
 			{
@@ -125,7 +129,7 @@ const t = useTranslations(lang);
 	}
 	header.header--right {
 		display: grid;
-		grid-template-columns: 1fr auto auto;
+		grid-template-columns: 1fr auto auto auto;
 	}
 	.header-logo__link {
 		width: fit-content;
@@ -191,6 +195,10 @@ const t = useTranslations(lang);
 		font-size: var(--font-size-sm);
 		z-index: 100;
 		transition: font-size 0.3s ease-in-out;
+	}
+
+	.theme-toggle-container {
+		margin-right: 1rem;
 	}
 
 	@media (max-width: 768px) {
