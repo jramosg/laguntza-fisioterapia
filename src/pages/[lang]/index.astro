@@ -15,26 +15,6 @@ export function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
-
-<script>
-	document.addEventListener('astro:page-load', () => {
-		const elements = document.querySelectorAll('.fade-up');
-		console.log(elements);
-		const observer = new IntersectionObserver(entries => {
-			entries.forEach(entry => {
-				console.log('obersved!', entry.isIntersecting);
-				if (entry.isIntersecting) {
-					console.log(entry.target);
-					entry.target.classList.add('visible');
-				}
-			});
-		});
-
-		elements.forEach(el => {
-			observer.observe(el);
-		});
-	});
-</script>
 <Layout>
 	<HomeHeroSection />
 	<Container>

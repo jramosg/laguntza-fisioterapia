@@ -8,24 +8,19 @@ type Props = {
 	footerSocials: FooterSocials;
 	footerLists: FooterLists;
 	copyrightName: string;
-	background: string;
-	color: string;
 };
 
-const { footerSocials, footerLists, copyrightName, background, color }: Props =
-	Astro.props;
+const { footerSocials, footerLists, copyrightName }: Props = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<footer
-	style={background && `--footer-bg:${background}; --footer-color:${color}`}
->
+<footer>
 	<Container>
 		<div class="footer-grid__container">
 			<div class="footer-brand__container">
-				<div>
+				<div class="footer-logo__container">
 					<slot name="logo" />
 				</div>
 				<ul class="footer-socials__list">
@@ -77,14 +72,17 @@ const t = useTranslations(lang);
 
 <style>
 	footer {
-		--footer-bg: var(--theme-primary);
-		--footer-color: var(--theme-on-primary);
+		--footer-bg: var(--theme-primary-container);
+		--footer-color: var(--theme-on-primary-container);
 		min-height: 40vh;
 		background-color: var(--footer-bg);
 		color: var(--footer-color);
 		border-top-left-radius: var(--theme-shape-radius);
 		border-top-right-radius: var(--theme-shape-radius);
 	}
+	.footer-logo__container {
+		height: 6rem;
+h	}
 	.footer-grid__container {
 		padding: 10vh 0 1rem 0;
 		display: grid;

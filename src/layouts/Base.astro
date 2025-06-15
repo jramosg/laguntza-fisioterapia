@@ -1,5 +1,4 @@
 ---
-import { SkipLink } from '@components/odyssey-theme';
 import BaseHead from '../components/head/BaseHead.astro';
 import type { Props as BaseHeadProps } from '../components/head/BaseHead.astro';
 import { getLangFromUrl } from '@i18n/utils';
@@ -18,7 +17,6 @@ const lang = getLangFromUrl(Astro.url);
 	</head>
 
 	<body>
-		<SkipLink />
 		<slot name="announcement-bar" />
 		<slot name="header" />
 		<main id="content" class="main-content">

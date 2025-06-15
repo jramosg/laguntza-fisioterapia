@@ -1,0 +1,58 @@
+---
+import Container from './core/Container.astro';
+const { id, ...rest } = Astro.props;
+---
+
+<section id={id} class="hero-header-section">
+	<Container {...rest}>
+		<slot name="title" />
+		<p><slot name="desc" /></p>
+		<div class="chips-container">
+			<slot name="chips" />
+		</div>
+	</Container>
+</section>
+
+<style>
+	.hero-header-section {
+		/*	background-color: var(--theme-primary-container-alt);*/
+		background: var(--theme-container-gradient);
+
+		padding: var(--s8) 0;
+		text-align: center;
+		h1 {
+			font-size: var(--font-size-xl);
+		}
+
+		p {
+			color: var(--theme-text-secondary);
+		}
+	}
+
+	.chips-container {
+		display: flex;
+		justify-content: center;
+		gap: var(--s2);
+		flex-wrap: wrap;
+		padding-top: var(--s3);
+	}
+
+	@media (max-width: 600px) {
+		.chips-container {
+			overflow-x: auto;
+			flex-wrap: nowrap;
+			justify-content: flex-start;
+			gap: var(--s2);
+			padding-bottom: 0.5rem;
+			/* Optional: hide scrollbar for Webkit browsers */
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+		}
+		.chips-container::-webkit-scrollbar {
+			display: none;
+		}
+		.chips-container > * {
+			flex: 0 0 auto;
+		}
+	}
+</style>

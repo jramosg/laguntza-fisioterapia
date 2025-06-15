@@ -1,10 +1,19 @@
 ---
-const { narrow } = Astro.props;
+type Props = {
+	narrow?: boolean;
+	class?: string;
+	tag?: keyof HTMLElementTagNameMap;
+};
+const { narrow, class: classNAme, tag, ...rest }: Props = Astro.props;
+const Tag = tag || `div`;
 ---
 
-<div class={`content__container ${narrow ? `content__container--narrow` : ``}`}>
+<Tag
+	class={`content__container ${narrow ? `content__container--narrow` : ``}  ${classNAme || ``}`}
+	{...rest}
+>
 	<slot />
-</div>
+</Tag>
 
 <style>
 	.content__container {

@@ -1,22 +1,15 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '@images/logo.jpg';
+import BrandLogo from '../images/laguntza-fisioterapia-logo.svg';
 ---
 
-<Image
-	class="laguntza-fisioterapia-logo"
-	src={logo}
-	alt="Laguntza fisioterapia"
->
-	<style>
-		.laguntza-fisioterapia-logo {
-			margin: 0;
-			height: 3rem;
-			width: 3rem;
-		}
-		.laguntza-fisioterapia-logo:hover {
-			text-decoration: underline;
-			cursor: pointer;
-		}
-	</style>
-</Image>
+<BrandLogo class="laguntza-fisioterapia-logo" />
+
+<style>
+	.laguntza-fisioterapia-logo {
+		height: 100%;
+	}
+	.laguntza-fisioterapia-logo:hover {
+		text-decoration: underline;
+		cursor: pointer;
+	}
+</style>

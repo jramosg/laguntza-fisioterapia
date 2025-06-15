@@ -1,0 +1,374 @@
+---
+import Layout from '@layouts/Page.astro';
+
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations,
+} from '@i18n/utils';
+import Chip from '@components/Chip.astro';
+import { Langs } from '@i18n/ui';
+import SectionHero from '@components/SectionHero.astro';
+import { Icon } from 'astro-icon/components';
+import LeafletMap from '@components/LeafletMap.astro';
+import Container from '@components/core/Container.astro';
+import { Address, Email, Phone, WhatsApp } from '@utils/company';
+import PhoneIcon from '@icons/phone.svg';
+import EmailIcon from '@icons/email.svg';
+import Button from '@components/buttons/Button.astro';
+import MarkerIcon from '@icons/marker.svg';
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+const lang: Langs = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const whatsappMessages = {
+	eu: 'Kaixo, informazioa eskatu nahi nuke.',
+	es: 'Hola, me gustaría pedir información.',
+};
+const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
+	t('whatsapp-msg'),
+)}`;
+---
+
+<Layout>
+	<SectionHero id="contact-hero"
+		><h1 slot="title">
+			{t('contact-jarri')}
+			{' '}
+			<span class="header-remark">{t('contact-kontaktuan')}</span>
+		</h1>
+		<Fragment slot="desc">
+			{
+				t(
+					'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.',
+				)
+			}
+		</Fragment>
+		<Fragment slot="chips">
+			<Chip text="Telefonoa" href="tel:+34666123456">
+				<PhoneIcon slot="icon" />
+			</Chip>
+			<Chip
+				text="Email"
+				href="mailto:info@laguntzafisio.eus"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<EmailIcon slot="icon" />
+			</Chip>
+			<Chip
+				text="WhatsApp"
+				href={whatsappUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<Icon slot="icon" name="ic:baseline-whatsapp" />
+			</Chip>
+		</Fragment>
+	</SectionHero>
+
+	<div class="map-contact-data-grid">
+		<Container tag="section" class="ubication-section">
+			<h2>{t('Gure kokalekua')}</h2>
+			<a href={Address.url} target="_blank" rel="noopener noreferrer">
+				{Address.name}</a
+			>
+			<section class="leaflet-map-container">
+				<LeafletMap
+					latitude={43.24671178637388}
+					longitude={-1.9931683107224665}
+					zoom={17}
+				/>
+			</section>
+		</Container>
+		<Container tag="section" class="contact-data-section">
+			<h2>{t('Jarri kontaktuan')}</h2>
+			<p>{t('Hurrengo moduetan jarri zaitezke harremanetan:')}</p>
+			{
+				[
+					{
+						title: t('Telefonoz'),
+						desc: Phone.name,
+						href: Phone.url,
+						id: 'phone',
+						subdesc: t('Astelehenetik ostiralera, 08:00etatik 20:00etara'),
+						btnLabel: t('Deitu'),
+					},
+					{
+						title: t('Emailez'),
+						desc: Email.name,
+						id: 'email',
+						btnLabel: t('Idatzi'),
+						href: Email.url,
+					},
+					{
+						title: t('WhatsAppez'),
+
+						id: 'whatsapp',
+						desc: WhatsApp.name,
+						href: whatsappUrl,
+						btnLabel: t('Bidali WhatsAppa'),
+					},
+					{
+						title: t('Bisitatu'),
+						id: 'address',
+						desc: Address.name,
+						href: Address.url,
+						subdesc: t('Astelehenetik ostiralera, 08:00etatik 20:00etara'),
+
+						btnLabel: t('Ireki mapan'),
+					},
+				].map(item => {
+					const icons = {
+						phone: <PhoneIcon />,
+						email: <EmailIcon />,
+						whatsapp: <Icon name="ic:baseline-whatsapp" />,
+						address: <MarkerIcon />,
+					} as const;
+					const icon = icons[item.id as keyof typeof icons];
+					return (
+						<a
+							class="contact-card__link"
+							href={item.href}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<div class="contact-card fade-in-contact-card">
+								<div
+									class:list={[
+										'contact-card__icon-container',
+										`contact-card__icon-container-${item.id}`,
+									]}
+								>
+									{icon}
+								</div>
+								<div>
+									<h3 class="contact-card__title">{item.title}</h3>
+									<p>{item.desc}</p>
+									{item.subdesc && (
+										<p class="contact-card__subdesc">{item.subdesc}</p>
+									)}
+									<Button
+										outlined
+										newTab
+										href={item.href}
+										class="contact-card_cta"
+									>
+										{item.btnLabel}
+									</Button>
+								</div>
+							</div>
+						</a>
+					);
+				})
+			}
+		</Container>
+	</div>
+</Layout>
+
+<style>
+	.ubication-section {
+		width: 100%;
+		a {
+			opacity: 0.72;
+			transition: opacity linear 150ms;
+			border-radius: var(--theme-shape-radius);
+		}
+		a:hover {
+			opacity: 1;
+		}
+	}
+
+	.header-remark {
+		color: var(--theme-primary);
+	}
+	.leaflet-map-container {
+		height: 630px;
+		width: 100%;
+		overflow: hidden;
+		border-radius: var(--theme-shape-radius);
+		margin-top: var(--s4);
+	}
+
+	.map-contact-data-grid {
+		display: grid;
+		gap: var(--s4);
+		grid-template-columns: 1fr 1fr;
+		margin: var(--s5) 0;
+	}
+
+	@media (max-width: 650px) {
+		.map-contact-data-grid {
+			grid-template-columns: 1fr;
+			row-gap: var(--s8);
+		}
+	}
+
+	.contact-data-section {
+		width: 100%;
+	}
+
+	.contact-card {
+		--tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+		box-shadow:
+			0 0 #0000,
+			0 0 #0000,
+			var(--tw-shadow);
+		transition:
+			scale 500ms cubic-bezier(0.4, 0, 0.2, 1),
+			background-color 0.3s ease,
+			box-shadow 0.3s ease;
+		padding: var(--s6);
+		display: flex;
+		gap: var(--s4);
+		align-items: flex-start;
+		border-radius: var(--theme-shape-radius);
+		--size: 1.5rem;
+		background-color: var(--theme-surface-1);
+		cursor: pointer;
+		opacity: 0;
+		transform: translateY(40px);
+		transition:
+			opacity 0.5s,
+			transform 0.5s;
+
+		p {
+			margin: 0;
+		}
+
+		[data-icon] {
+			font-size: var(--size);
+		}
+
+		svg {
+			width: 1.5rem;
+			height: 1.5rem;
+		}
+	}
+
+	.contact-card:not(:last-child) {
+		margin-bottom: var(--s4);
+	}
+
+	.contact-card:hover {
+		--tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+		box-shadow:
+			var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+			var(--tw-shadow);
+		scale: 1.05;
+		background-color: var(--theme-bg);
+
+		.contact-card__title {
+			color: var(--theme-primary);
+		}
+	}
+
+	.contact-card.fade-in {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.contact-card__icon-container {
+		border-radius: 9999px;
+		display: flex;
+		padding: var(--s4);
+		align-items: center;
+		justify-content: center;
+	}
+
+	.contact-card__icon-container-phone {
+		background-color: rgb(59 130 246);
+		svg {
+			fill: white;
+		}
+	}
+
+	.contact-card__icon-container-email {
+		background-color: #ea4335; /* Gmail red */
+		svg {
+			fill: white;
+		}
+	}
+
+	.contact-card__icon-container-whatsapp {
+		background-color: #25d366; /* WhatsApp green */
+		svg {
+			color: white;
+		}
+	}
+
+	.contact-card__icon-container-address {
+		background-color: rgb(249 115 22);
+		svg {
+			fill: white;
+		}
+	}
+
+	.contact-card__title {
+		font-size: var(--font-size-base);
+		font-weight: 700;
+		transition: color 0.3s ease;
+		margin-bottom: var(--s);
+	}
+
+	.contact-card__subdesc {
+		color: var(--theme-text-secondary);
+		font-size: var(--font-size-sm);
+	}
+
+	.contact-card_cta {
+		margin-top: var(--s4);
+	}
+
+	.contact-card__link {
+		text-decoration: none;
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	gsap.registerPlugin(ScrollTrigger);
+
+	document.addEventListener('astro:page-load', () => {
+		const heroSection = document.querySelector('#contact-hero');
+		if (heroSection) {
+			const chips = heroSection.querySelectorAll('.chip');
+			if (chips.length) {
+				gsap.to(chips, {
+					y: -10,
+					duration: 2,
+					repeat: -1,
+					yoyo: true,
+					ease: 'sine.inOut',
+					stagger: 0.3,
+				});
+			}
+		}
+
+		// Fade-in timeline for contact cards
+		const cards = document.querySelectorAll('.fade-in-contact-card');
+		if (cards.length) {
+			cards.forEach((card, i) => {
+				gsap.fromTo(
+					card,
+					{ opacity: 0, y: 40 },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.3,
+						ease: 'power2.out',
+						scrollTrigger: {
+							trigger: card,
+							start: 'top 85%',
+							toggleActions: 'play none none none',
+						},
+					},
+				);
+			});
+		}
+	});
+</script>

@@ -16,9 +16,22 @@ export const ui = {
 		'seo.main-description':
 			'Laguntza Fisioterapia es un centro de fisioterapia en Urnieta, especializado en el tratamiento del dolor y la readaptación de lesiones deportivas. Ofrecemos atención personalizada para mejorar tu bienestar y recuperación.',
 		'home-hero-desc':
-			'Soy especialista en fisioterapia invasiva y experto en la readaptación de lesiones deportivas por la UPNA. Trato a los pacientes mediante tratamientos activos y pasivos con el fin de conseguir los mejores resultados. Considero imprescindible educar al paciente en el conocimiento de su cuerpo y patología y me gusta mantenerme actualizado en la evidencia científica. Actualmente soy fisioterapeuta en el Deusto FC, y anteriormente ejercí mi trabajo en clínicas y como profesor de estiramientos y control postural.',
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras velit est, pretium non eros a, malesuada tincidunt sapien. Curabitur quis nisi lorem. Vivamus dictum ut nibh nec blandit. Mauris semper nisi eu ligula dignissim, ac gravida quam commodo. Curabitur tristique eu libero ultrices sagittis. Donec quis porta diam, et tempus urna. Mauris pharetra metus eu augue vestibulum euismod. Sed vehicula ultrices urna nec pretium. Phasellus rutrum, augue ac mollis semper, ante sem ultrices dui, quis aliquam mi nisi sit amet ipsum. In libero quam, blandit pretium accumsan non, mattis a ex. Nam maximus egestas interdum. Curabitur ac pretium arcu. Duis aliquet dolor quis nisl sodales, vel pharetra nulla laoreet. Integer vulputate dolor nec vulputate maximus.',
 		'Menua ireki': 'Abrir menú',
 		'Menua itxi': 'Cerrar menú',
+		'contact-jarri': 'Ponte en',
+		'contact-kontaktuan': 'contacto',
+		'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.':
+			'Ponte en contacto por teléfono, WhatsApp o email. Estamos aquí para ayudarte.',
+		Telefonoz: 'Por teléfono',
+		WhatsAppez: 'Por WhatsApp',
+		Emailez: 'Por email',
+		'whatsapp-msg': 'Hola, me gustaría pedir información.',
+		Bisitatu: 'Visítanos',
+		'Ireki mapan': 'Abrir en el mapa',
+		'Gure kokalekua': 'Nuestra ubicación',
+		'Harremanetan jarri informazio geihago lortzeko':
+			'Ponte en contacto para más información',
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -29,7 +42,15 @@ export const ui = {
 		'seo.main-description':
 			'Laguntza fisioterapia Urnietan kokatutako zentrua da, minaren tratamenduan eta lesioen berregokitzean espezializatua. Zure ongizatea eta errekuperazioa hobetzeko arreta pertsonalizatua eskaintzen dugu.',
 		'home-hero-desc':
-			'Fisioterapia inbaditzailean espezialista naiz eta UPNAko kirol-lesioen berregokitzean aditua. Pazienteak tratamendu aktibo eta pasiboen bidez tratatzen ditut, emaitzarik onenak lortzeko helburuarekin. Pazienteari bere gorputza eta patologia ezagutzen irakasea hartzen dut helburutzat, eta etengabe eguneratuta egotea gustatzen zait ebidentzia zientifikoaren inguruan. Gaur egun Deusto FC taldean, klinika batean eta jarrera-kontrola irakasten egiten dut lan.',
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras velit est, pretium non eros a, malesuada tincidunt sapien. Curabitur quis nisi lorem. Vivamus dictum ut nibh nec blandit. Mauris semper nisi eu ligula dignissim, ac gravida quam commodo. Curabitur tristique eu libero ultrices sagittis. Donec quis porta diam, et tempus urna. Mauris pharetra metus eu augue vestibulum euismod. Sed vehicula ultrices urna nec pretium. Phasellus rutrum, augue ac mollis semper, ante sem ultrices dui, quis aliquam mi nisi sit amet ipsum. In libero quam, blandit pretium accumsan non, mattis a ex. Nam maximus egestas interdum. Curabitur ac pretium arcu. Duis aliquet dolor quis nisl sodales, vel pharetra nulla laoreet. Integer vulputate dolor nec vulputate maximus.',
+		'contact-jarri': 'Jarri',
+		'contact-kontaktuan': 'kontaktuan',
+		'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.':
+			'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.',
+		Telefonoz: 'Telefonoz',
+		WhatsAppez: 'WhatsAppez',
+		Emailez: 'Emailez',
+		'whatsapp-msg': 'Kaixo, informazioa eskatu nahi nuke.',
 	},
 };
 

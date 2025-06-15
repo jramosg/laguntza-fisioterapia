@@ -1,0 +1,127 @@
+---
+import 'leaflet/dist/leaflet.css';
+
+export interface Props {
+	latitude: number;
+	longitude: number;
+	zoom: number;
+	/** URL del tileLayer, ver: https://leafletjs.com/reference.html#tilelayer */
+	tileLayer: string;
+	/** Atribución requerida por la mayoría de tile servers */
+}
+
+const { latitude, longitude, zoom, tileLayer } = Astro.props;
+---
+
+<leaflet-map
+	class="trukun-leaflet-map"
+	data-latitude={latitude}
+	data-longitude={longitude}
+	data-zoom={zoom}
+	data-tiles={tileLayer}
+>
+</leaflet-map>
+<div class="leaflet-attribution">
+	&copy; <a
+		href="https://www.openstreetmap.org/copyright"
+		target="_blank"
+		rel="noopener noreferrer">OpenStreetMap</a
+	> contributors
+</div>
+
+<script>
+	import L, { type LatLngTuple } from 'leaflet';
+
+	class LeafletMap extends HTMLElement {
+		connectedCallback() {
+			const { latitude, longitude, zoom } = this.dataset;
+			const latlng: LatLngTuple = [Number(latitude), Number(longitude)];
+
+			const map = L.map(this, {
+				scrollWheelZoom: false,
+				dragging: false,
+				attributionControl: false,
+			}).setView(latlng, Number(zoom));
+
+			// Habilitar interactividad al hacer clic
+			map.once('click', () => {
+				map.scrollWheelZoom.enable();
+				map.dragging.enable();
+			});
+
+			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution:
+					'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+			}).addTo(map);
+
+			// Definir icono personalizado
+			const myIcon = L.icon({
+				iconUrl: '/assets/icons/marker.svg',
+				iconSize: [52, 52],
+				iconAnchor: [26, 52],
+				popupAnchor: [1, -34],
+				shadowSize: [41, 41],
+			});
+
+			L.marker(latlng, { icon: myIcon })
+				.addTo(map)
+				.bindPopup('Laguntza fisioterapia');
+		}
+	}
+
+	window.customElements.define('leaflet-map', LeafletMap);
+</script>
+
+<style>
+	.trukun-leaflet-map {
+		display: block;
+		height: 100%;
+		width: 100%;
+		border-radius: var(--theme-shape-radius);
+	}
+	.leaflet-attribution {
+		text-align: right;
+		font-size: var(--font-size-sm);
+		color: var(--theme-text-secondary);
+		margin-top: 0.25rem;
+		position: absolute;
+		background-color: var(--theme-bg);
+		margin-top: -1rem;
+		margin-left: var(--s4);
+		padding: 0 var(--s);
+		z-index: 1;
+		border-radius: var(--theme-shape-radius);
+	}
+</style>
+<style is:global>
+	.leaflet-pane {
+		z-index: 0;
+	}
+
+	.leaflet-top {
+		z-index: 1;
+	}
+
+	.leaflet-control-zoom.leaflet-bar.leaflet-control {
+		border-radius: 24px;
+		overflow: hidden;
+		margin: 14px;
+		border-color: var(--theme-primary-200);
+		background-color: var(--theme-primary-200);
+	}
+
+	a.leaflet-control-zoom-in,
+	a.leaflet-control-zoom-out {
+		background-color: var(--theme-primary-100);
+		color: var(--theme-primary);
+		border-color: var(--theme-primary);
+	}
+
+	a.leaflet-control-zoom-in:hover,
+	a.leaflet-control-zoom-out:hover {
+		background-color: var(--theme-primary);
+		color: var(--theme-on-primary);
+		border-color: var(--theme-primary-100);
+	}
+</style>

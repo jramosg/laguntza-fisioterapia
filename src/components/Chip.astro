@@ -1,0 +1,43 @@
+---
+type Props = {
+	text: string;
+	href?: string;
+};
+const { text, href, ...rest }: Props = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class="chip" href={href} {...rest}>
+	<slot name="icon" />
+	{text}
+</Tag>
+
+<style>
+	.chip {
+		padding: var(--s3) var(--s4);
+		display: inline-flex;
+		align-items: center;
+		background-color: rgb(255 255 255 / 0.2);
+		backdrop-filter: blur(4px);
+		color: var(--theme-on-bg);
+		border-radius: 9999px;
+		font-weight: 500;
+		transition: background-color 0.5s ease;
+		font-size: var(--font-size-sm);
+		cursor: pointer;
+		text-wrap: nowrap;
+		text-decoration: none;
+		gap: var(--s2);
+
+		svg {
+			width: 1.5em;
+			height: 1.5em;
+			fill: inherit;
+		}
+	}
+
+	.chip:hover {
+		background-color: var(--theme-primary);
+		color: var(--theme-on-primary);
+	}
+</style>

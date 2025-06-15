@@ -5,19 +5,19 @@ export const nav = [
 	},
 	{
 		title: 'nav.services',
-		slug: '/blog',
+		slug: '/services',
 	},
 	{
-		title: 'nav.blog',
+		title: 'nav.services',
 		slug: '/blog',
 	},
 	{
 		title: 'nav.about',
-		slug: '/company/about',
+		slug: '/about',
 	},
 	{
 		title: 'nav.contact',
-		slug: '/company/contact',
+		slug: '/contact',
 	},
 ] as const;
 

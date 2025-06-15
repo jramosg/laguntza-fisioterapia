@@ -2,8 +2,8 @@
 import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 import Burger from '@components/buttons/Burger.astro';
 import { Nav } from '@config/nav';
-import { getLangFromUrl, useTranslations, switchLanguage } from '@i18n/utils';
-
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import LanguageToggle from '@components/LanguageToggle.astro';
 import 'theme-toggles/css/classic.css';
 
 type Props = {
@@ -22,10 +22,9 @@ const t = useTranslations(lang);
 	class={`${rightMenu ? 'header--right' : ``.trim()}`}
 >
 	<div class="language-select__container">
-		<a href={switchLanguage(url)}
-			>{lang === 'es' ? t('Euskera') : t('Erdera')}</a
-		>
+		<LanguageToggle />
 	</div>
+
 	<div class="header-logo-menu__container">
 		<Burger
 			id="menuButton"
@@ -38,7 +37,7 @@ const t = useTranslations(lang);
 		</a>
 	</div>
 	<div class="theme-toggle-container">
-		<ThemeSwitcher client:load />
+		<ThemeSwitcher />
 	</div>
 	<div class="header-nav__container">
 		<nav>
@@ -85,8 +84,18 @@ const t = useTranslations(lang);
 		position: fixed;
 		top: 0;
 		z-index: 200;
-		transition: all 0.3s ease-in-out;
+		transition:
+			all 0.3s ease-in-out,
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		background-color: var(--theme-bg);
+		padding-top: var(--s3);
+	}
+
+	header.header-nav__container--scrolling-down {
+		padding-top: 0;
+	}
+	header.header--hidden {
+		transform: translateY(-100%);
 	}
 	header.header--right {
 		display: grid;
@@ -96,22 +105,36 @@ const t = useTranslations(lang);
 		width: fit-content;
 		color: inherit;
 		text-decoration: none;
+		height: 100%;
+		aspect-ratio: 1 / 1;
 	}
 	.header-logo-menu__container {
 		display: flex;
 		align-items: center;
+		height: 100%;
 	}
 
 	.header-nav__container--scrolled {
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-		height: 4rem;
+		margin-top: 0;
 		opacity: 0.9;
 		backdrop-filter: blur(10px);
-		background-color: var(--theme-surface-1);
 	}
-	.header-nav__container--scrolled .language-select__container {
-		font-size: 0px;
+
+	.header-nav__container--scrolling-down {
+		height: 4rem;
+		background-color: var(--theme-primary-container);
 	}
+	.header-nav__container--scrolling-down .language-select__container {
+		opacity: 0;
+		height: 0;
+	}
+
+	.header-nav__container--scrolling-down .laguntza-fisioterapia-logo {
+		height: 0rem;
+		width: 4rem;
+	}
+
 	#menuButton {
 		outline: none;
 		border: none;
@@ -142,12 +165,12 @@ const t = useTranslations(lang);
 	}
 
 	.language-select__container {
-		position: absolute;
-		right: 1rem;
-		top: 0rem;
+		position: fixed;
+		right: var(--s);
+		top: var(--s);
 		font-size: var(--font-size-sm);
 		z-index: 100;
-		transition: font-size 0.3s ease-in-out;
+		transition: opacity 0.3s ease-in-out;
 	}
 
 	.theme-toggle-container {
@@ -208,46 +231,86 @@ const t = useTranslations(lang);
 	}
 </style>
 
-<script type="module">
+<script>
 	document.addEventListener('astro:page-load', () => {
-		const bodyElement = document.querySelector('body');
-		const menuButton = document.querySelector('#menuButton');
-		const navHeader = document.querySelector('#laguntzaFisioterapiaNavHeader');
-		let timeoutId = null;
+		const bodyElement = document.body;
+		const menuButton = document.getElementById('menuButton');
+		const navHeader = document.getElementById('laguntzaFisioterapiaNavHeader');
 		const mobileMenu = document.getElementById('mobile-menu');
+		const btn = document.getElementById('lang-toggle-btn');
+		const dropdown = document.getElementById('lang-dropdown');
+
+		let timeoutId: number | undefined = undefined;
 		let scrollPosition = 0;
+		let lastScrollY = window.scrollY;
+		let ticking = false;
+		let languageToggleIsOpen = false;
+
+		if (!menuButton || !navHeader || !bodyElement) return;
+
 		const { openLabel, closeLabel } = menuButton.dataset;
 
-		menuButton.addEventListener('click', toggleMenu);
-		addEventListener('scroll', () => {
-			if (
-				window.scrollY > 60 &&
-				!navHeader.hasAttribute('mobile-menu-open', true)
-			) {
-				navHeader.classList.add('header-nav__container--scrolled');
-			} else {
-				navHeader.classList.remove('header-nav__container--scrolled');
-			}
-		});
+		// --- Language Dropdown Logic ---
+		function openDropdown() {
+			if (!dropdown || !btn) return;
+			dropdown.hidden = false;
+			btn.setAttribute('aria-expanded', 'true');
+			languageToggleIsOpen = true;
+		}
+		function closeDropdown() {
+			if (!dropdown || !btn) return;
+			dropdown.hidden = true;
+			btn.setAttribute('aria-expanded', 'false');
+			languageToggleIsOpen = false;
+		}
 
-		const resetBodyStyles = () => {
+		function handleDropdownEvents() {
+			if (!btn || !dropdown) return;
+			btn.addEventListener('click', e => {
+				e.stopPropagation();
+				languageToggleIsOpen ? closeDropdown() : openDropdown();
+			});
+			btn.addEventListener('blur', () => {
+				setTimeout(() => {
+					if (!dropdown.contains(document.activeElement)) closeDropdown();
+				}, 100);
+			});
+			dropdown.addEventListener('mousedown', e => e.preventDefault());
+			dropdown.querySelectorAll('.lang-option').forEach(option => {
+				option.addEventListener('click', () => {
+					const lang = option.getAttribute('data-lang');
+					const event = new CustomEvent('languageChange', {
+						detail: lang,
+						bubbles: true,
+					});
+					btn.dispatchEvent(event);
+					closeDropdown();
+					btn.focus();
+				});
+			});
+			document.addEventListener('click', e => {
+				if (btn !== e.target && dropdown !== e.target) closeDropdown();
+			});
+		}
+
+		// --- Mobile Menu Logic ---
+		function resetBodyStyles() {
 			bodyElement.style.removeProperty('overflow');
 			bodyElement.style.removeProperty('position');
 			bodyElement.style.removeProperty('top');
 			bodyElement.style.removeProperty('width');
-		};
-
-		const applyBodyStyles = () => {
+		}
+		function applyBodyStyles() {
 			bodyElement.style.overflow = 'hidden';
 			bodyElement.style.position = 'fixed';
-			bodyElement.style.top = `${0}px`;
+			bodyElement.style.top = '0px';
 			bodyElement.style.width = '100%';
-		};
-
+		}
 		function toggleMenu() {
-			if (mobileMenu.hasAttribute('open', true)) {
-				menuButton.title = openLabel;
-				menuButton.setAttribute('aria-label', openLabel);
+			if (!menuButton || !mobileMenu) return;
+			if (mobileMenu.hasAttribute('open')) {
+				menuButton.title = openLabel || 'Abrir menú';
+				menuButton.setAttribute('aria-label', menuButton.title);
 				resetBodyStyles();
 				window.scrollTo({ left: 0, top: scrollPosition, behavior: 'instant' });
 				clearTimeout(timeoutId);
@@ -255,12 +318,48 @@ const t = useTranslations(lang);
 			} else {
 				scrollPosition = window.pageYOffset;
 				timeoutId = window.setTimeout(applyBodyStyles, 300);
-				menuButton.title = closeLabel;
-				menuButton.setAttribute('aria-label', closeLabel);
+				menuButton.title = closeLabel || 'Cerrar menú';
+				menuButton.setAttribute('aria-label', menuButton.title);
 			}
-
 			menuButton.toggleAttribute('open');
 			mobileMenu.toggleAttribute('open');
 		}
+
+		menuButton.addEventListener('click', toggleMenu);
+
+		// --- Header Scroll Logic (Twitter-like) ---
+		function onScroll() {
+			const currentScrollY = window.scrollY;
+			if (!navHeader) return;
+			// Hide dropdown on scroll
+			if (dropdown && btn && window.scrollY > 60 && !dropdown.hidden) {
+				closeDropdown();
+				btn.blur();
+			}
+			// Twitter-like header hide/show
+			if (currentScrollY < 60) {
+				navHeader.classList.remove('header-nav__container--scrolled');
+			} else {
+				navHeader.classList.add('header-nav__container--scrolled');
+
+				if (currentScrollY > lastScrollY) {
+					navHeader.classList.add('header-nav__container--scrolling-down');
+				} else {
+					navHeader.classList.remove('header-nav__container--scrolling-down');
+				}
+			}
+			lastScrollY = currentScrollY;
+			ticking = false;
+		}
+		function onScrollHandler() {
+			if (!ticking) {
+				window.requestAnimationFrame(onScroll);
+				ticking = true;
+			}
+		}
+		window.addEventListener('scroll', onScrollHandler);
+
+		// --- Init ---
+		handleDropdownEvents();
 	});
 </script>

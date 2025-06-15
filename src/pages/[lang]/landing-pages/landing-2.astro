@@ -2,14 +2,11 @@
 import Layout from '@layouts/Base.astro';
 import LandingContactForm from '@components/forms/LandingContactForm.astro';
 import Logo from '@components/Logo.astro';
-import { getStaticLangPaths } from '@i18n/utils';
 
 const seo = {
 	title: 'Landing Page #2 | Astro Odyssey Theme',
 	description: 'Landing Page #2 | Astro Odyssey Theme',
 };
-
-console.log('stt', getStaticLangPaths());
 
 export function getStaticPaths() {
 	return [{ params: { lang: 'es' } }, { params: { lang: 'eu' } }];

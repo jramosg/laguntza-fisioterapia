@@ -10,7 +10,6 @@
 		"types": ["astro/client"],
 		"paths": {
 			"@config/*": ["config/*"],
-			"@icons": ["icons/*"],
 			"@lib/*": ["lib/*"],
 			"@utils/*": ["utils/*"],
 			"@components/*": ["components/*"],
@@ -20,7 +19,7 @@
 			"@styles/*": ["styles/*"],
 			"@i18n/*": ["i18n/*"],
 			"@images/*": ["images/*"],
-
+			"@icons/*": ["icons/*"],
 			"@types": ["types"]
 		}
 	}
