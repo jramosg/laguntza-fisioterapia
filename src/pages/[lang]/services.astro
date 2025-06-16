@@ -149,12 +149,12 @@ const content = servicesContent[lang];
 		{
 			lang === 'eu' ? (
 				<h1 slot="title">
-					Gure <span class="physiotherapy-remark">fisioterapia</span> zerbitzuak
+					Gure <span class="hero-section__remark">fisioterapia</span> zerbitzuak
 				</h1>
 			) : (
 				<h1 slot="title">
 					Nuestros servicios de{' '}
-					<span class="physiotherapy-remark">fisioterapia</span>
+					<span class="hero-section__remark">fisioterapia</span>
 				</h1>
 			)
 		}
@@ -185,11 +185,14 @@ const content = servicesContent[lang];
 			content.sections.map((section, idx) => {
 				const hash = generateSlug(section.title);
 				const isEven = idx % 2 === 0;
-				const image = sectionImages[section.id] || Jokin;
+				const image =
+					sectionImages[section.id as keyof typeof sectionImages] || Jokin;
 				return (
 					<section
 						class:list={[
 							'service-card',
+							'card',
+							'card--elevated',
 							isEven ? 'even-service' : 'odd-service',
 						]}
 						id={hash}
@@ -249,32 +252,14 @@ const content = servicesContent[lang];
 	}
 
 	.service-card {
-		background: var(--theme-surface-1);
-		color: var(--theme-on-surface-1);
-		border-radius: var(--theme-shape-radius);
-		--shadow:
-			0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-		box-shadow:
-			0 0 #0000,
-			0 0 #0000,
-			var(--shadow);
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		transition:
-			box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-			transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-			background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 		scroll-margin-top: var(--header-height);
 		align-items: stretch;
 	}
 	.service-card:hover {
-		box-shadow:
-			0 8px 32px rgba(0, 0, 0, 0.16),
-			0 1.5px 6px rgba(0, 0, 0, 0.08);
 		z-index: 2;
-		transform: translateY(-2px) scale(1.01);
-		background-color: var(--theme-bg);
 	}
 
 	.service-card__desc {
@@ -297,10 +282,6 @@ const content = servicesContent[lang];
 
 	.services-cta__btn:hover {
 		background: var(--theme-primary-hover);
-	}
-
-	.physiotherapy-remark {
-		color: var(--theme-primary);
 	}
 
 	.services-grid {
@@ -402,7 +383,6 @@ const content = servicesContent[lang];
 		.group {
 			gap: var(--s2);
 			display: flex;
-
 			/* Add padding to the right to create a gap between the last and first card. */
 			padding-right: var(--s2);
 			will-change: transform;
@@ -490,11 +470,5 @@ const content = servicesContent[lang];
 				);
 			});
 		});
-
-		// Auto-scroll chips horizontally on mobile
-		const servicesHero = document.querySelector(
-			'#services-hero',
-		) as HTMLElement;
-		const chipsContainer = servicesHero.querySelector('.chips-container');
 	});
 </script>

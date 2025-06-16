@@ -1,13 +1,12 @@
 ---
-import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 import Burger from '@components/buttons/Burger.astro';
-import { Nav } from '@config/nav';
+import type { NavItem } from '@config/nav';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import LanguageToggle from '@components/LanguageToggle.astro';
 import 'theme-toggles/css/classic.css';
 
 type Props = {
-	navData: Nav;
+	navData: NavItem[];
 	rightMenu?: boolean;
 };
 const { navData, rightMenu }: Props = Astro.props;
@@ -36,14 +35,12 @@ const t = useTranslations(lang);
 			<slot name="logo" />
 		</a>
 	</div>
-	<div class="theme-toggle-container">
-		<ThemeSwitcher />
-	</div>
+
 	<div class="header-nav__container">
 		<nav>
 			<ul>
 				{
-					navData.map(navItem => (
+					navData.slice(0, -1).map(navItem => (
 						<li class="header-nav__item">
 							<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
 						</li>
@@ -107,6 +104,7 @@ const t = useTranslations(lang);
 		text-decoration: none;
 		height: 100%;
 		aspect-ratio: 1 / 1;
+		width: 4rem;
 	}
 	.header-logo-menu__container {
 		display: flex;
@@ -171,10 +169,6 @@ const t = useTranslations(lang);
 		font-size: var(--font-size-sm);
 		z-index: 100;
 		transition: opacity 0.3s ease-in-out;
-	}
-
-	.theme-toggle-container {
-		margin-right: 1rem;
 	}
 
 	#mobile-menu {
@@ -320,9 +314,11 @@ const t = useTranslations(lang);
 				timeoutId = window.setTimeout(applyBodyStyles, 300);
 				menuButton.title = closeLabel || 'Cerrar menú';
 				menuButton.setAttribute('aria-label', menuButton.title);
+				navHeader.classList.remove('header-nav__container--scrolling-down');
 			}
 			menuButton.toggleAttribute('open');
 			mobileMenu.toggleAttribute('open');
+			onScroll(); // <-- Immediately update header state
 		}
 
 		menuButton.addEventListener('click', toggleMenu);
@@ -335,6 +331,11 @@ const t = useTranslations(lang);
 			if (dropdown && btn && window.scrollY > 60 && !dropdown.hidden) {
 				closeDropdown();
 				btn.blur();
+			}
+			// Prevent scroll logic if mobile menu is open
+			if (mobileMenu && mobileMenu.hasAttribute('open')) {
+				navHeader.classList.remove('header-nav__container--scrolling-down');
+				return;
 			}
 			// Twitter-like header hide/show
 			if (currentScrollY < 60) {

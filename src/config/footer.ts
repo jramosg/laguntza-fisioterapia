@@ -1,36 +1,43 @@
+import { Address, Email, WhatsApp } from '@utils/company';
+
 export const footerSocials = [
 	{
-		name: 'Twitter',
-		url: 'https://twitter.com/jaydanurwin',
-		icon: 'mdi:twitter',
+		name: 'Instagram',
+		url: 'https://www.instagram.com/jon95ramos/?hl=es',
+		icon: 'mdi:instagram',
 	},
 	{
-		name: 'Youtube',
-		url: 'https://youtube.com/@jaydanurwin',
-		icon: 'mdi:youtube',
+		name: 'WhatsaApp',
+		url: WhatsApp.url,
+		icon: 'mdi:whatsapp',
+	},
+	{
+		name: 'Email',
+		url: Email.url,
+		icon: 'mdi:email-outline',
 	},
 ] as const;
 
 export const footerLists = [
 	{
-		title: 'Laguntza fisioterapia',
-		items: [
-			{
-				title: 'nav.about',
-				slug: '/company/about',
-			},
-			{
-				title: 'nav.blog',
-				slug: '/blog',
-			},
-			{
-				title: 'Urnieta, Idiazabal kalea, 22, 2A',
-				slug: '/company/contact',
-				href: 'https://maps.app.goo.gl/9KVD7uFCZvc4FvTv7',
-			},
-		],
+		title: 'nav.home',
+		slug: '/',
 	},
-] as const;
+	{
+		title: 'nav.services',
+		slug: '/services',
+	},
+	{
+		title: 'nav.contact',
+		slug: '/contact',
+	},
+];
 
+export type FooterListItem = {
+	title: string;
+	slug?: string;
+	href?: string;
+	icon?: string;
+};
 export type FooterLists = typeof footerLists;
 export type FooterSocials = typeof footerSocials;

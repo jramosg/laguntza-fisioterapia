@@ -16,12 +16,22 @@
 	--theme-on-primary: #fff;
 	--theme-on-primary-container: #15343c;
 	--theme-container-gradient: linear-gradient(
-			135deg,
-			#daeef3 0%,
-			#b9dde8 50%,
-			#8bc5d6 100%
-		);
-		/* Theme Secondary Colors */ --theme-secondary: #9a9a9b;
+		135deg,
+		#458295 0%,
+		#56a4bd 50%,
+		#3d6f7f 100%
+	);
+	--theme-gradient: linear-gradient(
+		135deg,
+		#458295 0%,
+		#56a4bd 50%,
+		#3d6f7f 100%
+	);
+	--theme-on-container-gradient: hsl(0, 0%, 100%);
+	--theme-outline: hsl(240 5.9% 90%);
+
+	/* Theme Secondary Colors */
+	--theme-secondary: #9a9a9b;
 	--theme-secondary-100: #f2f2f3;
 	--theme-secondary-200: #e3e3e4;
 	--theme-secondary-300: #cccccd;
@@ -40,7 +50,7 @@
 	--theme-on-bg: #000;
 
 	--theme-surface-1: #f2f2f2;
-	--theme-on-surface-1: #000;
+	--theme-on-surface-1: var(--theme-on-bg);
 
 	--theme-surface-2: #458295;
 	--theme-on-surface-2: #000;
@@ -63,10 +73,8 @@
 	--theme-blog-post-header-width: 1200px;
 
 	/* Theme Fonts */
-	--theme-font-family-serif:
-		'Roboto Serif', Georgia, Cambria, T 'Times New Roman', Times, serif;
-	--theme-font-family-sans:
-		'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+	--theme-font-family:
+		'Inter Variable', sans-serif, -apple-system, BlinkMacSystemFont;
 
 	--header-height: 5.8rem;
 
@@ -99,7 +107,38 @@
 	--grey-700: #5c5f66;
 	--grey-800: #3d4045;
 	--grey-900: #232427;
-	
+
+	/* Accent Orange Palette */
+	--theme-accent: #e8944b;
+	--theme-accent-100: #fbeee3;
+	--theme-accent-200: #f7dcc2;
+	--theme-accent-300: #f2c79a;
+	--theme-accent-400: #eead6a;
+	--theme-accent-500: #e8944b;
+	--theme-accent-600: #c97a36;
+	--theme-accent-700: #a35f27;
+	--theme-accent-800: #7a471b;
+	--theme-accent-900: #4d2a0c;
+	--theme-accent-light: var(--theme-accent-300);
+	--theme-accent-dark: var(--theme-accent-700);
+	--theme-accent-container: var(--theme-accent-100);
+	--theme-accent-container-alt: var(--theme-accent-200);
+	--theme-on-accent: #fff;
+	--theme-on-accent-container: #3a220e;
+	/* Theme Shadows */
+	--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
+	--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	--shadow-lg:
+		0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--shadow-xl:
+		0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+	--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+	--shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+	--shadow-none: 0 0 #0000;
+
+	--ring-offset-shadow: 0 0 #0000;
+	--ring-shadow: 0 0 #0000;
 }
 
 [data-theme='dark'] {
@@ -109,12 +148,9 @@
 	--theme-on-bg: hsl(0, 0%, 100%);
 
 	--theme-surface-1: hsl(0, 0%, 20%);
-	--theme-on-surface-1: hsl(0, 0%, 100%);
 
 	--theme-surface-2: #203422;
 	--theme-on-surface-2: #ffffff;
-
-	--theme-shape-radius: 0;
 
 	--form-field-input-color: var(--theme-on-bg);
 
@@ -127,6 +163,11 @@
 	--theme-secondary-container: var(--theme-secondary-dark);
 	--theme-on-secondary-container: #fff;
 
+	/* Accent Orange Palette (Dark) */
+	--theme-accent-container: var(--theme-accent-800);
+	--theme-accent-container-alt: var(--theme-accent-900);
+	--theme-on-accent-container: #fff;
+
 	/* Text Colors (Dark) */
 	--theme-text-secondary: #b3b3b4;
 
@@ -136,4 +177,6 @@
 		#2d4a54 50%,
 		#37697a 100%
 	);
+
+	--theme-outline: hsl(240 3.7% 15.9%);
 }

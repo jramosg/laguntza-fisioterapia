@@ -24,10 +24,6 @@ export function getStaticPaths() {
 const lang: Langs = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const whatsappMessages = {
-	eu: 'Kaixo, informazioa eskatu nahi nuke.',
-	es: 'Hola, me gustaría pedir información.',
-};
 const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 	t('whatsapp-msg'),
 )}`;
@@ -38,7 +34,7 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 		><h1 slot="title">
 			{t('contact-jarri')}
 			{' '}
-			<span class="header-remark">{t('contact-kontaktuan')}</span>
+			<span class="hero-section__remark">{t('contact-kontaktuan')}</span>
 		</h1>
 		<Fragment slot="desc">
 			{
@@ -136,7 +132,7 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<div class="contact-card fade-in-contact-card">
+							<div class="contact-card card card--elevated">
 								<div
 									class:list={[
 										'contact-card__icon-container',
@@ -145,9 +141,11 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 								>
 									{icon}
 								</div>
-								<div>
+								<div >
 									<h3 class="contact-card__title">{item.title}</h3>
-									<p>{item.desc}</p>
+									{item.desc && (
+										<p class="contact-card__desc">{item.desc}</p>
+									)}
 									{item.subdesc && (
 										<p class="contact-card__subdesc">{item.subdesc}</p>
 									)}
@@ -181,10 +179,6 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 			opacity: 1;
 		}
 	}
-
-	.header-remark {
-		color: var(--theme-primary);
-	}
 	.leaflet-map-container {
 		height: 630px;
 		width: 100%;
@@ -212,28 +206,12 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 	}
 
 	.contact-card {
-		--tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-		box-shadow:
-			0 0 #0000,
-			0 0 #0000,
-			var(--tw-shadow);
-		transition:
-			scale 500ms cubic-bezier(0.4, 0, 0.2, 1),
-			background-color 0.3s ease,
-			box-shadow 0.3s ease;
-		padding: var(--s6);
+		padding: var(--s6) var(--s4);
 		display: flex;
 		gap: var(--s4);
 		align-items: flex-start;
-		border-radius: var(--theme-shape-radius);
 		--size: 1.5rem;
-		background-color: var(--theme-surface-1);
 		cursor: pointer;
-		opacity: 0;
-		transform: translateY(40px);
-		transition:
-			opacity 0.5s,
-			transform 0.5s;
 
 		p {
 			margin: 0;
@@ -254,13 +232,6 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 	}
 
 	.contact-card:hover {
-		--tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-		box-shadow:
-			var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-			var(--tw-shadow);
-		scale: 1.05;
-		background-color: var(--theme-bg);
-
 		.contact-card__title {
 			color: var(--theme-primary);
 		}
@@ -314,6 +285,10 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 		margin-bottom: var(--s);
 	}
 
+	.contact-card__desc {
+		word-break: break-all;
+		font-size: var(--font-size-sm);
+	}
 	.contact-card__subdesc {
 		color: var(--theme-text-secondary);
 		font-size: var(--font-size-sm);
@@ -350,7 +325,7 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 		}
 
 		// Fade-in timeline for contact cards
-		const cards = document.querySelectorAll('.fade-in-contact-card');
+		const cards = document.querySelectorAll('.contact-card');
 		if (cards.length) {
 			cards.forEach((card, i) => {
 				gsap.fromTo(

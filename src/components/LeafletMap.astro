@@ -6,8 +6,7 @@ export interface Props {
 	longitude: number;
 	zoom: number;
 	/** URL del tileLayer, ver: https://leafletjs.com/reference.html#tilelayer */
-	tileLayer: string;
-	/** Atribución requerida por la mayoría de tile servers */
+	tileLayer?: string;
 }
 
 const { latitude, longitude, zoom, tileLayer } = Astro.props;

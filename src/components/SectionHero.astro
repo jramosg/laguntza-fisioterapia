@@ -4,7 +4,7 @@ const { id, ...rest } = Astro.props;
 ---
 
 <section id={id} class="hero-header-section">
-	<Container {...rest}>
+	<Container class="hero-header-container" {...rest}>
 		<slot name="title" />
 		<p><slot name="desc" /></p>
 		<div class="chips-container">
@@ -14,19 +14,31 @@ const { id, ...rest } = Astro.props;
 </section>
 
 <style>
+	.hero-header-container {
+		padding: 0;
+		width: 100%;
+		h1,
+		p {
+			padding: var(--container-padding);
+		}
+	}
+
+	.hero-header-container :global(.chip) {
+		color: var(--theme-on-container-gradient);
+	}
 	.hero-header-section {
 		/*	background-color: var(--theme-primary-container-alt);*/
-		background: var(--theme-container-gradient);
-
+		background: var(--theme-gradient);
+		padding: 0;
 		padding: var(--s8) 0;
 		text-align: center;
-		h1 {
-			font-size: var(--font-size-xl);
-		}
+		color: var(--theme-on-container-gradient);
+	}
 
-		p {
-			color: var(--theme-text-secondary);
-		}
+	:global(.hero-section__remark) {
+		background-image: linear-gradient(to right, #e8944b, #7a471b);
+		background-clip: text;
+		color: transparent;
 	}
 
 	.chips-container {
@@ -41,7 +53,6 @@ const { id, ...rest } = Astro.props;
 		.chips-container {
 			overflow-x: auto;
 			flex-wrap: nowrap;
-			justify-content: flex-start;
 			gap: var(--s2);
 			padding-bottom: 0.5rem;
 			/* Optional: hide scrollbar for Webkit browsers */
@@ -56,3 +67,21 @@ const { id, ...rest } = Astro.props;
 		}
 	}
 </style>
+
+<script>
+	import { gsap } from 'gsap';
+
+	document.addEventListener('astro:page-load', () => {
+		const heroRef = document.querySelector('.hero-header-section');
+
+		if (!heroRef) return;
+		gsap.to(heroRef, {
+			background:
+				'linear-gradient(135deg, #0f766e 0%, #0891b2 50%, #0369a1 100%)',
+			duration: 3,
+			repeat: -1,
+			yoyo: true,
+			ease: 'sine.inOut',
+		});
+	});
+</script>

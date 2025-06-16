@@ -3,6 +3,10 @@ import { Icon } from 'astro-icon/components';
 import Container from '../core/Container.astro';
 import { FooterLists, FooterSocials } from '@config/footer';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import { Address } from '@utils/company';
+import { Fragment } from 'astro/jsx-runtime';
+import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
+import BrandLogo from '@images/laguntza-fisioterapia-isotipo-19.svg';
 
 type Props = {
 	footerSocials: FooterSocials;
@@ -17,52 +21,45 @@ const t = useTranslations(lang);
 ---
 
 <footer>
-	<Container>
-		<div class="footer-grid__container">
-			<div class="footer-brand__container">
-				<div class="footer-logo__container">
-					<slot name="logo" />
-				</div>
-				<ul class="footer-socials__list">
-					{
-						footerSocials.map(social => (
-							<li class="footer-socials__item">
-								<a
-									href={social.url}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="footer-socials__link"
-									title={`Open ${social.name} profile`}
-								>
-									<Icon name={social.icon} width={24} height={24} />
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</div>
+	<Container class="footer-container">
+		<ul class="footer-socials__list">
 			{
-				footerLists.map(list => (
-					<div>
-						<p>
-							<strong>{list.title}</strong>
-						</p>
-						<ul class="footer-link__list">
-							{list.items.map(item => (
-								<li>
-									<a
-										href={'href' in item ? item.href : item.slug}
-										target={'href' in item ? '_blank' : ''}
-										rel={'href' in item ? 'noopener noreferrer' : ''}
-									>
-										{t(item.title)}
-									</a>
-								</li>
-							))}
-						</ul>
-					</div>
+				footerSocials.map(social => (
+					<li class="footer-socials__item">
+						<a
+							href={social.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="footer-socials__link"
+							title={`Open ${social.name} profile`}
+						>
+							<Icon name={social.icon} width={24} height={24} />
+						</a>
+					</li>
 				))
 			}
+		</ul>
+
+		<a class="footer_address" href={Address.url}>
+			<span>{Address.name}</span>
+		</a>
+
+		<h3 class="quick-links">
+			{
+				footerLists.map((item, index) => (
+					<>
+						<a href={`/${lang}${item.slug}`}>{t(item.title)}</a>
+						{index !== footerLists.length - 1 && <span> — </span>}
+					</>
+				))
+			}
+		</h3>
+
+		<div class="theme-toggle-container">
+			<ThemeSwitcher />
+		</div>
+		<div class="footer-logo__container">
+			<BrandLogo />
 		</div>
 		<div class="footer-copyright__container">
 			<p>Copyright &copy; {new Date().getFullYear()} {copyrightName}</p>
@@ -72,24 +69,28 @@ const t = useTranslations(lang);
 
 <style>
 	footer {
-		--footer-bg: var(--theme-primary-container);
-		--footer-color: var(--theme-on-primary-container);
 		min-height: 40vh;
-		background-color: var(--footer-bg);
-		color: var(--footer-color);
+		background-color: var(--theme-primary-container);
+		color: var(--theme-on-primary-container);
 		border-top-left-radius: var(--theme-shape-radius);
 		border-top-right-radius: var(--theme-shape-radius);
 	}
-	.footer-logo__container {
-		height: 6rem;
-h	}
-	.footer-grid__container {
-		padding: 10vh 0 1rem 0;
-		display: grid;
-		grid-template-columns: 2fr 1fr 1fr 1fr;
+	.footer-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--s4);
+		padding: var(--s4) 0;
 	}
+	.footer-logo__container {
+		height: 10rem;
+		width: 10rem;
+	}
+
 	.footer-socials__list {
-		margin: 1rem 0;
+		margin: 0;
+		margin-top: auto;
 		padding: 0;
 		display: flex;
 		list-style: none;
@@ -120,23 +121,64 @@ h	}
 		font-size: var(--font-size-sm);
 	}
 	@media (max-width: 768px) {
-		.footer-grid__container :first-child {
-			grid-column: 1/-1;
-		}
 		.footer-grid__container {
 			padding: 5vh 0;
-			grid-template-columns: repeat(2, 1fr);
-			gap: 1rem;
+			grid-template-columns: 1fr;
+			gap: var(--s4);
 		}
 	}
 	@media (max-width: 600px) {
 		.footer-grid__container {
 			padding: 5vh 0;
 			grid-template-columns: 1fr;
-			gap: 1rem;
+			gap: var(--s4);
 		}
 		.footer-copyright__container {
 			flex-direction: column;
 		}
+	}
+
+	li {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		column-gap: var(--s);
+		svg {
+			margin-top: 4px;
+		}
+	}
+
+	.footer_address {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--s2);
+		text-align: center;
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.quick-links {
+		text-align: center;
+		white-space: pre-wrap;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		font-size: var(--font-size-base);
+		a {
+			padding-bottom: 0.05em;
+			border-bottom-width: 1px;
+			border-bottom-style: solid;
+			text-decoration: none;
+			border-bottom-color: inherit;
+		}
+	}
+
+	a {
+		transition: opacity 0.3s ease-in-out;
+	}
+
+	a:hover {
+		opacity: 0.72;
 	}
 </style>

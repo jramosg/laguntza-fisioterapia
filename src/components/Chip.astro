@@ -2,6 +2,8 @@
 type Props = {
 	text: string;
 	href?: string;
+	target?: '_blank' | '_self';
+	rel?: string;
 };
 const { text, href, ...rest }: Props = Astro.props;
 const Tag = href ? 'a' : 'div';
@@ -28,11 +30,15 @@ const Tag = href ? 'a' : 'div';
 		text-wrap: nowrap;
 		text-decoration: none;
 		gap: var(--s2);
-
+		--size: 1.125rem;
 		svg {
-			width: 1.5em;
-			height: 1.5em;
-			fill: inherit;
+			width: var(--size);
+			height: var(--size);
+			fill: var(--theme-on-bg);
+		}
+		[data-icon] {
+			font-size: var(--size);
+			color: inherit;
 		}
 	}
 
