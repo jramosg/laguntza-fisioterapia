@@ -145,7 +145,7 @@ const content = servicesContent[lang];
 ---
 
 <Layout>
-	<SectionHero>
+	<SectionHero id="services-hero">
 		{
 			lang === 'eu' ? (
 				<h1 slot="title">
@@ -161,14 +161,24 @@ const content = servicesContent[lang];
 		<Fragment slot="desc">
 			{servicesContent[lang].intro}
 		</Fragment>
-		<Fragment slot="chips">
-			{
-				servicesContent[lang].sections.map(service => {
-					const hash = generateSlug(service.title);
-					return <Chip href={`#${hash}`} text={service.title} />;
-				})
-			}</Fragment
-		>
+		<div slot="chips" class="carousel">
+			<div class="group">
+				{
+					servicesContent[lang].sections.map(service => {
+						const hash = generateSlug(service.title);
+						return <Chip href={`#${hash}`} text={service.title} />;
+					})
+				}
+			</div>
+			<div aria-hidden="true" class="group">
+				{
+					servicesContent[lang].sections.map(service => {
+						const hash = generateSlug(service.title);
+						return <Chip href={`#${hash}`} text={service.title} />;
+					})
+				}
+			</div>
+		</div>
 	</SectionHero>
 	<Container class="services-grid" tag="section">
 		{
@@ -371,12 +381,53 @@ const content = servicesContent[lang];
 			font-weight: unset;
 		}
 	}
+
+	.group[aria-hidden='true'] {
+		display: none;
+	}
+	@media (max-width: 768px) {
+		.carousel {
+			margin: 0 auto;
+			padding: 20px 0;
+			max-width: 700px;
+			overflow: hidden;
+			display: flex;
+			> * {
+				flex: 0 0 100%;
+			}
+			&:hover .group {
+				animation-play-state: paused;
+			}
+		}
+		.group {
+			gap: var(--s2);
+			display: flex;
+
+			/* Add padding to the right to create a gap between the last and first card. */
+			padding-right: var(--s2);
+			will-change: transform;
+			animation: scrolling 10s linear infinite;
+		}
+		.group[aria-hidden='true'] {
+			display: flex;
+		}
+	}
+
+	@keyframes scrolling {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-100%);
+		}
+	}
 </style>
 
 <script>
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	gsap.registerPlugin(ScrollTrigger);
+
 	document.addEventListener('astro:page-load', () => {
 		const cards = document.querySelectorAll('.service-card');
 		cards.forEach(card => {
@@ -439,5 +490,11 @@ const content = servicesContent[lang];
 				);
 			});
 		});
+
+		// Auto-scroll chips horizontally on mobile
+		const servicesHero = document.querySelector(
+			'#services-hero',
+		) as HTMLElement;
+		const chipsContainer = servicesHero.querySelector('.chips-container');
 	});
 </script>
