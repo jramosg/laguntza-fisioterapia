@@ -1,8 +1,21 @@
 ---
-const buttonProps = Astro.props;
+import type { ButtonHTMLAttributes } from 'astro/types';
+
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+	color?: 'white';
+	class?: string;
+};
+const { class: className, color, ...rest }: Props = Astro.props;
 ---
 
-<button class="burger" {...buttonProps}>
+<button
+	class:list={[
+		'burger',
+		className,
+		color === 'white' ? 'burger-icon__white' : '',
+	]}
+	{...rest}
+>
 	<span class="burger-icon"></span>
 </button>
 <style>
@@ -11,6 +24,12 @@ const buttonProps = Astro.props;
 		display: grid;
 		place-items: center;
 		cursor: pointer;
+		outline: none;
+		border: none;
+		background-color: transparent;
+		margin-right: 0.5rem;
+		display: none;
+		z-index: 100;
 	}
 	.burger-icon {
 		position: relative;
@@ -35,6 +54,14 @@ const buttonProps = Astro.props;
 		transition: transform 0.3s ease-in-out;
 	}
 
+	.burger-icon__white {
+		.burger-icon,
+		.burger-icon::after,
+		.burger-icon::before {
+			background-color: #fff;
+		}
+	}
+
 	.burger-icon::before {
 		top: -8px;
 		left: 0;
@@ -56,3 +83,41 @@ const buttonProps = Astro.props;
 		transform: rotate(90deg) translate(-16px, 7px);
 	}
 </style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const menuButton = document.getElementById('menuButton');
+		const menuOverlay = document.getElementById('coming-soon-menu-overlay');
+		const menuCloseBtn = document.getElementById('menuCloseBtn');
+		if (!menuButton || !menuOverlay || !menuCloseBtn) return;
+		function openMenu() {
+			if (!menuOverlay || !menuButton) return;
+			menuOverlay.style.display = 'flex';
+			// Force reflow for transition
+			void menuOverlay.offsetWidth;
+			menuOverlay.classList.add('open');
+			menuButton.setAttribute('open', '');
+		}
+		function closeMenu() {
+			if (!menuOverlay || !menuButton) return;
+			menuOverlay.classList.remove('open');
+			menuButton.removeAttribute('open');
+			setTimeout(() => {
+				menuOverlay.style.display = 'none';
+			}, 400); // match CSS transition
+		}
+
+		menuButton.addEventListener('click', openMenu);
+		menuCloseBtn.addEventListener('click', closeMenu);
+		menuOverlay.addEventListener('click', e => {
+			if (e.target === menuOverlay) closeMenu();
+		});
+
+		// close menu on ESC key
+		document.addEventListener('keydown', e => {
+			if (e.key === 'Escape' && menuOverlay.classList.contains('open')) {
+				closeMenu();
+			}
+		});
+	});
+</script>
