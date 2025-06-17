@@ -3,10 +3,11 @@ import { Icon } from 'astro-icon/components';
 import Container from '../core/Container.astro';
 import { FooterLists, FooterSocials } from '@config/footer';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
-import { Address } from '@utils/company';
+import { Address, Phone } from '@utils/company';
 import { Fragment } from 'astro/jsx-runtime';
 import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
-import BrandLogo from '@images/laguntza-fisioterapia-isotipo-19.svg';
+import BrandLogo from '@images/laguntza-fisioterapia-isotipo-19-cropped.svg';
+import PhoneIcon from '@icons/phone.svg';
 
 type Props = {
 	footerSocials: FooterSocials;
@@ -39,9 +40,13 @@ const t = useTranslations(lang);
 				))
 			}
 		</ul>
+		<a href={Phone.url} class="footer-link_icon">
+			<PhoneIcon fill="currentColor" />
+			{Phone.name}
+		</a>
 
-		<a class="footer_address" href={Address.url}>
-			<span>{Address.name}</span>
+		<a class="footer-link_icon" href={Address.url}>
+			{Address.name}
 		</a>
 
 		<h3 class="quick-links">
@@ -75,6 +80,15 @@ const t = useTranslations(lang);
 		border-top-left-radius: var(--theme-shape-radius);
 		border-top-right-radius: var(--theme-shape-radius);
 	}
+
+	a {
+		text-decoration: none;
+		transition: opacity 0.3s ease-in-out;
+		&:hover {
+			opacity: 0.72;
+		}
+	}
+
 	.footer-container {
 		display: flex;
 		flex-direction: column;
@@ -95,9 +109,18 @@ const t = useTranslations(lang);
 		display: flex;
 		list-style: none;
 	}
-	.footer-socials__item {
-		margin-right: 0.5rem;
+	.footer-socials__link {
+		padding: var(--s2);
+		border-radius: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background-color 0.3s ease-in-out;
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.1);
+		}
 	}
+
 	.footer-link__list {
 		margin: 0;
 		padding: 0;
@@ -120,42 +143,11 @@ const t = useTranslations(lang);
 	.footer-copyright__container p {
 		font-size: var(--font-size-sm);
 	}
-	@media (max-width: 768px) {
-		.footer-grid__container {
-			padding: 5vh 0;
-			grid-template-columns: 1fr;
-			gap: var(--s4);
-		}
-	}
-	@media (max-width: 600px) {
-		.footer-grid__container {
-			padding: 5vh 0;
-			grid-template-columns: 1fr;
-			gap: var(--s4);
-		}
-		.footer-copyright__container {
-			flex-direction: column;
-		}
-	}
 
 	li {
 		display: grid;
 		grid-template-columns: auto 1fr;
 		column-gap: var(--s);
-		svg {
-			margin-top: 4px;
-		}
-	}
-
-	.footer_address {
-		display: flex;
-		align-items: flex-start;
-		gap: var(--s2);
-		text-align: center;
-		text-decoration: none;
-		&:hover {
-			text-decoration: underline;
-		}
 	}
 
 	.quick-links {
@@ -173,12 +165,13 @@ const t = useTranslations(lang);
 			border-bottom-color: inherit;
 		}
 	}
-
-	a {
-		transition: opacity 0.3s ease-in-out;
-	}
-
-	a:hover {
-		opacity: 0.72;
+	.footer-link_icon {
+		display: flex;
+		align-items: center;
+		gap: var(--s);
+		text-align: center;
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 </style>

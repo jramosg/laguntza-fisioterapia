@@ -36,7 +36,11 @@ const { id, ...rest } = Astro.props;
 	}
 
 	:global(.hero-section__remark) {
-		background-image: linear-gradient(to right, #e8944b, #7a471b);
+		background-image: linear-gradient(
+			to right,
+			var(--theme-secondary),
+			var(--theme-secondary-800)
+		);
 		background-clip: text;
 		color: transparent;
 	}

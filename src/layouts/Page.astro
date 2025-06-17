@@ -11,27 +11,15 @@ export interface Props {
 }
 
 import { nav } from '@config/nav';
-import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 const { seo } = Astro.props as Props;
-const url = Astro.url;
-const lang = getLangFromUrl(url);
-const t = useTranslations(lang);
-const lastNavItem = nav.at(-1);
 ---
 
 <Layout {seo}>
-	<Header rightMenu navData={nav} slot="header">
+	<Header navData={nav} slot="header">
 		<Fragment slot="logo">
 			<Logo />
 		</Fragment>
-		{
-			lastNavItem && (
-				<Button slot="action-item" href={`/${lang}${lastNavItem?.slug}`}>
-					{t(lastNavItem.title)}
-				</Button>
-			)
-		}
 	</Header>
 	<div id="page">
 		<slot />

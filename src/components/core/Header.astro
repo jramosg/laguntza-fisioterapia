@@ -20,17 +20,7 @@ const t = useTranslations(lang);
 	id="laguntzaFisioterapiaNavHeader"
 	class={`${rightMenu ? 'header--right' : ``.trim()}`}
 >
-	<div class="language-select__container">
-		<LanguageToggle />
-	</div>
-
 	<div class="header-logo-menu__container">
-		<Burger
-			id="menuButton"
-			aria-label={t('Menua ireki')}
-			data-open-label={t('Menua ireki')}
-			data-close-label={t('Menua itxi')}
-		/>
 		<a class="header-logo__link" href={`/${lang}`}>
 			<slot name="logo" />
 		</a>
@@ -40,7 +30,7 @@ const t = useTranslations(lang);
 		<nav>
 			<ul>
 				{
-					navData.slice(0, -1).map(navItem => (
+					navData.map(navItem => (
 						<li class="header-nav__item">
 							<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
 						</li>
@@ -50,6 +40,13 @@ const t = useTranslations(lang);
 		</nav>
 	</div>
 	<div class="header-action-item__container">
+		<LanguageToggle />
+		<Burger
+			id="menuButton"
+			aria-label={t('Menua ireki')}
+			data-open-label={t('Menua ireki')}
+			data-close-label={t('Menua itxi')}
+		/>
 		<slot name="action-item" />
 	</div>
 </header>
@@ -104,7 +101,11 @@ const t = useTranslations(lang);
 		text-decoration: none;
 		height: 100%;
 		aspect-ratio: 1 / 1;
-		width: 4rem;
+		width: var(--s5);
+		padding: var(--s4) 0;
+		svg {
+			width: var(--s10);
+		}
 	}
 	.header-logo-menu__container {
 		display: flex;
@@ -112,6 +113,10 @@ const t = useTranslations(lang);
 		height: 100%;
 	}
 
+	.header-action-item__container {
+		display: flex;
+		gap: var(--s);
+	}
 	.header-nav__container--scrolled {
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 		margin-top: 0;
@@ -120,17 +125,8 @@ const t = useTranslations(lang);
 	}
 
 	.header-nav__container--scrolling-down {
-		height: 4rem;
+		height: var(--s8);
 		background-color: var(--theme-primary-container);
-	}
-	.header-nav__container--scrolling-down .language-select__container {
-		opacity: 0;
-		height: 0;
-	}
-
-	.header-nav__container--scrolling-down .laguntza-fisioterapia-logo {
-		height: 0rem;
-		width: 4rem;
 	}
 
 	#menuButton {
@@ -163,10 +159,6 @@ const t = useTranslations(lang);
 	}
 
 	.language-select__container {
-		position: fixed;
-		right: var(--s);
-		top: var(--s);
-		font-size: var(--font-size-sm);
 		z-index: 100;
 		transition: opacity 0.3s ease-in-out;
 	}

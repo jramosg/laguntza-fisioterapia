@@ -31,20 +31,22 @@
 	--theme-outline: hsl(240 5.9% 90%);
 
 	/* Theme Secondary Colors */
-	--theme-secondary: #9a9a9b;
-	--theme-secondary-100: #f2f2f3;
-	--theme-secondary-200: #e3e3e4;
-	--theme-secondary-300: #cccccd;
-	--theme-secondary-400: #b3b3b4;
-	--theme-secondary-600: #868687;
-	--theme-secondary-700: #6f6f70;
-	--theme-secondary-800: #575758;
-	--theme-secondary-900: #3d3d3e;
-	--theme-secondary-light: #b3b3b4; /* Lighter variant */
-	--theme-secondary-dark: #6f6f70; /* Darker variant */
-	--theme-secondary-container: #e3e3e4; /* Container/surface variant */
-	--theme-on-secondary: #fff; /* Text/icon on secondary */
-	--theme-on-secondary-container: #232324; /* Text/icon on container */
+	--theme-secondary: #e8944b;
+	--theme-secondary-100: #fbeee3;
+	--theme-secondary-200: #f7dcc2;
+	--theme-secondary-300: #f2c79a;
+	--theme-secondary-400: #eead6a;
+	--theme-secondary-500: #e8944b;
+	--theme-secondary-600: #c97a36;
+	--theme-secondary-700: #a35f27;
+	--theme-secondary-800: #7a471b;
+	--theme-secondary-900: #4d2a0c;
+	--theme-secondary-light: var(--theme-secondary-300);
+	--theme-secondary-dark: var(--theme-secondary-700);
+	--theme-secondary-container: var(--theme-secondary-100);
+	--theme-secondary-container-alt: var(--theme-secondary-200);
+	--theme-on-accent: #fff;
+	--theme-on-accent-container: #3a220e;
 
 	--theme-bg: #fff;
 	--theme-on-bg: #000;
@@ -108,23 +110,6 @@
 	--grey-800: #3d4045;
 	--grey-900: #232427;
 
-	/* Accent Orange Palette */
-	--theme-accent: #e8944b;
-	--theme-accent-100: #fbeee3;
-	--theme-accent-200: #f7dcc2;
-	--theme-accent-300: #f2c79a;
-	--theme-accent-400: #eead6a;
-	--theme-accent-500: #e8944b;
-	--theme-accent-600: #c97a36;
-	--theme-accent-700: #a35f27;
-	--theme-accent-800: #7a471b;
-	--theme-accent-900: #4d2a0c;
-	--theme-accent-light: var(--theme-accent-300);
-	--theme-accent-dark: var(--theme-accent-700);
-	--theme-accent-container: var(--theme-accent-100);
-	--theme-accent-container-alt: var(--theme-accent-200);
-	--theme-on-accent: #fff;
-	--theme-on-accent-container: #3a220e;
 	/* Theme Shadows */
 	--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 	--shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
@@ -164,8 +149,8 @@
 	--theme-on-secondary-container: #fff;
 
 	/* Accent Orange Palette (Dark) */
-	--theme-accent-container: var(--theme-accent-800);
-	--theme-accent-container-alt: var(--theme-accent-900);
+	--theme-secondary-container: var(--theme-secondary-800);
+	--theme-secondary-container-alt: var(--theme-secondary-900);
 	--theme-on-accent-container: #fff;
 
 	/* Text Colors (Dark) */

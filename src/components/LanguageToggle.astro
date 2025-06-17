@@ -25,7 +25,7 @@ const t = useTranslations(lang);
 	>
 		<TranslateIcon class="translate-icon" fill="currentColor" />
 		<span class="lang-code">{lang.toUpperCase()}</span>
-		<ChevronRight class="chevron" />
+		<ChevronRight class="chevron" fill="currentColor" />
 	</button>
 	<div
 		id="lang-dropdown"
@@ -65,24 +65,26 @@ const t = useTranslations(lang);
 	.lang-toggle-btn {
 		display: flex;
 		align-items: center;
-		gap: 0.5em;
+		gap: var(--s2);
 		min-width: 100px;
-		padding: 0.3em 0.8em;
+		padding: var(--s) var(--s);
 		border: unset;
 		background: transparent;
 		border-radius: 0.5em;
 		cursor: pointer;
-		font-size: 1em;
-		opacity: 0.72;
-		transition: opacity linear 150ms;
-		color: var(--theme-on-bg);
-	}
-	.lang-toggle-btn:focus {
-		outline: 2px solid var(--theme-primary, #009688);
-	}
-
-	.lang-toggle-btn:hover {
-		opacity: 1;
+		opacity: 0.8;
+		transition:
+			opacity 0.2s linear,
+			border 0.2s linear,
+			color 0.2s linear;
+		color: var(--theme-text-secondary);
+		border: 1px solid var(--theme-text-secondary);
+		&:focus,
+		&:hover {
+			border: 1px solid var(--theme-primary);
+			opacity: 1;
+			color: var(--theme-on-bg);
+		}
 	}
 
 	.chevron {
@@ -95,21 +97,19 @@ const t = useTranslations(lang);
 	.lang-dropdown {
 		position: absolute;
 		right: 0;
-		margin-top: 0.3em;
-		min-width: 140px;
+		margin-top: var(--s);
 		background: var(--theme-bg);
 		border: 1px solid var(--theme-outline);
 		border-radius: 0.5em;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow-md);
 		z-index: 100;
 	}
 	.lang-option {
 		width: 100%;
 		text-align: left;
-		padding: 0.5em 1em;
+		padding: var(--s2) var(--s3);
 		background: none;
 		border: none;
-		font-size: 1em;
 		cursor: pointer;
 		display: flex;
 		align-items: center;

@@ -44,7 +44,7 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 			}
 		</Fragment>
 		<Fragment slot="chips">
-			<Chip text="Telefonoa" href="tel:+34666123456">
+			<Chip text="Telefonoa" href={Phone.url}>
 				<PhoneIcon slot="icon" />
 			</Chip>
 			<Chip
@@ -119,10 +119,10 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 					},
 				].map(item => {
 					const icons = {
-						phone: <PhoneIcon />,
-						email: <EmailIcon />,
+						phone: <PhoneIcon fill="currentColor" />,
+						email: <EmailIcon fill="currentColor" />,
 						whatsapp: <Icon name="ic:baseline-whatsapp" />,
-						address: <MarkerIcon />,
+						address: <MarkerIcon fill="currentColor" />,
 					} as const;
 					const icon = icons[item.id as keyof typeof icons];
 					return (
@@ -141,11 +141,9 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 								>
 									{icon}
 								</div>
-								<div >
+								<div>
 									<h3 class="contact-card__title">{item.title}</h3>
-									{item.desc && (
-										<p class="contact-card__desc">{item.desc}</p>
-									)}
+									{item.desc && <p class="contact-card__desc">{item.desc}</p>}
 									{item.subdesc && (
 										<p class="contact-card__subdesc">{item.subdesc}</p>
 									)}
@@ -252,30 +250,22 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 
 	.contact-card__icon-container-phone {
 		background-color: rgb(59 130 246);
-		svg {
-			fill: white;
-		}
+		color: white;
 	}
 
 	.contact-card__icon-container-email {
 		background-color: #ea4335; /* Gmail red */
-		svg {
-			fill: white;
-		}
+		color: white;
 	}
 
 	.contact-card__icon-container-whatsapp {
 		background-color: #25d366; /* WhatsApp green */
-		svg {
-			color: white;
-		}
+		color: white;
 	}
 
 	.contact-card__icon-container-address {
 		background-color: rgb(249 115 22);
-		svg {
-			fill: white;
-		}
+		color: white;
 	}
 
 	.contact-card__title {
