@@ -1,9 +1,10 @@
 ---
 import Burger from '@components/buttons/Burger.astro';
-import type { NavItem } from '@config/nav';
+import { nav, type NavItem } from '@config/nav';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import LanguageToggle from '@components/LanguageToggle.astro';
 import 'theme-toggles/css/classic.css';
+import LogoIsotipoWhite from '@images/logos/isotipo-white.svg';
 
 type Props = {
 	navData: NavItem[];
@@ -46,18 +47,21 @@ const t = useTranslations(lang);
 			aria-label={t('Menua ireki')}
 			data-open-label={t('Menua ireki')}
 			data-close-label={t('Menua itxi')}
+			navData={nav}
 		/>
 		<slot name="action-item" />
 	</div>
 </header>
-<div id="mobile-menu">
-	<nav>
+<div id="menu-overlay" class="menu-overlay">
+	<!-- Place logo as a menu item at the top with effect -->
+
+	<nav class="coming-soon-menu-nav">
 		<ul>
 			{
-				navData.map((navItem, index) => (
+				navData?.map((navItem, i) => (
 					<li
-						class="header-nav__item"
-						style={`--delay: ${0.15 + index * 0.1}s`}
+						class="coming-soon-menu-item"
+						style={`transition-delay: ${(i + 1) * 80 + 200}ms`}
 					>
 						<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
 					</li>
@@ -65,6 +69,12 @@ const t = useTranslations(lang);
 			}
 		</ul>
 	</nav>
+	<div
+		class="coming-soon-menu-item logo-menu-item"
+		style="transition-delay: 120ms"
+	>
+		<LogoIsotipoWhite width={128} height={128} />
+	</div>
 </div>
 
 <style>
@@ -124,6 +134,14 @@ const t = useTranslations(lang);
 		backdrop-filter: blur(10px);
 	}
 
+	header[open] {
+		background-color: transparent;
+		z-index: 1111;
+		.language-toggle,
+		.header-logo-menu__container {
+			opacity: 0;
+		}
+	}
 	.header-nav__container--scrolling-down {
 		height: var(--s8);
 		background-color: var(--theme-primary-container);
@@ -138,10 +156,9 @@ const t = useTranslations(lang);
 		list-style: none;
 		display: flex;
 	}
-	nav ul li a {
+	nav ul li:not(.coming-soon-menu-item) a {
 		text-decoration: none;
 		margin-right: 1rem;
-		color: inherit;
 		opacity: 0.72;
 		transition: opacity linear 150ms;
 	}
@@ -154,50 +171,6 @@ const t = useTranslations(lang);
 		transition: opacity 0.3s ease-in-out;
 	}
 
-	#mobile-menu {
-		position: fixed;
-		inset: 0;
-		top: var(--header-height);
-		z-index: 0;
-		background-color: var(--theme-bg);
-		width: 0%;
-		z-index: 50;
-		display: flex;
-		transition: width 0.3s ease-in-out;
-	}
-
-	#mobile-menu nav {
-		display: block;
-		width: 100%;
-	}
-
-	#mobile-menu ul {
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		display: flex;
-		height: 100%;
-	}
-	#mobile-menu[open] {
-		width: 100%;
-	}
-	#mobile-menu a {
-		opacity: 0;
-		visibility: hidden;
-	}
-
-	#mobile-menu[open] a {
-		opacity: 1;
-		visibility: visible;
-		transition: opacity 0.5s ease-in-out;
-		transition-delay: var(--delay);
-	}
-
-	#mobile-menu nav ul li {
-		font-size: var(--font-size-lg);
-		margin-bottom: 1rem;
-	}
-
 	@media (max-width: 768px) {
 		.header-nav__container {
 			display: none;
@@ -206,19 +179,97 @@ const t = useTranslations(lang);
 			display: flex;
 		}
 	}
+
+	.menu-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		background: var(--theme-primary);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			opacity 0.3s cubic-bezier(0.4, 2, 0.6, 1),
+			transform 0.4s cubic-bezier(0.4, 2, 0.6, 1);
+		transform: translateX(100vw); /* Start off-screen right */
+	}
+	.menu-overlay.open {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateX(0);
+	}
+
+	.coming-soon-menu-nav ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--s5);
+	}
+
+	.coming-soon-menu-item {
+		opacity: 0;
+		transform: translateY(40px) scale(0.95);
+		transition:
+			opacity 0.4s cubic-bezier(0.4, 2, 0.6, 1),
+			transform 0.4s cubic-bezier(0.4, 2, 0.6, 1);
+	}
+	.menu-overlay.open .coming-soon-menu-item {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.coming-soon-menu-item a {
+		font-size: var(--font-size-lg);
+		color: var(--theme-on-primary, #fff);
+		text-decoration: none;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+
+		transition: color 0.2s;
+	}
+	.coming-soon-menu-item a:hover {
+		color: var(--theme-secondary, #e8944a);
+		text-shadow:
+			0 2px 32px #e8944a,
+			0 0 2px #fff;
+	}
+
+	.logo-menu-item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: var(--s5);
+		/* Inherit menu item animation */
+		opacity: 0;
+		transform: translateY(40px) scale(0.95);
+		transition:
+			opacity 0.4s cubic-bezier(0.4, 2, 0.6, 1),
+			transform 0.4s cubic-bezier(0.4, 2, 0.6, 1);
+		position: absolute;
+		top: var(--s6);
+	}
+	.menu-overlay.open .logo-menu-item {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
 </style>
 
 <script>
 	document.addEventListener('astro:page-load', () => {
 		const bodyElement = document.body;
-		const menuButton = document.getElementById('menuButton');
 		const navHeader = document.getElementById('laguntzaFisioterapiaNavHeader');
 		const mobileMenu = document.getElementById('mobile-menu');
 		const btn = document.getElementById('lang-toggle-btn');
 		const dropdown = document.getElementById('lang-dropdown');
+		const menuButton = document.getElementById('menuButton');
 
-		let timeoutId: number | undefined = undefined;
-		let scrollPosition = 0;
 		let lastScrollY = window.scrollY;
 		let ticking = false;
 		let languageToggleIsOpen = false;
@@ -270,44 +321,8 @@ const t = useTranslations(lang);
 			});
 		}
 
-		// --- Mobile Menu Logic ---
-		function resetBodyStyles() {
-			bodyElement.style.removeProperty('overflow');
-			bodyElement.style.removeProperty('position');
-			bodyElement.style.removeProperty('top');
-			bodyElement.style.removeProperty('width');
-		}
-		function applyBodyStyles() {
-			bodyElement.style.overflow = 'hidden';
-			bodyElement.style.position = 'fixed';
-			bodyElement.style.top = '0px';
-			bodyElement.style.width = '100%';
-		}
-		function toggleMenu() {
-			if (!menuButton || !mobileMenu) return;
-			if (mobileMenu.hasAttribute('open')) {
-				menuButton.title = openLabel || 'Abrir menú';
-				menuButton.setAttribute('aria-label', menuButton.title);
-				resetBodyStyles();
-				window.scrollTo({ left: 0, top: scrollPosition, behavior: 'instant' });
-				clearTimeout(timeoutId);
-				menuButton.setAttribute('aria-label', 'Abrir menú');
-			} else {
-				scrollPosition = window.pageYOffset;
-				timeoutId = window.setTimeout(applyBodyStyles, 300);
-				menuButton.title = closeLabel || 'Cerrar menú';
-				menuButton.setAttribute('aria-label', menuButton.title);
-				navHeader.classList.remove('header-nav__container--scrolling-down');
-			}
-			menuButton.toggleAttribute('open');
-			mobileMenu.toggleAttribute('open');
-			onScroll(); // <-- Immediately update header state
-		}
-
-		menuButton.addEventListener('click', toggleMenu);
-
-		// --- Header Scroll Logic (Twitter-like) ---
 		function onScroll() {
+			if (menuButton && menuButton.hasAttribute('open')) return;
 			const currentScrollY = window.scrollY;
 			if (!navHeader) return;
 			// Hide dropdown on scroll
@@ -345,5 +360,58 @@ const t = useTranslations(lang);
 
 		// --- Init ---
 		handleDropdownEvents();
+
+		const menuOverlay = document.getElementById('menu-overlay');
+		const header = document.getElementById('laguntzaFisioterapiaNavHeader');
+		if (!menuButton || !menuOverlay) return;
+
+		function openMenu() {
+			if (!menuOverlay || !menuButton) return;
+			header?.setAttribute('open', '');
+			menuOverlay.classList.remove('open');
+			menuOverlay.style.display = 'flex';
+			// Force reflow to ensure transition triggers
+			void menuOverlay.offsetWidth;
+			menuOverlay.classList.add('open');
+			menuButton.setAttribute('aria-label', closeLabel || 'Close menu');
+			setTimeout(() => {
+				menuButton.setAttribute('open', '');
+			}, 100);
+			document.body.style.overflow = 'hidden'; // Disable scroll
+		}
+		function closeMenu() {
+			if (!menuOverlay || !menuButton) return;
+			header?.removeAttribute('open');
+
+			menuOverlay.classList.remove('open');
+			menuButton.removeAttribute('open');
+			document.body.style.overflow = ''; // Restore scroll
+			menuButton.setAttribute('aria-label', openLabel || 'Close menu');
+
+			setTimeout(() => {
+				menuOverlay.style.display = 'none';
+			}, 400); // match CSS transition
+		}
+
+		function menuToggle() {
+			if (!menuOverlay || !menuButton) return;
+			if (menuButton.hasAttribute('open')) {
+				closeMenu();
+			} else {
+				openMenu();
+			}
+		}
+
+		menuButton.addEventListener('click', menuToggle);
+		menuOverlay.addEventListener('click', e => {
+			if (e.target === menuOverlay) closeMenu();
+		});
+
+		// close menu on ESC key
+		document.addEventListener('keydown', e => {
+			if (e.key === 'Escape' && menuOverlay.classList.contains('open')) {
+				closeMenu();
+			}
+		});
 	});
 </script>

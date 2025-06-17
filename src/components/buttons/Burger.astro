@@ -1,11 +1,16 @@
 ---
-import type { ButtonHTMLAttributes } from 'astro/types';
+import type { NavItem } from '@config/nav';
+import { useTranslations, getLangFromUrl } from '@i18n/utils';
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+type Props = {
 	color?: 'white';
+	navData?: NavItem[];
+	id?: string;
 	class?: string;
 };
-const { class: className, color, ...rest }: Props = Astro.props;
+const { class: className, color, navData, ...rest }: Props = Astro.props;
+const url = Astro.url;
+const lang = getLangFromUrl(url);
 ---
 
 <button
@@ -18,6 +23,7 @@ const { class: className, color, ...rest }: Props = Astro.props;
 >
 	<span class="burger-icon"></span>
 </button>
+
 <style>
 	.burger {
 		height: 40px;
@@ -29,7 +35,7 @@ const { class: className, color, ...rest }: Props = Astro.props;
 		background-color: transparent;
 		margin-right: 0.5rem;
 		display: none;
-		z-index: 100;
+		z-index: 1001;
 	}
 	.burger-icon {
 		position: relative;
@@ -50,8 +56,11 @@ const { class: className, color, ...rest }: Props = Astro.props;
 		display: block;
 		border-radius: 2px;
 		height: 2px;
+
 		background-color: var(--theme-on-bg);
-		transition: transform 0.3s ease-in-out;
+		transition:
+			transform 0.3s ease-in-out,
+			background-color 0.3s ease-in-out;
 	}
 
 	.burger-icon__white {
@@ -82,42 +91,10 @@ const { class: className, color, ...rest }: Props = Astro.props;
 	.burger[open] .burger-icon::after {
 		transform: rotate(90deg) translate(-16px, 7px);
 	}
+
+	.burger[open] .burger-icon,
+	.burger[open] .burger-icon::before,
+	.burger[open] .burger-icon::after {
+		background-color: var(--theme-on-primary);
+	}
 </style>
-
-<script>
-	document.addEventListener('astro:page-load', () => {
-		const menuButton = document.getElementById('menuButton');
-		const menuOverlay = document.getElementById('coming-soon-menu-overlay');
-		const menuCloseBtn = document.getElementById('menuCloseBtn');
-		if (!menuButton || !menuOverlay || !menuCloseBtn) return;
-		function openMenu() {
-			if (!menuOverlay || !menuButton) return;
-			menuOverlay.style.display = 'flex';
-			// Force reflow for transition
-			void menuOverlay.offsetWidth;
-			menuOverlay.classList.add('open');
-			menuButton.setAttribute('open', '');
-		}
-		function closeMenu() {
-			if (!menuOverlay || !menuButton) return;
-			menuOverlay.classList.remove('open');
-			menuButton.removeAttribute('open');
-			setTimeout(() => {
-				menuOverlay.style.display = 'none';
-			}, 400); // match CSS transition
-		}
-
-		menuButton.addEventListener('click', openMenu);
-		menuCloseBtn.addEventListener('click', closeMenu);
-		menuOverlay.addEventListener('click', e => {
-			if (e.target === menuOverlay) closeMenu();
-		});
-
-		// close menu on ESC key
-		document.addEventListener('keydown', e => {
-			if (e.key === 'Escape' && menuOverlay.classList.contains('open')) {
-				closeMenu();
-			}
-		});
-	});
-</script>

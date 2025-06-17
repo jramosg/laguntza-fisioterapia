@@ -23,6 +23,7 @@ const t = useTranslations(lang);
 			aria-label={t('Menua ireki')}
 			data-open-label={t('Menua ireki')}
 			data-close-label={t('Menua itxi')}
+			navData={nav}
 		/>
 	</header>
 	<div class="coming-soon-outer">
@@ -60,31 +61,6 @@ const t = useTranslations(lang);
 		<p class="hero-footer-label">Ikusi gehiago</p>
 		<KeepScrolling class="keep-scrolling-icon" fill="currentColor" />
 	</footer>
-
-	<!-- Animated Fullscreen Menu Overlay -->
-	<div id="coming-soon-menu-overlay" class="coming-soon-menu-overlay">
-		<button
-			class="menu-close-btn"
-			id="menuCloseBtn"
-			aria-label={t('Menua itxi')}
-		>
-			<span>&times;</span>
-		</button>
-		<nav class="coming-soon-menu-nav">
-			<ul>
-				{
-					nav.map((navItem, i) => (
-						<li
-							class="coming-soon-menu-item"
-							style={`transition-delay: ${i * 80 + 200}ms`}
-						>
-							<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
-						</li>
-					))
-				}
-			</ul>
-		</nav>
-	</div>
 </Layout>
 
 <style>
@@ -229,26 +205,7 @@ const t = useTranslations(lang);
 		}
 	}
 
-	.coming-soon-menu-overlay {
-		position: fixed;
-		inset: 0;
-		z-index: 9999;
-		background: var(--theme-primary);
-		backdrop-filter: blur(8px);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		overflow: hidden;
-		opacity: 0;
-		pointer-events: none;
-		transition: opacity 0.4s cubic-bezier(0.4, 2, 0.6, 1);
-		display: none;
-	}
-	.coming-soon-menu-overlay.open {
-		opacity: 1;
-		pointer-events: auto;
-	}
+	
 
 	.menu-close-btn {
 		position: absolute;
@@ -264,46 +221,6 @@ const t = useTranslations(lang);
 	}
 	.menu-close-btn:hover {
 		transform: scale(1.15) rotate(8deg);
-	}
-
-	.coming-soon-menu-nav ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2.5rem;
-	}
-
-	.coming-soon-menu-item {
-		opacity: 0;
-		transform: translateY(40px) scale(0.95);
-		transition:
-			opacity 0.4s cubic-bezier(0.4, 2, 0.6, 1),
-			transform 0.4s cubic-bezier(0.4, 2, 0.6, 1);
-	}
-	.coming-soon-menu-overlay.open .coming-soon-menu-item {
-		opacity: 1;
-		transform: translateY(0) scale(1);
-	}
-
-	.coming-soon-menu-item a {
-		font-size: 2.5rem;
-		color: #fff;
-		text-decoration: none;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-shadow:
-			0 2px 24px #000,
-			0 0 2px #fff;
-		transition: color 0.2s;
-	}
-	.coming-soon-menu-item a:hover {
-		color: var(--theme-secondary);
-		text-shadow:
-			0 2px 32px var(--theme-secondary),
-			0 0 2px #fff;
 	}
 </style>
 
