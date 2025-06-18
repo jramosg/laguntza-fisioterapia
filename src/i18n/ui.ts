@@ -30,6 +30,8 @@ export const ui = {
 		Bisitatu: 'Visítanos',
 		'Ireki mapan': 'Abrir en el mapa',
 		'Gure kokalekua': 'Nuestra ubicación',
+		'Laister...': 'Próximamente...',
+		'Ikusi gehiago': 'Ver más',
 	},
 	eu: {
 		'nav.home': 'Hasiera',

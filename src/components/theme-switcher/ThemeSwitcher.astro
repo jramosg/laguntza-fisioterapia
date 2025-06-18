@@ -1,6 +1,8 @@
 <label id="theme-toggle" class="theme-toggle" title="Toggle theme"> </label>
 
 <script>
+	import 'theme-toggles/css/classic.css';
+
 	document.addEventListener('astro:page-load', () => {
 		const themeToggle = document.getElementById('theme-toggle');
 		const preferedTheme = getStoredTheme();

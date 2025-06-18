@@ -3,8 +3,6 @@ import Burger from '@components/buttons/Burger.astro';
 import { nav, type NavItem } from '@config/nav';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import LanguageToggle from '@components/LanguageToggle.astro';
-import 'theme-toggles/css/classic.css';
-import LogoIsotipoWhite from '@images/logos/isotipo-white.svg';
 
 type Props = {
 	navData: NavItem[];
@@ -52,35 +50,11 @@ const t = useTranslations(lang);
 		<slot name="action-item" />
 	</div>
 </header>
-<div id="menu-overlay" class="menu-overlay">
-	<!-- Place logo as a menu item at the top with effect -->
-
-	<nav class="coming-soon-menu-nav">
-		<ul>
-			{
-				navData?.map((navItem, i) => (
-					<li
-						class="coming-soon-menu-item"
-						style={`transition-delay: ${(i + 1) * 80 + 200}ms`}
-					>
-						<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
-					</li>
-				))
-			}
-		</ul>
-	</nav>
-	<div
-		class="coming-soon-menu-item logo-menu-item"
-		style="transition-delay: 120ms"
-	>
-		<LogoIsotipoWhite width={128} height={128} />
-	</div>
-</div>
 
 <style>
 	header {
 		width: 100%;
-		padding: 0 0.5rem;
+		padding: 0 var(--s2);
 		height: var(--header-height);
 		display: flex;
 		justify-content: space-between;
@@ -134,9 +108,12 @@ const t = useTranslations(lang);
 		backdrop-filter: blur(10px);
 	}
 
-	header[open] {
+	header[drawer-open] {
 		background-color: transparent;
-		z-index: 1111;
+		z-index: 1211;
+		backdrop-filter: none;
+		opacity: 1;
+		box-shadow: unset;
 		.language-toggle,
 		.header-logo-menu__container {
 			opacity: 0;
@@ -266,69 +243,32 @@ const t = useTranslations(lang);
 		const bodyElement = document.body;
 		const navHeader = document.getElementById('laguntzaFisioterapiaNavHeader');
 		const mobileMenu = document.getElementById('mobile-menu');
-		const btn = document.getElementById('lang-toggle-btn');
+		const langToggleBtn = document.getElementById('lang-toggle-btn');
 		const dropdown = document.getElementById('lang-dropdown');
-		const menuButton = document.getElementById('menuButton');
 
 		let lastScrollY = window.scrollY;
 		let ticking = false;
-		let languageToggleIsOpen = false;
 
-		if (!menuButton || !navHeader || !bodyElement) return;
+		if (!navHeader || !bodyElement) return;
 
-		const { openLabel, closeLabel } = menuButton.dataset;
-
-		// --- Language Dropdown Logic ---
-		function openDropdown() {
-			if (!dropdown || !btn) return;
-			dropdown.hidden = false;
-			btn.setAttribute('aria-expanded', 'true');
-			languageToggleIsOpen = true;
-		}
 		function closeDropdown() {
-			if (!dropdown || !btn) return;
+			if (!dropdown || !langToggleBtn) return;
 			dropdown.hidden = true;
-			btn.setAttribute('aria-expanded', 'false');
-			languageToggleIsOpen = false;
-		}
-
-		function handleDropdownEvents() {
-			if (!btn || !dropdown) return;
-			btn.addEventListener('click', e => {
-				e.stopPropagation();
-				languageToggleIsOpen ? closeDropdown() : openDropdown();
-			});
-			btn.addEventListener('blur', () => {
-				setTimeout(() => {
-					if (!dropdown.contains(document.activeElement)) closeDropdown();
-				}, 100);
-			});
-			dropdown.addEventListener('mousedown', e => e.preventDefault());
-			dropdown.querySelectorAll('.lang-option').forEach(option => {
-				option.addEventListener('click', () => {
-					const lang = option.getAttribute('data-lang');
-					const event = new CustomEvent('languageChange', {
-						detail: lang,
-						bubbles: true,
-					});
-					btn.dispatchEvent(event);
-					closeDropdown();
-					btn.focus();
-				});
-			});
-			document.addEventListener('click', e => {
-				if (btn !== e.target && dropdown !== e.target) closeDropdown();
-			});
+			langToggleBtn.setAttribute('aria-expanded', 'false');
 		}
 
 		function onScroll() {
-			if (menuButton && menuButton.hasAttribute('open')) return;
 			const currentScrollY = window.scrollY;
 			if (!navHeader) return;
 			// Hide dropdown on scroll
-			if (dropdown && btn && window.scrollY > 60 && !dropdown.hidden) {
+			if (
+				dropdown &&
+				langToggleBtn &&
+				window.scrollY > 60 &&
+				!dropdown.hidden
+			) {
 				closeDropdown();
-				btn.blur();
+				langToggleBtn.blur();
 			}
 			// Prevent scroll logic if mobile menu is open
 			if (mobileMenu && mobileMenu.hasAttribute('open')) {
@@ -357,61 +297,5 @@ const t = useTranslations(lang);
 			}
 		}
 		window.addEventListener('scroll', onScrollHandler);
-
-		// --- Init ---
-		handleDropdownEvents();
-
-		const menuOverlay = document.getElementById('menu-overlay');
-		const header = document.getElementById('laguntzaFisioterapiaNavHeader');
-		if (!menuButton || !menuOverlay) return;
-
-		function openMenu() {
-			if (!menuOverlay || !menuButton) return;
-			header?.setAttribute('open', '');
-			menuOverlay.classList.remove('open');
-			menuOverlay.style.display = 'flex';
-			// Force reflow to ensure transition triggers
-			void menuOverlay.offsetWidth;
-			menuOverlay.classList.add('open');
-			menuButton.setAttribute('aria-label', closeLabel || 'Close menu');
-			setTimeout(() => {
-				menuButton.setAttribute('open', '');
-			}, 100);
-			document.body.style.overflow = 'hidden'; // Disable scroll
-		}
-		function closeMenu() {
-			if (!menuOverlay || !menuButton) return;
-			header?.removeAttribute('open');
-
-			menuOverlay.classList.remove('open');
-			menuButton.removeAttribute('open');
-			document.body.style.overflow = ''; // Restore scroll
-			menuButton.setAttribute('aria-label', openLabel || 'Close menu');
-
-			setTimeout(() => {
-				menuOverlay.style.display = 'none';
-			}, 400); // match CSS transition
-		}
-
-		function menuToggle() {
-			if (!menuOverlay || !menuButton) return;
-			if (menuButton.hasAttribute('open')) {
-				closeMenu();
-			} else {
-				openMenu();
-			}
-		}
-
-		menuButton.addEventListener('click', menuToggle);
-		menuOverlay.addEventListener('click', e => {
-			if (e.target === menuOverlay) closeMenu();
-		});
-
-		// close menu on ESC key
-		document.addEventListener('keydown', e => {
-			if (e.key === 'Escape' && menuOverlay.classList.contains('open')) {
-				closeMenu();
-			}
-		});
 	});
 </script>

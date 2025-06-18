@@ -1,0 +1,235 @@
+---
+import { NavItem } from '@config/nav';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import LogoIsotipoWhite from '@images/logos/isotipo-white.svg';
+
+type Props = {
+	navData: NavItem[];
+};
+const { navData }: Props = Astro.props;
+
+const url = Astro.url;
+const lang = getLangFromUrl(url);
+const t = useTranslations(lang);
+---
+
+<aside id="menu-overlay" class="menu-overlay">
+	<nav class="drawer-menu-nav">
+		<ul>
+			{
+				navData?.map((navItem, i) => (
+					<li
+						class="drawer-menu-item"
+						style={`transition-delay: ${(i + 1) * 100 + 200}ms`}
+					>
+						<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+	<div class="drawer-menu-item logo-menu-item">
+		<LogoIsotipoWhite width={128} height={128} />
+	</div>
+</aside>
+<div id="drawer-backdrop" class="drawer-backdrop"></div>
+<style>
+	:root {
+		--drawer-animation: 0.4s cubic-bezier(0.4, 2, 0.6, 1);
+	}
+	.menu-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: var(--z-index-drawer);
+		background: var(--theme-primary);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			opacity var(--drawer-animation),
+			transform var(--drawer-animation);
+		transform: translateX(100vw);
+		width: 100vw;
+		height: 100vh;
+		max-width: 100vw;
+		max-height: 100vh;
+	}
+	.menu-overlay.open {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateX(0);
+	}
+
+	@media (min-width: 769px) {
+		.menu-overlay {
+			width: 400px;
+			max-width: 90vw;
+			right: 0;
+			left: auto;
+			inset: 0 0 0 auto;
+			border-top-left-radius: var(--theme-shape-radius);
+			border-bottom-left-radius: var(--theme-shape-radius);
+			box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12);
+			transition:
+				opacity var(--drawer-animation),
+				transform 0.4s ease-in-out;
+		}
+	}
+
+	.drawer-menu-nav ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--s5);
+	}
+
+	.drawer-menu-item {
+		opacity: 0;
+		transform: translateY(40px) scale(0.95);
+		transition:
+			opacity var(--drawer-animation),
+			transform var(--drawer-animation);
+	}
+	.menu-overlay.open .drawer-menu-item {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.drawer-menu-item a {
+		font-size: var(--font-size-lg);
+		color: var(--theme-on-primary, #fff);
+		text-decoration: none;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+
+		transition: color 0.2s;
+	}
+	.drawer-menu-item a:hover {
+		color: var(--theme-secondary, #e8944a);
+		text-shadow:
+			0 2px 32px #e8944a,
+			0 0 2px #fff;
+	}
+
+	.logo-menu-item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: var(--s5);
+		opacity: 0;
+		transform: translateY(40px) scale(0.6);
+		transition:
+			opacity var(--drawer-animation),
+			transform var(--drawer-animation);
+		position: absolute;
+		top: var(--s6);
+		transition-delay: 200ms;
+	}
+	.menu-overlay.open .logo-menu-item {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.drawer-backdrop {
+		position: fixed;
+		inset: 0;
+		z-index: var(--z-index-backdrop);
+		background: rgba(0, 0, 0, 0.35);
+		backdrop-filter: blur(2px);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity var(--drawer-animation);
+	}
+	.drawer-backdrop.open {
+		opacity: 1;
+		pointer-events: auto;
+	}
+</style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const menuButtonContainer = document.getElementById(
+			'header-burger-container',
+		);
+		const menuButton = document.getElementById('menuButton');
+		const header = document.getElementById('laguntzaFisioterapiaNavHeader');
+		const menuOverlay = document.getElementById('menu-overlay');
+		const drawerBackdrop = document.getElementById('drawer-backdrop');
+
+		if (!menuButton || !menuOverlay || !drawerBackdrop) return;
+		const { openLabel, closeLabel } = menuButton.dataset;
+
+		let hideTimeout: null | ReturnType<typeof setTimeout>;
+		function openMenu() {
+			if (!menuOverlay || !menuButton || !drawerBackdrop) return;
+			header?.setAttribute('drawer-open', '');
+			menuOverlay.classList.remove('open');
+			menuOverlay.style.display = 'flex';
+
+			if (hideTimeout) {
+				clearTimeout(hideTimeout);
+				hideTimeout = null;
+			}
+			// Force reflow to ensure transition triggers
+			void menuOverlay.offsetWidth;
+			menuOverlay.classList.add('open');
+			drawerBackdrop.classList.add('open');
+			menuButton.setAttribute('aria-label', closeLabel || 'Close menu');
+			setTimeout(() => {
+				menuButton.setAttribute('open', '');
+			}, 100);
+			document.body.style.overflow = 'hidden'; // Disable scroll
+		}
+		function closeMenu() {
+			if (!menuOverlay || !menuButton || !drawerBackdrop) return;
+			header?.removeAttribute('drawer-open');
+			menuOverlay.classList.remove('open');
+			drawerBackdrop.classList.remove('open');
+			menuButton.removeAttribute('open');
+			document.body.style.overflow = ''; // Restore scroll
+			menuButton.setAttribute('aria-label', openLabel || 'Close menu');
+
+			if (hideTimeout) {
+				clearTimeout(hideTimeout);
+			}
+			hideTimeout = setTimeout(() => {
+				menuOverlay.style.display = 'none';
+				hideTimeout = null;
+			}, 400);
+		}
+
+		function menuToggle() {
+			if (!header) return;
+			if (header.hasAttribute('drawer-open')) {
+				closeMenu();
+			} else {
+				openMenu();
+			}
+		}
+
+		if (menuButtonContainer) {
+			menuButtonContainer.addEventListener('click', menuToggle);
+		} else {
+			menuButton.addEventListener('click', menuToggle);
+		}
+
+		menuOverlay.addEventListener('click', e => {
+			if (e.target === menuOverlay) closeMenu();
+		});
+		drawerBackdrop.addEventListener('click', closeMenu);
+
+		// close menu on ESC key
+		document.addEventListener('keydown', e => {
+			if (e.key === 'Escape' && menuOverlay.classList.contains('open')) {
+				closeMenu();
+			}
+		});
+	});
+</script>

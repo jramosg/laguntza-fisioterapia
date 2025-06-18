@@ -1,27 +1,23 @@
 ---
 import { Icon } from 'astro-icon/components';
 import Container from '../core/Container.astro';
-import { FooterLists, FooterSocials } from '@config/footer';
+import { footerLists, footerSocials } from '@config/footer';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import { Address, Phone } from '@utils/company';
 import { Fragment } from 'astro/jsx-runtime';
 import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 import BrandLogo from '@images/laguntza-fisioterapia-isotipo-19-cropped.svg';
 import PhoneIcon from '@icons/phone.svg';
+import { settings } from '@config/settings';
 
-type Props = {
-	footerSocials: FooterSocials;
-	footerLists: FooterLists;
-	copyrightName: string;
-};
-
-const { footerSocials, footerLists, copyrightName }: Props = Astro.props;
+const copyrightName = settings.name;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const props = Astro.props;
 ---
 
-<footer>
+<footer {...props}>
 	<Container class="footer-container">
 		<ul class="footer-socials__list">
 			{

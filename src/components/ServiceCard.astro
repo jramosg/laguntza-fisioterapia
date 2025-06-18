@@ -1,0 +1,142 @@
+---
+import Picture from 'astro/components/Picture.astro';
+import CircleCheck from '@icons/circle-check.svg';
+import { generateSlug } from '@utils/helpers';
+import { sectionImages, type ServiceBullet } from '@utils/company';
+import Jokin from '@images/jokin.webp';
+
+const { section, isEven } = Astro.props;
+const hash = generateSlug(section.title);
+
+const image = sectionImages[section.id as keyof typeof sectionImages] || Jokin;
+---
+
+<section
+	class:list={[
+		'service-card',
+		'card',
+		'card--elevated',
+		isEven ? 'even-service' : 'odd-service',
+	]}
+	id={hash}
+>
+	<Picture
+		src={image}
+		alt={section.title}
+		id="home-hero-image"
+		class="service-card__image"
+	/>
+	<div class="service-card__desc">
+		<h2>{section.title}</h2>
+		<p>{section.desc}</p>
+		{
+			section.bullets?.length && (
+				<ul>
+					{section.bullets?.map((bullet: ServiceBullet) => {
+						return (
+							<li class="service-card__bullet">
+								<CircleCheck color="currentColor" />
+								<div>
+									<h3>{bullet.title}</h3>
+									{bullet.desc && (
+										<>
+											<p>{bullet.desc}</p>
+										</>
+									)}
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.service-card {
+		display: grid;
+		gap: var(--s6);
+		flex-direction: column;
+		position: relative;
+		scroll-margin-top: var(--header-height);
+		align-items: stretch;
+	}
+	.service-card:hover {
+		z-index: 2;
+	}
+
+	.service-card__desc {
+		padding: var(--s6);
+
+		h2 {
+			font-size: var(--font-size-md);
+		}
+
+		p {
+			color: var(--theme-text-secondary);
+		}
+	}
+
+	.service-card__image {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 1024px) {
+		.service-card {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			grid-auto-flow: column dense;
+			align-items: stretch;
+		}
+		.service-card__image {
+			height: 100%;
+			max-height: none;
+			aspect-ratio: 1/1;
+			object-fit: cover;
+		}
+		.service-card__desc {
+			height: 100%;
+		}
+		.odd-service .service-card__image {
+			grid-column-start: 2;
+		}
+
+		.odd-service .service-card__desc {
+			grid-column-start: 1;
+		}
+
+		.even-service .service-card__image {
+			border-top-left-radius: var(--theme-shape-radius);
+			border-bottom-left-radius: var(--theme-shape-radius);
+			border-top-right-radius: unset;
+		}
+		.odd-service .service-card__image {
+			border-top-right-radius: var(--theme-shape-radius);
+			border-bottom-right-radius: var(--theme-shape-radius);
+			border-top-left-radius: unset;
+		}
+	}
+
+	.service-card__bullet {
+		margin: var(--s2) 0;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: var(--s2);
+		svg {
+			color: var(--theme-primary);
+			margin-top: 4px;
+		}
+
+		h3 {
+			font-size: var(--font-size-base);
+			line-height: normal;
+			margin: unset;
+		}
+
+		p {
+			font-weight: unset;
+		}
+	}
+</style>

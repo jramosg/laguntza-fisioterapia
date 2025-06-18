@@ -11,6 +11,7 @@ export interface Props {
 }
 
 import { nav } from '@config/nav';
+import DrawerNav from '@components/DrawerNav.astro';
 
 const { seo } = Astro.props as Props;
 ---
@@ -21,14 +22,12 @@ const { seo } = Astro.props as Props;
 			<Logo />
 		</Fragment>
 	</Header>
+	<DrawerNav navData={nav} />
 	<div id="page">
 		<slot />
 	</div>
 	<Footer
 		slot="footer"
-		{footerLists}
-		{footerSocials}
-		copyrightName={settings.name}
 	>
 		<Logo slot="logo" />
 	</Footer>

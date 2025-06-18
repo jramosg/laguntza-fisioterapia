@@ -102,7 +102,7 @@ const t = useTranslations(lang);
 		border: 1px solid var(--theme-outline);
 		border-radius: 0.5em;
 		box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow-md);
-		z-index: 100;
+		z-index: var(--z-index-popver);
 	}
 	.lang-option {
 		width: 100%;
@@ -134,3 +134,53 @@ const t = useTranslations(lang);
 		color: var(--theme-primary);
 	}
 </style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const langToggleBtn = document.getElementById('lang-toggle-btn');
+		const dropdown = document.getElementById('lang-dropdown');
+
+		function openDropdown() {
+			if (!dropdown || !langToggleBtn) return;
+			dropdown.hidden = false;
+			langToggleBtn.setAttribute('aria-expanded', 'true');
+		}
+		function closeDropdown() {
+			if (!dropdown || !langToggleBtn) return;
+			dropdown.hidden = true;
+			langToggleBtn.setAttribute('aria-expanded', 'false');
+		}
+
+		function handleDropdownEvents() {
+			if (!langToggleBtn || !dropdown) return;
+			langToggleBtn.addEventListener('click', e => {
+				e.stopPropagation();
+				!dropdown.hidden ? closeDropdown() : openDropdown();
+			});
+			langToggleBtn.addEventListener('blur', () => {
+				setTimeout(() => {
+					if (!dropdown.contains(document.activeElement)) closeDropdown();
+				}, 100);
+			});
+			dropdown.addEventListener('mousedown', e => e.preventDefault());
+			dropdown.querySelectorAll('.lang-option').forEach(option => {
+				option.addEventListener('click', () => {
+					const lang = option.getAttribute('data-lang');
+					const event = new CustomEvent('languageChange', {
+						detail: lang,
+						bubbles: true,
+					});
+					langToggleBtn.dispatchEvent(event);
+					closeDropdown();
+					langToggleBtn.focus();
+				});
+			});
+			document.addEventListener('click', e => {
+				if (langToggleBtn !== e.target && dropdown !== e.target)
+					closeDropdown();
+			});
+		}
+
+		handleDropdownEvents();
+	});
+</script>

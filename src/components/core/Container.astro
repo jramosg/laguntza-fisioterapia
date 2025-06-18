@@ -3,6 +3,8 @@ type Props = {
 	narrow?: boolean;
 	class?: string;
 	tag?: keyof HTMLElementTagNameMap;
+	id?: string;
+	style?: string;
 };
 const { narrow, class: classNAme, tag, ...rest }: Props = Astro.props;
 const Tag = tag || `div`;

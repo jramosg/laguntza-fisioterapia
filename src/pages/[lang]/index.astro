@@ -1,114 +1,501 @@
 ---
-import { Container, FeatureCard } from '@components/odyssey-theme';
-import Layout from '@layouts/Page.astro';
-import HomeHeroSection from '@components/sections/heros/HomeHeroSection.astro';
+import Layout from '@layouts/Base.astro';
+import Burger from '@components/buttons/Burger.astro';
+import MainLogo from '@images/laguntza-fisioterapia-logo.svg';
+import HeroKeyBackground from '@images/jokin2.webp';
+import LogoIsotipoWhite from '@images/logos/isotipo-white.svg';
+import KeepScrolling from '@icons/keep-scrolling.svg';
+import { nav } from '@config/nav';
 import {
 	getLangFromUrl,
 	getStaticLangPaths,
 	useTranslations,
 } from '@i18n/utils';
+import DrawerNav from '@components/DrawerNav.astro';
+import { Address, sectionImages, SERVICES } from '@utils/company';
+import Footer from '@components/core/Footer.astro';
+import Container from '@components/core/Container.astro';
+import LanguageToggle from '@components/LanguageToggle.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
 
-const lang = getLangFromUrl(Astro.url);
+const url = Astro.url;
+const lang = getLangFromUrl(url);
 const t = useTranslations(lang);
 ---
+
 <Layout>
-	<HomeHeroSection />
-	<Container>
-		<section class="feature-card__section">
-			<h2 class="fade-up">{t('Bla bla bla')}</h2>
-			<p class="fade-up">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-				justo nunc, scelerisque et nibh vitae, ultrices molestie purus. Aenean
-				luctus quam non pretium hendrerit.
-			</p>
-			<div class="feature-card__grid">
-				<FeatureCard
-					href="/landing-pages/landing-1"
-					title="Lorem ipsum dolor 1"
-					imgSrc="/assets/images/home/screenshots/landing-1"
-				/>
-				<FeatureCard
-					href="/landing-pages/landing-2"
-					title="Lorem ipsum dolor 2"
-					imgSrc="/assets/images/home/screenshots/landing-2"
-				/>
-			</div>
-		</section>
-	</Container>
+	<header
+		slot="header"
+		id="laguntzaFisioterapiaNavHeader"
+		class="header-container"
+	>
+		<LanguageToggle />
+		<div class="header-burger-container" id="header-burger-container">
+			<Burger
+				id="menuButton"
+				aria-label={t('Menua ireki')}
+				data-open-label={t('Menua ireki')}
+				data-close-label={t('Menua itxi')}
+				navData={nav}
+			/>
+		</div>
+	</header>
+	<DrawerNav navData={nav} />
+	<span id="global-loader" class="global-loader">
+		<MainLogo id="main-logo-animated" />
+		<div class="global-loader-label">Kargatzen...</div>
+	</span>
+	<div class="coming-soon-outer" id="coming-soon-outer">
+		<div id="logo-mask">
+			<section>
+				<picture id="hero-key" class="hero-key-picture">
+					<img id="hero-key-logo" src={MainLogo.src} />
+					<img
+						id="hero-key-background"
+						src={HeroKeyBackground.src}
+						class="background-image"
+					/>
+				</picture>
+			</section>
+		</div>
 
-	<Container>
-		<section class="feature-card__section fade-up">
-			<h2>Company Pages</h2>
-			<p>
-				Use one of our prebuilt company pages for your about page, contact page,
-				legal pages, blog posts, etc.
-			</p>
-			<div class="feature-card__grid">
-				<FeatureCard
-					href="/company/about"
-					title="About Page"
-					imgSrc="/assets/images/home/screenshots/about"
-				/>
-				<FeatureCard
-					href="/company/contact"
-					title="Contact Page"
-					imgSrc="/assets/images/home/screenshots/contact"
-				/>
-				<FeatureCard
-					href="/blog/"
-					title="Blog Page"
-					imgSrc="/assets/images/home/screenshots/blog"
-				/>
-				<FeatureCard
-					href="/blog/posts/remote-work-mental-health"
-					title="Blog Post"
-					imgSrc="/assets/images/home/screenshots/blog-post"
-				/>
-				<FeatureCard
-					href="/company/legal"
-					imgSrc="/assets/images/home/screenshots/legal"
-					title="Legal Page"
-				/>
+		<div class="coming-soon-main">
+			<div id="when">
+				<h1>{t('Laister...')}</h1>
+				<a href={Address.url} target="_blank" rel="noopener noreferrer">
+					<h3>{Address.name}</h3></a
+				>
 			</div>
-		</section>
-	</Container>
+		</div>
+		<!-- New animated services section -->
 
-	<Container>
-		<section class="feature-card__section">
-			<h2>Theme Pages</h2>
-			<p>Learn more about how to set up and use the Odyssey Theme.</p>
-			<div class="feature-card__grid">
-				<FeatureCard
-					href="/theme/get-started"
-					imgSrc="/assets/images/home/screenshots/get-started"
-					title="Get Started"
-				/>
-				<FeatureCard
-					href="/theme/style-guide"
-					imgSrc="/assets/images/home/screenshots/style-guide"
-					title="Style Guide"
-				/>
-			</div>
-		</section>
-	</Container>
+		{
+			SERVICES[lang].sections.map((section, idx) => {
+				const image =
+					sectionImages[section.id as keyof typeof sectionImages] || Jokin;
+
+				return (
+					<section class="slide">
+						<div class="slide__outer">
+							<Container
+								class="service-card"
+								style={`background-image: url('${image.src ?? image}');`}
+							>
+								<div class="service-card__bg-overlay" />
+								<div class="service-card__desc">
+									<h2>{section.title}</h2>
+								</div>
+							</Container>
+						</div>
+					</section>
+				);
+			})
+		}
+	</div>
+
+	<footer id="hero-footer" slot="footer" class="coming-soon-footer">
+		<LogoIsotipoWhite
+			id="logo-see-more"
+			class="logo-see-more-img"
+			width={128}
+			height={128}
+		/>
+		<p class="hero-footer-label">{t('Ikusi gehiago')}</p>
+		<KeepScrolling class="keep-scrolling-icon" fill="currentColor" />
+	</footer>
+	<Footer class="footer-container" id="coming-soon-footer-container" />
 </Layout>
 
 <style>
-	.feature-card__section {
-		margin: var(--section-margin) auto;
+	body {
+		--animate-bounce-pulse: bounce-pulse 2s ease-in-out infinite;
 	}
-	.feature-card__grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--theme-grid-gap);
+	.background-image {
+		width: 100vw;
+		height: 100vh;
+		object-fit: cover;
 	}
-	@media (max-width: 768px) {
-		.feature-card__grid {
-			grid-template-columns: 1fr;
+
+	.hero-key-picture {
+		height: 100vh;
+		display: block;
+		overflow: hidden;
+		position: fixed;
+		transform: scale(1.1);
+	}
+
+	.header-container {
+		z-index: var(--z-index-modal);
+		position: fixed;
+		top: calc(var(--s5));
+		right: var(--s2);
+		display: flex;
+		gap: var(--s);
+		align-items: center;
+		& :global(.lang-toggle-btn) {
+			background-color: var(--theme-bg);
 		}
 	}
+
+	header[drawer-open] {
+		z-index: var(--z-index-modal);
+		position: fixed;
+		& :global(.lang-toggle-btn) {
+			opacity: 0;
+		}
+	}
+
+	.header-burger-container {
+		background-color: var(--theme-bg);
+		opacity: 0.8;
+		border-radius: 50%;
+		padding: var(--s);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		& :global(.burger) {
+			display: flex;
+		}
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	#when {
+		color: white;
+		opacity: 0;
+		h3 {
+			text-align: center;
+		}
+	}
+	#hero-key-logo {
+		position: absolute; /* Ensure absolute positioning */
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 80vw;
+		padding: 10vw;
+	}
+
+	#logo-mask {
+		position: fixed;
+		top: 0;
+		height: 100vh;
+		width: 100%;
+		background: white;
+		mask-image: url('/laguntza-fisioterapia-isotipo-21.svg');
+		mask-position: center 55%;
+		mask-repeat: no-repeat;
+		mask-size: clamp(6000vh, 7500%, 0vh);
+	}
+
+	#hero-footer {
+		position: fixed;
+		margin: auto;
+		bottom: var(--s2);
+		color: white;
+		z-index: var(--z-index-modal);
+	}
+
+	#when {
+		position: fixed;
+		bottom: 25%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		h3 {
+			text-decoration: underline;
+		}
+	}
+
+	.hero-footer-label {
+		text-transform: uppercase;
+		letter-spacing: 6px;
+		white-space: nowrap;
+		text-align: center;
+		font-weight: 500;
+		font-size: var(--font-size-md);
+		text-shadow:
+			0 0 2px rgba(255, 255, 255, 0.5),
+			0 0 8px #000;
+	}
+
+	.coming-soon-main {
+		position: fixed;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		height: 100vh;
+		padding-left: 5rem;
+		padding-right: 5rem;
+		padding-top: 4rem;
+		padding-bottom: 4rem;
+		width: 100%;
+	}
+
+	.coming-soon-outer {
+		height: 700vh;
+		background-color: var(--theme-primary);
+	}
+
+	.logo-see-more-img {
+		filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))
+			drop-shadow(0 0 8px #000);
+	}
+
+	.coming-soon-footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--s2);
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	@keyframes bounce-pulse {
+		0% {
+			transform: translateY(0);
+			scale: 0.8;
+			opacity: 0.8;
+		}
+
+		50% {
+			transform: translateY(-5px);
+			opacity: 1;
+			scale: 1;
+		}
+
+		100% {
+			transform: translateY(0);
+			scale: 0.8;
+			opacity: 0.8;
+		}
+	}
+
+	.keep-scrolling-icon {
+		animation: var(--animate-bounce-pulse);
+		color: #fff;
+		filter: drop-shadow(var(--shadow-2xl));
+	}
+
+	.service-card {
+		background: var(--theme-surface-1, #fff);
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		width: 90vw;
+		max-height: 75vh;
+		aspect-ratio: 1 / 1;
+		transform: translateY(-50%) translateX(-50%);
+		position: fixed;
+		color: var(--theme-on-surface-1, #000);
+		border-radius: var(--theme-shape-radius);
+		box-shadow: var(--shadow-lg);
+		padding-top: var(--s6);
+		transition: box-shadow 0.2s;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		position: fixed;
+		overflow: hidden;
+	}
+	.service-card__bg-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			120deg,
+			rgba(0, 0, 0, 0.45) 0%,
+			rgba(0, 0, 0, 0.25) 60%,
+			rgba(0, 0, 0, 0.65) 100%
+		);
+		backdrop-filter: blur(2px) saturate(120%);
+		z-index: 1;
+		pointer-events: none;
+	}
+	.service-card__desc {
+		position: relative;
+		z-index: 2;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		height: 100%;
+		padding-left: var(--s2);
+		padding-right: var(--s2);
+	}
+	.service-card__desc h2 {
+		margin-bottom: var(--s2);
+		font-size: var(--font-size-md);
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: #fff;
+		text-shadow:
+			0 2px 12px rgba(0, 0, 0, 0.18),
+			0 1px 0 #fff8;
+	}
+
+	.slide {
+		height: 100vh;
+		width: 100vw;
+		z-index: 1201;
+		top: 0;
+		position: fixed;
+		visibility: hidden;
+
+		&__outer,
+		&__inner {
+		}
+	}
+
+	.slide__outer {
+		width: 100%;
+		height: 100vh;
+		overflow-y: hidden;
+	}
+
+	.footer-container {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		height: 85vh;
+		opacity: 0;
+		z-index: 1201;
+	}
+
+	.global-loader {
+		position: fixed;
+		inset: 0;
+		z-index: 99999;
+		background: var(--theme-bg, #fff);
+		color: var(--theme-primary, #222);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: opacity 0.4s;
+		opacity: 1;
+		pointer-events: all;
+		flex-direction: column;
+		svg {
+			animation: var(--animate-bounce-pulse);
+		}
+	}
+	.global-loader.hide {
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.4s;
+	}
+	.global-loader-label {
+		margin-top: var(--s2);
+		font-size: var(--font-size-md);
+		letter-spacing: 0.05em;
+		color: var(--theme-primary,);
+		opacity: 0.85;
+		text-align: center;
+	}
 </style>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	function hideGlobalLoader() {
+		const loader = document.getElementById('global-loader');
+		if (loader) loader.classList.add('hide');
+	}
+
+	document.addEventListener('astro:page-load', () => {
+		// Only wait for HeroKeyBackground to load
+		const bgImg = document.getElementById('hero-key-background');
+		if (bgImg && !bgImg.complete) {
+			bgImg.addEventListener('load', hideGlobalLoader, { once: true });
+			bgImg.addEventListener('error', hideGlobalLoader, { once: true });
+		} else {
+			hideGlobalLoader();
+		}
+
+		const comingSoonContainer = document.getElementById('coming-soon-outer');
+		if (!comingSoonContainer) {
+			return;
+		}
+		window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+		gsap.registerPlugin(ScrollTrigger);
+
+		const tl = gsap.timeline({
+			ease: 'power2.out',
+			scrollTrigger: {
+				scrub: 1,
+			},
+		});
+
+		const sections = gsap.utils.toArray('.slide');
+		const outerWrappers = gsap.utils.toArray('.slide__outer');
+
+		gsap.set('.slide:nth-of-type(1) .slide__outer', { xPercent: 0 });
+
+		tl.to('#hero-key', { scale: 1 })
+			.to('#hero-key-logo', { opacity: 0 }, '<')
+			.to('#logo-see-more', { opacity: 0 }, '<')
+			.to(
+				'#logo-mask',
+				{
+					maskSize: 'clamp(20vh, 25%, 30vh)',
+				},
+				0.15,
+			)
+			.to(
+				'#hero-key',
+				{
+					opacity: 0,
+					duration: 0.2,
+				},
+				0.4,
+			)
+			.to(
+				'#logo-mask',
+				{
+					//maskPosition: '50% 25%'
+				},
+				'<',
+			)
+			.to('#when', { opacity: 1 }, '<')
+			.to('#when', { y: 80 }, '<')
+			.to('#drawer-backdrop', { opacity: 1 }, '>');
+
+		outerWrappers.forEach((card, i) => {
+			const isEven = i % 2 === 0;
+			tl.fromTo(
+				card,
+				{
+					xPercent: isEven ? -100 : 100,
+					scale: 0.6,
+					rotate: isEven ? -30 : 30,
+				},
+				{
+					xPercent: 0,
+					scale: 1,
+					duration: 0.5,
+					rotate: 0,
+				},
+				i === 0 ? '<' : '>',
+			).to(sections[i], { visibility: 'visible' }, '<');
+		});
+
+		tl.to('#hero-footer', { opacity: 0 }, '>').fromTo(
+			'#coming-soon-footer-container',
+			{ yPercent: 100, scale: 0.6 },
+			{
+				yPercent: 0,
+				opacity: 1,
+				scale: 1,
+			},
+			'<',
+		);
+	});
+</script>
