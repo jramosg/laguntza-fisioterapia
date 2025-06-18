@@ -9,8 +9,8 @@ export const Address = {
 };
 
 export const Phone = {
-	name: '943 30 00 00',
-	url: 'tel:+34943300000',
+	name: '626 32 15 93',
+	url: 'tel:+34626321593',
 };
 
 export const Email = {
