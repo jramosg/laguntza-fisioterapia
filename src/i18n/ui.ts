@@ -32,6 +32,7 @@ export const ui = {
 		'Gure kokalekua': 'Nuestra ubicación',
 		'Laister...': 'Próximamente...',
 		'Ikusi gehiago': 'Ver más',
+		'Orri nagusira joan': 'Ir a la página principal',
 	},
 	eu: {
 		'nav.home': 'Hasiera',

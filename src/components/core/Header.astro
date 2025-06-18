@@ -20,7 +20,11 @@ const t = useTranslations(lang);
 	class={`${rightMenu ? 'header--right' : ``.trim()}`}
 >
 	<div class="header-logo-menu__container">
-		<a class="header-logo__link" href={`/${lang}`}>
+		<a
+			class="header-logo__link"
+			aria-label={t('Orri nagusira joan')}
+			href={`/${lang}`}
+		>
 			<slot name="logo" />
 		</a>
 	</div>

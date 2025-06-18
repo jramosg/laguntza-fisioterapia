@@ -40,23 +40,28 @@ const t = useTranslations(lang);
 				data-open-label={t('Menua ireki')}
 				data-close-label={t('Menua itxi')}
 				navData={nav}
+				class="container-burger"
 			/>
 		</div>
 	</header>
 	<DrawerNav navData={nav} />
 	<span id="global-loader" class="global-loader">
 		<MainLogo id="main-logo-animated" />
-		<div class="global-loader-label">Kargatzen...</div>
 	</span>
 	<div class="coming-soon-outer" id="coming-soon-outer">
 		<div id="logo-mask">
 			<section>
 				<picture id="hero-key" class="hero-key-picture">
-					<img id="hero-key-logo" src={MainLogo.src} />
+					<img
+						id="hero-key-logo"
+						src={MainLogo.src}
+						alt="Laguntza fisioterapia"
+					/>
 					<img
 						id="hero-key-background"
 						src={HeroKeyBackground.src}
 						class="background-image"
+						alt="Jokin Ramos"
 					/>
 				</picture>
 			</section>
@@ -66,7 +71,7 @@ const t = useTranslations(lang);
 			<div id="when">
 				<h1>{t('Laister...')}</h1>
 				<a href={Address.url} target="_blank" rel="noopener noreferrer">
-					<h3>{Address.name}</h3></a
+					<h2 class="address">{Address.name}</h2></a
 				>
 			</div>
 		</div>
@@ -168,7 +173,7 @@ const t = useTranslations(lang);
 	#when {
 		color: white;
 		opacity: 0;
-		h3 {
+		.address {
 			text-align: center;
 		}
 	}
@@ -198,7 +203,7 @@ const t = useTranslations(lang);
 		margin: auto;
 		bottom: var(--s2);
 		color: white;
-		z-index: var(--z-index-modal);
+		z-index: 1201;
 	}
 
 	#when {
@@ -380,23 +385,11 @@ const t = useTranslations(lang);
 		transition: opacity 0.4s;
 		opacity: 1;
 		pointer-events: all;
-		flex-direction: column;
-		svg {
-			animation: var(--animate-bounce-pulse);
-		}
 	}
 	.global-loader.hide {
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity 0.4s;
-	}
-	.global-loader-label {
-		margin-top: var(--s2);
-		font-size: var(--font-size-md);
-		letter-spacing: 0.05em;
-		color: var(--theme-primary,);
-		opacity: 0.85;
-		text-align: center;
 	}
 </style>
 

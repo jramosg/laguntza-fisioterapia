@@ -94,4 +94,12 @@ const lang = getLangFromUrl(url);
 	.burger[open] .burger-icon::after {
 		background-color: var(--theme-on-primary);
 	}
+
+	.container-burger.burger[open] {
+		.burger-icon,
+		.burger-icon::before,
+		.burger-icon::after {
+			background-color: var(--theme-on-bg);
+		}
+	}
 </style>

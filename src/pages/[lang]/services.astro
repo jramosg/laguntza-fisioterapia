@@ -51,8 +51,7 @@ const t = useTranslations(lang);
 			<div aria-hidden="true" class="group">
 				{
 					SERVICES[lang].sections.map(service => {
-						const hash = generateSlug(service.title);
-						return <Chip href={`#${hash}`} text={service.title} />;
+						return <Chip text={service.title} />;
 					})
 				}
 			</div>
