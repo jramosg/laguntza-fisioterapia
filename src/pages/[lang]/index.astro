@@ -69,9 +69,9 @@ const t = useTranslations(lang);
 
 		<div class="coming-soon-main">
 			<div id="when">
-				<h1>{t('Laister...')}</h1>
+				<h1 class="coming-soon__label">{t('Laister...')}</h1>
 				<a href={Address.url} target="_blank" rel="noopener noreferrer">
-					<h2 class="address">{Address.name}</h2></a
+					<h2 class="coming-soon__address">{Address.name}</h2></a
 				>
 			</div>
 		</div>
@@ -173,9 +173,12 @@ const t = useTranslations(lang);
 	#when {
 		color: white;
 		opacity: 0;
-		.address {
-			text-align: center;
-		}
+	}
+
+	.coming-soon__label,
+	.coming-soon__address {
+		font-size: var(--font-size-lg);
+		text-align: center;
 	}
 	#hero-key-logo {
 		position: absolute; /* Ensure absolute positioning */
