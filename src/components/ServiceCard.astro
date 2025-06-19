@@ -82,6 +82,8 @@ const image = sectionImages[section.id as keyof typeof sectionImages] || Jokin;
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
+		border-top-right-radius: var(--theme-shape-radius);
+		border-top-left-radius: var(--theme-shape-radius);
 	}
 
 	@media (min-width: 1024px) {
