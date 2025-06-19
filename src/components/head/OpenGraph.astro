@@ -10,7 +10,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const image = './main-logo-horizontal.png';
+const image = new URL('/main-logo-horizontal.png', Astro.site).toString();;
 const title = settings.title;
 const description = desc || t(settings.description);
 ---
