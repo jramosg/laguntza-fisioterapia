@@ -30,7 +30,7 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 ---
 
 <Layout>
-	<SectionHero id="contact-hero"
+	<SectionHero id="contact-hero" class="hero-section__contact"
 		><h1 slot="title">
 			{t('contact-jarri')}
 			{' '}
@@ -167,6 +167,27 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 </Layout>
 
 <style>
+	@keyframes chip-bounce {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-15px);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+
+	.hero-section__contact :global(.chip) {
+		animation: chip-bounce 2s ease-in-out infinite;
+		&:nth-child(2) {
+			animation-delay: 0.3s;
+		}
+		&:nth-child(3) {
+			animation-delay: 0.6s;
+		}
+	}
 	.ubication-section {
 		width: 100%;
 		a {
@@ -300,21 +321,6 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 	gsap.registerPlugin(ScrollTrigger);
 
 	document.addEventListener('astro:page-load', () => {
-		const heroSection = document.querySelector('#contact-hero');
-		if (heroSection) {
-			const chips = heroSection.querySelectorAll('.chip');
-			if (chips.length) {
-				gsap.to(chips, {
-					y: -10,
-					duration: 2,
-					repeat: -1,
-					yoyo: true,
-					ease: 'sine.inOut',
-					stagger: 0.3,
-				});
-			}
-		}
-
 		// Fade-in timeline for contact cards
 		const cards = document.querySelectorAll('.contact-card');
 		if (cards.length) {

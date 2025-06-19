@@ -14,6 +14,14 @@ const { id, ...rest } = Astro.props;
 </section>
 
 <style>
+	@keyframes gradientMove {
+		0% {
+			background-position: 0% 50%;
+		}
+		100% {
+			background-position: 100% 50%;
+		}
+	}
 	.hero-header-container {
 		padding: 0;
 		width: 100%;
@@ -25,14 +33,18 @@ const { id, ...rest } = Astro.props;
 
 	.hero-header-container :global(.chip) {
 		color: var(--theme-on-container-gradient);
+		svg {
+			fill: var(--theme-on-container-gradient);
+		}
 	}
 	.hero-header-section {
-		/*	background-color: var(--theme-primary-container-alt);*/
-		background: var(--theme-gradient);
+		background: var(--theme-container-gradient);
+		background-size: 200% 200%;
 		padding: 0;
 		padding: var(--s8) 0;
 		text-align: center;
 		color: var(--theme-on-container-gradient);
+		animation: gradientMove 3s ease-in-out infinite alternate;
 	}
 
 	:global(.hero-section__remark) {
@@ -59,7 +71,6 @@ const { id, ...rest } = Astro.props;
 			flex-wrap: nowrap;
 			gap: var(--s2);
 			padding-bottom: 0.5rem;
-			/* Optional: hide scrollbar for Webkit browsers */
 			-webkit-overflow-scrolling: touch;
 			scrollbar-width: none;
 		}
@@ -71,21 +82,3 @@ const { id, ...rest } = Astro.props;
 		}
 	}
 </style>
-
-<script>
-	import { gsap } from 'gsap';
-
-	document.addEventListener('astro:page-load', () => {
-		const heroRef = document.querySelector('.hero-header-section');
-
-		if (!heroRef) return;
-		gsap.to(heroRef, {
-			background:
-				'linear-gradient(135deg, #0f766e 0%, #0891b2 50%, #0369a1 100%)',
-			duration: 3,
-			repeat: -1,
-			yoyo: true,
-			ease: 'sine.inOut',
-		});
-	});
-</script>
