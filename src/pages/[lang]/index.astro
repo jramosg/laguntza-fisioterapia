@@ -453,15 +453,15 @@ const t = useTranslations(lang);
 				},
 				0.4,
 			)
+
+			.to('#when', { opacity: 1, y: -100 }, '<')
 			.to(
 				'#logo-mask',
 				{
-					//maskPosition: '50% 25%'
+					maskPosition: '50% 25%',
 				},
 				'<',
 			)
-			.to('#when', { opacity: 1 }, '<')
-			.to('#when', { y: 80 }, '<')
 			.to('#drawer-backdrop', { opacity: 1 }, '>');
 
 		outerWrappers.forEach((card, i) => {
