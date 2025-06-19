@@ -19,7 +19,7 @@ const title = Astro.props.title || settings.title;
 const description = Astro.props.description || t(settings.description);
 const canonicalURL =
 	Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site);
-const image = new URL(Astro.props.image || './social.png', Astro.site); // TODO
+const image = new URL(Astro.props.image || './main-logo-horizontal.png', Astro.site); // TODO
 ---
 
 <!-- Global Metadata -->
@@ -38,7 +38,7 @@ const image = new URL(Astro.props.image || './social.png', Astro.site); // TODO
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
 <!-- Author -->
-<meta name="author" content="Trukun" />
+<meta name="author" content="Jon Ramos" />
 <!-- Generator -->
 <meta name="generator" content={Astro.generator} />
 <!-- Open Graph / Facebook -->
