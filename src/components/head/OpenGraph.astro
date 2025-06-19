@@ -1,0 +1,29 @@
+---
+import { settings } from '@config/settings';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+type Props = {
+	desc?: string;
+};
+const { desc }: Props = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const image = './main-logo-horizontal.png';
+const title = settings.title;
+const description = desc || t(settings.description);
+---
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={image} />
