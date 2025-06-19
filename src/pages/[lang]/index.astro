@@ -67,14 +67,14 @@ const t = useTranslations(lang);
 			</section>
 		</div>
 
-		<div class="coming-soon-main">
+		<section class="coming-soon-main">
 			<div id="when">
 				<h1 class="coming-soon__label">{t('Laister...')}</h1>
 				<a href={Address.url} target="_blank" rel="noopener noreferrer">
 					<h2 class="coming-soon__address">{Address.name}</h2></a
 				>
 			</div>
-		</div>
+		</section>
 		<!-- New animated services section -->
 
 		{
@@ -101,7 +101,7 @@ const t = useTranslations(lang);
 		}
 	</div>
 
-	<footer id="hero-footer" slot="footer" class="coming-soon-footer">
+	<footer id="hero-footer" slot="footer" class="coming-soon-hero-footer">
 		<LogoIsotipoWhite
 			id="logo-see-more"
 			class="logo-see-more-img"
@@ -201,14 +201,6 @@ const t = useTranslations(lang);
 		mask-size: clamp(6000vh, 7500%, 0vh);
 	}
 
-	#hero-footer {
-		position: fixed;
-		margin: auto;
-		bottom: var(--s2);
-		color: white;
-		z-index: 1201;
-	}
-
 	#when {
 		position: fixed;
 		bottom: 25%;
@@ -248,7 +240,7 @@ const t = useTranslations(lang);
 	}
 
 	.coming-soon-outer {
-		height: 700vh;
+		height: 750vh;
 		background-color: var(--theme-primary);
 	}
 
@@ -257,7 +249,12 @@ const t = useTranslations(lang);
 			drop-shadow(0 0 8px #000);
 	}
 
-	.coming-soon-footer {
+	.coming-soon-hero-footer {
+		position: fixed;
+		margin: auto;
+		bottom: var(--s2);
+		color: white;
+		z-index: 1202;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -265,6 +262,7 @@ const t = useTranslations(lang);
 		gap: var(--s2);
 		left: 50%;
 		transform: translateX(-50%);
+		cursor: pointer;
 	}
 
 	@keyframes bounce-pulse {
@@ -294,11 +292,12 @@ const t = useTranslations(lang);
 	}
 
 	.service-card {
-		background: var(--theme-surface-1, #fff);
+		background: var(--theme-surface-1,);
 		position: fixed;
 		top: 50%;
 		left: 50%;
 		width: 90vw;
+		max-width: 500px;
 		max-height: 75vh;
 		aspect-ratio: 1 / 1;
 		transform: translateY(-50%) translateX(-50%);
@@ -373,7 +372,7 @@ const t = useTranslations(lang);
 		width: 100%;
 		height: 85vh;
 		opacity: 0;
-		z-index: 1201;
+		z-index: 1203;
 	}
 
 	.global-loader {
@@ -406,16 +405,23 @@ const t = useTranslations(lang);
 	}
 
 	document.addEventListener('astro:page-load', () => {
-		// Only wait for HeroKeyBackground to load
 		const bgImg = document.getElementById('hero-key-background');
-		if (bgImg && !bgImg.complete) {
-			bgImg.addEventListener('load', hideGlobalLoader, { once: true });
-			bgImg.addEventListener('error', hideGlobalLoader, { once: true });
+
+		if (bgImg && (bgImg as HTMLImageElement).complete !== undefined) {
+			const img = bgImg as HTMLImageElement;
+			if (!img.complete) {
+				img.addEventListener('load', hideGlobalLoader, { once: true });
+				img.addEventListener('error', hideGlobalLoader, { once: true });
+			} else {
+				hideGlobalLoader();
+			}
 		} else {
 			hideGlobalLoader();
 		}
 
 		const comingSoonContainer = document.getElementById('coming-soon-outer');
+		const heroFooter = document.getElementById('hero-footer');
+
 		if (!comingSoonContainer) {
 			return;
 		}
@@ -483,7 +489,7 @@ const t = useTranslations(lang);
 			).to(sections[i], { visibility: 'visible' }, '<');
 		});
 
-		tl.to('#hero-footer', { opacity: 0 }, '>').fromTo(
+		tl.to('#hero-footer', { opacity: 0, duration: 0 }, '>').fromTo(
 			'#coming-soon-footer-container',
 			{ yPercent: 100, scale: 0.6 },
 			{
@@ -493,5 +499,14 @@ const t = useTranslations(lang);
 			},
 			'<',
 		);
+		
+		heroFooter?.addEventListener('click', () => {
+			console.log('Scrolling down...');
+			window.scrollBy({
+				top: (window.innerHeight / 3) * 2,
+				left: 0,
+				behavior: 'smooth',
+			});
+		});
 	});
 </script>
