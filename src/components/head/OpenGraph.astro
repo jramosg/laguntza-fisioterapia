@@ -10,7 +10,8 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const image = new URL('/main-logo-horizontal.png', Astro.site).toString();;
+const image1 = new URL('/main-logo-horizontal.png', Astro.site).toString();
+const image2 = new URL('/logo-isotipo-main.png', Astro.site).toString();
 const title = settings.title;
 const description = desc || t(settings.description);
 ---
@@ -20,10 +21,14 @@ const description = desc || t(settings.description);
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={image} />
+<meta property="og:image" content={image1} />
+<meta property="og:image" content={image2} />
+
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={image} />
+<meta property="twitter:image" content={image1} />
+<meta property="twitter:image" content={image2} />
+
