@@ -5,12 +5,12 @@ import Interview from '@images/interview.webp';
 
 export const Address = {
 	name: 'Zubitxo Plaza, 3, 20130 Urnieta, Gipuzkoa',
-	url: 'https://maps.app.goo.gl/mh7BNkcgFQ5Z8fuF9',
+	url: 'https://maps.app.goo.gl/27C7aUKHSVSbwut47',
 };
 
 export const Phone = {
-	name: '626 32 15 93',
-	url: 'tel:+34626321593',
+	name: '688 639 777',
+	url: 'tel:+34688639777',
 };
 
 export const Email = {
@@ -19,8 +19,8 @@ export const Email = {
 };
 
 export const WhatsApp = {
-	name: '626 32 15 93',
-	url: 'https://wa.me/626321593',
+	name: '688 639 777',
+	url: 'https://wa.me/688639777',
 };
 
 export const sectionImages = {
