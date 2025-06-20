@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import Container from '../core/Container.astro';
-import { footerLists, footerSocials } from '@config/footer';
+import { footerLists, footerSocials, authors } from '@config/footer';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import { Address, Phone } from '@config/company';
 import { Fragment } from 'astro/jsx-runtime';
@@ -9,6 +9,7 @@ import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 import BrandLogo from '@images/logos/isotipo-main.svg';
 import PhoneIcon from '@icons/phone.svg';
 import { settings } from '@config/settings';
+import MarkerIcon from '@icons/marker.svg';
 
 const copyrightName = settings.name;
 
@@ -17,55 +18,114 @@ const t = useTranslations(lang);
 const props = Astro.props;
 ---
 
-<footer {...props}>
-	<Container class="footer-container">
-		<ul class="footer-socials__list">
-			{
-				footerSocials.map(social => (
-					<li class="footer-socials__item">
-						<a
-							href={social.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="footer-socials__link"
-							title={`Open ${social.name} profile`}
-						>
-							<Icon name={social.icon} width={24} height={24} />
-						</a>
-					</li>
-				))
-			}
-		</ul>
-		<a href={Phone.url} class="footer-link_icon">
-			<PhoneIcon fill="currentColor" />
-			{Phone.name}
-		</a>
-
-		<a class="footer-link_icon" href={Address.url}>
-			{Address.name}
-		</a>
-
-		<h3 class="quick-links">
-			{
-				footerLists.map((item, index) => (
-					<>
-						<a href={`/${lang}${item.slug}`}>{t(item.title)}</a>
-						{index !== footerLists.length - 1 && <span> — </span>}
-					</>
-				))
-			}
-		</h3>
-
-		<div class="theme-toggle-container">
+<footer {...props} lang={lang} aria-label={t('footer')} role="contentinfo">
+	<Container narrow class="footer-container">
+		<nav aria-label={t('social-media-links')}>
+			<ul class="footer-socials__list">
+				{
+					footerSocials.map(social => (
+						<li class="footer-socials__item">
+							<a
+								href={social.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="footer-socials__link"
+								title={`Open ${social.name} profile`}
+								aria-label={`Open ${social.name} profile`}
+							>
+								<Icon name={social.icon} width={24} height={24} />
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+		<address>
+			<a
+				href={Phone.url}
+				class="footer-link_icon"
+				title={`Llamar a ${Phone.name}`}
+				aria-label={`Llamar a ${Phone.name}})`}
+			>
+				<PhoneIcon fill="currentColor" />
+				{Phone.name}
+			</a>
+			<a
+				class="footer-link_icon"
+				href={Address.url}
+				title={`Ir a ${Address.name}`}
+				aria-label={`Ir a ${Address.name}`}
+			>
+				<MarkerIcon fill="currentColor" />
+				{Address.name}
+			</a>
+		</address>
+		<nav aria-label={t('quick-links')}>
+			<h3 class="quick-links">
+				{
+					footerLists.map((item, index) => (
+						<>
+							<a
+								href={`/${lang}${item.slug}`}
+								title={t(item.title)}
+								aria-label={t(item.title)}
+							>
+								{t(item.title)}
+							</a>
+							{index !== footerLists.length - 1 && <span> — </span>}
+						</>
+					))
+				}
+			</h3>
+		</nav>
+		<div class="theme-toggle-container" aria-label={t('theme-switcher')}>
 			<ThemeSwitcher />
 		</div>
 		<div class="footer-logo__container">
-			<BrandLogo />
-		</div>
-		<div class="footer-copyright__container">
-			<p>Copyright &copy; {new Date().getFullYear()} {copyrightName}</p>
+			<BrandLogo aria-label={settings.title} />
 		</div>
 	</Container>
+	<div class="footer-copyright">
+		<Container class="footer-copyright__container">
+			<section class="footer-dev-credit">
+				{t('developed-by')}
+
+				<ul class="footer-author-list">
+					{
+						authors.map(author => (
+							<li class="footer-author-list__single-author">
+								<strong>{author.name}</strong>
+								<ul class="footer-socials__list">
+									{author.socials.map(social => (
+										<li>
+											<a
+												href={social.url}
+												target="_blank"
+												rel="author noopener noreferrer"
+												class="footer-socials__link"
+												title={social.title}
+												aria-label={social.title}
+											>
+												{social.iconType === 'component' ? (
+													<social.icon fill="currentColor" />
+												) : (
+													<Icon name={social.icon} width={24} height={24} />
+												)}
+											</a>
+										</li>
+									))}
+								</ul>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+			<small class="footer-copyright__text">
+				Copyright &copy; {new Date().getFullYear()}
+				{copyrightName}
+			</small>
+		</Container>
+	</div>
 </footer>
 
 <style>
@@ -75,6 +135,7 @@ const props = Astro.props;
 		color: var(--theme-on-primary-container);
 		border-top-left-radius: var(--theme-shape-radius);
 		border-top-right-radius: var(--theme-shape-radius);
+		padding-top: var(--s4);
 	}
 
 	a {
@@ -85,6 +146,10 @@ const props = Astro.props;
 		}
 	}
 
+	ul {
+		list-style: none;
+	}
+
 	.footer-container {
 		display: flex;
 		flex-direction: column;
@@ -92,10 +157,36 @@ const props = Astro.props;
 		justify-content: center;
 		gap: var(--s4);
 		padding: var(--s4) 0;
+		display: flex;
+		flex: 1;
 	}
 	.footer-logo__container {
-		height: 10rem;
 		width: 10rem;
+	}
+
+	.footer-dev-credit {
+		font-size: var(--font-size-sm);
+		display: flex;
+		flex-direction: column;
+		gap: var(--s2);
+	}
+
+	.footer-author-list {
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		margin: 0;
+	}
+
+	.footer-author-list__single-author {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		align-items: flex-start;
+		&:not(:first-child) {
+			border-top: 1px solid var(--theme-outline);
+			padding-top: var(--s2);
+		}
 	}
 
 	.footer-socials__list {
@@ -103,8 +194,6 @@ const props = Astro.props;
 		margin-top: auto;
 		padding: 0;
 		display: flex;
-		list-style: none;
-		padding-top: var(--s4);
 	}
 	.footer-socials__link {
 		padding: var(--s2);
@@ -132,16 +221,32 @@ const props = Astro.props;
 	.footer-link__list li a:hover {
 		opacity: 0.84;
 	}
-	.footer-copyright__container {
+
+	address {
 		display: flex;
 		flex-direction: column;
-		/* justify-content: space-between; */
+		align-items: center;
+		gap: var(--s2);
 	}
-	.footer-copyright__container p {
-		font-size: var(--font-size-sm);
+	.footer-copyright {
+		border-top: 1px solid var(--theme-outline);
+		padding: var(--s4) 0;
+		width: 100%;
 	}
 
-	li {
+	.footer-copyright__container {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		flex-wrap: wrap;
+		font-size: var(--font-size-sm);
+		gap: var(--s2);
+	}
+
+	ul {
 		display: grid;
 		grid-template-columns: auto 1fr;
 		column-gap: var(--s);
@@ -166,9 +271,29 @@ const props = Astro.props;
 		display: flex;
 		align-items: center;
 		gap: var(--s);
-		text-align: center;
 		&:hover {
 			text-decoration: underline;
+		}
+	}
+
+	.footer-dev-credit__author-label {
+		margin: 0;
+	}
+	.footer-dev-credit a {
+		color: inherit;
+		text-decoration: underline;
+	}
+
+	.footer-copyright__text {
+		align-self: flex-end;
+	}
+
+	@media (max-width: 768px) {
+		.footer-copyright__container {
+			flex-direction: column;
+		}
+		.footer-copyright__text {
+			align-self: center;
 		}
 	}
 </style>

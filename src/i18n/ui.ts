@@ -31,6 +31,9 @@ export const ui = {
 		'Laister...': 'Próximamente...',
 		'Ikusi gehiago': 'Ver más',
 		'Orri nagusira joan': 'Ir a la página principal',
+		'developed-by': 'Diseñado y desarrollado por:',
+		'quick-link': 'Enlaces directos',
+		'theme-switcher': 'Cambiar tema',
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -49,6 +52,9 @@ export const ui = {
 		WhatsAppez: 'WhatsAppez',
 		Emailez: 'Emailez',
 		'whatsapp-msg': 'Kaixo, informazioa eskatu nahi nuke.',
+		'developed-by': 'Diseñadore eta garatzaileak:',
+		'quick-link': 'Esteka azkarrak',
+		'theme-switcher': 'Aldatu itxura',
 	},
 };
 
