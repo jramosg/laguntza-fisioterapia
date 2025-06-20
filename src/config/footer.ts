@@ -1,4 +1,4 @@
-import { Address, Email, WhatsApp } from '@utils/company';
+import { Address, Email, WhatsApp } from '@config/company';
 
 export const footerSocials = [
 	{
