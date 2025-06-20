@@ -5,7 +5,7 @@ import Interview from '@images/interview.webp';
 
 export const Address = {
 	name: 'Zubitxo Plaza, 3, 20130 Urnieta, Gipuzkoa',
-	url: 'https://maps.app.goo.gl/27C7aUKHSVSbwut47',
+	url: 'https://maps.app.goo.gl/ct7ZQvDpocAY3V5ZA',
 };
 
 export const Phone = {
