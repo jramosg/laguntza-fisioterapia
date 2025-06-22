@@ -138,7 +138,7 @@ const t = useTranslations(lang);
 		top: calc(var(--s5));
 		right: var(--s2);
 		display: flex;
-		gap: var(--s);
+		gap: var(--s2);
 		align-items: center;
 		& :global(.lang-toggle-btn) {
 			background-color: var(--theme-bg);
@@ -154,10 +154,13 @@ const t = useTranslations(lang);
 	}
 
 	.header-burger-container {
+		--circle-size: 42px;
 		background-color: var(--theme-bg);
 		opacity: 0.8;
+		border-radius: 100%;
+		width: var(--circle-size);
+		height: var(--circle-size);
 		border-radius: 50%;
-		padding: var(--s);
 		display: flex;
 		align-items: center;
 		justify-content: center;

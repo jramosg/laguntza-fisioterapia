@@ -9,8 +9,6 @@ type Props = {
 	class?: string;
 };
 const { class: className, color, navData, ...rest }: Props = Astro.props;
-const url = Astro.url;
-const lang = getLangFromUrl(url);
 ---
 
 <button
@@ -26,7 +24,7 @@ const lang = getLangFromUrl(url);
 
 <style>
 	.burger {
-		height: 40px;
+		height: 20px;
 		place-items: center;
 		cursor: pointer;
 		outline: none;
@@ -53,7 +51,6 @@ const lang = getLangFromUrl(url);
 		display: block;
 		border-radius: 2px;
 		height: 2px;
-
 		background-color: var(--theme-on-bg);
 		transition:
 			transform 0.3s ease-in-out,

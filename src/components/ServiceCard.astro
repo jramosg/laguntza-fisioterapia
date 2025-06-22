@@ -64,7 +64,7 @@ const image = sectionImages[section.id as keyof typeof sectionImages] || Jokin;
 	}
 
 	.service-card__desc {
-		padding: var(--s6);
+		padding: var(--s6) var(--s4);
 
 		h2 {
 			font-size: var(--font-size-md);
@@ -116,6 +116,12 @@ const image = sectionImages[section.id as keyof typeof sectionImages] || Jokin;
 			border-bottom-right-radius: var(--theme-shape-radius);
 			border-top-left-radius: unset;
 		}
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: var(--s4) 0 0;
 	}
 
 	.service-card__bullet {
