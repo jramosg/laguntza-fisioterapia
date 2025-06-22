@@ -171,7 +171,6 @@ const t = useTranslations(lang);
 	}
 
 	#when {
-		color: white;
 		opacity: 0;
 	}
 
@@ -181,7 +180,7 @@ const t = useTranslations(lang);
 		text-align: center;
 	}
 	#hero-key-logo {
-		position: absolute; /* Ensure absolute positioning */
+		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
@@ -232,16 +231,14 @@ const t = useTranslations(lang);
 		align-items: center;
 		justify-content: space-between;
 		height: 100vh;
-		padding-left: 5rem;
-		padding-right: 5rem;
-		padding-top: 4rem;
-		padding-bottom: 4rem;
+		padding: var(--s4);
 		width: 100%;
 	}
 
 	.coming-soon-outer {
 		height: 700vh;
 		background-color: var(--theme-primary);
+		color: var(--theme-on-primary);
 	}
 
 	.logo-see-more-img {
@@ -499,7 +496,7 @@ const t = useTranslations(lang);
 			},
 			'<',
 		);
-		
+
 		heroFooter?.addEventListener('click', () => {
 			console.log('Scrolling down...');
 			window.scrollBy({
