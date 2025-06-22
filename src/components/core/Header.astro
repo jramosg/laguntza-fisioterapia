@@ -138,7 +138,7 @@ const t = useTranslations(lang);
 		list-style: none;
 		display: flex;
 	}
-	nav ul li:not(.coming-soon-menu-item) a {
+	nav ul li:not(.landing-menu-item) a {
 		text-decoration: none;
 		margin-right: 1rem;
 		opacity: 0.72;
@@ -185,7 +185,7 @@ const t = useTranslations(lang);
 		transform: translateX(0);
 	}
 
-	.coming-soon-menu-nav ul {
+	.landing-menu-nav ul {
 		list-style: none;
 		padding: 0;
 		margin: 0;
@@ -195,19 +195,19 @@ const t = useTranslations(lang);
 		gap: var(--s5);
 	}
 
-	.coming-soon-menu-item {
+	.landing-menu-item {
 		opacity: 0;
 		transform: translateY(40px) scale(0.95);
 		transition:
 			opacity 0.4s cubic-bezier(0.4, 2, 0.6, 1),
 			transform 0.4s cubic-bezier(0.4, 2, 0.6, 1);
 	}
-	.menu-overlay.open .coming-soon-menu-item {
+	.menu-overlay.open .landing-menu-item {
 		opacity: 1;
 		transform: translateY(0) scale(1);
 	}
 
-	.coming-soon-menu-item a {
+	.landing-menu-item a {
 		font-size: var(--font-size-lg);
 		color: var(--theme-on-primary, #fff);
 		text-decoration: none;
@@ -216,7 +216,7 @@ const t = useTranslations(lang);
 
 		transition: color 0.2s;
 	}
-	.coming-soon-menu-item a:hover {
+	.landing-menu-item a:hover {
 		color: var(--theme-secondary, #e8944a);
 		text-shadow:
 			0 2px 32px #e8944a,

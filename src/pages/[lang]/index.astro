@@ -16,6 +16,7 @@ import { Address, sectionImages, SERVICES } from '@config/company';
 import Footer from '@components/core/Footer.astro';
 import Container from '@components/core/Container.astro';
 import LanguageToggle from '@components/LanguageToggle.astro';
+import MarkerIcon from '@icons/marker.svg';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -48,7 +49,7 @@ const t = useTranslations(lang);
 	<span id="global-loader" class="global-loader">
 		<MainLogo id="main-logo-animated" />
 	</span>
-	<div class="coming-soon-outer" id="coming-soon-outer">
+	<div class="landing-page" id="landing-page">
 		<div id="logo-mask">
 			<section>
 				<picture id="hero-key" class="hero-key-picture">
@@ -67,30 +68,34 @@ const t = useTranslations(lang);
 			</section>
 		</div>
 
-		<section class="coming-soon-main">
+		<section class="landing-content">
 			<div id="when">
 				<h1 class="coming-soon__label">{t('Laister...')}</h1>
-				<a href={Address.url} target="_blank" rel="noopener noreferrer">
-					<h2 class="coming-soon__address">{Address.name}</h2></a
+				<a
+					class="coming-soon__address"
+					href={Address.url}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<MarkerIcon fill="currentColor" />
+					<h2 class="coming-soon__label">{Address.name}</h2></a
 				>
 			</div>
 		</section>
-		<!-- New animated services section -->
 
 		{
 			SERVICES[lang].sections.map((section, idx) => {
-				const image =
-					sectionImages[section.id as keyof typeof sectionImages] || Jokin;
+				const image = sectionImages[section.id as keyof typeof sectionImages];
 
 				return (
-					<section class="slide">
-						<div class="slide__outer">
+					<section class="service-section">
+						<div class="service-section__outer">
 							<Container
-								class="service-card"
+								class="service-section-card"
 								style={`background-image: url('${image.src ?? image}');`}
 							>
-								<div class="service-card__bg-overlay" />
-								<div class="service-card__desc">
+								<div class="service-section-card__bg-overlay" />
+								<div class="service-section-card__desc">
 									<h2>{section.title}</h2>
 								</div>
 							</Container>
@@ -101,7 +106,7 @@ const t = useTranslations(lang);
 		}
 	</div>
 
-	<footer id="hero-footer" slot="footer" class="coming-soon-hero-footer">
+	<footer id="hero-footer" slot="footer" class="landing-hero-footer">
 		<LogoIsotipoWhite
 			id="logo-see-more"
 			class="logo-see-more-img"
@@ -111,7 +116,7 @@ const t = useTranslations(lang);
 		<p class="hero-footer-label">{t('Ikusi gehiago')}</p>
 		<KeepScrolling class="keep-scrolling-icon" fill="currentColor" />
 	</footer>
-	<Footer class="footer-container" id="coming-soon-footer-container" />
+	<Footer class="footer-container" id="landing-footer-container" />
 </Layout>
 
 <style>
@@ -177,9 +182,22 @@ const t = useTranslations(lang);
 		opacity: 0;
 	}
 
-	.coming-soon__label,
 	.coming-soon__address {
-		font-size: var(--font-size-lg);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: var(--container-padding);
+		gap: var(--s2);
+		margin-top: var(--s2);
+		svg {
+			--size: var(--font-size-xl);
+			width: var(--size);
+			height: var(--size);
+		}
+	}
+
+	.coming-soon__label {
+		font-size: var(--font-size-md);
 		text-align: center;
 	}
 	#hero-key-logo {
@@ -227,7 +245,7 @@ const t = useTranslations(lang);
 			0 0 8px #000;
 	}
 
-	.coming-soon-main {
+	.landing-content {
 		position: fixed;
 		display: flex;
 		flex-direction: column;
@@ -238,7 +256,7 @@ const t = useTranslations(lang);
 		width: 100%;
 	}
 
-	.coming-soon-outer {
+	.landing-page {
 		height: 700vh;
 		background-color: var(--theme-primary);
 		color: var(--theme-on-primary);
@@ -249,7 +267,7 @@ const t = useTranslations(lang);
 			drop-shadow(0 0 8px #000);
 	}
 
-	.coming-soon-hero-footer {
+	.landing-hero-footer {
 		position: fixed;
 		margin: auto;
 		bottom: var(--s2);
@@ -291,7 +309,7 @@ const t = useTranslations(lang);
 		filter: drop-shadow(var(--shadow-2xl));
 	}
 
-	.service-card {
+	.service-section-card {
 		background: var(--theme-surface-1,);
 		position: fixed;
 		top: 50%;
@@ -313,7 +331,7 @@ const t = useTranslations(lang);
 		position: fixed;
 		overflow: hidden;
 	}
-	.service-card__bg-overlay {
+	.service-section-card__bg-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
@@ -326,7 +344,7 @@ const t = useTranslations(lang);
 		z-index: 1;
 		pointer-events: none;
 	}
-	.service-card__desc {
+	.service-section-card__desc {
 		position: relative;
 		z-index: 2;
 		flex-direction: column;
@@ -336,7 +354,7 @@ const t = useTranslations(lang);
 		padding-left: var(--s2);
 		padding-right: var(--s2);
 	}
-	.service-card__desc h2 {
+	.service-section-card__desc h2 {
 		margin-bottom: var(--s2);
 		font-size: var(--font-size-md);
 		font-weight: 700;
@@ -347,7 +365,7 @@ const t = useTranslations(lang);
 			0 1px 0 #fff8;
 	}
 
-	.slide {
+	.service-section {
 		height: 100vh;
 		width: 100vw;
 		z-index: 1201;
@@ -360,7 +378,7 @@ const t = useTranslations(lang);
 		}
 	}
 
-	.slide__outer {
+	.service-section__outer {
 		width: 100%;
 		height: 100vh;
 		overflow-y: hidden;
@@ -419,7 +437,7 @@ const t = useTranslations(lang);
 			hideGlobalLoader();
 		}
 
-		const comingSoonContainer = document.getElementById('coming-soon-outer');
+		const comingSoonContainer = document.getElementById('landing-page');
 		const heroFooter = document.getElementById('hero-footer');
 
 		if (!comingSoonContainer) {
@@ -436,10 +454,12 @@ const t = useTranslations(lang);
 			},
 		});
 
-		const sections = gsap.utils.toArray('.slide');
-		const outerWrappers = gsap.utils.toArray('.slide__outer');
+		const sections = gsap.utils.toArray('.service-section');
+		const outerWrappers = gsap.utils.toArray('.service-section__outer');
 
-		gsap.set('.slide:nth-of-type(1) .slide__outer', { xPercent: 0 });
+		gsap.set('.service-section:nth-of-type(1) .service-section__outer', {
+			xPercent: 0,
+		});
 
 		tl.to('#hero-key', { scale: 1 })
 			.to('#hero-key-logo', { opacity: 0 }, '<')
@@ -490,7 +510,7 @@ const t = useTranslations(lang);
 		});
 
 		tl.to('#hero-footer', { opacity: 0, duration: 0 }, '>').fromTo(
-			'#coming-soon-footer-container',
+			'#landing-footer-container',
 			{ yPercent: 100, scale: 0.6 },
 			{
 				yPercent: 0,
