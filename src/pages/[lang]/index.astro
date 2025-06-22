@@ -3,6 +3,7 @@ import Layout from '@layouts/Base.astro';
 import Burger from '@components/buttons/Burger.astro';
 import MainLogo from '@images/logos/main-logo-horizontal.svg';
 import HeroKeyBackground from '@images/jokin2.webp';
+import HeroKeyBackgroundMobile from '@images/jokin-mobile.webp';
 import LogoIsotipoWhite from '@images/logos/isotipo-white.svg';
 import KeepScrolling from '@icons/keep-scrolling.svg';
 import { nav } from '@config/nav';
@@ -60,9 +61,10 @@ const t = useTranslations(lang);
 					/>
 					<img
 						id="hero-key-background"
-						src={HeroKeyBackground.src}
+						srcset={`${HeroKeyBackground.src} 1818w, ${HeroKeyBackgroundMobile.src} 690w`}
 						class="background-image"
 						alt="Jokin Ramos"
+						sizes="(max-width: 769px) 690w, 1818w"
 					/>
 				</picture>
 			</section>
@@ -127,6 +129,7 @@ const t = useTranslations(lang);
 		width: 100vw;
 		height: 100vh;
 		object-fit: cover;
+		object-position: center;
 	}
 
 	.hero-key-picture {
