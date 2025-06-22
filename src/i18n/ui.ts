@@ -34,6 +34,8 @@ export const ui = {
 		'developed-by': 'Diseñado y desarrollado por:',
 		'quick-link': 'Enlaces directos',
 		'theme-switcher': 'Cambiar tema',
+		'Jarri kontaktuan': 'Ponte en contacto',
+		'Hurrengo moduetan jarri zaitezke harremanetan:': 'Puedes ponerte en contacto de las siguientes maneras:',
 	},
 	eu: {
 		'nav.home': 'Hasiera',
