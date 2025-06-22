@@ -106,11 +106,10 @@ const t = useTranslations(lang);
 	.group[aria-hidden='true'] {
 		display: none;
 	}
-	@media (max-width: 768px) {
+	@media (max-width: 1100px) {
 		.carousel {
 			margin: 0 auto;
-			padding: 20px 0;
-			max-width: 700px;
+			padding: var(--s4) 0;
 			overflow: hidden;
 			display: flex;
 			> * {

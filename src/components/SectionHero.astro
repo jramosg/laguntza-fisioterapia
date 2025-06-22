@@ -4,7 +4,7 @@ const { id, class: className, ...rest } = Astro.props;
 ---
 
 <section id={id} class="hero-header-section">
-	<Container class=`hero-header-container ${className}` {...rest}>
+	<Container class=`hero-header-container ${className || ''}` {...rest}>
 		<slot name="title" />
 		<p><slot name="desc" /></p>
 		<div class="chips-container">
@@ -23,7 +23,9 @@ const { id, class: className, ...rest } = Astro.props;
 		}
 	}
 	.hero-header-container {
-		padding: 0;
+		&:global(.content__container) {
+			padding: 0;
+		}
 		width: 100%;
 		h1,
 		p {
