@@ -122,10 +122,16 @@ const t = useTranslations(lang);
 		.group {
 			gap: var(--s2);
 			display: flex;
-			/* Add padding to the right to create a gap between the last and first card. */
 			padding-right: var(--s2);
 			will-change: transform;
-			animation: scrolling 10s linear infinite;
+			animation: scrolling 15s linear infinite;
+			-webkit-mask-image: linear-gradient(
+				90deg,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 1) 10%,
+				rgba(0, 0, 0, 1) 90%,
+				rgba(0, 0, 0, 0) 100%
+			);
 		}
 		.group[aria-hidden='true'] {
 			display: flex;
