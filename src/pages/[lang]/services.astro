@@ -20,9 +20,19 @@ export function getStaticPaths() {
 }
 const lang: Langs = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// SEO data for services page
+const seo = {
+	title: lang === 'eu' 
+		? 'Laguntza Fisioterapia zerbitzuak | Urnieta | Osteopatia, Puntzio Lehorra eta Neuromodulazioa'
+		: 'Servicios Laguntza Fisioterapia | Urnieta | Osteopatía, Punción Seca y Neuromodulación',
+	description: lang === 'eu'
+		? 'Fisioterapia zerbitzuak Urnietan: minaren tratamendua, lesioen berregokitzea, osteopatia, puntzio lehorra eta neuromodulazioa. Gipuzkoan kokatutako zentro espezializatua.'
+		: 'Servicios de fisioterapia en Urnieta: tratamiento del dolor, rehabilitación de lesiones, osteopatía, punción seca y neuromodulación. Centro especializado en Gipuzkoa.',
+};
 ---
 
-<Layout>
+<Layout {seo}>
 	<SectionHero id="services-hero">
 		{
 			lang === 'eu' ? (

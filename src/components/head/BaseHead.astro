@@ -6,6 +6,7 @@ import '../../styles/index.css';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import { ClientRouter } from 'astro:transitions';
 import OpenGraph from './OpenGraph.astro';
+import StructuredData from './StructuredData.astro';
 
 export interface Props {
 	title?: string;
@@ -36,13 +37,26 @@ const canonicalURL =
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-<!-- <link rel="canonical" href={canonicalURL} /> -->
+<link rel="canonical" href={canonicalURL} />
 <!-- Author -->
 <meta name="author" content="Jon Ramos" />
 <!-- Generator -->
 <meta name="generator" content={Astro.generator} />
 
+<!-- Keywords for SEO -->
+<meta
+	name="keywords"
+	content="fisioterapia Urnieta, fisioterapeuta Gipuzkoa, tratamiento dolor, rehabilitación lesiones, osteopatía, punción seca, fisioterapia deportiva, centro fisioterapia, fisioterapia Urnieta Gipuzkoa, fisioterapeuta"
+/>
+
+<!-- Location-based meta tags -->
+<meta name="geo.region" content="ES-SS" />
+<meta name="geo.placename" content="Urnieta, Gipuzkoa" />
+<meta name="geo.position" content="43.24656113552193;-1.9932571315890595" />
+<meta name="ICBM" content="43.24656113552193, -1.9932571315890595" />
+
 <OpenGraph />
+<StructuredData />
 
 <ThemeProvider />
 

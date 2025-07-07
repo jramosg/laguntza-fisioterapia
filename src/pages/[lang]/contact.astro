@@ -27,9 +27,19 @@ const t = useTranslations(lang);
 const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 	t('whatsapp-msg'),
 )}`;
+
+// SEO data for contact page
+const seo = {
+	title: lang === 'eu' 
+		? 'Laguntza Fisioterapia | Kontaktua - Zubitxo Plaza 3, Gipuzkoa'
+		: 'Laguntza Fisioterapia | Contacto - Zubitxo Plaza 3, Gipuzkoa - Tel: 688 639 777',
+	description: lang === 'eu'
+		? 'Jarri kontaktuan Laguntza Fisioterapia zentroarekin Urnietan. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Telefonoa: 688 639 777. WhatsApp eta email eskuragarri.'
+		: 'Contacta con el centro de fisioterapia Laguntza en Urnieta. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Teléfono: 688 639 777. WhatsApp y email disponibles.',
+};
 ---
 
-<Layout>
+<Layout {seo}>
 	<SectionHero id="contact-hero" class="hero-section__contact"
 		><h1 slot="title">
 			{t('contact-jarri')}

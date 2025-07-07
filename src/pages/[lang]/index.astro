@@ -18,6 +18,7 @@ import Footer from '@components/core/Footer.astro';
 import Container from '@components/core/Container.astro';
 import LanguageToggle from '@components/LanguageToggle.astro';
 import MarkerIcon from '@icons/marker.svg';
+import { settings } from '@config/settings';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -26,9 +27,17 @@ export function getStaticPaths() {
 const url = Astro.url;
 const lang = getLangFromUrl(url);
 const t = useTranslations(lang);
+
+// SEO data for the home page
+const seo = {
+	title: lang === 'eu' 
+		? 'Laguntza Fisioterapia | Urnieta - Mina eta Lesioen Tratamendua Gipuzkoan'
+		: 'Laguntza Fisioterapia | Urnieta - Tratamiento del Dolor y Lesiones en Gipuzkoa',
+	description: t(settings.description),
+};
 ---
 
-<Layout>
+<Layout {seo}>
 	<header
 		slot="header"
 		id="laguntzaFisioterapiaNavHeader"

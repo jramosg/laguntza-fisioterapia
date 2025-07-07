@@ -1,4 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /404/
+Allow: /
 
+# Sitemaps
 Sitemap: https://www.laguntzafisioterapia.com/sitemap-index.xml
