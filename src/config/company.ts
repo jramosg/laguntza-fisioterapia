@@ -9,8 +9,8 @@ export const Address = {
 };
 
 export const Phone = {
-	name: '688 639 777',
-	url: 'tel:+34688639777',
+	name: '943 036 070',
+	url: 'tel:+34943036070',
 };
 
 export const Email = {
@@ -19,8 +19,8 @@ export const Email = {
 };
 
 export const WhatsApp = {
-	name: '688 639 777',
-	url: 'https://wa.me/688639777',
+	name: '688 734 113',
+	url: 'https://wa.me/688734113',
 };
 
 export const sectionImages = {
