@@ -36,6 +36,10 @@ export const ui = {
 		'theme-switcher': 'Cambiar tema',
 		'Jarri kontaktuan': 'Ponte en contacto',
 		'Hurrengo moduetan jarri zaitezke harremanetan:': 'Puedes ponerte en contacto de las siguientes maneras:',
+		'working-hours': 'De lunes a viernes, de 08:00 a 20:00',
+		'Deitu': 'Llamar',
+		'Idatzi': 'Escribir',
+		'Bidali WhatsAppa': 'Enviar WhatsApp'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -57,6 +61,7 @@ export const ui = {
 		'developed-by': 'Diseñadore eta garatzaileak:',
 		'quick-link': 'Esteka azkarrak',
 		'theme-switcher': 'Aldatu itxura',
+		'working-hours': 'Astelehenetik ostiralera, 08:00etatik 20:00etara',
 	},
 };
 
