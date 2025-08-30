@@ -19,7 +19,7 @@ export const ui = {
 		'Menua itxi': 'Cerrar menú',
 		'contact-jarri': 'Ponte en',
 		'contact-kontaktuan': 'contacto',
-		'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.':
+		'Kontaktuan jarri telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.':
 			'Ponte en contacto por teléfono, WhatsApp o email. Estamos aquí para ayudarte.',
 		Telefonoz: 'Por teléfono',
 		WhatsAppez: 'Por WhatsApp',
@@ -34,12 +34,15 @@ export const ui = {
 		'developed-by': 'Diseñado y desarrollado por:',
 		'quick-link': 'Enlaces directos',
 		'theme-switcher': 'Cambiar tema',
-		'Jarri kontaktuan': 'Ponte en contacto',
-		'Hurrengo moduetan jarri zaitezke harremanetan:': 'Puedes ponerte en contacto de las siguientes maneras:',
+		'Kontaktuan jarri': 'Ponte en contacto',
+		'Hurrengo moduetan jarri zaitezke harremanetan:':
+			'Puedes ponerte en contacto de las siguientes maneras:',
 		'working-hours': 'De lunes a viernes, de 08:00 a 20:00',
-		'Deitu': 'Llamar',
-		'Idatzi': 'Escribir',
-		'Bidali WhatsAppa': 'Enviar WhatsApp'
+		Deitu: 'Llamar',
+		Idatzi: 'Escribir',
+		'Bidali WhatsAppa': 'Enviar WhatsApp',
+		'we-respond-soon': 'Te responderemos pronto.',
+		'we-respond-inmediately': 'Te responderemos de inmediato.',
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -52,8 +55,8 @@ export const ui = {
 
 		'contact-jarri': 'Jarri',
 		'contact-kontaktuan': 'kontaktuan',
-		'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.':
-			'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.',
+		'Kontaktuan jarri telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.':
+			'Kontaktuan jarri telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.',
 		Telefonoz: 'Telefonoz',
 		WhatsAppez: 'WhatsAppez',
 		Emailez: 'Emailez',
@@ -62,6 +65,8 @@ export const ui = {
 		'quick-link': 'Esteka azkarrak',
 		'theme-switcher': 'Aldatu itxura',
 		'working-hours': 'Astelehenetik ostiralera, 08:00etatik 20:00etara',
+		'we-respond-soon': 'Laister erantzungo dizugu.',
+		'we-respond-inmediately': 'Segituan erantzungo dizugu.',
 	},
 };
 

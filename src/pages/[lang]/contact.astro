@@ -30,18 +30,54 @@ const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
 
 // SEO data for contact page
 const seo = {
-	title: lang === 'eu' 
-		? 'Laguntza Fisioterapia | Kontaktua - Zubitxo Plaza 3, Gipuzkoa'
-		: 'Laguntza Fisioterapia | Contacto - Zubitxo Plaza 3, Gipuzkoa - Tel: 688 639 777',
-	description: lang === 'eu'
-		? 'Jarri kontaktuan Laguntza Fisioterapia zentroarekin Urnietan. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Telefonoa: 688 639 777. WhatsApp eta email eskuragarri.'
-		: 'Contacta con el centro de fisioterapia Laguntza en Urnieta. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Teléfono: 688 639 777. WhatsApp y email disponibles.',
+	title:
+		lang === 'eu'
+			? 'Laguntza Fisioterapia | Kontaktua - Zubitxo Plaza 3, Gipuzkoa'
+			: 'Laguntza Fisioterapia | Contacto - Zubitxo Plaza 3, Gipuzkoa - Tel: 688 639 777',
+	description:
+		lang === 'eu'
+			? 'Kontaktuan jarri Laguntza Fisioterapia zentroarekin Urnietan. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Telefonoa: 688 639 777. WhatsApp eta email eskuragarri.'
+			: 'Contacta con el centro de fisioterapia Laguntza en Urnieta. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Teléfono: 688 639 777. WhatsApp y email disponibles.',
 };
+
+const contacts = [
+	{
+		title: t('Telefonoz'),
+		desc: t('Deitu'),
+		id: 'phone',
+		subdesc: t('working-hours'),
+		ctas: [
+			{ label: WhatsApp.name, href: WhatsApp.urlCall },
+			{ label: Phone.name, href: Phone.url },
+		],
+	},
+	{
+		title: t('Emailez'),
+		desc: Email.name,
+		subdesc: t('we-respond-soon'),
+		id: 'email',
+		ctas: [{ label: t('Idatzi'), href: Email.url }],
+	},
+	{
+		title: t('WhatsAppez'),
+		id: 'whatsapp',
+		desc: WhatsApp.name,
+		subdesc: t('we-respond-inmediately'),
+		ctas: [{ label: t('Bidali WhatsAppa'), href: whatsappUrl }],
+	},
+	{
+		title: t('Bisitatu'),
+		id: 'address',
+		desc: Address.name,
+		subdesc: t('working-hours'),
+		ctas: [{ label: t('Ireki mapan'), href: Address.url }],
+	},
+];
 ---
 
 <Layout {seo}>
-	<SectionHero id="contact-hero" class="hero-section__contact"
-		><h1 slot="title">
+	<SectionHero id="contact-hero" class="hero-section__contact">
+		<h1 slot="title">
 			{t('contact-jarri')}
 			{' '}
 			<span class="hero-section__remark">{t('contact-kontaktuan')}</span>
@@ -49,7 +85,7 @@ const seo = {
 		<Fragment slot="desc">
 			{
 				t(
-					'Jarri kontaktuan telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.',
+					'Kontaktuan jarri telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.',
 				)
 			}
 		</Fragment>
@@ -77,6 +113,69 @@ const seo = {
 	</SectionHero>
 
 	<div class="map-contact-data-grid">
+		<Container tag="section" class="contact-data-section">
+			<h2 class="contact-data-section__text">{t('Kontaktuan jarri')}</h2>
+			<p class="contact-data-section__text">
+				{t('Hurrengo moduetan jarri zaitezke harremanetan:')}
+			</p>
+			{
+				contacts.map(item => {
+					const icons = {
+						phone: <PhoneIcon fill="currentColor" />,
+						email: <EmailIcon fill="currentColor" />,
+						whatsapp: <Icon name="ic:baseline-whatsapp" />,
+						address: <MarkerIcon fill="currentColor" />,
+					} as const;
+					const icon = icons[item.id as keyof typeof icons];
+					return (
+						<div
+							class="contact-card card card--elevated"
+							data-main-href={item.ctas[0].href}
+						>
+							<a
+								class:list={[
+									'contact-card__icon-container',
+									`contact-card__icon-container-${item.id}`,
+								]}
+								href={item.ctas[0].href}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{icon}
+							</a>
+							<h3 class="contact-card__title">{item.title}</h3>
+							{item.desc && (
+								<p
+									class:list={[
+										'contact-card__desc',
+										item.id === 'email' ? 'contact-card__desc__email' : '',
+									]}
+								>
+									{item.desc}
+								</p>
+							)}
+							{item.subdesc && (
+								<p class="contact-card__subdesc">{item.subdesc}</p>
+							)}
+							{item.ctas.map((cta, index) => (
+								<Button
+									outlined
+									newTab
+									href={cta.href}
+									class:list={[
+										`contact-card__icon-container-${item.id}`,
+										'contact-card_cta',
+										index !== 0 && 'contact-card_cta--secondary',
+									]}
+								>
+									{icon} {cta.label}
+								</Button>
+							))}
+						</div>
+					);
+				})
+			}
+		</Container>
 		<Container tag="section" class="ubication-section">
 			<h2>{t('Gure kokalekua')}</h2>
 			<a href={Address.url} target="_blank" rel="noopener noreferrer">
@@ -89,89 +188,6 @@ const seo = {
 					zoom={17}
 				/>
 			</section>
-		</Container>
-		<Container tag="section" class="contact-data-section">
-			<h2>{t('Jarri kontaktuan')}</h2>
-			<p>{t('Hurrengo moduetan jarri zaitezke harremanetan:')}</p>
-			{
-				[
-					{
-						title: t('Telefonoz'),
-						desc: Phone.name,
-						href: Phone.url,
-						id: 'phone',
-						subdesc: t('working-hours'),
-						btnLabel: t('Deitu'),
-					},
-					{
-						title: t('Emailez'),
-						desc: Email.name,
-						id: 'email',
-						btnLabel: t('Idatzi'),
-						href: Email.url,
-					},
-					{
-						title: t('WhatsAppez'),
-
-						id: 'whatsapp',
-						desc: WhatsApp.name,
-						href: whatsappUrl,
-						btnLabel: t('Bidali WhatsAppa'),
-					},
-					{
-						title: t('Bisitatu'),
-						id: 'address',
-						desc: Address.name,
-						href: Address.url,
-						subdesc: t('working-hours'),
-
-						btnLabel: t('Ireki mapan'),
-					},
-				].map(item => {
-					const icons = {
-						phone: <PhoneIcon fill="currentColor" />,
-						email: <EmailIcon fill="currentColor" />,
-						whatsapp: <Icon name="ic:baseline-whatsapp" />,
-						address: <MarkerIcon fill="currentColor" />,
-					} as const;
-					const icon = icons[item.id as keyof typeof icons];
-					return (
-						<a
-							class="contact-card__link"
-							href={item.href}
-							aria-label={item.btnLabel}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<div class="contact-card card card--elevated">
-								<div
-									class:list={[
-										'contact-card__icon-container',
-										`contact-card__icon-container-${item.id}`,
-									]}
-								>
-									{icon}
-								</div>
-								<div>
-									<h3 class="contact-card__title">{item.title}</h3>
-									{item.desc && <p class="contact-card__desc">{item.desc}</p>}
-									{item.subdesc && (
-										<p class="contact-card__subdesc">{item.subdesc}</p>
-									)}
-									<Button
-										outlined
-										newTab
-										href={item.href}
-										class="contact-card_cta"
-									>
-										{item.btnLabel}
-									</Button>
-								</div>
-							</div>
-						</a>
-					);
-				})
-			}
 		</Container>
 	</div>
 </Layout>
@@ -220,30 +236,25 @@ const seo = {
 	.map-contact-data-grid {
 		display: grid;
 		gap: var(--s4);
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: auto minmax(640px, 1fr);
 		margin: var(--s5) 0;
-	}
-
-	@media (max-width: 650px) {
-		.map-contact-data-grid {
-			display: flex;
-			flex-direction: column-reverse;
-			gap: var(--s8);
-		}
 	}
 
 	.contact-data-section {
 		width: 100%;
+		justify-content: flex-start;
+		gap: var(--s4);
 	}
 
 	.contact-card {
 		padding: var(--s6) var(--s4);
 		display: flex;
-		gap: var(--s4);
-		align-items: flex-start;
+		flex-direction: column;
+		align-items: center;
 		--size: 1.5rem;
 		cursor: pointer;
-
+		width: 100%;
+		justify-self: center;
 		p {
 			margin: 0;
 		}
@@ -273,32 +284,37 @@ const seo = {
 		transform: translateY(0);
 	}
 
+	/* Consolidated icon-container styles using --rgb variable */
 	.contact-card__icon-container {
 		border-radius: 9999px;
 		display: flex;
 		padding: var(--s4);
 		align-items: center;
 		justify-content: center;
+		/* default rgb fallback */
+		--rgb: 0, 0, 0;
+		background-color: rgb(var(--rgb));
+		color: white;
+		transition:
+			background-color 160ms linear,
+			opacity 160ms linear;
 	}
 
 	.contact-card__icon-container-phone {
-		background-color: rgb(59 130 246);
-		color: white;
+		--rgb: 59, 130, 246;
 	}
-
 	.contact-card__icon-container-email {
-		background-color: #ea4335; /* Gmail red */
-		color: white;
+		--rgb: 234, 67, 53;
 	}
-
 	.contact-card__icon-container-whatsapp {
-		background-color: #25d366; /* WhatsApp green */
-		color: white;
+		--rgb: 37, 211, 102;
+	}
+	.contact-card__icon-container-address {
+		--rgb: 249, 115, 22;
 	}
 
-	.contact-card__icon-container-address {
-		background-color: rgb(249 115 22);
-		color: white;
+	.contact-card__icon-container:hover {
+		background-color: rgba(var(--rgb), 0.85);
 	}
 
 	.contact-card__title {
@@ -306,23 +322,82 @@ const seo = {
 		font-weight: 700;
 		transition: color 0.3s ease;
 		margin-bottom: var(--s);
+		margin: 0;
+		margin-top: var(--s2);
 	}
 
-	.contact-card__desc {
-		word-break: break-all;
+	p.contact-card__desc {
 		font-size: var(--font-size-sm);
+		text-align: center;
 	}
-	.contact-card__subdesc {
+	.contact-card__desc__email {
+		word-break: break-all;
+	}
+	p.contact-card__subdesc {
 		color: var(--theme-text-secondary);
 		font-size: var(--font-size-sm);
+		margin-top: var(--s2);
+		margin-bottom: var(--s4);
+		text-align: center;
 	}
 
 	.contact-card_cta {
-		margin-top: var(--s4);
+		border-color: inherit;
+		width: 100%;
+		display: flex;
+		gap: var(--s2);
+		&:not(:first-of-type) {
+			margin-top: var(--s2);
+		}
+		background-color: rgb(var(--rgb));
+		border-color: rgb(var(--rgb));
+		color: white;
+		transition:
+			background-color 160ms linear,
+			opacity 160ms linear;
+		&:hover {
+			background-color: rgba(var(--rgb), 0.5);
+		}
+	}
+	.contact-card_cta--secondary {
+		background-color: transparent;
+		border-color: rgb(var(--rgb));
+		color: rgb(var(--rgb));
+		&:hover {
+			background-color: rgba(var(--rgb), 0.1);
+		}
 	}
 
 	.contact-card__link {
 		text-decoration: none;
+	}
+
+	@media (max-width: 1024px) {
+		.map-contact-data-grid {
+			display: flex;
+			flex-direction: column;
+			gap: var(--s8);
+		}
+	}
+
+	@media (max-width: 1024px) and (min-width: 640px) {
+		.contact-data-section {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 0;
+			column-gap: var(--s4);
+		}
+		.contact-data-section__text {
+			grid-column: 1 / 3;
+		}
+		.contact-card {
+			height: calc(100% - var(--s4));
+		}
+
+		p.contact-card__subdesc,
+		p.contact-card__desc {
+			min-height: var(--s6);
+		}
 	}
 </style>
 
@@ -332,10 +407,10 @@ const seo = {
 	gsap.registerPlugin(ScrollTrigger);
 
 	document.addEventListener('astro:page-load', () => {
-		// Fade-in timeline for contact cards
-		const cards = document.querySelectorAll('.contact-card');
+		const cards: NodeListOf<HTMLElement> =
+			document.querySelectorAll('.contact-card');
 		if (cards.length) {
-			cards.forEach((card, i) => {
+			cards.forEach(card => {
 				gsap.fromTo(
 					card,
 					{ opacity: 0, y: 40 },
@@ -351,6 +426,34 @@ const seo = {
 						},
 					},
 				);
+
+				card.addEventListener('click', ev => {
+					const target = ev.target;
+					if (target instanceof Element) {
+						if (target.tagName === 'A') return;
+					}
+
+					const href = card.dataset.mainHref;
+					if (!href) return;
+
+					const a = document.createElement('a');
+					a.href = href;
+					a.target = '_blank';
+					a.rel = 'noopener noreferrer';
+					// keep it visually hidden / non-disruptive
+					a.style.display = 'none';
+					document.body.appendChild(a);
+					a.click();
+					a.remove();
+				});
+
+				card.addEventListener('keydown', ev => {
+					const key = (ev as KeyboardEvent).key;
+					if (key === 'Enter') {
+						ev.preventDefault();
+						card.click();
+					}
+				});
 			});
 		}
 	});
