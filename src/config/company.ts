@@ -21,6 +21,7 @@ export const Email = {
 export const WhatsApp = {
 	name: '688 734 113',
 	url: 'https://wa.me/688734113',
+	urlCall: 'tel:+34688734113'
 };
 
 export const sectionImages = {

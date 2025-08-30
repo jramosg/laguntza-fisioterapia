@@ -3,7 +3,7 @@ import { Icon } from 'astro-icon/components';
 import Container from '../core/Container.astro';
 import { footerLists, footerSocials, authors } from '@config/footer';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
-import { Address, Phone } from '@config/company';
+import { Address, Phone, WhatsApp } from '@config/company';
 import { Fragment } from 'astro/jsx-runtime';
 import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 import BrandLogo from '@images/logos/isotipo-main.svg';
@@ -41,15 +41,32 @@ const props = Astro.props;
 			</ul>
 		</nav>
 		<address>
-			<a
-				href={Phone.url}
-				class="footer-link_icon"
-				title={`Llamar a ${Phone.name}`}
-				aria-label={`Llamar a ${Phone.name}})`}
-			>
-				<PhoneIcon fill="currentColor" />
-				{Phone.name}
-			</a>
+			<span class="footer-link_icon">
+				<a
+					title={`Llamar a ${WhatsApp.name}`}
+					aria-label={`Llamar a ${WhatsApp.name}`}
+					href={WhatsApp.urlCall}
+				>
+					<PhoneIcon fill="currentColor" />
+				</a>
+				<a
+					title={`Llamar a ${WhatsApp.name}`}
+					aria-label={`Llamar a ${WhatsApp.name}`}
+					href={WhatsApp.urlCall}
+					class="phone-link"
+				>
+					{WhatsApp.name}
+				</a>
+				{' · '}
+				<a
+					href={Phone.url}
+					class="phone-link"
+					title={`Llamar a ${Phone.name}`}
+					aria-label={`Llamar a ${Phone.name}})`}
+				>
+					{Phone.name}
+				</a>
+			</span>
 			<a
 				class="footer-link_icon"
 				href={Address.url}
@@ -144,6 +161,9 @@ const props = Astro.props;
 		&:hover {
 			opacity: 0.72;
 		}
+		&.phone-link {
+			text-decoration: underline;
+		}
 	}
 
 	ul {
@@ -207,21 +227,6 @@ const props = Astro.props;
 		&:hover {
 			background-color: rgba(0, 0, 0, 0.1);
 		}
-	}
-
-	.footer-link__list {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.footer-link__list li {
-		margin-bottom: 0.5rem;
-	}
-	.footer-link__list li a {
-		text-decoration: none;
-	}
-	.footer-link__list li a:hover {
-		opacity: 0.84;
 	}
 
 	address {
