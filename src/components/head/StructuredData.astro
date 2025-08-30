@@ -6,20 +6,30 @@ import { getLangFromUrl, useTranslations } from '@i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
+// Main business structured data
 const structuredData = {
 	'@context': 'https://schema.org',
-	'@type': 'HealthAndBeautyBusiness',
-	'@id': 'https://laguntzafisioterapia.com',
+	'@type': 'MedicalBusiness',
+	'@id': 'https://laguntzafisioterapia.com#business',
 	name: 'Laguntza Fisioterapia',
-	alternateName: 'Centro de Fisioterapia Urnieta',
+	alternateName: 'Centro de Fisioterapia Laguntza',
 	description: t(settings.description),
 	url: 'https://laguntzafisioterapia.com',
+	logo: {
+		'@type': 'ImageObject',
+		url: 'https://laguntzafisioterapia.com/main-logo-horizontal.png',
+		width: 300,
+		height: 224
+	},
 	image: [
 		'https://laguntzafisioterapia.com/main-logo-horizontal.png',
 		'https://laguntzafisioterapia.com/open-graph.jpg',
 	],
 	telephone: Phone.name,
 	email: Email.name.replace('mailto:', ''),
+	sameAs: [
+		'https://laguntzafisioterapia.com',
+	],
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: 'Zubitxo Plaza, 3',
@@ -37,17 +47,21 @@ const structuredData = {
 		{
 			'@type': 'OpeningHoursSpecification',
 			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-			opens: '09:00',
+			opens: '08:00',
 			closes: '20:00',
 		},
 	],
 	priceRange: '€€',
 	currenciesAccepted: 'EUR',
-	paymentAccepted: 'Cash, Credit Card',
+	paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer'],
 	areaServed: [
 		{
 			'@type': 'City',
 			name: 'Urnieta',
+		},
+		{
+			'@type': 'City', 
+			name: 'Donostia-San Sebastián',
 		},
 		{
 			'@type': 'AdministrativeArea',
@@ -58,18 +72,89 @@ const structuredData = {
 			name: 'España',
 		},
 	],
-	serviceType: [
-		'Fisioterapia',
-		'Tratamiento del dolor',
-		'Rehabilitación deportiva',
-		'Osteopatía',
-		'Punción seca',
-		'Neuromodulación',
+	medicalSpecialty: [
+		{
+			'@type': 'MedicalSpecialty',
+			name: 'Physical Therapy'
+		},
+		{
+			'@type': 'MedicalSpecialty', 
+			name: 'Sports Medicine'
+		},
+		{
+			'@type': 'MedicalSpecialty',
+			name: 'Pain Management'
+		},
+		{
+			'@type': 'MedicalSpecialty',
+			name: 'Osteopathy'
+		}
 	],
-	medicalSpecialty: ['Physical Therapy', 'Sports Medicine', 'Pain Management'],
+	availableService: [
+		{
+			'@type': 'MedicalTherapy',
+			name: 'Fisioterapia General',
+			description: 'Tratamiento integral de lesiones y dolor mediante técnicas de fisioterapia avanzada'
+		},
+		{
+			'@type': 'MedicalTherapy',
+			name: 'Osteopatía',
+			description: 'Tratamiento holístico para recuperar el equilibrio corporal'
+		},
+		{
+			'@type': 'MedicalTherapy',
+			name: 'Punción Seca',
+			description: 'Técnica especializada para tratar puntos gatillo miofasciales'
+		},
+		{
+			'@type': 'MedicalTherapy',
+			name: 'Neuromodulación',
+			description: 'Técnicas avanzadas de estimulación del sistema nervioso'
+		},
+		{
+			'@type': 'MedicalTherapy',
+			name: 'Rehabilitación Deportiva',
+			description: 'Recuperación específica para atletas y deportistas'
+		}
+	],
 	hasMap: Address.url,
+	isAccessibleForFree: false,
+	knowsAbout: [
+		'Fisioterapia',
+		'Osteopatía', 
+		'Rehabilitación',
+		'Terapia Manual',
+		'Punción Seca',
+		'Neuromodulación',
+		'Medicina Deportiva'
+	]
 };
 
+// Professional/Person structured data
+const professionalData = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	'@id': 'https://laguntzafisioterapia.com#jokin-ramos',
+	name: 'Jokin Ramos',
+	jobTitle: 'Fisioterapeuta Colegiado',
+	worksFor: {
+		'@id': 'https://laguntzafisioterapia.com#business'
+	},
+	knowsAbout: [
+		'Fisioterapia',
+		'Osteopatía',
+		'Punción Seca',
+		'Neuromodulación',
+		'Rehabilitación Deportiva',
+		'Terapia Manual'
+	],
+	alumniOf: 'Universidad Pública de Navarra',
+	hasCredential: 'Colegio Profesional de Fisioterapeutas de País Vasco',
+	email: Email.name.replace('mailto:', ''),
+	telephone: Phone.name
+};
+
+// Organization data for additional context
 const organizationData = {
 	'@context': 'https://schema.org',
 	'@type': 'Organization',
@@ -87,7 +172,5 @@ const organizationData = {
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-<script
-	type="application/ld+json"
-	set:html={JSON.stringify(organizationData)}
-/>
+<script type="application/ld+json" set:html={JSON.stringify(professionalData)} />
+<script type="application/ld+json" set:html={JSON.stringify(organizationData)} />

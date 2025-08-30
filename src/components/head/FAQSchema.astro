@@ -1,0 +1,74 @@
+---
+import { getLangFromUrl } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const faqData = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: [
+		{
+			'@type': 'Question',
+			name: lang === 'eu' 
+				? 'Non dago kokatuta Laguntza Fisioterapia zentroa?'
+				: '¿Dónde está ubicado el centro Laguntza Fisioterapia?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: lang === 'eu'
+					? 'Laguntza Fisioterapia zentroa Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoan kokatuta dago.'
+					: 'El centro Laguntza Fisioterapia está ubicado en Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa.'
+			}
+		},
+		{
+			'@type': 'Question',
+			name: lang === 'eu'
+				? 'Zer zerbitzu eskaintzen ditu Laguntza Fisioterapiak?'
+				: '¿Qué servicios ofrece Laguntza Fisioterapia?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: lang === 'eu'
+					? 'Fisioterapia orokorra, osteopatia, puntzio lehorra, neuromodulazioa, terapia manuala eta lesioen berregokitzea eskaintzen ditugu.'
+					: 'Ofrecemos fisioterapia general, osteopatía, punción seca, neuromodulación, terapia manual y rehabilitación de lesiones.'
+			}
+		},
+		{
+			'@type': 'Question',
+			name: lang === 'eu'
+				? 'Zein dira Laguntza Fisioterapiaren ordutegiak?'
+				: '¿Cuáles son los horarios de Laguntza Fisioterapia?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: lang === 'eu'
+					? 'Astelehenetik ostiralera 08:00etatik 20:00etara zabalik gaude.'
+					: 'Estamos abiertos de lunes a viernes de 08:00 a 20:00 horas.'
+			}
+		},
+		{
+			'@type': 'Question',
+			name: lang === 'eu'
+				? 'Nola har dezaket harremana Laguntza Fisioterapiarekin?'
+				: '¿Cómo puedo contactar con Laguntza Fisioterapia?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: lang === 'eu'
+					? 'Telefono bidez 943 036 070 zenbakira deituz, WhatsApp bidez 688 734 113 zenbakira edo email bidez laguntzafisioterapia@gmail.com helbidera idatziz.'
+					: 'Puedes contactar por teléfono al 943 036 070, WhatsApp al 688 734 113 o por email a laguntzafisioterapia@gmail.com.'
+			}
+		},
+		{
+			'@type': 'Question',
+			name: lang === 'eu'
+				? 'Fisioterapeutak titulazio profesionala al du?'
+				: '¿El fisioterapeuta tiene titulación profesional?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: lang === 'eu'
+					? 'Bai, Jokin Ramos fisioterapeuta kolegiatu eta profesionala da, Euskal Herriko Fisioterapeuten Elkargo Profesionalean kolegiaturik dagoena.'
+					: 'Sí, Jokin Ramos es fisioterapeuta colegiado y profesional, colegiado en el Colegio Profesional de Fisioterapeutas del País Vasco.'
+			}
+		}
+	]
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqData)} />

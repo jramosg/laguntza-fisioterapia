@@ -1,6 +1,32 @@
 User-agent: *
-Disallow: /404/
 Allow: /
 
+# Block admin and private areas
+Disallow: /404/
+Disallow: /_astro/
+Disallow: /admin/
+Disallow: /.well-known/
+
+# Allow search engines to crawl images
+Allow: /assets/
+Allow: /images/
+Allow: /*.webp
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.svg
+
+# Crawl delay for polite crawling
+Crawl-delay: 1
+
 # Sitemaps
-Sitemap: https://www.laguntzafisioterapia.com/sitemap-index.xml
+Sitemap: https://laguntzafisioterapia.com/sitemap-index.xml
+
+# Additional instructions for specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /

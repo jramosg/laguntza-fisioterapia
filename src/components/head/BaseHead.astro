@@ -7,25 +7,39 @@ import { getLangFromUrl, useTranslations } from '@i18n/utils';
 import { ClientRouter } from 'astro:transitions';
 import OpenGraph from './OpenGraph.astro';
 import StructuredData from './StructuredData.astro';
+import FAQSchema from './FAQSchema.astro';
 
 export interface Props {
 	title?: string;
 	description?: string;
 	canonicalURL?: URL | string;
 	image?: string;
+	keywords?: string;
+	alternateLanguages?: { hreflang: string; href: string }[];
+	noindex?: boolean;
+	breadcrumb?: { name: string; url: string }[];
 }
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const title = Astro.props.title || settings.title;
 const description = Astro.props.description || t(settings.description);
-const canonicalURL =
-	Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site);
+const keywords = Astro.props.keywords;
+
+// Generate alternate language URLs
+const currentPath = Astro.url.pathname.replace(`/${lang}`, '');
+const alternateLanguages = Astro.props.alternateLanguages || [
+	{ hreflang: 'es', href: new URL(`/es${currentPath}`, Astro.site).toString() },
+	{ hreflang: 'eu', href: new URL(`/eu${currentPath}`, Astro.site).toString() },
+	{ hreflang: 'x-default', href: new URL(`/es${currentPath}`, Astro.site).toString() }
+];
 ---
 
 <!-- Global Metadata -->
 <meta http-equiv="Content-Language" content={lang} />
-<meta name="viewport" content="width=device-width" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="format-detection" content="telephone=no" />
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -33,17 +47,29 @@ const canonicalURL =
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <meta charset="UTF-8" />
+
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
-<!-- Author -->
+
+<!-- Alternate Languages -->
+{alternateLanguages.map(({ hreflang, href }) => (
+	<link rel="alternate" hreflang={hreflang} href={href} />
+))}
+
+<!-- Author and Business Info -->
 <meta name="author" content="Jon Ramos" />
-<!-- Keywords for SEO -->
+<meta name="publisher" content="Laguntza Fisioterapia" />
+
+<!-- Enhanced Keywords for SEO -->
 <meta
 	name="keywords"
-	content="fisioterapia Urnieta, fisioterapeuta Gipuzkoa, tratamiento dolor, rehabilitación lesiones, osteopatía, punción seca, fisioterapia deportiva, centro fisioterapia, fisioterapia Urnieta Gipuzkoa, fisioterapeuta"
+	content={keywords || (lang === 'eu' 
+		? "fisioterapia Urnieta, fisioterapeuta Gipuzkoa, minaren tratamendua, lesioen berregokitzea, osteopatia, puntzio lehorra, fisioterapia kirolari, errehabilitazioa, neuromodulazioa, terapia manuala, Zubitxo Plaza, fisioterapia zentroa"
+		: "fisioterapia Urnieta, fisioterapeuta Gipuzkoa, tratamiento dolor, rehabilitación lesiones, osteopatía, punción seca, fisioterapia deportiva, centro fisioterapia, neuromodulación, terapia manual, Zubitxo Plaza"
+	)}
 />
 
 <!-- Location-based meta tags -->
@@ -52,8 +78,23 @@ const canonicalURL =
 <meta name="geo.position" content="43.24656113552193;-1.9932571315890595" />
 <meta name="ICBM" content="43.24656113552193, -1.9932571315890595" />
 
+<!-- Business/Medical specific meta tags -->
+<meta name="medical-specialties" content="Fisioterapia, Osteopatía, Rehabilitación, Terapia Manual" />
+<meta name="service-area" content="Urnieta, Donostia, San Sebastián, Gipuzkoa, País Vasco" />
+
+<!-- Robots and indexing directives -->
+{Astro.props.noindex ? (
+	<meta name="robots" content="noindex, nofollow" />
+) : (
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+)}
+
+<!-- Security headers -->
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+
 <OpenGraph />
 <StructuredData />
+<FAQSchema />
 
 <ThemeProvider />
 
@@ -68,3 +109,23 @@ const canonicalURL =
 		}
 	});
 </script>
+
+<!-- Google Search Console verification -->
+<!-- <meta name="google-site-verification" content="your-verification-code" /> -->
+
+<!-- Performance optimization -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+<!-- Additional performance hints -->
+<meta name="theme-color" content="#0f172a" />
+<meta name="color-scheme" content="light dark" />
+
+<!-- Social media optimization -->
+<meta name="twitter:dnt" content="on" />
+
+<!-- Additional meta for mobile optimization -->
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Laguntza Fisio" />
