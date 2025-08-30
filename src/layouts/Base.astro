@@ -16,9 +16,9 @@ const lang = getLangFromUrl(Astro.url);
 		<BaseHead {...seo} />
 	</head>
 
-	<body>
+	<body itemscope itemtype="https://schema.org/WebPage">
 		<slot name="header" />
-		<main id="content" class="main-content">
+		<main id="content" class="main-content" role="main">
 			<slot />
 		</main>
 		<slot name="footer" />
