@@ -226,8 +226,9 @@ const seo = {
 
 	@media (max-width: 650px) {
 		.map-contact-data-grid {
-			grid-template-columns: 1fr;
-			row-gap: var(--s8);
+			display: flex;
+			flex-direction: column-reverse;
+			gap: var(--s8);
 		}
 	}
 
