@@ -28,7 +28,7 @@ export const ui = {
 		Bisitatu: 'Visítanos',
 		'Ireki mapan': 'Abrir en el mapa',
 		'Gure kokalekua': 'Nuestra ubicación',
-		'Laister...': 'Próximamente...',
+		'Dagoeneko irekita!': '¡Ya hemos abierto!',
 		'Ikusi gehiago': 'Ver más',
 		'Orri nagusira joan': 'Ir a la página principal',
 		'developed-by': 'Diseñado y desarrollado por:',
