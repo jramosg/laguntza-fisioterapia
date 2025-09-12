@@ -23,7 +23,8 @@
 		"astro": "^5.13.5",
 		"astro-icon": "^1.1.5",
 		"date-fns": "^4.1.0",
-		"prettier-plugin-astro": "^0.14.1"
+		"prettier-plugin-astro": "^0.14.1",
+		"sharp": "^0.34.3"
 	},
 	"dependencies": {
 		"@astrojs/partytown": "^2.1.4",

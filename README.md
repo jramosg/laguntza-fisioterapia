@@ -91,6 +91,25 @@ Laguntza Fisioterapia offers specialized physiotherapy services, focusing on pai
 - `build` – Build the site for production
 - `preview` – Preview the production build
 
+### Docker Container
+
+You can also run the application using Docker:
+
+1. **Build the Docker image:**
+   ```sh
+   docker build -t laguntza-fisioterapia .
+   ```
+
+2. **Run the container:**
+   ```sh
+   docker run -p 3000:8080 laguntza-fisioterapia
+   ```
+   
+   Replace `3000` with any available port on your machine. The container exposes port `8080` by default.
+
+3. **Access the application:**
+   Visit [http://localhost:3000](http://localhost:3000) (or whatever port you specified).
+
 ## Project Structure
 
 ```
