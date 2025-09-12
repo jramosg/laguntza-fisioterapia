@@ -1,0 +1,96 @@
+name: Deploy to Server
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          # Build the full image
+          docker build -t laguntza-fisioterapia:latest .
+
+          # Also build just the build stage to extract dist folder
+          docker build --target build -t laguntza-fisioterapia:build .
+
+      - name: Extract dist folder from Docker container
+        run: |
+          # Create a temporary container from the build stage image
+          docker create --name temp-container laguntza-fisioterapia:build
+
+          # Copy the dist folder from the build stage
+          docker cp temp-container:/app/dist ./dist
+
+          # Remove the temporary container
+          docker rm temp-container
+
+      - name: Create deployment archive
+        run: |
+          # Create a tar archive of the dist folder for efficient transfer
+          tar -czf dist.tar.gz -C dist .
+     
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            # Create the target directory if it doesn't exist
+            sudo mkdir -p /var/www/laguntza-fisioterapia
+
+            # Create a backup of the current deployment (optional)
+            if [ -d "/var/www/laguntza-fisioterapia" ] && [ "$(ls -A /var/www/laguntza-fisioterapia)" ]; then
+              sudo mv /var/www/laguntza-fisioterapia /var/www/laguntza-fisioterapia.backup.$(date +%Y%m%d_%H%M%S)
+              sudo mkdir -p /var/www/laguntza-fisioterapia
+            fi
+
+      - name: Upload and extract files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          source: 'dist.tar.gz'
+          target: '/tmp/'
+
+      - name: Extract files on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            # Extract the files to the target directory
+            sudo tar -xzf /tmp/dist.tar.gz -C /var/www/laguntza-fisioterapia
+
+            # Set proper ownership and permissions
+            sudo chown -R www-data:www-data /var/www/laguntza-fisioterapia
+            sudo find /var/www/laguntza-fisioterapia -type d -exec chmod 755 {} \;
+            sudo find /var/www/laguntza-fisioterapia -type f -exec chmod 644 {} \;
+
+            # Clean up the temporary file
+            rm -f /tmp/dist.tar.gz
+
+             sudo systemctl reload nginx
+
+      - name: Deployment notification
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "Files have been copied to /var/www/laguntza-fisioterapia/ on the server."
