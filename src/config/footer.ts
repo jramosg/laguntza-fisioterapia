@@ -5,7 +5,7 @@ import EmailIcon from '@icons/email.svg';
 export const footerSocials = [
 	{
 		name: 'Instagram',
-		url: 'https://www.instagram.com/jon95ramos/?hl=es',
+		url: 'https://www.instagram.com/laguntzafisioterapia',
 		icon: 'mdi:instagram',
 	},
 	{
