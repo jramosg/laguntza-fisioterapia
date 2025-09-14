@@ -65,3 +65,47 @@ pre .language-id {
 .card--flat:focus-visible {
 	background-color: var(--theme-surface-2);
 }
+
+/* Enhanced Focus States for Accessibility */
+*:focus-visible {
+	outline: 2px solid var(--theme-primary);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Button Focus States */
+button:focus-visible,
+.button:focus-visible {
+	outline: 2px solid var(--theme-primary);
+	outline-offset: 2px;
+	box-shadow: 0 0 0 4px rgba(69, 130, 149, 0.2);
+}
+
+/* Link Focus States */
+a:focus-visible {
+	outline: 2px solid var(--theme-primary);
+	outline-offset: 2px;
+	text-decoration: underline;
+}
+
+/* Interactive Elements Minimum Touch Target */
+button,
+.button,
+a[role="button"],
+input[type="submit"],
+input[type="button"] {
+	min-height: 44px;
+	min-width: 44px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

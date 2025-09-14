@@ -17,7 +17,7 @@ import PhoneIcon from '@icons/phone.svg';
 import EmailIcon from '@icons/email.svg';
 import Button from '@components/buttons/Button.astro';
 import MarkerIcon from '@icons/marker.svg';
-
+import ContactForm from '@components/forms/ContactForm.astro';
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
@@ -38,9 +38,10 @@ const seo = {
 		lang === 'eu'
 			? 'Kontaktuan jarri Laguntza Fisioterapia zentroarekin Urnietan. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Telefonoa: 943 036 070. WhatsApp eta email eskuragarri. Ordutegia: astelehenetik ostiralera.'
 			: 'Contacta con el centro de fisioterapia Laguntza en Urnieta. Zubitxo Plaza 3, 20130 Urnieta, Gipuzkoa. Teléfono: 943 036 070. WhatsApp y email disponibles. Horario: lunes a viernes.',
-	keywords: lang === 'eu'
-		? 'Laguntza Fisioterapia kontaktua, Urnieta fisioterapia, Zubitxo Plaza 3, telefonoa 943 036 070, WhatsApp fisioterapeuta, Gipuzkoa fisioterapia zentroa'
-		: 'Laguntza Fisioterapia contacto, Urnieta fisioterapia, Zubitxo Plaza 3, teléfono 943 036 070, WhatsApp fisioterapeuta, Gipuzkoa centro fisioterapia'
+	keywords:
+		lang === 'eu'
+			? 'Laguntza Fisioterapia kontaktua, Urnieta fisioterapia, Zubitxo Plaza 3, telefonoa 943 036 070, WhatsApp fisioterapeuta, Gipuzkoa fisioterapia zentroa'
+			: 'Laguntza Fisioterapia contacto, Urnieta fisioterapia, Zubitxo Plaza 3, teléfono 943 036 070, WhatsApp fisioterapeuta, Gipuzkoa centro fisioterapia',
 };
 
 const contacts = [
@@ -93,7 +94,7 @@ const contacts = [
 			}
 		</Fragment>
 		<Fragment slot="chips">
-			<Chip text="Telefonoa" href={Phone.url}>
+			<Chip text="Telefonoa" href={WhatsApp.urlCall}>
 				<PhoneIcon slot="icon" />
 			</Chip>
 			<Chip
@@ -114,6 +115,7 @@ const contacts = [
 			</Chip>
 		</Fragment>
 	</SectionHero>
+	<ContactForm />
 
 	<div class="map-contact-data-grid">
 		<Container tag="section" class="contact-data-section">

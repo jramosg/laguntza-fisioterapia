@@ -1,35 +1,1122 @@
 ---
-import {
-	Button,
-	FormInput,
-	FormSelect,
-	FormTextarea,
-} from '@components/odyssey-theme';
+import Container from '@components/core/Container.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
-const selectOptions = ['Google Search', 'Social Media', 'Email'];
+const lang = getLangFromUrl(Astro.url);
+
+const selectOptions =
+	lang === 'eu'
+		? [
+				'Google bilaketa',
+				'Instagram',
+				'Norbaiten gomendioz',
+				'Beste bat',
+			]
+		: [
+				'Búsqueda Google',
+				'Instagram',
+				'Recomendación',
+				'Otros',
+			];
 ---
 
-<form name="Contact Form" method="POST" action="/contact-thank-you">
-	<FormInput type="text" label="Name" name="Name" placeholder="John Doe" />
-	<FormInput
-		type="email"
-		label="Email"
-		name="Email"
-		placeholder="hello@example.com"
-	/>
-	<FormSelect label="How Did You Hear About Us?" options={selectOptions} />
-	<FormTextarea
-		label="Message"
-		name="Message"
-		placeholder="Your message here..."
-	/>
-	<Button>Submit</Button>
-</form>
+<Container narrow>
+	<div class="form-header">
+		<h3 class="form-title">
+			{lang === 'eu' ? 'Harremanetan jarri' : 'Ponte en contacto'}
+		</h3>
+		<p class="form-subtitle">
+			{
+				lang === 'eu'
+					? 'Zure kontsulta lehenbailen erantzungo dugu.'
+					: 'Te responderemos a tu consulta lo antes posible.'
+			}
+		</p>
+	</div>
+
+	<form class="laguntza-fisio-contact-form" id="contactForm" novalidate>
+		<div class="form-grid">
+			<!-- Name Field -->
+			<div class="form-group">
+				<label for="name" class="form-label">
+					<span class="label-text">
+						{lang === 'eu' ? 'Izena' : 'Nombre'}
+						<span class="required">*</span>
+					</span>
+				</label>
+				<div class="input-wrapper">
+					<div class="input-icon">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+							<circle cx="12" cy="7" r="4"></circle>
+						</svg>
+					</div>
+					<input
+						type="text"
+						id="name"
+						name="name"
+						class="form-input"
+						placeholder={lang === 'eu' ? 'Zure izena' : 'Tu nombre'}
+						required
+						aria-describedby="name-error"
+					/>
+				</div>
+				<div class="error-message" id="name-error" role="alert"></div>
+			</div>
+
+			<!-- Email Field -->
+			<div class="form-group">
+				<label for="email" class="form-label">
+					<span class="label-text">
+						Email <span class="required">*</span>
+					</span>
+				</label>
+				<div class="input-wrapper">
+					<input
+						type="email"
+						id="email"
+						name="email"
+						class="form-input"
+						placeholder={lang === 'eu' ? 'zu@email.com' : 'tu@email.com'}
+						required
+						aria-describedby="email-error"
+					/>
+					<div class="input-icon">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path
+								d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+							></path>
+							<polyline points="22,6 12,13 2,6"></polyline>
+						</svg>
+					</div>
+				</div>
+				<div class="error-message" id="email-error" role="alert"></div>
+			</div>
+
+			<!-- Phone Field -->
+			<div class="form-group">
+				<label for="phone" class="form-label">
+					<span class="label-text">
+						{lang === 'eu' ? 'Telefonoa' : 'Teléfono'}
+					</span>
+				</label>
+				<div class="input-wrapper">
+					<input
+						type="tel"
+						id="phone"
+						name="phone"
+						class="form-input"
+						placeholder="643 123 456"
+						aria-describedby="phone-help"
+					/>
+					<div class="input-icon">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path
+								d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+							></path>
+						</svg>
+					</div>
+				</div>
+				<small id="phone-help" class="form-help">
+					{
+						lang === 'eu'
+							? 'Aukerakoa - WhatsApp bidez erantzuteko'
+							: 'Opcional - Para responder por WhatsApp'
+					}
+				</small>
+			</div>
+
+			<!-- Source Field -->
+			<div class="form-group">
+				<label for="source" class="form-label">
+					<span class="label-text">
+						{lang === 'eu' ? 'Nola ezagutu gintuzun?' : '¿Cómo nos conociste?'}
+					</span>
+				</label>
+				<div class="select-wrapper">
+					<select id="source" name="source" class="form-select" >
+						<option value="">
+							{lang === 'eu' ? 'Aukeratu bat...' : 'Selecciona una opción...'}
+						</option>
+						{
+							selectOptions.map(option => (
+								<option value={option}>{option}</option>
+							))
+						}
+					</select>
+					<div class="select-icon">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<polyline points="6,9 12,15 18,9"></polyline>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Message Field -->
+		<div class="form-group full-width">
+			<label for="message" class="form-label">
+				<span class="label-text">
+					{lang === 'eu' ? 'Mezua' : 'Mensaje'}
+					<span class="required">*</span>
+				</span>
+			</label>
+			<div class="textarea-wrapper">
+				<textarea
+					id="message"
+					name="message"
+					class="form-textarea"
+					placeholder={lang === 'eu'
+						? 'Kontaiguzu zure kasua...'
+						: 'Cuéntanos tu caso...'}
+					required
+					rows="5"
+					aria-describedby="message-error message-help"></textarea>
+			</div>
+			<small id="message-help" class="form-help">
+				{
+					lang === 'eu'
+						? 'Azaldu zein den zure arazoa eta noiz hasi zen'
+						: 'Describe cuál es tu problema y cuándo comenzó'
+				}
+			</small>
+			<div class="error-message" id="message-error" role="alert"></div>
+		</div>
+
+		<!-- Submit Button -->
+		<div class="form-actions">
+			<button type="submit" class="submit-btn" id="submitBtn">
+				<span class="btn-text">
+					{lang === 'eu' ? 'Bidali mezua' : 'Enviar mensaje'}
+				</span>
+				<div class="btn-loader">
+					<div class="spinner"></div>
+				</div>
+				<div class="btn-icon">
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<line x1="22" y1="2" x2="11" y2="13"></line>
+						<polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
+					</svg>
+				</div>
+			</button>
+		</div>
+
+		<!-- Success Message -->
+		<div class="success-message" id="successMessage">
+			<div class="success-icon">
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<polyline points="20,6 9,17 4,12"></polyline>
+				</svg>
+			</div>
+			<div class="success-text">
+				<h4>{lang === 'eu' ? 'Mezua bidali da!' : '¡Mensaje enviado!'}</h4>
+				<p>
+					{
+						lang === 'eu'
+							? 'Laister jarriko gara harremanetan.'
+							: 'Nos pondremos en contacto contigo pronto.'
+					}
+				</p>
+			</div>
+		</div>
+
+		<!-- Error Message -->
+		<div class="error-message-box" id="errorMessage">
+			<div class="error-icon">
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="15" y1="9" x2="9" y2="15"></line>
+					<line x1="9" y1="9" x2="15" y2="15"></line>
+				</svg>
+			</div>
+			<div class="error-text">
+				<h4 id="errorTitle"></h4>
+				<p id="errorDescription"></p>
+			</div>
+			<button type="button" class="error-close" id="errorClose" aria-label="Cerrar mensaje de error">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			</button>
+		</div>
+	</form>
+</Container>
 
 <style>
-	form {
+	.form-header {
+		text-align: center;
+		margin: var(--s4) 0;
+	}
+
+	.form-title {
+		font-size: var(--font-size-lg);
+		font-weight: 700;
+		color: var(--theme-primary);
+		margin-bottom: 0;
+	}
+
+	.form-subtitle {
+		color: var(--theme-text-secondary);
+		font-size: var(--font-size-base);
+		margin: 0;
+	}
+
+	.laguntza-fisio-contact-form{
+		background: var(--theme-bg);
+		border-radius: var(--theme-shape-radius);
+		padding: var(--s8);
+		box-shadow: var(--shadow-xl);
+		border: 1px solid var(--theme-outline);
+		margin-bottom: var(--s8);
+	}
+
+	.form-grid {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1rem;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: var(--s6);
+		margin-bottom: var(--s6);
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: var(--s2);
+	}
+
+	.form-group.full-width {
+		grid-column: 1 / -1;
+	}
+
+	.form-label {
+		display: block;
+		font-weight: 600;
+		color: var(--theme-on-bg);
+		font-size: var(--font-size-base);
+	}
+
+	.label-text {
+		display: flex;
+		align-items: center;
+		gap: var(--s2);
+	}
+
+	.required {
+		color: #dc2626;
+		font-weight: 700;
+	}
+
+	.input-wrapper,
+	.select-wrapper,
+	.textarea-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	.form-input,
+	.form-select,
+	.form-textarea {
+		width: 100%;
+		padding: var(--s2) var(--s2) var(--s2) var(--s6);
+		border: 2px solid var(--theme-outline);
+		border-radius: var(--theme-button-border-radius);
+		font-size: var(--font-size-base);
+		font-family: var(--theme-font-family);
+		background: var(--theme-bg);
+		color: var(--theme-on-bg);
+		transition: all 0.3s ease;
+		min-height: 50px;
+	}
+
+	.form-select {
+		appearance: none;
+		cursor: pointer;
+
+	}
+
+	.form-textarea {
+		resize: vertical;
+		min-height: 120px;
+		padding-top: var(--s4);
+		line-height: 1.6;
+	}
+
+	.form-input:focus,
+	.form-select:focus,
+	.form-textarea:focus {
+		outline: none;
+		border-color: var(--theme-primary);
+		box-shadow: 0 0 0 3px rgba(69, 130, 149, 0.1);
+	}
+
+	.form-input.error,
+	.form-select.error,
+	.form-textarea.error {
+		border-color: #dc2626;
+		box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+	}
+
+	.input-icon,
+	.select-icon {
+		position: absolute;
+		height: 20px;
+		left: var(--s3);
+		top: calc(50% - 10px);
+		color: var(--theme-text-secondary);
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	.select-icon {
+		left: auto;
+		right: var(--s4);
+	}
+
+	.form-help {
+		font-size: var(--font-size-sm);
+		color: var(--theme-text-secondary);
+		margin-top: var(--s1);
+	}
+
+	.error-message {
+		color: #dc2626;
+		font-size: var(--font-size-sm);
+		font-weight: 500;
+		min-height: 20px;
+		display: flex;
+		align-items: center;
+		gap: var(--s2);
+		opacity: 0;
+		transform: translateY(-10px);
+		transition: all 0.3s ease;
+	}
+
+	.error-message.show {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.error-message:not(:empty)::before {
+		content: '⚠️';
+	}
+
+	/* Custom Checkbox */
+	.checkbox-wrapper {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--s3);
+		cursor: pointer;
+		position: relative;
+		padding-left: var(--s8);
+	}
+
+	.checkbox-wrapper input[type='checkbox'] {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		left: 0;
+		top: 2px;
+	}
+
+	.checkmark {
+		position: absolute;
+		left: 0;
+		top: 2px;
+		height: 20px;
+		width: 20px;
+		background-color: var(--theme-bg);
+		border: 2px solid var(--theme-outline);
+		border-radius: 4px;
+		transition: all 0.3s ease;
+	}
+
+	.checkbox-wrapper:hover .checkmark {
+		border-color: var(--theme-primary);
+	}
+
+	.checkbox-wrapper input:checked ~ .checkmark {
+		background-color: var(--theme-primary);
+		border-color: var(--theme-primary);
+	}
+
+	.checkbox-wrapper input:checked ~ .checkmark::after {
+		content: '';
+		position: absolute;
+		display: block;
+		left: 6px;
+		top: 2px;
+		width: 4px;
+		height: 8px;
+		border: solid white;
+		border-width: 0 2px 2px 0;
+		transform: rotate(45deg);
+	}
+
+	.checkbox-text {
+		flex: 1;
+		line-height: 1.5;
+	}
+
+	/* Submit Button */
+	.form-actions {
+		text-align: center;
+		margin-top: var(--s5);
+	}
+
+	.submit-btn {
+		position: relative;
+		background: linear-gradient(
+			135deg,
+			var(--theme-primary),
+			var(--theme-primary-dark)
+		);
+		color: var(--theme-on-primary);
+		border: none;
+		padding: var(--s4) var(--s8);
+		border-radius: var(--theme-button-border-radius);
+		font-size: var(--font-size-base);
+		font-weight: 600;
+		cursor: pointer;
+		min-width: 200px;
+		min-height: 50px;
+		transition: all 0.3s ease;
+		overflow: hidden;
+	}
+
+	.submit-btn:hover:not(:disabled) {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.submit-btn:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+		transform: none;
+	}
+
+	.btn-text {
+		transition: opacity 0.3s ease;
+	}
+
+	.btn-loader {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.btn-icon {
+		display: inline-block;
+		margin-left: var(--s2);
+		transition: transform 0.3s ease;
+	}
+
+	.submit-btn:hover .btn-icon {
+		transform: translateX(4px);
+	}
+
+	.submit-btn.loading .btn-text,
+	.submit-btn.loading .btn-icon {
+		opacity: 0;
+	}
+
+	.submit-btn.loading .btn-loader {
+		opacity: 1;
+	}
+
+	.spinner {
+		width: 20px;
+		height: 20px;
+		border: 2px solid transparent;
+		border-top: 2px solid currentColor;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	/* Success Message */
+	.success-message {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		gap: var(--s4);
+		background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+		border: 2px solid #16a34a;
+		border-radius: var(--theme-shape-radius);
+		padding: var(--s6);
+		margin-top: var(--s6);
+		animation: slideInUp 0.5s ease;
+	}
+
+	.success-message.show {
+		display: flex;
+	}
+
+	.success-icon {
+		width: 48px;
+		height: 48px;
+		background: #16a34a;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		flex-shrink: 0;
+	}
+
+	.success-text h4 {
+		color: #166534;
+		margin: 0 0 var(--s2) 0;
+		font-size: var(--font-size-md);
+	}
+
+	.success-text p {
+		color: #15803d;
+		margin: 0;
+		font-size: var(--font-size-base);
+	}
+
+	/* Error Message */
+	.error-message-box {
+		display: none;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--s4);
+		background: linear-gradient(135deg, #fef2f2, #fee2e2);
+		border: 2px solid #dc2626;
+		border-radius: var(--theme-shape-radius);
+		padding: var(--s6);
+		margin-top: var(--s6);
+		animation: slideInUp 0.5s ease;
+		position: relative;
+	}
+
+	.error-message-box.show {
+		display: flex;
+	}
+
+	.error-icon {
+		width: 48px;
+		height: 48px;
+		background: #dc2626;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		flex-shrink: 0;
+	}
+
+	.error-text {
+		flex: 1;
+	}
+
+	.error-text h4 {
+		color: #991b1b;
+		margin: 0 0 var(--s2) 0;
+		font-size: var(--font-size-md);
+	}
+
+	.error-text p {
+		color: var(--theme-error-dark);
+		margin: 0;
+		font-size: var(--font-size-base);
+	}
+
+	.error-close {
+		background: none;
+		border: none;
+		color: #991b1b;
+		cursor: pointer;
+		padding: var(--s2);
+		border-radius: 50%;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s ease;
+		flex-shrink: 0;
+	}
+
+	.error-close:hover {
+		background: rgba(153, 27, 27, 0.1);
+		color: #7f1d1d;
+	}
+
+	@keyframes slideInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Responsive Design */
+	@media (max-width: 768px) {
+		.contact-form-container {
+			padding: var(--s4) var(--s3);
+		}
+
+		.laguntza-fisio-contact-form{
+			padding: var(--s6) var(--s4);
+		}
+
+		.form-grid {
+			grid-template-columns: 1fr;
+			gap: var(--s3);
+		}
+
+		.form-input,
+		.form-select,
+		.form-textarea {
+			padding: var(--s3) var(--s3) var(--s3) var(--s7);
+			min-height: 45px;
+		}
+
+		.submit-btn {
+			width: 100%;
+			min-width: auto;
+		}
+
+		.success-message,
+		.error-message-box {
+			flex-direction: column;
+			text-align: center;
+		}
+
+		.error-close {
+			position: absolute;
+			top: var(--s3);
+			right: var(--s3);
+		}
+	}
+
+	@media (max-width: 480px) {
+		.form-title {
+			font-size: var(--font-size-md);
+		}
+
+		.laguntza-fisio-contact-form{
+			padding: var(--s5) var(--s3);
+		}
 	}
 </style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const form: HTMLFormElement | null = document.getElementById(
+			'contactForm',
+		) as HTMLFormElement;
+		if (!form) return;
+
+		const lang = document.documentElement.lang === 'eu' ? 'eu' : 'es';
+		const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+		const successMessage = document.getElementById(
+			'successMessage',
+		) as HTMLElement;
+		const errorMessage = document.getElementById('errorMessage') as HTMLElement;
+		const errorTitle = document.getElementById('errorTitle') as HTMLElement;
+		const errorDescription = document.getElementById('errorDescription') as HTMLElement;
+		const errorClose = document.getElementById('errorClose') as HTMLButtonElement;
+
+		const API_ENDPOINT = 'http://165.232.80.23:3000/api/contact-form';
+
+		// Error message functions
+		function showErrorMessage(title: string, description: string) {
+			if (errorTitle && errorDescription && errorMessage) {
+				errorTitle.textContent = title;
+				errorDescription.textContent = description;
+				errorMessage.classList.add('show');
+				errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			}
+		}
+
+		function hideErrorMessage() {
+			if (errorMessage) {
+				errorMessage.classList.remove('show');
+			}
+		}
+
+		// Error close button handler
+		if (errorClose) {
+			errorClose.addEventListener('click', hideErrorMessage);
+		}
+
+		const messages = {
+			es: {
+				nameRequired: 'El nombre es obligatorio',
+				emailRequired: 'El email es obligatorio',
+				emailInvalid: 'Por favor, introduce un email válido',
+				messageRequired: 'El mensaje es obligatorio',
+				networkError: 'Error de conexión. Verifica tu internet.',
+				serverError: 'Error del servidor. Inténtalo más tarde.',
+				success: '¡Mensaje enviado correctamente!',
+				errorTitle: 'Error al enviar el mensaje',
+				networkErrorTitle: 'Error de conexión',
+				serverErrorTitle: 'Error del servidor',
+				rateLimitErrorTitle: 'Demasiadas solicitudes',
+				networkErrorDesc: 'No se pudo conectar con el servidor. Verifica tu conexión a internet e inténtalo de nuevo.',
+				serverErrorDesc: 'Hubo un problema en el servidor. Por favor, inténtalo de nuevo en unos minutos.',
+				rateLimitErrorDesc: 'Has enviado demasiadas solicitudes en poco tiempo. Por favor, espera unos minutos antes de intentar de nuevo.',
+			},
+			eu: {
+				nameRequired: 'Izena derrigorrezkoa da',
+				emailRequired: 'Email-a derrigorrezkoa da',
+				emailInvalid: 'Mesedez, sartu email egoki bat',
+				messageRequired: 'Mezua derrigorrezkoa da',
+				networkError: 'Konexio errorea. Egiaztatu interneteko konexioa.',
+				serverError: 'Zerbitzariaren errorea. Saiatu berriro geroago.',
+				success: 'Mezua ondo bidali da!',
+				errorTitle: 'Errorea mezua bidaltzean',
+				networkErrorTitle: 'Konexio errorea',
+				serverErrorTitle: 'Zerbitzariaren errorea',
+				rateLimitErrorTitle: 'Eskaera gehiegi',
+				networkErrorDesc: 'Ezin izan da zerbitzariarekin konektatu. Egiaztatu interneteko konexioa eta saiatu berriro.',
+				serverErrorDesc: 'Arazoren bat egon da zerbitzarian. Mesedez, saiatu berriro minutu batzuen buruan.',
+				rateLimitErrorDesc: 'Eskaera gehiegi bidali dituzu denbora gutxian. Mesedez, itxaron minutu batzuk berriro saiatu aurretik.',
+			},
+		};
+
+		// Enhanced validation functions
+		function showError(fieldName: string, message: string) {
+			const errorElement = document.getElementById(`${fieldName}-error`);
+			const field = document.getElementById(fieldName);
+
+			if (errorElement && field) {
+				errorElement.textContent = message;
+				errorElement.classList.add('show');
+				field.classList.add('error');
+				field.setAttribute('aria-invalid', 'true');
+			}
+		}
+
+		function clearError(fieldName: string) {
+			const errorElement = document.getElementById(`${fieldName}-error`);
+			const field = document.getElementById(fieldName);
+
+			if (errorElement && field) {
+				errorElement.textContent = '';
+				errorElement.classList.remove('show');
+				field.classList.remove('error');
+				field.setAttribute('aria-invalid', 'false');
+			}
+		}
+
+		function validateField(
+			field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+		) {
+			const name = field.id;
+			const value = field.value.trim();
+			let isValid = true;
+
+			clearError(name);
+
+			// Required field validation
+			if (field.hasAttribute('required') || field.type === 'checkbox') {
+				if (
+					(field.type === 'checkbox' && !field.checked) ||
+					(!field.checked && !value)
+				) {
+					let errorMsg = '';
+					switch (name) {
+						case 'name':
+							errorMsg = messages[lang].nameRequired;
+							break;
+						case 'email':
+							errorMsg = messages[lang].emailRequired;
+							break;
+						case 'message':
+							errorMsg = messages[lang].messageRequired;
+							break;
+					}
+					showError(name, errorMsg);
+					isValid = false;
+				}
+			}
+
+			// Email format validation
+			if (field.type === 'email' && value) {
+				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				if (!emailRegex.test(value)) {
+					showError(name, messages[lang].emailInvalid);
+					isValid = false;
+				}
+			}
+
+			// Phone format validation (optional)
+			if (field.type === 'tel' && value) {
+				const phoneRegex = /^[+]?[\d\s\-()]{9,}$/;
+				if (!phoneRegex.test(value)) {
+					// Phone validation is optional, so we don't show error
+					// but we could add a warning
+				}
+			}
+
+			return isValid;
+		}
+
+		// Real-time validation with debouncing
+		let validationTimeout;
+		function setupFieldValidation(field) {
+			const validateWithDelay = () => {
+				clearTimeout(validationTimeout);
+				validationTimeout = setTimeout(() => validateField(field), 300);
+			};
+
+			field.addEventListener('blur', () => validateField(field));
+			field.addEventListener('input', () => {
+				if (field.classList.contains('error')) {
+					validateWithDelay();
+				}
+			});
+
+			// Special handling for checkbox
+			if (field.type === 'checkbox') {
+				field.addEventListener('change', () => validateField(field));
+			}
+		}
+
+		// Setup validation for all form fields
+		form
+			.querySelectorAll('input, textarea, select')
+			.forEach(setupFieldValidation);
+
+		// Form submission with API integration
+		form.addEventListener('submit', async e => {
+			e.preventDefault();
+
+			if (!submitBtn) return;
+
+			// Hide any previous messages
+			hideErrorMessage();
+			if (successMessage) {
+				successMessage.classList.remove('show');
+			}
+
+			// Validate all fields
+			const requiredFields: NodeListOf<HTMLInputElement | HTMLTextAreaElement> =
+				form.querySelectorAll('input[required], textarea[required]');
+			let isFormValid = true;
+
+			requiredFields.forEach(field => {
+				if (!validateField(field)) {
+					isFormValid = false;
+				}
+			});
+
+			if (!isFormValid) {
+				// Focus on first error field
+				const firstError: HTMLElement | null = form.querySelector('.error');
+				if (firstError) {
+					firstError.focus();
+					firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				}
+				return;
+			}
+
+			// Collect form data
+			const formData = new FormData(form);
+			const data = {
+				name: formData.get('name')?.toString().trim() || '',
+				email: formData.get('email')?.toString().trim() || '',
+				phone: formData.get('phone')?.toString().trim() || '',
+				message: formData.get('message')?.toString().trim() || '',
+				source: formData.get('source')?.toString() || '',
+				submittedAt: new Date().toISOString(),
+			};
+
+			// Show loading state
+			submitBtn.disabled = true;
+			submitBtn.classList.add('loading');
+
+			try {
+				const response = await fetch(API_ENDPOINT, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						templateName: 'laguntza-fisioterapia',
+						to: data.email,
+						lang: lang,
+						data: data,
+					}),
+				});
+
+				if (!response.ok) {
+					if (response.status === 429) {
+						throw new Error(`Too many requests: ${response.status}`);
+					}
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+
+				const result = await response.json();
+				console.log('Form submitted successfully:', result);
+
+				// Show success message
+				if (successMessage) {
+					successMessage.classList.add('show');
+					successMessage.scrollIntoView({
+						behavior: 'smooth',
+						block: 'center',
+					});
+				}
+
+				// Reset form
+				form.reset();
+
+				// Clear any remaining errors
+				form.querySelectorAll('.error').forEach(field => {
+					field.classList.remove('error');
+					field.setAttribute('aria-invalid', 'false');
+				});
+				form.querySelectorAll('.error-message.show').forEach(error => {
+					error.classList.remove('show');
+					error.textContent = '';
+				});
+
+				// Hide success message after 10 seconds
+				setTimeout(() => {
+					if (successMessage) {
+						successMessage.classList.remove('show');
+					}
+				}, 10000);
+			} catch (error) {
+				console.error('Form submission error:', error);
+
+				let errorTitle = messages[lang].serverErrorTitle;
+				let errorDesc = messages[lang].serverErrorDesc;
+				
+				// Check for specific error types
+				if (error instanceof TypeError || (error as Error)?.message?.includes('NetworkError')) {
+					errorTitle = messages[lang].networkErrorTitle;
+					errorDesc = messages[lang].networkErrorDesc;
+				} else if ((error as any)?.status === 429 || (error as Error)?.message?.includes('429') || (error as Error)?.message?.toLowerCase()?.includes('too many requests')) {
+					errorTitle = messages[lang].rateLimitErrorTitle;
+					errorDesc = messages[lang].rateLimitErrorDesc;
+				}
+
+				// Show error message
+				showErrorMessage(errorTitle, errorDesc);
+			} finally {
+				// Reset button state
+				if (submitBtn) {
+					submitBtn.disabled = false;
+					submitBtn.classList.remove('loading');
+				}
+			}
+		});
+
+		// Accessibility improvements
+		form.addEventListener('keydown', e => {
+			// Allow form submission with Ctrl/Cmd + Enter
+			if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+				e.preventDefault();
+				form.dispatchEvent(new Event('submit'));
+			}
+		});
+
+		// Auto-resize textarea
+		const messageField = document.getElementById('message');
+		if (messageField) {
+			messageField.addEventListener('input', function () {
+				this.style.height = 'auto';
+				this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+			});
+		}
+
+		// Format phone number as user types
+		const phoneField = document.getElementById('phone');
+		if (phoneField) {
+			phoneField.addEventListener('input', function () {
+				let value = this.value.replace(/\D/g, '');
+				if (value.length > 0) {
+					if (value.length <= 3) {
+						value = value;
+					} else if (value.length <= 6) {
+						value = value.slice(0, 3) + ' ' + value.slice(3);
+					} else if (value.length <= 9) {
+						value =
+							value.slice(0, 3) +
+							' ' +
+							value.slice(3, 6) +
+							' ' +
+							value.slice(6);
+					} else {
+						value =
+							value.slice(0, 3) +
+							' ' +
+							value.slice(3, 6) +
+							' ' +
+							value.slice(6, 9);
+					}
+				}
+				this.value = value;
+			});
+		}
+	});
+</script>
