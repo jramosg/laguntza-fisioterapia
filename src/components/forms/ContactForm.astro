@@ -6,18 +6,8 @@ const lang = getLangFromUrl(Astro.url);
 
 const selectOptions =
 	lang === 'eu'
-		? [
-				'Google bilaketa',
-				'Instagram',
-				'Norbaiten gomendioz',
-				'Beste bat',
-			]
-		: [
-				'Búsqueda Google',
-				'Instagram',
-				'Recomendación',
-				'Otros',
-			];
+		? ['Google bilaketa', 'Instagram', 'Norbaiten gomendioz', 'Beste bat']
+		: ['Búsqueda Google', 'Instagram', 'Recomendación', 'Otros'];
 ---
 
 <Container narrow>
@@ -155,7 +145,7 @@ const selectOptions =
 					</span>
 				</label>
 				<div class="select-wrapper">
-					<select id="source" name="source" class="form-select" >
+					<select id="source" name="source" class="form-select">
 						<option value="">
 							{lang === 'eu' ? 'Aukeratu bat...' : 'Selecciona una opción...'}
 						</option>
@@ -282,8 +272,20 @@ const selectOptions =
 				<h4 id="errorTitle"></h4>
 				<p id="errorDescription"></p>
 			</div>
-			<button type="button" class="error-close" id="errorClose" aria-label="Cerrar mensaje de error">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<button
+				type="button"
+				class="error-close"
+				id="errorClose"
+				aria-label="Cerrar mensaje de error"
+			>
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
 					<line x1="18" y1="6" x2="6" y2="18"></line>
 					<line x1="6" y1="6" x2="18" y2="18"></line>
 				</svg>
@@ -311,7 +313,7 @@ const selectOptions =
 		margin: 0;
 	}
 
-	.laguntza-fisio-contact-form{
+	.laguntza-fisio-contact-form {
 		background: var(--theme-bg);
 		border-radius: var(--theme-shape-radius);
 		padding: var(--s8);
@@ -381,7 +383,6 @@ const selectOptions =
 	.form-select {
 		appearance: none;
 		cursor: pointer;
-
 	}
 
 	.form-textarea {
@@ -721,7 +722,7 @@ const selectOptions =
 			padding: var(--s4) var(--s3);
 		}
 
-		.laguntza-fisio-contact-form{
+		.laguntza-fisio-contact-form {
 			padding: var(--s6) var(--s4);
 		}
 
@@ -760,7 +761,7 @@ const selectOptions =
 			font-size: var(--font-size-md);
 		}
 
-		.laguntza-fisio-contact-form{
+		.laguntza-fisio-contact-form {
 			padding: var(--s5) var(--s3);
 		}
 	}
@@ -780,10 +781,15 @@ const selectOptions =
 		) as HTMLElement;
 		const errorMessage = document.getElementById('errorMessage') as HTMLElement;
 		const errorTitle = document.getElementById('errorTitle') as HTMLElement;
-		const errorDescription = document.getElementById('errorDescription') as HTMLElement;
-		const errorClose = document.getElementById('errorClose') as HTMLButtonElement;
+		const errorDescription = document.getElementById(
+			'errorDescription',
+		) as HTMLElement;
+		const errorClose = document.getElementById(
+			'errorClose',
+		) as HTMLButtonElement;
 
-		const API_ENDPOINT = 'http://165.232.80.23:3000/api/contact-form';
+		const API_ENDPOINT =
+			'https://test.laguntzafisioterapia.com/api/contact-form';
 
 		// Error message functions
 		function showErrorMessage(title: string, description: string) {
@@ -819,9 +825,12 @@ const selectOptions =
 				networkErrorTitle: 'Error de conexión',
 				serverErrorTitle: 'Error del servidor',
 				rateLimitErrorTitle: 'Demasiadas solicitudes',
-				networkErrorDesc: 'No se pudo conectar con el servidor. Verifica tu conexión a internet e inténtalo de nuevo.',
-				serverErrorDesc: 'Hubo un problema en el servidor. Por favor, inténtalo de nuevo en unos minutos.',
-				rateLimitErrorDesc: 'Has enviado demasiadas solicitudes en poco tiempo. Por favor, espera unos minutos antes de intentar de nuevo.',
+				networkErrorDesc:
+					'No se pudo conectar con el servidor. Verifica tu conexión a internet e inténtalo de nuevo.',
+				serverErrorDesc:
+					'Hubo un problema en el servidor. Por favor, inténtalo de nuevo en unos minutos.',
+				rateLimitErrorDesc:
+					'Has enviado demasiadas solicitudes en poco tiempo. Por favor, espera unos minutos antes de intentar de nuevo.',
 			},
 			eu: {
 				nameRequired: 'Izena derrigorrezkoa da',
@@ -835,9 +844,12 @@ const selectOptions =
 				networkErrorTitle: 'Konexio errorea',
 				serverErrorTitle: 'Zerbitzariaren errorea',
 				rateLimitErrorTitle: 'Eskaera gehiegi',
-				networkErrorDesc: 'Ezin izan da zerbitzariarekin konektatu. Egiaztatu interneteko konexioa eta saiatu berriro.',
-				serverErrorDesc: 'Arazoren bat egon da zerbitzarian. Mesedez, saiatu berriro minutu batzuen buruan.',
-				rateLimitErrorDesc: 'Eskaera gehiegi bidali dituzu denbora gutxian. Mesedez, itxaron minutu batzuk berriro saiatu aurretik.',
+				networkErrorDesc:
+					'Ezin izan da zerbitzariarekin konektatu. Egiaztatu interneteko konexioa eta saiatu berriro.',
+				serverErrorDesc:
+					'Arazoren bat egon da zerbitzarian. Mesedez, saiatu berriro minutu batzuen buruan.',
+				rateLimitErrorDesc:
+					'Eskaera gehiegi bidali dituzu denbora gutxian. Mesedez, itxaron minutu batzuk berriro saiatu aurretik.',
 			},
 		};
 
@@ -1050,12 +1062,21 @@ const selectOptions =
 
 				let errorTitle = messages[lang].serverErrorTitle;
 				let errorDesc = messages[lang].serverErrorDesc;
-				
+
 				// Check for specific error types
-				if (error instanceof TypeError || (error as Error)?.message?.includes('NetworkError')) {
+				if (
+					error instanceof TypeError ||
+					(error as Error)?.message?.includes('NetworkError')
+				) {
 					errorTitle = messages[lang].networkErrorTitle;
 					errorDesc = messages[lang].networkErrorDesc;
-				} else if ((error as any)?.status === 429 || (error as Error)?.message?.includes('429') || (error as Error)?.message?.toLowerCase()?.includes('too many requests')) {
+				} else if (
+					(error as any)?.status === 429 ||
+					(error as Error)?.message?.includes('429') ||
+					(error as Error)?.message
+						?.toLowerCase()
+						?.includes('too many requests')
+				) {
 					errorTitle = messages[lang].rateLimitErrorTitle;
 					errorDesc = messages[lang].rateLimitErrorDesc;
 				}
