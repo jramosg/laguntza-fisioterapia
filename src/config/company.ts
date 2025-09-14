@@ -14,8 +14,8 @@ export const Phone = {
 };
 
 export const Email = {
-	name: 'laguntzafisioterapia@gmail.com',
-	url: 'mailto:laguntzafisioterapia@gmail.com',
+	name: 'info@laguntzafisioterapia.com',
+	url: 'mailto:info@laguntzafisioterapia.com',
 };
 
 export const WhatsApp = {
