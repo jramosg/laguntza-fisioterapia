@@ -5,11 +5,6 @@ import Send from '@icons/send.svg';
 import Phone from '@icons/phone.svg';
 import Email from '@icons/email.svg';
 const lang = getLangFromUrl(Astro.url);
-
-const selectOptions =
-	lang === 'eu'
-		? ['Google bilaketa', 'Instagram', 'Norbaiten gomendioz', 'Beste bat']
-		: ['Búsqueda Google', 'Instagram', 'Recomendación', 'Otros'];
 ---
 
 <Container narrow>
@@ -116,37 +111,48 @@ const selectOptions =
 				</small>
 			</div>
 
-			<!-- Source Field -->
+			<!-- Attachments Field -->
 			<div class="form-group">
-				<label for="source" class="form-label">
+				<label for="attachments" class="form-label">
 					<span class="label-text">
-						{lang === 'eu' ? 'Nola ezagutu gintuzun?' : '¿Cómo nos conociste?'}
+						{lang === 'eu' ? 'Eranskinak' : 'Archivos adjuntos'}
 					</span>
 				</label>
-				<div class="select-wrapper">
-					<select id="source" name="source" class="form-select">
-						<option value="">
-							{lang === 'eu' ? 'Aukeratu bat...' : 'Selecciona una opción...'}
-						</option>
-						{
-							selectOptions.map(option => (
-								<option value={option}>{option}</option>
-							))
-						}
-					</select>
-					<div class="select-icon">
-						<svg
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<polyline points="6,9 12,15 18,9"></polyline>
-						</svg>
-					</div>
+				<div class="file-input-wrapper">
+					<input
+						type="file"
+						id="attachments"
+						name="attachments"
+						class="file-input"
+						multiple
+						accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt"
+						aria-describedby="attachments-help"
+					/>
+					<label for="attachments" class="file-input-label">
+						<div class="file-input-icon">
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<path
+									d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66L9.64 16.2a2 2 0 01-2.83-2.83l8.49-8.48"
+								></path>
+							</svg>
+						</div>
+					</label>
+					<div  id="fileList"></div>
 				</div>
+				<small id="attachments-help" class="form-help">
+					{
+						lang === 'eu'
+							? 'Aukerakoa - JPG, PNG, PDF, DOC formatuak onartzen dira (gehienez 5MB fitxategi bakoitzeko)'
+							: 'Opcional - Se aceptan formatos JPG, PNG, PDF, DOC (máx. 5MB por archivo)'
+					}
+				</small>
 			</div>
 		</div>
 
@@ -322,7 +328,7 @@ const selectOptions =
 	}
 
 	.required {
-		color: #dc2626;
+		color: var(--theme-error, #dc2626);
 		font-weight: 700;
 	}
 
@@ -372,7 +378,7 @@ const selectOptions =
 	.form-input.error,
 	.form-select.error,
 	.form-textarea.error {
-		border-color: #dc2626;
+		border-color: var(--theme-error, #dc2626);
 		box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 	}
 
@@ -392,14 +398,114 @@ const selectOptions =
 		right: var(--s4);
 	}
 
+	/* File Input Styles */
+	.file-input-wrapper {
+		position: relative;
+	}
+
+	.file-input {
+		position: absolute;
+		opacity: 0;
+		pointer-events: none;
+		width: 0;
+		height: 0;
+	}
+
+	.file-input-label {
+		display: flex;
+		align-items: center;
+		gap: var(--s3);
+		padding: var(--s2) var(--s4);
+		border: 2px dashed var(--theme-outline);
+		border-radius: var(--theme-button-border-radius);
+		background: var(--theme-bg);
+		color: var(--theme-on-bg);
+		cursor: pointer;
+		transition: all 0.3s ease;
+		min-height: 50px;
+	}
+
+	.file-input-label:hover {
+		border-color: var(--theme-primary);
+		background: rgba(69, 130, 149, 0.05);
+	}
+
+	.file-input:focus + .file-input-label {
+		border-color: var(--theme-primary);
+		box-shadow: 0 0 0 3px rgba(69, 130, 149, 0.1);
+	}
+
+	.file-input-icon {
+		color: var(--theme-primary);
+		display: flex;
+		align-items: center;
+	}
+
+	.file-list {
+		margin-top: var(--s3);
+	}
+
+	:global(.file-item) {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: var(--s2) var(--s3);
+		background: var(--theme-surface);
+		border: 1px solid var(--theme-outline);
+		border-radius: var(--theme-button-border-radius);
+		margin-bottom: var(--s2);
+		font-size: var(--font-size-sm);
+		&:first-child {
+			margin-top: var(--s2);
+		}
+	}
+
+	:global(.file-info) {
+		display: flex;
+		align-items: center;
+		gap: var(--s2);
+		flex: 1;
+	}
+
+	:global(.file-name) {
+		font-weight: 500;
+		color: var(--theme-on-bg);
+		word-break: break-all;
+	}
+
+	:global(.file-size) {
+		color: var(--theme-text-secondary);
+		font-size: var(--font-size-xs);
+	}
+
+	:global(.file-remove) {
+		background: none;
+		border: none;
+		color: var(--theme-error, #dc2626);
+		cursor: pointer;
+		padding: var(--s1);
+		border-radius: 50%;
+		width: 24px;
+		height: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s ease;
+		flex-shrink: 0;
+	}
+
+	:global(.file-remove:hover) {
+		background: rgba(220, 38, 38, 0.1);
+		color: #b91c1c;
+	}
+
 	.form-help {
 		font-size: var(--font-size-sm);
 		color: var(--theme-text-secondary);
-		margin-top: var(--s1);
 	}
 
 	.error-message {
-		color: #dc2626;
+		color: var(--theme-error, #dc2626);
 		font-size: var(--font-size-sm);
 		font-weight: 500;
 		min-height: 20px;
@@ -620,7 +726,7 @@ const selectOptions =
 		justify-content: space-between;
 		gap: var(--s4);
 		background: linear-gradient(135deg, #fef2f2, #fee2e2);
-		border: 2px solid #dc2626;
+		border: 2px solid var(--theme-error, #dc2626);
 		border-radius: var(--theme-shape-radius);
 		padding: var(--s6);
 		margin-top: var(--s6);
@@ -635,7 +741,7 @@ const selectOptions =
 	.error-icon {
 		width: 48px;
 		height: 48px;
-		background: #dc2626;
+		background: var(--theme-error, #dc2626);
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
@@ -646,6 +752,7 @@ const selectOptions =
 
 	.error-text {
 		flex: 1;
+		color: var(--theme-on-error-container, #410e0b);
 	}
 
 	.error-text h4 {
@@ -655,7 +762,7 @@ const selectOptions =
 	}
 
 	.error-text p {
-		color: var(--theme-error-dark);
+		color: var(--theme-error-dark, #b91c1c);
 		margin: 0;
 		font-size: var(--font-size-base);
 	}
@@ -766,6 +873,7 @@ const selectOptions =
 
 		const API_ENDPOINT =
 			'https://test.laguntzafisioterapia.com/api/contact-form';
+			//'http://localhost:3000/api/contact-form'
 
 		// Error message functions
 		function showErrorMessage(title: string, description: string) {
@@ -786,6 +894,105 @@ const selectOptions =
 		// Error close button handler
 		if (errorClose) {
 			errorClose.addEventListener('click', hideErrorMessage);
+		}
+
+		// File upload handling
+		const attachmentsInput = document.getElementById(
+			'attachments',
+		) as HTMLInputElement;
+		const fileList = document.getElementById('fileList') as HTMLElement;
+		const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+		let selectedFiles: File[] = [];
+
+		function formatFileSize(bytes: number): string {
+			if (bytes === 0) return '0 Bytes';
+			const k = 1024;
+			const sizes = ['Bytes', 'KB', 'MB'];
+			const i = Math.floor(Math.log(bytes) / Math.log(k));
+			return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+		}
+
+		function updateFileList() {
+			if (!fileList) return;
+
+			fileList.innerHTML = '';
+
+			selectedFiles.forEach((file, index) => {
+				const fileItem = document.createElement('div');
+				fileItem.className = 'file-item';
+
+				fileItem.innerHTML = `
+					<div class="file-info">
+						<span class="file-name">${file.name}</span>
+						<span class="file-size">${formatFileSize(file.size)}</span>
+					</div>
+					<button type="button" class="file-remove" data-index="${index}" aria-label="${lang === 'eu' ? 'Kendu fitxategia' : 'Eliminar archivo'}">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<line x1="18" y1="6" x2="6" y2="18"></line>
+							<line x1="6" y1="6" x2="18" y2="18"></line>
+						</svg>
+					</button>
+				`;
+
+				fileList.appendChild(fileItem);
+			});
+
+			// Add event listeners to remove buttons
+			fileList.querySelectorAll('.file-remove').forEach(button => {
+				button.addEventListener('click', e => {
+					const index = parseInt(
+						(e.target as HTMLElement)
+							.closest('.file-remove')
+							?.getAttribute('data-index') || '0',
+					);
+					selectedFiles.splice(index, 1);
+					updateFileList();
+					updateFileInput();
+				});
+			});
+		}
+
+		function updateFileInput() {
+			if (!attachmentsInput) return;
+
+			const dt = new DataTransfer();
+			selectedFiles.forEach(file => dt.items.add(file));
+			attachmentsInput.files = dt.files;
+		}
+
+		if (attachmentsInput) {
+			attachmentsInput.addEventListener('change', e => {
+				const files = (e.target as HTMLInputElement).files;
+				if (!files) return;
+
+				const newFiles = Array.from(files);
+				const validFiles: File[] = [];
+				const errors: string[] = [];
+
+				newFiles.forEach(file => {
+					if (file.size > maxFileSize) {
+						errors.push(
+							`${file.name}: ${lang === 'eu' ? 'Fitxategia handiegia da (maks. 5MB)' : 'Archivo demasiado grande (máx. 5MB)'}`,
+						);
+					} else if (selectedFiles.length + validFiles.length >= 5) {
+						errors.push(
+							lang === 'eu' ? 'Gehienez 5 fitxategi' : 'Máximo 5 archivos',
+						);
+					} else {
+						validFiles.push(file);
+					}
+				});
+
+				if (errors.length > 0) {
+					showErrorMessage(
+						lang === 'eu' ? 'Fitxategien errorea' : 'Error en archivos',
+						errors.join(', '),
+					);
+				}
+
+				selectedFiles.push(...validFiles);
+				updateFileList();
+			});
 		}
 
 		const messages = {
@@ -865,9 +1072,11 @@ const selectOptions =
 
 			// Required field validation
 			if (field.hasAttribute('required') || field.type === 'checkbox') {
+				const isCheckbox = field.type === 'checkbox';
+				const checkboxField = isCheckbox ? field as HTMLInputElement : null;
 				if (
-					(field.type === 'checkbox' && !field.checked) ||
-					(!field.checked && !value)
+					(isCheckbox && checkboxField && !checkboxField.checked) ||
+					(!isCheckbox && !value)
 				) {
 					let errorMsg = '';
 					switch (name) {
@@ -908,23 +1117,24 @@ const selectOptions =
 		}
 
 		// Real-time validation with debouncing
-		let validationTimeout;
-		function setupFieldValidation(field) {
+		let validationTimeout: NodeJS.Timeout;
+		function setupFieldValidation(field: Element) {
+			const typedField = field as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 			const validateWithDelay = () => {
 				clearTimeout(validationTimeout);
-				validationTimeout = setTimeout(() => validateField(field), 300);
+				validationTimeout = setTimeout(() => validateField(typedField), 300);
 			};
 
-			field.addEventListener('blur', () => validateField(field));
-			field.addEventListener('input', () => {
-				if (field.classList.contains('error')) {
+			typedField.addEventListener('blur', () => validateField(typedField));
+			typedField.addEventListener('input', () => {
+				if (typedField.classList.contains('error')) {
 					validateWithDelay();
 				}
 			});
 
 			// Special handling for checkbox
-			if (field.type === 'checkbox') {
-				field.addEventListener('change', () => validateField(field));
+			if (typedField.type === 'checkbox') {
+				typedField.addEventListener('change', () => validateField(typedField));
 			}
 		}
 
@@ -968,13 +1178,42 @@ const selectOptions =
 
 			// Collect form data
 			const formData = new FormData(form);
+
+			// Process attachments - read file contents
+			const attachments = [];
+			for (const file of selectedFiles) {
+				try {
+					// Convert file to base64 using browser-compatible method
+					const base64Content = await new Promise<string>((resolve, reject) => {
+						const reader = new FileReader();
+						reader.onload = () => {
+							const result = reader.result as string;
+							// Remove data URL prefix (data:type;base64,)
+							const base64 = result.split(',')[1];
+							resolve(base64);
+						};
+						reader.onerror = reject;
+						reader.readAsDataURL(file);
+					});
+
+					attachments.push({
+						filename: file.name,
+						content: base64Content,
+						contentType: file.type || 'application/octet-stream',
+						size: file.size
+					});
+				} catch (error) {
+					console.error('Error reading file:', file.name, error);
+					// Skip this file if there's an error reading it
+				}
+			}
+
 			const data = {
 				name: formData.get('name')?.toString().trim() || '',
 				email: formData.get('email')?.toString().trim() || '',
 				phone: formData.get('phone')?.toString().trim() || '',
 				message: formData.get('message')?.toString().trim() || '',
-				source: formData.get('source')?.toString() || '',
-				submittedAt: new Date().toISOString(),
+				attachments: attachments,
 			};
 
 			// Show loading state
@@ -1016,6 +1255,13 @@ const selectOptions =
 
 				// Reset form
 				form.reset();
+
+				// Clear attachments
+				selectedFiles = [];
+				updateFileList();
+				if (attachmentsInput) {
+					attachmentsInput.value = '';
+				}
 
 				// Clear any remaining errors
 				form.querySelectorAll('.error').forEach(field => {
@@ -1087,9 +1333,9 @@ const selectOptions =
 		}
 
 		// Format phone number as user types
-		const phoneField = document.getElementById('phone');
+		const phoneField = document.getElementById('phone') as HTMLInputElement;
 		if (phoneField) {
-			phoneField.addEventListener('input', function () {
+			phoneField.addEventListener('input', function (this: HTMLInputElement) {
 				let value = this.value.replace(/\D/g, '');
 				if (value.length > 0) {
 					if (value.length <= 3) {

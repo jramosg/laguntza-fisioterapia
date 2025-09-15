@@ -48,6 +48,11 @@
 	--theme-on-accent: #fff;
 	--theme-on-accent-container: #3a220e;
 
+	--theme-error: #dc2626;
+	--theme-error-dark: #b91c1c;
+	--theme-on-error: #fff;
+	--theme-on-error-container: #410e0b;
+
 	--theme-bg: #fff;
 	--theme-on-bg: #000;
 
@@ -56,9 +61,6 @@
 
 	--theme-surface-2: #458295;
 	--theme-on-surface-2: #000;
-
-	--theme-error: #dc2626;
-	--theme-error-dark: #b91c1c;
 
 	/* Theme Shapes */
 	/* Set this to 0 if you want all of the rounded cards, images, etc to be straight edges */
