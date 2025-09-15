@@ -1,7 +1,9 @@
 ---
 import Container from '@components/core/Container.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
-
+import Send from '@icons/send.svg';
+import Phone from '@icons/phone.svg';
+import Email from '@icons/email.svg';
 const lang = getLangFromUrl(Astro.url);
 
 const selectOptions =
@@ -79,19 +81,7 @@ const selectOptions =
 						aria-describedby="email-error"
 					/>
 					<div class="input-icon">
-						<svg
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path
-								d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-							></path>
-							<polyline points="22,6 12,13 2,6"></polyline>
-						</svg>
+						<Email width={20} height={20} fill="currentColor" />
 					</div>
 				</div>
 				<div class="error-message" id="email-error" role="alert"></div>
@@ -114,18 +104,7 @@ const selectOptions =
 						aria-describedby="phone-help"
 					/>
 					<div class="input-icon">
-						<svg
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path
-								d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-							></path>
-						</svg>
+						<Phone width={20} height={20} fill="currentColor" />
 					</div>
 				</div>
 				<small id="phone-help" class="form-help">
@@ -211,17 +190,7 @@ const selectOptions =
 					<div class="spinner"></div>
 				</div>
 				<div class="btn-icon">
-					<svg
-						width="20"
-						height="20"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-					>
-						<line x1="22" y1="2" x2="11" y2="13"></line>
-						<polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
-					</svg>
+					<Send stroke="currentColor" height={32} width={32} />
 				</div>
 			</button>
 		</div>
@@ -521,14 +490,19 @@ const selectOptions =
 			var(--theme-primary),
 			var(--theme-primary-dark)
 		);
+		margin-left: auto;
+		margin-right: auto;
+		padding: var(--s3) var(--s6);
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		color: var(--theme-on-primary);
 		border: none;
-		padding: var(--s4) var(--s8);
 		border-radius: var(--theme-button-border-radius);
 		font-size: var(--font-size-base);
 		font-weight: 600;
 		cursor: pointer;
-		min-width: 200px;
+		min-width: 300px;
 		min-height: 50px;
 		transition: all 0.3s ease;
 		overflow: hidden;
@@ -562,6 +536,8 @@ const selectOptions =
 		display: inline-block;
 		margin-left: var(--s2);
 		transition: transform 0.3s ease;
+		display: flex;
+		align-items: center;
 	}
 
 	.submit-btn:hover .btn-icon {
