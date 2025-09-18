@@ -1,32 +1,32 @@
 {
-  "name": "Laguntza Fisioterapia - Centro de Fisioterapia en Urnieta",
-  "short_name": "Laguntza Fisio",
-  "description": "Centro de fisioterapia especializado en tratamiento del dolor y rehabilitación de lesiones en Urnieta, Gipuzkoa",
-  "icons": [
-    {
-      "src": "/web-app-manifest-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/web-app-manifest-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/favicon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    }
-  ],
-  "theme_color": "#0f172a",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "start_url": "/",
-  "scope": "/",
-  "orientation": "portrait-primary",
-  "lang": "es",
-  "categories": ["health", "medical", "business"]
+	"name": "Laguntza Fisioterapia - Centro de Fisioterapia en Urnieta",
+	"short_name": "Laguntza Fisio",
+	"description": "Centro de fisioterapia especializado en tratamiento del dolor y rehabilitación de lesiones en Urnieta, Gipuzkoa",
+	"icons": [
+		{
+			"src": "/web-app-manifest-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/web-app-manifest-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/favicon-96x96.png",
+			"sizes": "96x96",
+			"type": "image/png"
+		}
+	],
+	"theme_color": "#0f172a",
+	"background_color": "#ffffff",
+	"display": "standalone",
+	"start_url": "/",
+	"scope": "/",
+	"orientation": "portrait-primary",
+	"lang": "es",
+	"categories": ["health", "medical", "business"]
 }

@@ -1,4 +1,4 @@
-import { Langs } from "@i18n/ui";
+import { Langs } from '@i18n/ui';
 
 export type Slug = `/${string}`;
 
@@ -8,6 +8,6 @@ export interface Frontmatter {
 	authors: string[];
 	publishDate: string;
 	featuredImage: string;
-    excerpt: string;
-    lang: Langs
+	excerpt: string;
+	lang: Langs;
 }

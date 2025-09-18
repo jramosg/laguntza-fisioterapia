@@ -52,12 +52,14 @@ Laguntza Fisioterapia offers specialized physiotherapy services, focusing on pai
 ### Installation
 
 1. **Clone the repository:**
+
    ```sh
    git clone https://github.com/your-org/laguntza-fisioterapia.git
    cd laguntza-fisioterapia
    ```
 
 2. **Install dependencies:**
+
    ```sh
    npm install
    # or
@@ -65,6 +67,7 @@ Laguntza Fisioterapia offers specialized physiotherapy services, focusing on pai
    ```
 
 3. **Start the development server:**
+
    ```sh
    npm run dev
    # or
@@ -96,15 +99,17 @@ Laguntza Fisioterapia offers specialized physiotherapy services, focusing on pai
 You can also run the application using Docker:
 
 1. **Build the Docker image:**
+
    ```sh
    docker build -t laguntza-fisioterapia .
    ```
 
 2. **Run the container:**
+
    ```sh
    docker run -p 3000:8080 laguntza-fisioterapia
    ```
-   
+
    Replace `3000` with any available port on your machine. The container exposes port `8080` by default.
 
 3. **Access the application:**

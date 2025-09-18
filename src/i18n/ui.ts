@@ -42,7 +42,7 @@ export const ui = {
 		Idatzi: 'Escribir',
 		'Bidali WhatsAppa': 'Enviar WhatsApp',
 		'we-respond-soon': 'Te responderemos pronto.',
-		'we-respond-inmediately': 'Te responderemos de inmediato.',
+		'we-respond-inmediately': 'Te responderemos de inmediato.'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -66,8 +66,8 @@ export const ui = {
 		'theme-switcher': 'Aldatu itxura',
 		'working-hours': 'Astelehenetik ostiralera, 08:00etatik 20:00etara',
 		'we-respond-soon': 'Laister erantzungo dizugu.',
-		'we-respond-inmediately': 'Segituan erantzungo dizugu.',
-	},
+		'we-respond-inmediately': 'Segituan erantzungo dizugu.'
+	}
 };
 
 export type Langs = keyof typeof ui;

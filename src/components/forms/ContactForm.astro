@@ -144,7 +144,7 @@ const lang = getLangFromUrl(Astro.url);
 							</svg>
 						</div>
 					</label>
-					<div  id="fileList"></div>
+					<div id="fileList"></div>
 				</div>
 				<small id="attachments-help" class="form-help">
 					{
@@ -853,27 +853,27 @@ const lang = getLangFromUrl(Astro.url);
 <script>
 	document.addEventListener('astro:page-load', () => {
 		const form: HTMLFormElement | null = document.getElementById(
-			'contactForm',
+			'contactForm'
 		) as HTMLFormElement;
 		if (!form) return;
 
 		const lang = document.documentElement.lang === 'eu' ? 'eu' : 'es';
 		const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
 		const successMessage = document.getElementById(
-			'successMessage',
+			'successMessage'
 		) as HTMLElement;
 		const errorMessage = document.getElementById('errorMessage') as HTMLElement;
 		const errorTitle = document.getElementById('errorTitle') as HTMLElement;
 		const errorDescription = document.getElementById(
-			'errorDescription',
+			'errorDescription'
 		) as HTMLElement;
 		const errorClose = document.getElementById(
-			'errorClose',
+			'errorClose'
 		) as HTMLButtonElement;
 
 		const API_ENDPOINT =
 			'https://test.laguntzafisioterapia.com/api/contact-form';
-			//'http://localhost:3000/api/contact-form'
+		//'http://localhost:3000/api/contact-form'
 
 		// Error message functions
 		function showErrorMessage(title: string, description: string) {
@@ -898,7 +898,7 @@ const lang = getLangFromUrl(Astro.url);
 
 		// File upload handling
 		const attachmentsInput = document.getElementById(
-			'attachments',
+			'attachments'
 		) as HTMLInputElement;
 		const fileList = document.getElementById('fileList') as HTMLElement;
 		const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
@@ -943,7 +943,7 @@ const lang = getLangFromUrl(Astro.url);
 					const index = parseInt(
 						(e.target as HTMLElement)
 							.closest('.file-remove')
-							?.getAttribute('data-index') || '0',
+							?.getAttribute('data-index') || '0'
 					);
 					selectedFiles.splice(index, 1);
 					updateFileList();
@@ -972,11 +972,11 @@ const lang = getLangFromUrl(Astro.url);
 				newFiles.forEach(file => {
 					if (file.size > maxFileSize) {
 						errors.push(
-							`${file.name}: ${lang === 'eu' ? 'Fitxategia handiegia da (maks. 5MB)' : 'Archivo demasiado grande (máx. 5MB)'}`,
+							`${file.name}: ${lang === 'eu' ? 'Fitxategia handiegia da (maks. 5MB)' : 'Archivo demasiado grande (máx. 5MB)'}`
 						);
 					} else if (selectedFiles.length + validFiles.length >= 5) {
 						errors.push(
-							lang === 'eu' ? 'Gehienez 5 fitxategi' : 'Máximo 5 archivos',
+							lang === 'eu' ? 'Gehienez 5 fitxategi' : 'Máximo 5 archivos'
 						);
 					} else {
 						validFiles.push(file);
@@ -986,7 +986,7 @@ const lang = getLangFromUrl(Astro.url);
 				if (errors.length > 0) {
 					showErrorMessage(
 						lang === 'eu' ? 'Fitxategien errorea' : 'Error en archivos',
-						errors.join(', '),
+						errors.join(', ')
 					);
 				}
 
@@ -1013,7 +1013,7 @@ const lang = getLangFromUrl(Astro.url);
 				serverErrorDesc:
 					'Hubo un problema en el servidor. Por favor, inténtalo de nuevo en unos minutos.',
 				rateLimitErrorDesc:
-					'Has enviado demasiadas solicitudes en poco tiempo. Por favor, espera unos minutos antes de intentar de nuevo.',
+					'Has enviado demasiadas solicitudes en poco tiempo. Por favor, espera unos minutos antes de intentar de nuevo.'
 			},
 			eu: {
 				nameRequired: 'Izena derrigorrezkoa da',
@@ -1032,8 +1032,8 @@ const lang = getLangFromUrl(Astro.url);
 				serverErrorDesc:
 					'Arazoren bat egon da zerbitzarian. Mesedez, saiatu berriro minutu batzuen buruan.',
 				rateLimitErrorDesc:
-					'Eskaera gehiegi bidali dituzu denbora gutxian. Mesedez, itxaron minutu batzuk berriro saiatu aurretik.',
-			},
+					'Eskaera gehiegi bidali dituzu denbora gutxian. Mesedez, itxaron minutu batzuk berriro saiatu aurretik.'
+			}
 		};
 
 		// Enhanced validation functions
@@ -1062,7 +1062,7 @@ const lang = getLangFromUrl(Astro.url);
 		}
 
 		function validateField(
-			field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+			field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 		) {
 			const name = field.id;
 			const value = field.value.trim();
@@ -1073,7 +1073,7 @@ const lang = getLangFromUrl(Astro.url);
 			// Required field validation
 			if (field.hasAttribute('required') || field.type === 'checkbox') {
 				const isCheckbox = field.type === 'checkbox';
-				const checkboxField = isCheckbox ? field as HTMLInputElement : null;
+				const checkboxField = isCheckbox ? (field as HTMLInputElement) : null;
 				if (
 					(isCheckbox && checkboxField && !checkboxField.checked) ||
 					(!isCheckbox && !value)
@@ -1119,7 +1119,10 @@ const lang = getLangFromUrl(Astro.url);
 		// Real-time validation with debouncing
 		let validationTimeout: NodeJS.Timeout;
 		function setupFieldValidation(field: Element) {
-			const typedField = field as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+			const typedField = field as
+				| HTMLInputElement
+				| HTMLTextAreaElement
+				| HTMLSelectElement;
 			const validateWithDelay = () => {
 				clearTimeout(validationTimeout);
 				validationTimeout = setTimeout(() => validateField(typedField), 300);
@@ -1213,7 +1216,7 @@ const lang = getLangFromUrl(Astro.url);
 				email: formData.get('email')?.toString().trim() || '',
 				phone: formData.get('phone')?.toString().trim() || '',
 				message: formData.get('message')?.toString().trim() || '',
-				attachments: attachments,
+				attachments: attachments
 			};
 
 			// Show loading state
@@ -1224,14 +1227,14 @@ const lang = getLangFromUrl(Astro.url);
 				const response = await fetch(API_ENDPOINT, {
 					method: 'POST',
 					headers: {
-						'Content-Type': 'application/json',
+						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
 						templateName: 'laguntza-fisioterapia',
 						to: data.email,
 						lang: lang,
-						data: data,
-					}),
+						data: data
+					})
 				});
 
 				if (!response.ok) {
@@ -1249,7 +1252,7 @@ const lang = getLangFromUrl(Astro.url);
 					successMessage.classList.add('show');
 					successMessage.scrollIntoView({
 						behavior: 'smooth',
-						block: 'center',
+						block: 'center'
 					});
 				}
 

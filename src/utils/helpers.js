@@ -17,7 +17,7 @@ export function generateTagData(categories) {
 	categories.forEach(category => {
 		categoryData.push({
 			title: category,
-			slug: `${generateSlug(category)}`,
+			slug: `${generateSlug(category)}`
 		});
 	});
 	return categoryData;
@@ -35,6 +35,6 @@ export function generateStaticPaths() {
 
 	// Generate paths for static generation
 	return filteredUrlList.map(lang => ({
-		params: { lang }, // Use the cleaned-up language code
+		params: { lang } // Use the cleaned-up language code
 	}));
 }

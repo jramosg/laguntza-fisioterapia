@@ -12,9 +12,9 @@ export default defineConfig({
 	integrations: [sitemap(), mdx(), icon(), partytown()], // Add renderers to the config
 	i18n: {
 		locales: ['es', 'eu'],
-		defaultLocale: 'es',
+		defaultLocale: 'es'
 	},
 	routing: {
-		prefixDefaultLocale: true,
-	},
+		prefixDefaultLocale: true
+	}
 });

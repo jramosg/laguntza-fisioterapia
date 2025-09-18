@@ -4,7 +4,7 @@ import Layout from '@layouts/Page.astro';
 import {
 	getLangFromUrl,
 	getStaticLangPaths,
-	useTranslations,
+	useTranslations
 } from '@i18n/utils';
 import Chip from '@components/Chip.astro';
 import { Langs } from '@i18n/ui';
@@ -25,7 +25,7 @@ const lang: Langs = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
-	t('whatsapp-msg'),
+	t('whatsapp-msg')
 )}`;
 
 // SEO data for contact page
@@ -41,7 +41,7 @@ const seo = {
 	keywords:
 		lang === 'eu'
 			? 'Laguntza Fisioterapia kontaktua, Urnieta fisioterapia, Zubitxo Plaza 3, telefonoa 943 036 070, WhatsApp fisioterapeuta, Gipuzkoa fisioterapia zentroa'
-			: 'Laguntza Fisioterapia contacto, Urnieta fisioterapia, Zubitxo Plaza 3, teléfono 943 036 070, WhatsApp fisioterapeuta, Gipuzkoa centro fisioterapia',
+			: 'Laguntza Fisioterapia contacto, Urnieta fisioterapia, Zubitxo Plaza 3, teléfono 943 036 070, WhatsApp fisioterapeuta, Gipuzkoa centro fisioterapia'
 };
 
 const contacts = [
@@ -52,30 +52,30 @@ const contacts = [
 		subdesc: t('working-hours'),
 		ctas: [
 			{ label: WhatsApp.name, href: WhatsApp.urlCall },
-			{ label: Phone.name, href: Phone.url },
-		],
+			{ label: Phone.name, href: Phone.url }
+		]
 	},
 	{
 		title: t('Emailez'),
 		desc: Email.name,
 		subdesc: t('we-respond-soon'),
 		id: 'email',
-		ctas: [{ label: t('Idatzi'), href: Email.url }],
+		ctas: [{ label: t('Idatzi'), href: Email.url }]
 	},
 	{
 		title: t('WhatsAppez'),
 		id: 'whatsapp',
 		desc: WhatsApp.name,
 		subdesc: t('we-respond-inmediately'),
-		ctas: [{ label: t('Bidali WhatsAppa'), href: whatsappUrl }],
+		ctas: [{ label: t('Bidali WhatsAppa'), href: whatsappUrl }]
 	},
 	{
 		title: t('Bisitatu'),
 		id: 'address',
 		desc: Address.name,
 		subdesc: t('working-hours'),
-		ctas: [{ label: t('Ireki mapan'), href: Address.url }],
-	},
+		ctas: [{ label: t('Ireki mapan'), href: Address.url }]
+	}
 ];
 ---
 
@@ -89,7 +89,7 @@ const contacts = [
 		<Fragment slot="desc">
 			{
 				t(
-					'Kontaktuan jarri telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.',
+					'Kontaktuan jarri telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.'
 				)
 			}
 		</Fragment>
@@ -129,7 +129,7 @@ const contacts = [
 						phone: <PhoneIcon fill="currentColor" />,
 						email: <EmailIcon fill="currentColor" />,
 						whatsapp: <Icon name="ic:baseline-whatsapp" />,
-						address: <MarkerIcon fill="currentColor" />,
+						address: <MarkerIcon fill="currentColor" />
 					} as const;
 					const icon = icons[item.id as keyof typeof icons];
 					return (
@@ -140,7 +140,7 @@ const contacts = [
 							<a
 								class:list={[
 									'contact-card__icon-container',
-									`contact-card__icon-container-${item.id}`,
+									`contact-card__icon-container-${item.id}`
 								]}
 								href={item.ctas[0].href}
 								target="_blank"
@@ -153,7 +153,7 @@ const contacts = [
 								<p
 									class:list={[
 										'contact-card__desc',
-										item.id === 'email' ? 'contact-card__desc__email' : '',
+										item.id === 'email' ? 'contact-card__desc__email' : ''
 									]}
 								>
 									{item.desc}
@@ -170,7 +170,7 @@ const contacts = [
 									class:list={[
 										`contact-card__icon-container-${item.id}`,
 										'contact-card_cta',
-										index !== 0 && 'contact-card_cta--secondary',
+										index !== 0 && 'contact-card_cta--secondary'
 									]}
 								>
 									{icon} {cta.label}
@@ -427,9 +427,9 @@ const contacts = [
 						scrollTrigger: {
 							trigger: card,
 							start: 'top 85%',
-							toggleActions: 'play none none none',
-						},
-					},
+							toggleActions: 'play none none none'
+						}
+					}
 				);
 
 				card.addEventListener('click', ev => {

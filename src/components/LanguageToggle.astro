@@ -6,7 +6,7 @@ import ChevronRight from '@icons/chevron-right.svg';
 
 const languages = [
 	{ code: 'eu', name: 'Euskera', nativeName: 'Euskera' },
-	{ code: 'es', name: 'Español', nativeName: 'Español' },
+	{ code: 'es', name: 'Español', nativeName: 'Español' }
 ];
 
 const url = Astro.url;
@@ -168,7 +168,7 @@ const t = useTranslations(lang);
 					const lang = option.getAttribute('data-lang');
 					const event = new CustomEvent('languageChange', {
 						detail: lang,
-						bubbles: true,
+						bubbles: true
 					});
 					langToggleBtn.dispatchEvent(event);
 					closeDropdown();

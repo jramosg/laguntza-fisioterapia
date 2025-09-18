@@ -41,7 +41,7 @@ jobs:
         run: |
           # Create a tar archive of the dist folder for efficient transfer
           tar -czf dist.tar.gz -C dist .
-     
+
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:

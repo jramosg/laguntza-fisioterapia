@@ -24,7 +24,8 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const title = Astro.props.title || settings.title;
 const description = Astro.props.description || t(settings.description);
-const canonicalURL = Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site);
+const canonicalURL =
+	Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site);
 const keywords = Astro.props.keywords;
 
 // Generate alternate language URLs
@@ -32,7 +33,10 @@ const currentPath = Astro.url.pathname.replace(`/${lang}`, '');
 const alternateLanguages = Astro.props.alternateLanguages || [
 	{ hreflang: 'es', href: new URL(`/es${currentPath}`, Astro.site).toString() },
 	{ hreflang: 'eu', href: new URL(`/eu${currentPath}`, Astro.site).toString() },
-	{ hreflang: 'x-default', href: new URL(`/es${currentPath}`, Astro.site).toString() }
+	{
+		hreflang: 'x-default',
+		href: new URL(`/es${currentPath}`, Astro.site).toString()
+	}
 ];
 ---
 
@@ -55,9 +59,11 @@ const alternateLanguages = Astro.props.alternateLanguages || [
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Alternate Languages -->
-{alternateLanguages.map(({ hreflang, href }) => (
-	<link rel="alternate" hreflang={hreflang} href={href} />
-))}
+{
+	alternateLanguages.map(({ hreflang, href }) => (
+		<link rel="alternate" hreflang={hreflang} href={href} />
+	))
+}
 
 <!-- Author and Business Info -->
 <meta name="author" content="Jon Ramos" />
@@ -66,10 +72,10 @@ const alternateLanguages = Astro.props.alternateLanguages || [
 <!-- Enhanced Keywords for SEO -->
 <meta
 	name="keywords"
-	content={keywords || (lang === 'eu' 
-		? "fisioterapia Urnieta, fisioterapeuta Gipuzkoa, minaren tratamendua, lesioen berregokitzea, osteopatia, puntzio lehorra, fisioterapia kirolari, errehabilitazioa, neuromodulazioa, terapia manuala, Zubitxo Plaza, fisioterapia zentroa"
-		: "fisioterapia Urnieta, fisioterapeuta Gipuzkoa, tratamiento dolor, rehabilitación lesiones, osteopatía, punción seca, fisioterapia deportiva, centro fisioterapia, neuromodulación, terapia manual, Zubitxo Plaza"
-	)}
+	content={keywords ||
+		(lang === 'eu'
+			? 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, minaren tratamendua, lesioen berregokitzea, osteopatia, puntzio lehorra, fisioterapia kirolari, errehabilitazioa, neuromodulazioa, terapia manuala, Zubitxo Plaza, fisioterapia zentroa'
+			: 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, tratamiento dolor, rehabilitación lesiones, osteopatía, punción seca, fisioterapia deportiva, centro fisioterapia, neuromodulación, terapia manual, Zubitxo Plaza')}
 />
 
 <!-- Location-based meta tags -->
@@ -79,15 +85,26 @@ const alternateLanguages = Astro.props.alternateLanguages || [
 <meta name="ICBM" content="43.24656113552193, -1.9932571315890595" />
 
 <!-- Business/Medical specific meta tags -->
-<meta name="medical-specialties" content="Fisioterapia, Osteopatía, Rehabilitación, Terapia Manual" />
-<meta name="service-area" content="Urnieta, Donostia, San Sebastián, Gipuzkoa, País Vasco" />
+<meta
+	name="medical-specialties"
+	content="Fisioterapia, Osteopatía, Rehabilitación, Terapia Manual"
+/>
+<meta
+	name="service-area"
+	content="Urnieta, Donostia, San Sebastián, Gipuzkoa, País Vasco"
+/>
 
 <!-- Robots and indexing directives -->
-{Astro.props.noindex ? (
-	<meta name="robots" content="noindex, nofollow" />
-) : (
-	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-)}
+{
+	Astro.props.noindex ? (
+		<meta name="robots" content="noindex, nofollow" />
+	) : (
+		<meta
+			name="robots"
+			content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+		/>
+	)
+}
 
 <!-- Security headers -->
 <meta name="referrer" content="strict-origin-when-cross-origin" />

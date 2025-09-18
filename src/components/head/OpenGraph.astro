@@ -13,7 +13,10 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const defaultImage1 = new URL('/main-logo-horizontal.png', Astro.site).toString();
+const defaultImage1 = new URL(
+	'/main-logo-horizontal.png',
+	Astro.site
+).toString();
 const defaultImage2 = new URL('/open-graph.jpg', Astro.site).toString();
 const title = settings.title;
 const description = desc || t(settings.description);
@@ -32,16 +35,24 @@ const siteName = 'Laguntza Fisioterapia';
 <meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Laguntza Fisioterapia - Centro de Fisioterapia en Urnieta, Gipuzkoa" />
+<meta
+	property="og:image:alt"
+	content="Laguntza Fisioterapia - Centro de Fisioterapia en Urnieta, Gipuzkoa"
+/>
 <meta property="og:locale" content={lang === 'eu' ? 'eu_ES' : 'es_ES'} />
-{lang === 'eu' ? (
-	<meta property="og:locale:alternate" content="es_ES" />
-) : (
-	<meta property="og:locale:alternate" content="eu_ES" />
-)}
+{
+	lang === 'eu' ? (
+		<meta property="og:locale:alternate" content="es_ES" />
+	) : (
+		<meta property="og:locale:alternate" content="eu_ES" />
+	)
+}
 
 <!-- Additional business-specific Open Graph tags -->
-<meta property="business:contact_data:street_address" content="Zubitxo Plaza, 3" />
+<meta
+	property="business:contact_data:street_address"
+	content="Zubitxo Plaza, 3"
+/>
 <meta property="business:contact_data:locality" content="Urnieta" />
 <meta property="business:contact_data:region" content="Gipuzkoa" />
 <meta property="business:contact_data:postal_code" content="20130" />
@@ -53,11 +64,13 @@ const siteName = 'Laguntza Fisioterapia';
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={defaultImage1} />
-<meta name="twitter:image:alt" content="Laguntza Fisioterapia - Centro de Fisioterapia en Urnieta, Gipuzkoa" />
+<meta
+	name="twitter:image:alt"
+	content="Laguntza Fisioterapia - Centro de Fisioterapia en Urnieta, Gipuzkoa"
+/>
 <meta name="twitter:creator" content="@laguntzafisio" />
 <meta name="twitter:site" content="@laguntzafisio" />
 
 <!-- WhatsApp / Telegram sharing optimization -->
 <meta property="og:image:width" content="400" />
 <meta property="og:image:height" content="400" />
-

@@ -91,9 +91,9 @@ a:focus-visible {
 /* Interactive Elements Minimum Touch Target */
 button,
 .button,
-a[role="button"],
-input[type="submit"],
-input[type="button"] {
+a[role='button'],
+input[type='submit'],
+input[type='button'] {
 	min-height: 44px;
 	min-width: 44px;
 }

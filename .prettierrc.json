@@ -4,6 +4,7 @@
 	"singleQuote": true,
 	"arrowParens": "avoid",
 	"plugins": ["prettier-plugin-astro"],
+	"trailingComma": "none",
 	"overrides": [
 		{
 			"files": "**/*.astro",

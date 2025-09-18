@@ -10,7 +10,7 @@ import { nav } from '@config/nav';
 import {
 	getLangFromUrl,
 	getStaticLangPaths,
-	useTranslations,
+	useTranslations
 } from '@i18n/utils';
 import DrawerNav from '@components/DrawerNav.astro';
 import { Address, sectionImages, SERVICES } from '@config/company';
@@ -30,13 +30,15 @@ const t = useTranslations(lang);
 
 // SEO data for the home page
 const seo = {
-	title: lang === 'eu' 
-		? 'Laguntza Fisioterapia | Urnieta - Mina eta Lesioen Tratamendua Gipuzkoan'
-		: 'Laguntza Fisioterapia | Urnieta - Tratamiento del Dolor y Lesiones en Gipuzkoa',
+	title:
+		lang === 'eu'
+			? 'Laguntza Fisioterapia | Urnieta - Mina eta Lesioen Tratamendua Gipuzkoan'
+			: 'Laguntza Fisioterapia | Urnieta - Tratamiento del Dolor y Lesiones en Gipuzkoa',
 	description: t(settings.description),
-	keywords: lang === 'eu'
-		? 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, minaren tratamendua, lesioen berregokitzea, osteopatia, puntzio lehorra, neuromodulazioa, fisioterapia zentroa, Zubitxo Plaza'
-		: 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, tratamiento dolor, rehabilitación lesiones, osteopatía, punción seca, neuromodulación, centro fisioterapia, Zubitxo Plaza',
+	keywords:
+		lang === 'eu'
+			? 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, minaren tratamendua, lesioen berregokitzea, osteopatia, puntzio lehorra, neuromodulazioa, fisioterapia zentroa, Zubitxo Plaza'
+			: 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, tratamiento dolor, rehabilitación lesiones, osteopatía, punción seca, neuromodulación, centro fisioterapia, Zubitxo Plaza'
 };
 ---
 
@@ -461,15 +463,15 @@ const seo = {
 		const tl = gsap.timeline({
 			ease: 'power2.out',
 			scrollTrigger: {
-				scrub: 1,
-			},
+				scrub: 1
+			}
 		});
 
 		const sections = gsap.utils.toArray('.service-section');
 		const outerWrappers = gsap.utils.toArray('.service-section__outer');
 
 		gsap.set('.service-section:nth-of-type(1) .service-section__outer', {
-			xPercent: 0,
+			xPercent: 0
 		});
 
 		tl.to('#hero-key', { scale: 1 })
@@ -478,26 +480,26 @@ const seo = {
 			.to(
 				'#logo-mask',
 				{
-					maskSize: 'clamp(20vh, 25%, 30vh)',
+					maskSize: 'clamp(20vh, 25%, 30vh)'
 				},
-				0.15,
+				0.15
 			)
 			.to(
 				'#hero-key',
 				{
 					opacity: 0,
-					duration: 0.2,
+					duration: 0.2
 				},
-				0.4,
+				0.4
 			)
 
 			.to('#when', { opacity: 1, y: -100 }, '>')
 			.to(
 				'#logo-mask',
 				{
-					maskPosition: '50% 25%',
+					maskPosition: '50% 25%'
 				},
-				'<',
+				'<'
 			)
 			.to('#drawer-backdrop', { opacity: 1 }, '>');
 
@@ -508,15 +510,15 @@ const seo = {
 				{
 					xPercent: isEven ? -100 : 100,
 					scale: 0.6,
-					rotate: isEven ? -30 : 30,
+					rotate: isEven ? -30 : 30
 				},
 				{
 					xPercent: 0,
 					scale: 1,
 					duration: 0.5,
-					rotate: 0,
+					rotate: 0
 				},
-				i === 0 ? '<' : '>',
+				i === 0 ? '<' : '>'
 			).to(sections[i], { visibility: 'visible' }, '<');
 		});
 
@@ -526,9 +528,9 @@ const seo = {
 			{
 				yPercent: 0,
 				opacity: 1,
-				scale: 1,
+				scale: 1
 			},
-			'<',
+			'<'
 		);
 
 		heroFooter?.addEventListener('click', () => {
@@ -536,7 +538,7 @@ const seo = {
 			window.scrollBy({
 				top: (window.innerHeight / 3) * 2,
 				left: 0,
-				behavior: 'smooth',
+				behavior: 'smooth'
 			});
 		});
 	});

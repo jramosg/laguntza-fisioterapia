@@ -18,7 +18,7 @@ export function getStaticLangPaths(): { params: { lang: Langs } }[] {
 	const langs = Object.keys(ui) as Langs[];
 
 	const toParam = (lang: keyof typeof ui) => ({
-		params: { lang },
+		params: { lang }
 	});
 
 	return langs.map(toParam);
