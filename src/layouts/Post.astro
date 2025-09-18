@@ -1,7 +1,7 @@
 ---
-import { Container } from '@components/odyssey-theme';
 import Layout from './Page.astro'; 
 import { generateTagData } from '../utils/helpers';
+import Container from '@components/core/Container.astro';
 
 const {content: {title, description, publishDate, canonicalURL, featuredImage, tags} } = Astro.props;
 

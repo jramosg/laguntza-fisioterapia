@@ -1,15 +1,14 @@
 ---
-import { Header, Button, Footer } from '@components/odyssey-theme';
 import Layout from './Base.astro';
 import type { Props as BaseHeadProps } from '../components/head/BaseHead.astro';
 import Logo from '../components/Logo.astro';
-
+import { nav } from '@config/nav';
+import DrawerNav from '@components/DrawerNav.astro';
+import Header from '@components/core/Header.astro';
+import Footer from '@components/core/Footer.astro';
 export interface Props {
 	seo?: BaseHeadProps;
 }
-
-import { nav } from '@config/nav';
-import DrawerNav from '@components/DrawerNav.astro';
 
 const { seo } = Astro.props as Props;
 ---
@@ -24,9 +23,7 @@ const { seo } = Astro.props as Props;
 	<div id="page">
 		<slot />
 	</div>
-	<Footer
-		slot="footer"
-	>
+	<Footer slot="footer">
 		<Logo slot="logo" />
 	</Footer>
 </Layout>
