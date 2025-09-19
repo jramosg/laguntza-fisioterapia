@@ -1,0 +1,44 @@
+name: Format Check
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  format-check:
+    name: Run Prettier format check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read Node version from .nvmrc
+        id: node_version
+        run: |
+          if [ -f .nvmrc ]; then
+            ver=$(cat .nvmrc | tr -d " \t\n")
+            echo "version=$ver" >> $GITHUB_OUTPUT
+          else
+            # Fallback to a sensible default if .nvmrc is missing
+            echo "version=18" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.node_version.outputs.version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run format:check
+        run: pnpm run format:check

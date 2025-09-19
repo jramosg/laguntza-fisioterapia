@@ -1,15 +1,26 @@
 name: Deploy to Server
 on:
-  push:
-    branches:
-      - master
-      - main
+  # Manual trigger for deploying
   workflow_dispatch:
+  # Trigger when the Format Check workflow completes
+  workflow_run:
+    workflows: ["Format Check"]
+    types:
+      - completed
 
 jobs:
   build-and-deploy:
     name: Build and Deploy to Server
     runs-on: ubuntu-latest
+    # Only proceed for:
+    # - manual dispatch (always deploy when manually triggered)
+    # - or when Format Check workflow completed successfully on master and commit message contains '[deploy]'
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'master' &&
+       contains(github.event.workflow_run.head_commit.message, '[deploy]'))
 
     steps:
       - name: Checkout repository

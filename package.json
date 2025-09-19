@@ -12,6 +12,7 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"format": "npx prettier -w .",
+		"format:check": "prettier . --check",
 		"check-updates": "npm-check-updates -u --dep dev"
 	},
 	"devDependencies": {
