@@ -38,7 +38,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install prettier-plugin-astro@latest
 
       - name: Run format:check
         run: pnpm run format:check
