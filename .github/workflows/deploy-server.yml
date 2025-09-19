@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   # Trigger when the Format Check workflow completes
   workflow_run:
-    workflows: ["Format Check"]
+    workflows: ['Format Check']
     types:
       - completed
 
