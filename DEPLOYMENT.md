@@ -128,10 +128,12 @@ Deployments are automatically triggered when:
 ### Common Issues:
 
 1. **SSH Connection Failed**
+
    - Verify `SERVER_HOST`, `SERVER_USER`, and `SERVER_SSH_KEY` secrets
    - Test SSH connection manually: `ssh user@server`
 
 2. **Permission Denied**
+
    - Ensure your SSH user has sudo privileges
    - Check that the SSH key is correctly formatted in the GitHub secret
 

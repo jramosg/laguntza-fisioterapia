@@ -42,7 +42,18 @@ export const ui = {
 		Idatzi: 'Escribir',
 		'Bidali WhatsAppa': 'Enviar WhatsApp',
 		'we-respond-soon': 'Te responderemos pronto.',
-		'we-respond-inmediately': 'Te responderemos de inmediato.'
+		'we-respond-inmediately': 'Te responderemos de inmediato.',
+		'inauguration.title': 'Inauguración',
+		'inauguration.subtitle': 'Laguntza Fisioterapia',
+		'inauguration.invitation':
+			'Este viernes te invitamos a la inauguración de nuestro centro',
+		'inauguration.date': 'Viernes, 7 de Noviembre de 2025',
+		'inauguration.time': '19:00 horas',
+		'inauguration.event': 'Lunch de inauguración',
+		'inauguration.location': 'Ubicación',
+		'inauguration.rsvp': 'Confirmar Asistencia',
+		'inauguration.looking-forward': 'Esperamos contar con su presencia',
+		'inauguration.dress': 'Etiqueta: Casual elegante'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -66,7 +77,18 @@ export const ui = {
 		'theme-switcher': 'Aldatu itxura',
 		'working-hours': 'Astelehenetik ostiralera, 08:00etatik 20:00etara',
 		'we-respond-soon': 'Laister erantzungo dizugu.',
-		'we-respond-inmediately': 'Segituan erantzungo dizugu.'
+		'we-respond-inmediately': 'Segituan erantzungo dizugu.',
+		'inauguration.title': 'Inaugurazioa',
+		'inauguration.subtitle': 'Laguntza Fisioterapia',
+		'inauguration.invitation':
+			'Ostiralean gure zentroaren inauguraziora gonbidatzen zaitugu',
+		'inauguration.date': '2025eko azaroaren 7a, ostirala',
+		'inauguration.time': '19:00etan',
+		'inauguration.event': 'Inaugurazio luntxa',
+		'inauguration.location': 'Kokalekua',
+		'inauguration.rsvp': 'Bertaratze Berrespena',
+		'inauguration.looking-forward': 'Zure presentzia espero dugu',
+		'inauguration.dress': 'Etiketea: Eleganteki informala'
 	}
 };
 

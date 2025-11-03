@@ -1,0 +1,543 @@
+---
+import Page from '@layouts/Page.astro';
+import Container from '@components/core/Container.astro';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
+import Logo from '@components/Logo.astro';
+import { Address } from '@config/company';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+const seoTitle = `${t('inauguration.title')} - ${t('inauguration.subtitle')}`;
+const seoDescription = t('inauguration.invitation');
+---
+
+<Page
+	seo={{
+		title: seoTitle,
+		description: seoDescription
+	}}
+>
+	<div class="inauguration-page">
+		<!-- Hero Section with Elegant Background -->
+		<div class="hero-section">
+			<div class="hero-overlay"></div>
+			<Container>
+				<div class="hero-content">
+					<div class="invitation-badge">
+						{t('inauguration.title')}
+					</div>
+					<h1 class="hero-title">
+						{t('inauguration.subtitle')}
+					</h1>
+					<p class="hero-subtitle">
+						{t('inauguration.invitation')}
+					</p>
+				</div>
+			</Container>
+		</div>
+
+		<!-- Main Content -->
+		<Container>
+			<div class="content-wrapper">
+				<!-- Event Details Card -->
+				<div class="details-card card--elevated">
+					<div class="card-header">
+						<Logo />
+					</div>
+
+					<h2>{t('inauguration.event')}</h2>
+				</div>
+				<div class="card-content">
+					<div class="details-grid">
+						<div class="detail-item">
+							<svg
+								class="detail-icon"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+								<line x1="16" y1="2" x2="16" y2="6"></line>
+								<line x1="8" y1="2" x2="8" y2="6"></line>
+								<line x1="3" y1="10" x2="21" y2="10"></line>
+							</svg>
+							<div>
+								<div class="detail-label">
+									{lang === 'es' ? 'Fecha' : 'Data'}
+								</div>
+								<div class="detail-value">{t('inauguration.date')}</div>
+							</div>
+						</div>
+
+						<div class="detail-item">
+							<svg
+								class="detail-icon"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<circle cx="12" cy="12" r="10"></circle>
+								<polyline points="12 6 12 12 16 14"></polyline>
+							</svg>
+							<div>
+								<div class="detail-label">
+									{lang === 'es' ? 'Hora' : 'Ordua'}
+								</div>
+								<div class="detail-value">{t('inauguration.time')}</div>
+							</div>
+						</div>
+
+						<a
+							class="detail-item"
+							href={Address.url}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<svg
+								class="detail-icon"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+								<circle cx="12" cy="10" r="3"></circle>
+							</svg>
+							<div>
+								<div class="detail-label">{t('inauguration.location')}</div>
+								<div class="detail-value">
+									{Address.name}
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- CTA Section -->
+			<div class="cta-section">
+				<p class="cta-message">{t('inauguration.looking-forward')}</p>
+				<div class="button-group">
+					<a href={`/${lang}/contact`} class="btn btn-primary">
+						<svg
+							class="btn-icon"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path
+								d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+							></path>
+						</svg>
+						{t('nav.contact')}
+					</a>
+					<a
+						href={Address.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-secondary"
+					>
+						<svg
+							class="btn-icon"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+							<circle cx="12" cy="10" r="3"></circle>
+						</svg>
+						{lang === 'es' ? 'Ver ubicación' : 'Kokalekua ikusi'}
+					</a>
+				</div>
+			</div>
+
+			<!-- Decorative Elements -->
+			<div class="decorative-line"></div>
+
+			<!-- Footer Note -->
+			<div class="footer-note">
+				<p>
+					{
+						lang === 'es'
+							? '¡Te esperamos con ilusión!'
+							: 'Ilusioz itxoingo zaitugu!'
+					}
+				</p>
+			</div>
+		</Container>
+	</div>
+</Page>
+
+<style>
+	.inauguration-page {
+		min-height: 100vh;
+		background: linear-gradient(
+			135deg,
+			var(--theme-bg) 0%,
+			var(--theme-surface-1) 100%
+		);
+	}
+
+	.hero-section {
+		position: relative;
+		padding: 8rem 0 6rem;
+		background: var(--theme-gradient);
+		overflow: hidden;
+	}
+
+	.hero-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background:
+			radial-gradient(
+				circle at 20% 50%,
+				rgba(255, 255, 255, 0.1) 0%,
+				transparent 50%
+			),
+			radial-gradient(
+				circle at 80% 80%,
+				rgba(255, 255, 255, 0.1) 0%,
+				transparent 50%
+			);
+		animation: float 20s ease-in-out infinite;
+	}
+
+	@keyframes float {
+		0%,
+		100% {
+			transform: translateY(0) scale(1);
+		}
+		50% {
+			transform: translateY(-20px) scale(1.05);
+		}
+	}
+
+	.hero-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(
+			180deg,
+			transparent 0%,
+			rgba(0, 0, 0, 0.1) 100%
+		);
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 1;
+		text-align: center;
+		color: white;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.invitation-badge {
+		display: inline-block;
+		padding: 0.75rem 2rem;
+		background: rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(10px);
+		border-radius: 50px;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		margin-bottom: 2rem;
+		animation: slideDown 0.8s ease-out;
+	}
+
+	@keyframes slideDown {
+		from {
+			opacity: 0;
+			transform: translateY(-30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.hero-title {
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		font-weight: 800;
+		line-height: 1.2;
+		margin-bottom: 1.5rem;
+		text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+		animation: fadeInUp 0.8s ease-out 0.2s both;
+	}
+
+	.hero-subtitle {
+		font-size: clamp(1.125rem, 2vw, 1.5rem);
+		line-height: 1.6;
+		opacity: 0.95;
+		font-weight: 300;
+		animation: fadeInUp 0.8s ease-out 0.4s both;
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.content-wrapper {
+		padding: 4rem 0;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.details-card {
+		background: var(--theme-surface-1);
+		text-align: center;
+		border-radius: 24px;
+		padding: 3rem;
+		margin-bottom: 3rem;
+		box-shadow:
+			0 20px 60px rgba(0, 0, 0, 0.1),
+			0 0 0 1px rgba(0, 0, 0, 0.05);
+		animation: scaleIn 0.6s ease-out 0.6s both;
+	}
+
+	@keyframes scaleIn {
+		from {
+			opacity: 0;
+			transform: scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	.card-header {
+		text-align: center;
+		display: flex;
+		align-items: center;
+		margin-bottom: 2.5rem;
+		padding-bottom: 2rem;
+		border-bottom: 2px solid var(--theme-divider);
+	}
+
+	.card-header {
+		width: 300px;
+		margin: 0 auto 1rem;
+		color: var(--theme-primary);
+	}
+
+	@keyframes rotate {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.card-header h2 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--theme-text-primary);
+		margin: 0;
+	}
+
+	.card-content .description {
+		font-size: 1.125rem;
+		line-height: 1.8;
+		color: var(--theme-text-secondary);
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+
+	.details-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+	}
+
+	.detail-item {
+		display: flex;
+		gap: 1rem;
+		padding: 1.5rem;
+		background: var(--theme-bg);
+		border-radius: 16px;
+		transition: all 0.3s ease;
+		text-decoration: none;
+	}
+
+	.detail-item:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	.detail-icon {
+		width: 32px;
+		height: 32px;
+		color: var(--theme-primary);
+		flex-shrink: 0;
+	}
+
+	.detail-label {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--theme-text-secondary);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-bottom: 0.5rem;
+	}
+
+	.detail-value {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--theme-text-primary);
+		line-height: 1.4;
+	}
+
+	.cta-section {
+		text-align: center;
+		padding: 3rem 0;
+		animation: fadeInUp 0.8s ease-out 0.8s both;
+	}
+
+	.cta-message {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--theme-text-primary);
+		margin-bottom: 2rem;
+	}
+
+	.button-group {
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 1rem 2rem;
+		border-radius: 12px;
+		font-size: 1.125rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all 0.3s ease;
+		border: none;
+		cursor: pointer;
+	}
+
+	.btn-icon {
+		width: 20px;
+		height: 20px;
+	}
+
+	.btn-primary {
+		background: var(--theme-gradient);
+		color: var(--theme-on-primary);
+		box-shadow: 0 4px 12px rgba(69, 130, 149, 0.3);
+	}
+
+	.btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba(69, 130, 149, 0.4);
+	}
+
+	.btn-secondary {
+		background: var(--theme-surface-1);
+		color: var(--theme-text-primary);
+		border: 2px solid var(--theme-divider);
+	}
+
+	.btn-secondary:hover {
+		background: var(--theme-bg);
+		border-color: var(--theme-primary);
+		color: var(--theme-primary);
+		transform: translateY(-2px);
+	}
+
+	.decorative-line {
+		height: 2px;
+		background: linear-gradient(
+			90deg,
+			transparent 0%,
+			var(--theme-primary) 50%,
+			transparent 100%
+		);
+		margin: 3rem 0;
+		animation: shimmer 3s ease-in-out infinite;
+	}
+
+	@keyframes shimmer {
+		0%,
+		100% {
+			opacity: 0.3;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+
+	.footer-note {
+		text-align: center;
+		padding: 2rem 0;
+	}
+
+	.footer-note p {
+		font-size: 1.25rem;
+		font-style: italic;
+		color: var(--theme-text-secondary);
+		font-weight: 300;
+	}
+
+	@media (max-width: 768px) {
+		.hero-section {
+			padding: 6rem 0 4rem;
+		}
+
+		.details-card {
+			padding: 2rem;
+		}
+
+		.details-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.button-group {
+			flex-direction: column;
+		}
+
+		.btn {
+			width: 100%;
+			justify-content: center;
+		}
+	}
+</style>
