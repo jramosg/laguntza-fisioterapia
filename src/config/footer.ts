@@ -39,8 +39,7 @@ const authorProps = [
 	{
 		name: 'Nerea Dorronsoro',
 		email: 'nedorronsoro@gmail.com',
-		linkedin:
-			'https://www.linkedin.com/in/nerea-dorronsoro?miniProfileUrn=urn%3Ali%3Afs_miniProfile%3AACoAACanxTYBorkiEL9X37D09ucf1LDLgrqQ8oE&lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_people%3BtbIALkWUQDWbWWzUUvsPhA%3D%3D'
+		linkedin: 'https://es.linkedin.com/in/nerea-dorronsoro'
 	},
 	{
 		name: 'Jon Ramos',
