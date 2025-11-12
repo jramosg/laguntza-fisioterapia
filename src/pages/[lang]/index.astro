@@ -3,7 +3,6 @@ import Layout from '@layouts/Base.astro';
 import Burger from '@components/buttons/Burger.astro';
 import MainLogo from '@images/logos/main-logo-horizontal.svg';
 import HeroKeyBackground from '@images/jokin2.webp';
-import HeroKeyBackgroundMobile from '@images/jokin-mobile.webp';
 import LogoIsotipoWhite from '@images/logos/isotipo-white.svg';
 import KeepScrolling from '@icons/keep-scrolling.svg';
 import { nav } from '@config/nav';
@@ -19,6 +18,7 @@ import Container from '@components/core/Container.astro';
 import LanguageToggle from '@components/LanguageToggle.astro';
 import MarkerIcon from '@icons/marker.svg';
 import { settings } from '@config/settings';
+import { Image } from 'astro:assets';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -68,17 +68,15 @@ const seo = {
 		<div id="logo-mask">
 			<section>
 				<picture id="hero-key" class="hero-key-picture">
-					<img
-						id="hero-key-logo"
-						src={MainLogo.src}
-						alt="Laguntza fisioterapia"
-					/>
-					<img
+					<MainLogo id="hero-key-logo" />
+					<Image
 						id="hero-key-background"
-						srcset={`${HeroKeyBackground.src} 1818w, ${HeroKeyBackgroundMobile.src} 690w`}
+						src={HeroKeyBackground}
 						class="background-image"
 						alt="Jokin Ramos"
-						sizes="(max-width: 769px) 690w, 1818w"
+						layout="full-width"
+						fetchpriority="high"
+						loading="eager"
 					/>
 				</picture>
 			</section>
@@ -106,10 +104,9 @@ const seo = {
 				return (
 					<section class="service-section">
 						<div class="service-section__outer">
-							<Container
-								class="service-section-card"
-								style={`background-image: url('${image.src ?? image}');`}
-							>
+							<Container class="service-section-card">
+								<Image src={image} alt={section.title} />
+
 								<div class="service-section-card__bg-overlay" />
 								<div class="service-section-card__desc">
 									<h2>{section.title}</h2>
@@ -347,6 +344,14 @@ const seo = {
 		background-repeat: no-repeat;
 		position: fixed;
 		overflow: hidden;
+		img {
+			height: 100%;
+			width: 100%;
+			object-fit: cover;
+			border-radius: var(--theme-shape-radius);
+			position: absolute;
+			inset: 0;
+		}
 	}
 	.service-section-card__bg-overlay {
 		position: absolute;
@@ -357,7 +362,6 @@ const seo = {
 			rgba(0, 0, 0, 0.25) 60%,
 			rgba(0, 0, 0, 0.65) 100%
 		);
-		backdrop-filter: blur(2px) saturate(120%);
 		z-index: 1;
 		pointer-events: none;
 	}
