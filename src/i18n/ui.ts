@@ -98,9 +98,9 @@ export const ui = {
 		'inauguration.looking-forward': 'Zure presentzia espero dugu',
 		'inauguration.dress': 'Etiketea: Eleganteki informala',
 		'gallery.title': 'Inaugurazioaren Galeria',
-		'gallery.thank-you': 'Eskerrik asko gurekin egoteagatik!',
+		'gallery.thank-you': 'Eskerrik asko etortzeagatik!',
 		'gallery.message':
-			'Mila esker gerturate zineten guztiei. Inaugurazioaren momentu batzuk uzten dizkizuegu.',
+			'Mila esker gerturatu zineten guztiei. Inaugurazioaren momentu batzuk uzten dizkizuegu.',
 		'gallery.download': 'Deskargatu',
 		'gallery.close': 'Itxi',
 		'gallery.previous': 'Aurrekoa',
