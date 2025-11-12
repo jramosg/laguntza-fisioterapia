@@ -15,8 +15,14 @@ const t = useTranslations(lang);
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
-const seoTitle = `${t('inauguration.title')} - ${t('inauguration.subtitle')}`;
-const seoDescription = t('inauguration.invitation');
+const seoTitle =
+	lang === 'eu'
+		? `${t('inauguration.title')} - ${t('inauguration.subtitle')} Urnieta, Gipuzkoa`
+		: `${t('inauguration.title')} - ${t('inauguration.subtitle')} Urnieta, Gipuzkoa`;
+const seoDescription =
+	lang === 'eu'
+		? `${t('inauguration.invitation')} Urnietan, Gipuzkoan. Zubitxo Plaza 3.`
+		: `${t('inauguration.invitation')} en Urnieta, Gipuzkoa. Zubitxo Plaza 3.`;
 ---
 
 <Page

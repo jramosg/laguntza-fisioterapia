@@ -55,15 +55,75 @@ const structuredData = {
 	areaServed: [
 		{
 			'@type': 'City',
-			name: 'Urnieta'
+			name: 'Urnieta',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
 		},
 		{
 			'@type': 'City',
-			name: 'Donostia-San Sebastián'
+			name: 'Donostia-San Sebastián',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
+		},
+		{
+			'@type': 'City',
+			name: 'Hernani',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
+		},
+		{
+			'@type': 'City',
+			name: 'Andoain',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
+		},
+		{
+			'@type': 'City',
+			name: 'Lasarte-Oria',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
+		},
+		{
+			'@type': 'City',
+			name: 'Astigarraga',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
+		},
+		{
+			'@type': 'City',
+			name: 'Usurbil',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
+		},
+		{
+			'@type': 'City',
+			name: 'Pasaia',
+			containedInPlace: {
+				'@type': 'AdministrativeArea',
+				name: 'Gipuzkoa'
+			}
 		},
 		{
 			'@type': 'AdministrativeArea',
-			name: 'Gipuzkoa'
+			name: 'Gipuzkoa',
+			containedInPlace: {
+				'@type': 'Country',
+				name: 'España'
+			}
 		},
 		{
 			'@type': 'Country',
@@ -169,6 +229,48 @@ const organizationData = {
 		areaServed: 'ES'
 	}
 };
+
+// LocalBusiness schema for better local SEO
+const localBusinessData = {
+	'@context': 'https://schema.org',
+	'@type': 'LocalBusiness',
+	'@id': 'https://laguntzafisioterapia.com#localbusiness',
+	name: 'Laguntza Fisioterapia',
+	description:
+		lang === 'eu'
+			? 'Fisioterapia zentroa Urnietan, Gipuzkoan, minaren tratamenduan eta lesioen berregokitzean espezializatua'
+			: 'Centro de fisioterapia en Urnieta, Gipuzkoa, especializado en tratamiento del dolor y rehabilitación de lesiones',
+	image: [
+		'https://laguntzafisioterapia.com/main-logo-horizontal.png',
+		'https://laguntzafisioterapia.com/open-graph.jpg'
+	],
+	url: 'https://laguntzafisioterapia.com',
+	telephone: Phone.name,
+	priceRange: '€€',
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: 'Zubitxo Plaza, 3',
+		addressLocality: 'Urnieta',
+		addressRegion: 'Gipuzkoa',
+		postalCode: '20130',
+		addressCountry: 'ES'
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: 43.24656113552193,
+		longitude: -1.9932571315890595
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '20:00'
+		}
+	],
+	servesCuisine: null,
+	hasMap: Address.url
+};
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
@@ -179,4 +281,8 @@ const organizationData = {
 <script
 	type="application/ld+json"
 	set:html={JSON.stringify(organizationData)}
+/>
+<script
+	type="application/ld+json"
+	set:html={JSON.stringify(localBusinessData)}
 />

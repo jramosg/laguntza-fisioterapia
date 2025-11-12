@@ -14,7 +14,7 @@ export const ui = {
 		'Ireki menua': 'Abrir menú',
 		'Itxi menua': 'Cerrar menú',
 		'seo.main-description':
-			'Laguntza Fisioterapia es un centro especializado en el tratamiento del dolor y readaptación de lesiones deportivas en Urnieta, Gipuzkoa. Fisioterapeuta profesional con atención personalizada para tu recuperación.',
+			'Centro de fisioterapia en Urnieta, Gipuzkoa, especializado en tratamiento del dolor y rehabilitación de lesiones. Fisioterapeuta profesional cerca de Donostia, San Sebastián, Hernani y Andoain. Osteopatía, punción seca, neuromodulación y terapia manual. Atención personalizada en el corazón de Gipuzkoa.',
 		'Menua ireki': 'Abrir menú',
 		'Menua itxi': 'Cerrar menú',
 		'contact-jarri': 'Ponte en',
@@ -70,7 +70,7 @@ export const ui = {
 		'nav.about': 'Niri buruz',
 		'nav.contact': 'Kontaktua',
 		'seo.main-description':
-			'Laguntza fisioterapia zentrua minaren tratamenduan eta kirol lesioen berregokitzean espezializatua. Urnietan, Gipuzkoan kokatutako fisioterapeuta profesionala. Arreta pertsonalizatua zure errekuperaziorako.',
+			'Fisioterapia zentroa Urnietan, Gipuzkoan, minaren tratamenduan eta kirol lesioen berregokitzean espezializatua. Fisioterapeuta profesionala Donostia, Hernani eta Andoaindik gertu. Osteopatia, puntzio lehorra, neuromodulazioa eta terapia manuala. Arreta pertsonalizatua Gipuzkoako bihotzean.',
 
 		'contact-jarri': 'Jarri',
 		'contact-kontaktuan': 'kontaktuan',

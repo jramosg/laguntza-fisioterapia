@@ -17,8 +17,14 @@ export function getStaticPaths() {
 	return getStaticLangPaths();
 }
 
-const seoTitle = `${t('gallery.title')} - Laguntza Fisioterapia`;
-const seoDescription = t('gallery.message');
+const seoTitle =
+	lang === 'eu'
+		? `${t('gallery.title')} - Laguntza Fisioterapia Urnieta, Gipuzkoa`
+		: `${t('gallery.title')} - Laguntza Fisioterapia Urnieta, Gipuzkoa`;
+const seoDescription =
+	lang === 'eu'
+		? `${t('gallery.message')} Urnietan, Gipuzkoan, kokatutako gure fisioterapia zentroa.`
+		: `${t('gallery.message')} Nuestro centro de fisioterapia en Urnieta, Gipuzkoa.`;
 
 // Canonical URL and alternates for SEO
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
