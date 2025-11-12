@@ -3,12 +3,11 @@ import Picture from 'astro/components/Picture.astro';
 import CircleCheck from '@icons/circle-check.svg';
 import { generateSlug } from '@utils/helpers';
 import { sectionImages, type ServiceBullet } from '@config/company';
-import Jokin from '@images/jokin.webp';
 
 const { section, isEven } = Astro.props;
 const hash = generateSlug(section.title);
 
-const image = sectionImages[section.id as keyof typeof sectionImages] || Jokin;
+const image = sectionImages[section.id as keyof typeof sectionImages];
 ---
 
 <section
