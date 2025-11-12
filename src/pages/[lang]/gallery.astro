@@ -276,13 +276,21 @@ const images: Image[] = result.resources.map((img: Image) => ({
 			const nextBtn = document.querySelector('.lightbox-next');
 			const zoomButtons = document.querySelectorAll('.zoom-btn');
 
+			// Cache to track loaded images
+			const loadedImages = new Map();
+
 			// Helper: build Cloudinary URL with width parameter (smaller sizes are faster)
 			function getImageUrl(img, w = 1365) {
 				return `https://res.cloudinary.com/${cloudName}/image/upload/c_limit,w_${w},q_auto/${img.src}`;
 			}
 
 			function preloadImage(url) {
-				return new Promise((resolve, reject) => {
+				// Return cached promise if already loading/loaded
+				if (loadedImages.has(url)) {
+					return loadedImages.get(url);
+				}
+
+				const promise = new Promise((resolve, reject) => {
 					const p = new Image();
 					p.decoding = 'async';
 					p.loading = 'eager';
@@ -290,6 +298,10 @@ const images: Image[] = result.resources.map((img: Image) => ({
 					p.onload = () => resolve(p);
 					p.onerror = reject;
 				});
+
+				// Cache the promise
+				loadedImages.set(url, promise);
+				return promise;
 			}
 
 			function openLightbox(index) {
