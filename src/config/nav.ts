@@ -8,12 +8,12 @@ export const nav = [
 		slug: '/services'
 	},
 	{
-		title: 'inauguration.title',
-		slug: '/opening'
-	},
-	{
 		title: 'nav.contact',
 		slug: '/contact'
+	},
+	{
+		title: 'inauguration.title',
+		slug: '/gallery'
 	}
 ];
 

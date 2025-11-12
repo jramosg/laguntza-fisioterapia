@@ -16,5 +16,6 @@ export default defineConfig({
 	},
 	routing: {
 		prefixDefaultLocale: true
-	}
+	},
+	image: { layout: 'constrained' }
 });

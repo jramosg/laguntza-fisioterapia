@@ -53,7 +53,15 @@ export const ui = {
 		'inauguration.location': 'Ubicación',
 		'inauguration.rsvp': 'Confirmar Asistencia',
 		'inauguration.looking-forward': 'Esperamos contar con su presencia',
-		'inauguration.dress': 'Etiqueta: Casual elegante'
+		'gallery.title': 'Galería de Inauguración',
+		'gallery.thank-you': '¡Gracias por acompañarnos!',
+		'gallery.message':
+			'Fue un placer compartir con todos vosotros este día tan especial. Aquí os dejamos algunos momentos de nuestra inauguración.',
+		'gallery.download': 'Descargar',
+		'gallery.close': 'Cerrar',
+		'gallery.previous': 'Anterior',
+		'gallery.next': 'Siguiente',
+		'gallery.view-fullscreen': 'Ver en pantalla completa'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -88,7 +96,16 @@ export const ui = {
 		'inauguration.location': 'Kokalekua',
 		'inauguration.rsvp': 'Bertaratze Berrespena',
 		'inauguration.looking-forward': 'Zure presentzia espero dugu',
-		'inauguration.dress': 'Etiketea: Eleganteki informala'
+		'inauguration.dress': 'Etiketea: Eleganteki informala',
+		'gallery.title': 'Inaugurazioaren Galeria',
+		'gallery.thank-you': 'Eskerrik asko gurekin egoteagatik!',
+		'gallery.message':
+			'Plazer handia izan zen guztiok hain egun berezia partekatzea. Hemen gure inaugurazioaren momentu batzuk uzten dizkizuegu.',
+		'gallery.download': 'Deskargatu',
+		'gallery.close': 'Itxi',
+		'gallery.previous': 'Aurrekoa',
+		'gallery.next': 'Hurrengoa',
+		'gallery.view-fullscreen': 'Pantaila osoan ikusi'
 	}
 };
 

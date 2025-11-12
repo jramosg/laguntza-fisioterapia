@@ -1,0 +1,570 @@
+---
+import Page from '@layouts/Page.astro';
+import Container from '@components/core/Container.astro';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
+import { v2 as cloudinary } from 'cloudinary';
+import { CldImage } from 'astro-cloudinary';
+import { Image } from 'cloudinary-util/types';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+
+const seoTitle = `${t('gallery.title')} - Laguntza Fisioterapia`;
+const seoDescription = t('gallery.message');
+
+const cloudName = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME;
+cloudinary.config({
+	cloud_name: cloudName,
+	api_key: import.meta.env.PUBLIC_CLOUDINARY_API_KEY,
+	api_secret: import.meta.env.CLOUDINARY_API_SECRET
+});
+
+const result = await cloudinary.search
+	.expression('folder:inaugurazioa')
+	.max_results(100)
+	.execute();
+
+const images: Image[] = result.resources.map((img: Image) => ({
+	src: img.public_id,
+	alt: img.display_name || img.public_id,
+	width: img.width,
+	height: img.height,
+	secureUrl: img.secure_url
+}));
+---
+
+<Page
+	seo={{
+		title: seoTitle,
+		description: seoDescription
+	}}
+>
+	<div class="gallery-page">
+		<!-- Hero Section -->
+		<div class="hero-section">
+			<Container>
+				<div class="hero-content">
+					<h1 class="hero-title">{t('gallery.thank-you')}</h1>
+					<p class="hero-subtitle">{t('gallery.message')}</p>
+					<p class="photo-credit">
+						{lang === 'es' ? 'Fotografías de' : 'Argazkiak'} Alba Cabrera
+					</p>
+				</div>
+			</Container>
+		</div>
+
+		<!-- Gallery Grid -->
+		<Container>
+			<div class="gallery-grid">
+				{
+					images.map((img, index) => (
+						<div class="gallery-item">
+							<CldImage
+								src={img.src}
+								alt={img.alt}
+								width={600}
+								height={400}
+								crop="fill"
+								gravity="auto"
+								quality="auto"
+								loading="lazy"
+							/>
+							<div class="gallery-overlay">
+								<button
+									class="icon-btn zoom-btn"
+									data-index={index}
+									aria-label={t('gallery.view-fullscreen')}
+									title={t('gallery.view-fullscreen')}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+									>
+										<circle cx="11" cy="11" r="8" />
+										<path d="m21 21-4.35-4.35" />
+									</svg>
+								</button>
+								<a
+									href={`https://res.cloudinary.com/${cloudName}/image/upload/fl_attachment/${img.src}`}
+									download
+									class="icon-btn download-btn"
+									aria-label={t('gallery.download')}
+									title={t('gallery.download')}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+									>
+										<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+										<polyline points="7 10 12 15 17 10" />
+										<line x1="12" y1="15" x2="12" y2="3" />
+									</svg>
+								</a>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</Container>
+
+		<!-- Lightbox Modal -->
+		<div id="lightbox" class="lightbox" aria-hidden="true">
+			<div class="lightbox-backdrop"></div>
+			<div class="lightbox-content">
+				<button class="lightbox-close" aria-label={t('gallery.close')}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg>
+				</button>
+
+				<button
+					class="lightbox-nav lightbox-prev"
+					aria-label={t('gallery.previous')}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<polyline points="15 18 9 12 15 6"></polyline>
+					</svg>
+				</button>
+
+				<div class="lightbox-image-container">
+					<img id="lightbox-img" src="" alt="" />
+				</div>
+
+				<button
+					class="lightbox-nav lightbox-next"
+					aria-label={t('gallery.next')}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<polyline points="9 18 15 12 9 6"></polyline>
+					</svg>
+				</button>
+
+				<div class="lightbox-controls">
+					<a id="lightbox-download" href="" download class="lightbox-btn">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+							<polyline points="7 10 12 15 17 10"></polyline>
+							<line x1="12" y1="15" x2="12" y2="3"></line>
+						</svg>
+						{t('gallery.download')}
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script
+		define:vars={{
+			images,
+			cloudName: cloudName
+		}}
+		is:inline
+	>
+		document.addEventListener('astro:page-load', () => {
+			let currentIndex = 0;
+
+			const lightbox = document.getElementById('lightbox');
+			const lightboxImg = document.getElementById('lightbox-img');
+			const lightboxDownload = document.getElementById('lightbox-download');
+			const closeBtn = document.querySelector('.lightbox-close');
+			const prevBtn = document.querySelector('.lightbox-prev');
+			const nextBtn = document.querySelector('.lightbox-next');
+			const zoomButtons = document.querySelectorAll('.zoom-btn');
+
+			function openLightbox(index) {
+				currentIndex = index;
+				updateLightboxImage();
+				lightbox.setAttribute('aria-hidden', 'false');
+				lightbox.classList.add('active');
+				document.body.style.overflow = 'hidden';
+			}
+
+			function closeLightbox() {
+				lightbox.setAttribute('aria-hidden', 'true');
+				lightbox.classList.remove('active');
+				document.body.style.overflow = '';
+			}
+
+			function updateLightboxImage() {
+				const img = images[currentIndex];
+				lightboxImg.src = `https://res.cloudinary.com/${cloudName}/image/upload/c_limit,w_1920,q_auto/${img.src}`;
+				lightboxImg.alt = img.alt;
+				lightboxDownload.href = `https://res.cloudinary.com/${cloudName}/image/upload/fl_attachment/${img.src}`;
+			}
+
+			function showNext() {
+				currentIndex = (currentIndex + 1) % images.length;
+				updateLightboxImage();
+			}
+
+			function showPrev() {
+				currentIndex = (currentIndex - 1 + images.length) % images.length;
+				updateLightboxImage();
+			}
+
+			// Event listeners
+			zoomButtons.forEach(btn => {
+				btn.addEventListener('click', e => {
+					const index = parseInt(e.currentTarget.getAttribute('data-index'));
+					openLightbox(index);
+				});
+			});
+
+			closeBtn.addEventListener('click', closeLightbox);
+			nextBtn.addEventListener('click', showNext);
+			prevBtn.addEventListener('click', showPrev);
+
+			// Close on backdrop click
+			lightbox
+				.querySelector('.lightbox-backdrop')
+				.addEventListener('click', closeLightbox);
+
+			// Keyboard navigation
+			document.addEventListener('keydown', e => {
+				if (lightbox.classList.contains('active')) {
+					if (e.key === 'Escape') closeLightbox();
+					if (e.key === 'ArrowRight') showNext();
+					if (e.key === 'ArrowLeft') showPrev();
+				}
+			});
+		});
+	</script>
+</Page>
+
+<style>
+	.gallery-page {
+		min-height: 100vh;
+		background: var(--theme-bg);
+	}
+
+	.hero-section {
+		background: var(--theme-gradient);
+		padding: 6rem 0 4rem;
+		text-align: center;
+		color: white;
+	}
+
+	.hero-content {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.hero-title {
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		font-weight: 800;
+		line-height: 1.2;
+		margin-bottom: 1.5rem;
+		text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	}
+
+	.hero-subtitle {
+		font-size: clamp(1.125rem, 2vw, 1.5rem);
+		line-height: 1.6;
+		opacity: 0.95;
+		font-weight: 300;
+	}
+
+	.photo-credit {
+		margin-top: 1.5rem;
+		font-size: 0.875rem;
+		opacity: 0.85;
+		font-style: italic;
+		font-weight: 300;
+	}
+
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 1.5rem;
+		padding: 4rem 0;
+	}
+
+	.gallery-item {
+		position: relative;
+		border-radius: 16px;
+		overflow: hidden;
+		aspect-ratio: 3/2;
+		background: var(--theme-surface-1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		transition: transform 0.3s ease;
+	}
+
+	.gallery-item:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	}
+
+	.gallery-item img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.gallery-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.6);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.gallery-item:hover .gallery-overlay {
+		opacity: 1;
+	}
+
+	.icon-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: white;
+		border: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		color: var(--theme-primary);
+		text-decoration: none;
+	}
+
+	.icon-btn:hover {
+		transform: scale(1.1);
+		background: var(--theme-primary);
+		color: white;
+	}
+
+	.icon-btn svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	/* Lightbox Styles */
+	.lightbox {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 9999;
+		display: none;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lightbox.active {
+		display: flex;
+	}
+
+	.lightbox-backdrop {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.95);
+	}
+
+	.lightbox-content {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+	}
+
+	.lightbox-image-container {
+		max-width: 90vw;
+		max-height: 80vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lightbox-image-container img {
+		max-width: 100%;
+		max-height: 80vh;
+		object-fit: contain;
+		border-radius: 8px;
+	}
+
+	.lightbox-close {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
+	}
+
+	.lightbox-close:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: scale(1.1);
+	}
+
+	.lightbox-close svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	.lightbox-nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
+	}
+
+	.lightbox-nav:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: translateY(-50%) scale(1.1);
+	}
+
+	.lightbox-prev {
+		left: 2rem;
+	}
+
+	.lightbox-next {
+		right: 2rem;
+	}
+
+	.lightbox-nav svg {
+		width: 28px;
+		height: 28px;
+	}
+
+	.lightbox-controls {
+		position: absolute;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 1rem;
+	}
+
+	.lightbox-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.75rem 1.5rem;
+		background: rgba(255, 255, 255, 0.1);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		border-radius: 50px;
+		color: white;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
+		text-decoration: none;
+	}
+
+	.lightbox-btn:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: translateY(-2px);
+	}
+
+	.lightbox-btn svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	@media (max-width: 768px) {
+		.gallery-grid {
+			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			gap: 1rem;
+			padding: 2rem 0;
+		}
+
+		.hero-section {
+			padding: 4rem 0 2rem;
+		}
+
+		.lightbox-nav {
+			width: 44px;
+			height: 44px;
+		}
+
+		.lightbox-prev {
+			left: 1rem;
+		}
+
+		.lightbox-next {
+			right: 1rem;
+		}
+
+		.lightbox-close {
+			top: 1rem;
+			right: 1rem;
+		}
+
+		.lightbox-controls {
+			bottom: 1rem;
+		}
+	}
+</style>
