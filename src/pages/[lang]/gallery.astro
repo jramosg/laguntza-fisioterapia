@@ -20,6 +20,13 @@ export function getStaticPaths() {
 const seoTitle = `${t('gallery.title')} - Laguntza Fisioterapia`;
 const seoDescription = t('gallery.message');
 
+// Canonical URL and alternates for SEO
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const alternateUrls = {
+	es: new URL('/es/gallery', Astro.site),
+	eu: new URL('/eu/gallery', Astro.site)
+};
+
 const cloudName = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME;
 cloudinary.config({
 	cloud_name: cloudName,
@@ -47,26 +54,69 @@ const images: Image[] = result.resources.map((img: Image) => ({
 		description: seoDescription
 	}}
 >
-	<div class="gallery-page">
+	<Fragment slot="head">
+		<link rel="alternate" hreflang="es" href={alternateUrls.es.toString()} />
+		<link rel="alternate" hreflang="eu" href={alternateUrls.eu.toString()} />
+		<link
+			rel="alternate"
+			hreflang="x-default"
+			href={alternateUrls.es.toString()}
+		/>
+		<meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'eu_ES'} />
+		<meta
+			property="og:locale:alternate"
+			content={lang === 'es' ? 'eu_ES' : 'es_ES'}
+		/>
+		<meta
+			name="keywords"
+			content={lang === 'es'
+				? 'Laguntza Fisioterapia, fisioterapia Urnieta, fisioterapia Gipuzkoa, galería fotos, inauguración'
+				: 'Laguntza Fisioterapia, fisioterapia Urnieta, fisioterapia Gipuzkoa, argazki galeria, inaugurazioa'}
+		/>
+	</Fragment>
+
+	<article
+		class="gallery-page"
+		itemscope
+		itemtype="https://schema.org/ImageGallery"
+	>
 		<!-- Hero Section -->
-		<div class="hero-section">
+		<header class="hero-section">
 			<Container>
 				<div class="hero-content">
-					<h1 class="hero-title">{t('gallery.thank-you')}</h1>
-					<p class="hero-subtitle">{t('gallery.message')}</p>
-					<p class="photo-credit">
-						{lang === 'es' ? 'Fotografías de' : 'Argazkiak'} Alba Cabrera
+					<h1 class="hero-title" itemprop="name">{t('gallery.thank-you')}</h1>
+					<p class="hero-subtitle" itemprop="description">
+						{t('gallery.message')}
+					</p>
+					<p
+						class="photo-credit"
+						itemprop="creator"
+						itemscope
+						itemtype="https://schema.org/Person"
+					>
+						<span itemprop="name">
+							{
+								lang === 'es'
+									? 'Gracias a Alba Cabrera por las fotos'
+									: 'Eskerrik asko Alba Cabrerari argazkiengatik'
+							}
+						</span>
 					</p>
 				</div>
 			</Container>
-		</div>
+		</header>
 
 		<!-- Gallery Grid -->
 		<Container>
-			<div class="gallery-grid">
+			<section class="gallery-grid" aria-label={t('gallery.title')}>
 				{
 					images.map((img, index) => (
-						<div class="gallery-item">
+						<figure
+							class="gallery-item"
+							itemprop="associatedMedia"
+							itemscope
+							itemtype="https://schema.org/ImageObject"
+						>
 							<CldImage
 								src={img.src}
 								alt={img.alt}
@@ -77,6 +127,8 @@ const images: Image[] = result.resources.map((img: Image) => ({
 								quality="auto"
 								loading="lazy"
 							/>
+							<meta itemprop="contentUrl" content={img.secureUrl} />
+							<meta itemprop="name" content={img.alt} />
 							<div class="gallery-overlay">
 								<button
 									class="icon-btn zoom-btn"
@@ -115,14 +167,21 @@ const images: Image[] = result.resources.map((img: Image) => ({
 									</svg>
 								</a>
 							</div>
-						</div>
+						</figure>
 					))
 				}
-			</div>
+			</section>
 		</Container>
 
 		<!-- Lightbox Modal -->
-		<div id="lightbox" class="lightbox" aria-hidden="true">
+		<aside
+			id="lightbox"
+			class="lightbox"
+			aria-hidden="true"
+			role="dialog"
+			aria-modal="true"
+			aria-label={t('gallery.view-fullscreen')}
+		>
 			<div class="lightbox-backdrop"></div>
 			<div class="lightbox-content">
 				<button class="lightbox-close" aria-label={t('gallery.close')}>
@@ -189,8 +248,8 @@ const images: Image[] = result.resources.map((img: Image) => ({
 					</a>
 				</div>
 			</div>
-		</div>
-	</div>
+		</aside>
+	</article>
 
 	<script
 		define:vars={{
@@ -268,6 +327,28 @@ const images: Image[] = result.resources.map((img: Image) => ({
 			});
 		});
 	</script>
+
+	<!-- JSON-LD Structured Data for SEO -->
+	<script
+		type="application/ld+json"
+		set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'ImageGallery',
+			name: t('gallery.title'),
+			description: t('gallery.message'),
+			creator: {
+				'@type': 'Person',
+				name: 'Alba Cabrera'
+			},
+			image: images.slice(0, 10).map(img => ({
+				'@type': 'ImageObject',
+				contentUrl: img.secureUrl,
+				name: img.alt,
+				width: img.width,
+				height: img.height
+			}))
+		})}
+	/>
 </Page>
 
 <style>

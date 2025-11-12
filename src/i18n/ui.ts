@@ -56,7 +56,7 @@ export const ui = {
 		'gallery.title': 'Galería de Inauguración',
 		'gallery.thank-you': '¡Gracias por acompañarnos!',
 		'gallery.message':
-			'Fue un placer compartir con todos vosotros este día tan especial. Aquí os dejamos algunos momentos de nuestra inauguración.',
+			'Muchas gracias a todos los que os acercasteis. Os dejamos algunos momentos de nuestra inauguración.',
 		'gallery.download': 'Descargar',
 		'gallery.close': 'Cerrar',
 		'gallery.previous': 'Anterior',
@@ -100,7 +100,7 @@ export const ui = {
 		'gallery.title': 'Inaugurazioaren Galeria',
 		'gallery.thank-you': 'Eskerrik asko gurekin egoteagatik!',
 		'gallery.message':
-			'Plazer handia izan zen guztiok hain egun berezia partekatzea. Hemen gure inaugurazioaren momentu batzuk uzten dizkizuegu.',
+			'Mila esker gerturate zineten guztiei. Inaugurazioaren momentu batzuk uzten dizkizuegu.',
 		'gallery.download': 'Deskargatu',
 		'gallery.close': 'Itxi',
 		'gallery.previous': 'Aurrekoa',
