@@ -2,7 +2,7 @@
 import Layout from '@layouts/Base.astro';
 import Burger from '@components/buttons/Burger.astro';
 import MainLogo from '@images/logos/main-logo-horizontal.svg';
-import HeroKeyBackground from '@images/jokin2.webp';
+import Jokin from '@images/jokin.webp';
 import LogoIsotipoWhite from '@images/logos/isotipo-white.svg';
 import KeepScrolling from '@icons/keep-scrolling.svg';
 import { nav } from '@config/nav';
@@ -71,12 +71,14 @@ const seo = {
 					<MainLogo id="hero-key-logo" />
 					<Image
 						id="hero-key-background"
-						src={HeroKeyBackground}
+						src={Jokin}
 						class="background-image"
-						alt="Jokin Ramos"
+						alt="Jokin Ramos González"
 						layout="full-width"
 						fetchpriority="high"
 						loading="eager"
+						width={2343}
+						height={1562}
 					/>
 				</picture>
 			</section>
@@ -217,6 +219,7 @@ const seo = {
 	#hero-key-logo {
 		position: absolute;
 		top: 50%;
+		opacity: 0.1;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		width: 80vw;
