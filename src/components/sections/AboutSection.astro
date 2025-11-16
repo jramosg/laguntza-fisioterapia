@@ -1,0 +1,298 @@
+---
+import Container from '../core/Container.astro';
+import { Image } from 'astro:assets';
+import JokinImage from '@images/jokin.webp';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+	lang: 'es' | 'eu';
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Container class={'about-section'} tag="article">
+	<header class="about-section__header">
+		<h1 class="about-section__title">
+			{t('about.title')}
+		</h1>
+		<p class="about-section__subtitle">
+			{t('about.subtitle')}
+		</p>
+	</header>
+
+	<div class="about-section__content">
+		<aside class="about-section__image-wrapper">
+			<div class="about-section__image-container">
+				<Image
+					src={JokinImage}
+					alt="Jokin Ramos González"
+					class="about-section__image"
+					width={2343}
+					height={1562}
+				/>
+			</div>
+		</aside>
+
+		<div class="about-section__text">
+			<section class="about-section__intro">
+				<p class="about-section__lead">
+					{t('about.intro')}
+				</p>
+			</section>
+
+			<section class="about-section__card">
+				<h3 class="about-section__card-title">
+					{t('about.journey-title')}
+				</h3>
+				<p class="about-section__paragraph">
+					{t('about.journey-text')}
+				</p>
+			</section>
+
+			<section class="about-section__card about-section__card--highlight">
+				<h3 class="about-section__card-title">
+					{t('about.philosophy-title')}
+				</h3>
+				<p class="about-section__paragraph">
+					{t('about.philosophy-text')}
+				</p>
+			</section>
+
+			<section class="about-section__card">
+				<h3 class="about-section__card-title">
+					{t('about.community-title')}
+				</h3>
+				<p class="about-section__paragraph">
+					{t('about.community-text')}
+				</p>
+			</section>
+		</div>
+	</div>
+</Container>
+
+<style>
+	.about-section {
+		padding: var(--s6) 0;
+	}
+
+	.about-section__header {
+		text-align: left;
+		margin-bottom: var(--s9);
+		padding: 0 var(--s4);
+	}
+
+	.about-section__title {
+		background: linear-gradient(
+			135deg,
+			var(--theme-primary) 0%,
+			var(--theme-secondary) 100%
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		margin-bottom: var(--s2);
+	}
+
+	.about-section__subtitle {
+		font-size: var(--font-size-lg);
+		color: var(--theme-on-bg);
+		font-weight: 400;
+		margin: 0;
+		opacity: 0.8;
+	}
+
+	.about-section__content {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--s9);
+		align-items: start;
+		padding: 0 var(--s4);
+	}
+
+	@media (min-width: 1024px) {
+		.about-section__content {
+			grid-template-columns: 400px 1fr;
+			gap: var(--s10);
+		}
+	}
+
+	.about-section__image-wrapper {
+		position: relative;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	@media (min-width: 1024px) {
+		.about-section__image-wrapper {
+			position: sticky;
+			top: calc(var(--header-height) + var(--s6));
+			align-self: start;
+		}
+	}
+
+	.about-section__image-container {
+		position: relative;
+		width: 100%;
+		max-width: 400px;
+		aspect-ratio: 3/4;
+		border-radius: 2rem;
+		overflow: hidden;
+		box-shadow:
+			0 0 0 1px rgba(69, 130, 149, 0.1),
+			0 20px 60px -10px rgba(69, 130, 149, 0.3);
+	}
+
+	.about-section__image-container::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			180deg,
+			transparent 0%,
+			transparent 50%,
+			rgba(0, 0, 0, 0.4) 100%
+		);
+		pointer-events: none;
+	}
+
+	.about-section__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.about-section__text {
+		display: flex;
+		flex-direction: column;
+		gap: var(--s7);
+	}
+
+	.about-section__card {
+		position: relative;
+		padding: 0;
+		background: transparent;
+	}
+
+	.about-section__card::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 3px;
+		background: linear-gradient(
+			180deg,
+			var(--theme-primary),
+			var(--theme-secondary)
+		);
+		opacity: 0.3;
+		transition: opacity var(--theme-transition);
+	}
+
+	.about-section__card:hover::before {
+		opacity: 1;
+	}
+
+	.about-section__card--highlight {
+		padding: var(--s6);
+		background: linear-gradient(
+			135deg,
+			rgba(69, 130, 149, 0.03),
+			rgba(232, 148, 74, 0.03)
+		);
+		border-radius: 1.5rem;
+		border: 1px solid rgba(69, 130, 149, 0.1);
+	}
+
+	.about-section__card--highlight::before {
+		display: none;
+	}
+
+	.about-section__card-title {
+		font-size: var(--font-size-xl);
+		font-weight: 700;
+		color: var(--theme-on-bg);
+		margin-bottom: var(--s4);
+		padding-left: var(--s5);
+		letter-spacing: -0.01em;
+	}
+
+	.about-section__card--highlight .about-section__card-title {
+		padding-left: 0;
+		background: linear-gradient(
+			135deg,
+			var(--theme-primary),
+			var(--theme-primary-800)
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	:global([data-theme='dark'])
+		.about-section__card--highlight
+		.about-section__card-title {
+		background: linear-gradient(
+			135deg,
+			var(--theme-primary),
+			var(--theme-primary-200)
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.about-section__paragraph {
+		line-height: 1.8;
+		color: var(--theme-on-bg);
+		font-size: var(--font-size-md);
+		margin: 0;
+		padding-left: var(--s5);
+		opacity: 0.85;
+	}
+
+	.about-section__card--highlight .about-section__paragraph {
+		padding-left: 0;
+		opacity: 0.9;
+	}
+
+	@media (max-width: 767px) {
+		.about-section {
+			padding: var(--s8) 0;
+		}
+
+		.about-section__header {
+			margin-bottom: var(--s7);
+		}
+
+		.about-section__title {
+			font-size: clamp(36px, 10vw, 48px);
+		}
+
+		.about-section__subtitle {
+			font-size: var(--font-size-lg);
+		}
+
+		.about-section__content {
+			gap: var(--s7);
+		}
+
+		.about-section__text {
+			gap: var(--s6);
+		}
+
+		.about-section__card-title {
+			font-size: var(--font-size-lg);
+			padding-left: var(--s4);
+		}
+
+		.about-section__paragraph {
+			padding-left: var(--s4);
+			font-size: var(--font-size-base);
+		}
+	}
+</style>

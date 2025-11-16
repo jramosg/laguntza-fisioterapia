@@ -1,0 +1,39 @@
+---
+import Layout from '@layouts/Page.astro';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
+import { Langs } from '@i18n/ui';
+import SectionHero from '@components/SectionHero.astro';
+import AboutSection from '@components/sections/AboutSection.astro';
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+
+const lang: Langs = getLangFromUrl(Astro.url);
+
+// SEO data for about page
+const seo = {
+	title:
+		lang === 'eu'
+			? 'Niri buruz - Jokin Ramos | Fisioterapeuta eta Osteopata Urnietan'
+			: 'Sobre mí - Jokin Ramos | Fisioterapeuta y Osteópata en Urnieta',
+	description:
+		lang === 'eu'
+			? 'Ezagutu Jokin Ramos, Urnietako fisioterapeuta eta osteopata. Esperientzia klinika lanetan, kirol fisioterapian eta osteopatian. Tratamendu pertsonalizatua Zubitxo Plazan.'
+			: 'Conoce a Jokin Ramos, fisioterapeuta y osteópata en Urnieta. Experiencia en trabajo clínico, fisioterapia deportiva y osteopatía. Tratamiento personalizado en Plaza Zubitxo.',
+	keywords:
+		lang === 'eu'
+			? 'Jokin Ramos fisioterapeuta, osteopata Urnieta, fisioterapia Gipuzkoa, Laguntza Fisioterapia, Zubitxo Plaza, fisioterapeuta Donostia'
+			: 'Jokin Ramos fisioterapeuta, osteópata Urnieta, fisioterapia Gipuzkoa, Laguntza Fisioterapia, Plaza Zubitxo, fisioterapeuta Donostia'
+};
+---
+
+<Layout {seo}>
+
+	<AboutSection lang={lang} />
+</Layout>
+
