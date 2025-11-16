@@ -61,7 +61,20 @@ export const ui = {
 		'gallery.close': 'Cerrar',
 		'gallery.previous': 'Anterior',
 		'gallery.next': 'Siguiente',
-		'gallery.view-fullscreen': 'Ver en pantalla completa'
+		'gallery.view-fullscreen': 'Ver en pantalla completa',
+		'about.title': 'Sobre mí',
+		'about.subtitle': 'Jokin Ramos, Fisioterapeuta y Osteópata',
+		'about.intro':
+			'Soy Jokin Ramos, fisioterapeuta de Urnieta. Después de llevar mucho tiempo con esta idea en la cabeza, me animé a dar el paso y abrir Laguntza Fisioterapia en mi pueblo.',
+		'about.journey-title': 'Mi trayectoria',
+		'about.journey-text':
+			'He trabajado en tres áreas principales: trabajo clínico tratando dolores y lesiones traumatológicas, fisioterapia deportiva, y atención a domicilio realizando ejercicios terapéuticos contra el síndrome de fragilidad en personas mayores. Actualmente también estoy inmerso en estudios de Osteopatía, lo que me está ayudando a ganar destreza en terapia manual y a entender mejor la biomecánica y fisiología para ver los sistemas del cuerpo como un todo.',
+		'about.philosophy-title': 'Mi filosofía de trabajo',
+		'about.philosophy-text':
+			'Creo en el tratamiento personalizado y orientado al paciente. En cada caso realizo las valoraciones necesarias para entender el problema y diseño un tratamiento específico. Utilizo razonamiento clínico, ecografía, terapia manual, técnicas invasivas como punción seca y neuromodulación, y ejercicios terapéuticos adaptados a cada persona.',
+		'about.community-title': 'Compromiso con la comunidad',
+		'about.community-text':
+			'Abrir Laguntza Fisioterapia en Urnieta significa poder trabajar para el bienestar de mi comunidad. Mi objetivo es que los vecinos del pueblo y de alrededor puedan acceder a un servicio de fisioterapia de proximidad y calidad. Atiendo a todo tipo de pacientes: deportistas que necesitan tratamiento o prevención, personas mayores que quieren mejorar su calidad de vida, y cualquiera que busque resolver dolores o lesiones.'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -105,7 +118,20 @@ export const ui = {
 		'gallery.close': 'Itxi',
 		'gallery.previous': 'Aurrekoa',
 		'gallery.next': 'Hurrengoa',
-		'gallery.view-fullscreen': 'Pantaila osoan ikusi'
+		'gallery.view-fullscreen': 'Pantaila osoan ikusi',
+		'about.title': 'Niri buruz',
+		'about.subtitle': 'Jokin Ramos, Fisioterapeuta eta Osteopata',
+		'about.intro':
+			'Ni Jokin Ramos naiz, urnietako fisioterapeuta. Aspalditik ideia hau buruan nuela, pausoa ematera animatu nintzen eta Laguntza Fisioterapia nire herrian ireki nuen.',
+		'about.journey-title': 'Nire ibilbidea',
+		'about.journey-text':
+			'Hiru arlo nagusitan egin dut lan: klinika lanetan, min eta lesio traumatologikoak tratatuz; kirol fisioterapian; eta etxez etxe, adinekoei hauskortasun-sindromearen aurkako ariketa terapeutikoak eginez. Gaur egun, Osteopatia ikasketetan ere murgilduta nago, eta honek terapia manualean trebetasuna irabazten eta biomekanika eta fisiologia hobeto ulertzen laguntzen dit, gorputzaren sistemak osotasun batean ikusteko.',
+		'about.philosophy-title': 'Nire lan-filosofia',
+		'about.philosophy-text':
+			'Pazienteari zuzendutako tratamendu pertsonalizatuan sinesten dut. Kasu bakoitzean beharrezko balorazioak egiten ditut arazoa ulertzeko eta tratamendu espezifiko bat diseinatzen dut. Arrazoiketa klinikoa, ekografia, eskuzko terapia, puntzio lehorra eta neuromodulazioa bezalako teknika inbaditzaileak, eta pertsona bakoitzari egokitutako ariketa terapeutikoak erabiltzen ditut.',
+		'about.community-title': 'Komunitatearekiko konpromisoa',
+		'about.community-text':
+			'Laguntza Fisioterapia Urnietan irekitzeak nire komunitatearen ongizaterako lan egiteko aukera ematen dit. Nire helburua da herriko eta inguruko bizilagunek hurbileko eta kalitate handiko fisioterapia zerbitzua lortzea. Paziente mota guztiak hartzen ditut: tratamendua edo prebentzioa behar duten kirolariak, beren bizi-kalitatea hobetu nahi duten adinekoak, eta minak edo lesioak konpondu nahi dituen edonor.'
 	}
 };
 
