@@ -32,7 +32,8 @@ export const footerLists = [
 	{
 		title: 'nav.contact',
 		slug: '/contact'
-	}
+	},
+	{ title: 'nav.about', slug: '/about' }
 ];
 
 const authorProps = [
