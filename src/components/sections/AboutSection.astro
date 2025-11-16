@@ -12,9 +12,9 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<Container class={'about-section'} tag="article">
+<Container tag="article">
 	<header class="about-section__header">
-		<h1 class="about-section__title">
+		<h1 class="about-section__title title--highlight">
 			{t('about.title')}
 		</h1>
 		<p class="about-section__subtitle">
@@ -43,7 +43,7 @@ const t = useTranslations(lang);
 			</section>
 
 			<section class="about-section__card">
-				<h2 class="about-section__card-title">
+				<h2 class="about-section__card-title title--highlight">
 					{t('about.journey-title')}
 				</h2>
 				<p class="about-section__paragraph">
@@ -52,7 +52,7 @@ const t = useTranslations(lang);
 			</section>
 
 			<section class="about-section__card about-section__card--highlight">
-				<h2 class="about-section__card-title">
+				<h2 class="about-section__card-title title--highlight">
 					{t('about.philosophy-title')}
 				</h2>
 				<p class="about-section__paragraph">
@@ -61,7 +61,7 @@ const t = useTranslations(lang);
 			</section>
 
 			<section class="about-section__card">
-				<h2 class="about-section__card-title">
+				<h2 class="about-section__card-title title--highlight">
 					{t('about.community-title')}
 				</h2>
 				<p class="about-section__paragraph">
@@ -73,21 +73,17 @@ const t = useTranslations(lang);
 </Container>
 
 <style>
-	.about-section {
-		margin: var(--s6) 0;
-	}
-
 	.about-section__header {
 		text-align: left;
+		margin-top: var(--s4);
 		margin-bottom: var(--s9);
-		padding: 0 var(--s4);
 	}
 
 	.about-section__title {
 		background: linear-gradient(
 			135deg,
 			var(--theme-primary) 0%,
-			var(--theme-secondary) 100%
+			var(--theme-primary-800) 100%
 		);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
@@ -108,7 +104,7 @@ const t = useTranslations(lang);
 		grid-template-columns: 1fr;
 		gap: var(--s9);
 		align-items: start;
-		padding: 0 var(--s4);
+		margin-bottom: var(--s4);
 	}
 
 	@media (min-width: 1024px) {
@@ -221,8 +217,7 @@ const t = useTranslations(lang);
 		letter-spacing: -0.01em;
 	}
 
-	.about-section__card--highlight .about-section__card-title {
-		padding-left: 0;
+	.title--highlight {
 		background: linear-gradient(
 			135deg,
 			var(--theme-primary),
@@ -233,9 +228,7 @@ const t = useTranslations(lang);
 		background-clip: text;
 	}
 
-	:global([data-theme='dark'])
-		.about-section__card--highlight
-		.about-section__card-title {
+	:global([data-theme='dark']) .title--highlight {
 		background: linear-gradient(
 			135deg,
 			var(--theme-primary),
