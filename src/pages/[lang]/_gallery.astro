@@ -8,7 +8,7 @@ import {
 } from '@i18n/utils';
 import { v2 as cloudinary } from 'cloudinary';
 import { CldImage } from 'astro-cloudinary';
-import { Image } from 'cloudinary-util/types';
+import { CloudinaryResource } from '@cloudinary-util/types';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -45,13 +45,15 @@ const result = await cloudinary.search
 	.max_results(100)
 	.execute();
 
-const images: Image[] = result.resources.map((img: Image) => ({
-	src: img.public_id,
-	alt: img.display_name || img.public_id,
-	width: img.width,
-	height: img.height,
-	secureUrl: img.secure_url
-}));
+const images: CloudinaryResource[] = result.resources.map(
+	(img: CloudinaryResource) => ({
+		src: img.public_id,
+		alt: img.display_name || img.public_id,
+		width: img.width,
+		height: img.height,
+		secureUrl: img.secure_url
+	})
+);
 ---
 
 <Page

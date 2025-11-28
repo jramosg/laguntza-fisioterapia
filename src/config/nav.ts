@@ -14,10 +14,6 @@ export const nav = [
 	{
 		title: 'nav.contact',
 		slug: '/contact'
-	},
-	{
-		title: 'inauguration.title',
-		slug: '/gallery'
 	}
 ];
 
