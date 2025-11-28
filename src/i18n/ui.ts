@@ -8,7 +8,6 @@ export const ui = {
 		'nav.about': 'Sobre mí',
 		'nav.contact': 'Contacto',
 		'Laguntza fisioterapiari buruz': 'Sobre Laguntza Fisioterapia',
-		Erdera: 'Español',
 		Euskera: 'Euskera',
 		'Kaixo!': '¡Hola!',
 		'Ireki menua': 'Abrir menú',
@@ -74,7 +73,11 @@ export const ui = {
 			'Creo en el tratamiento personalizado y orientado al paciente. En cada caso realizo las valoraciones necesarias para entender el problema y diseño un tratamiento específico. Utilizo razonamiento clínico, ecografía, terapia manual, técnicas invasivas como punción seca y neuromodulación, y ejercicios terapéuticos adaptados a cada persona.',
 		'about.community-title': 'Compromiso con la comunidad',
 		'about.community-text':
-			'Abrir Laguntza Fisioterapia en Urnieta significa poder trabajar para el bienestar de mi comunidad. Mi objetivo es que los vecinos del pueblo y de alrededor puedan acceder a un servicio de fisioterapia de proximidad y calidad. Atiendo a todo tipo de pacientes: deportistas que necesitan tratamiento o prevención, personas mayores que quieren mejorar su calidad de vida, y cualquiera que busque resolver dolores o lesiones.'
+			'Abrir Laguntza Fisioterapia en Urnieta significa poder trabajar para el bienestar de mi comunidad. Mi objetivo es que los vecinos del pueblo y de alrededor puedan acceder a un servicio de fisioterapia de proximidad y calidad. Atiendo a todo tipo de pacientes: deportistas que necesitan tratamiento o prevención, personas mayores que quieren mejorar su calidad de vida, y cualquiera que busque resolver dolores o lesiones.',
+		'video.puncture-aria-label':
+			'Vídeo de demostración de técnicas especializadas de punción seca para servicios de fisioterapia',
+		'video.puncture-transcript':
+			'Transcripción: Este vídeo demuestra técnicas especializadas de punción seca utilizadas en fisioterapia, mostrando aplicación segura y efectiva para el cuidado del paciente.'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -131,7 +134,11 @@ export const ui = {
 			'Pazienteari zuzendutako tratamendu pertsonalizatuan sinesten dut. Kasu bakoitzean beharrezko balorazioak egiten ditut arazoa ulertzeko eta tratamendu espezifiko bat diseinatzen dut. Arrazoiketa klinikoa, ekografia, eskuzko terapia, puntzio lehorra eta neuromodulazioa bezalako teknika inbaditzaileak, eta pertsona bakoitzari egokitutako ariketa terapeutikoak erabiltzen ditut.',
 		'about.community-title': 'Komunitatearekiko konpromisoa',
 		'about.community-text':
-			'Laguntza Fisioterapia Urnietan irekitzeak nire komunitatearen ongizaterako lan egiteko aukera ematen dit. Nire helburua da herriko eta inguruko bizilagunek hurbileko eta kalitate handiko fisioterapia zerbitzua lortzea. Paziente mota guztiak hartzen ditut: tratamendua edo prebentzioa behar duten kirolariak, beren bizi-kalitatea hobetu nahi duten adinekoak, eta minak edo lesioak konpondu nahi dituen edonor.'
+			'Laguntza Fisioterapia Urnietan irekitzeak nire komunitatearen ongizaterako lan egiteko aukera ematen dit. Nire helburua da herriko eta inguruko bizilagunek hurbileko eta kalitate handiko fisioterapia zerbitzua lortzea. Paziente mota guztiak hartzen ditut: tratamendua edo prebentzioa behar duten kirolariak, beren bizi-kalitatea hobetu nahi duten adinekoak, eta minak edo lesioak konpondu nahi dituen edonor.',
+		'video.puncture-aria-label':
+			'Fisioterapia zerbitzuetarako puntzio lehor teknika espezializatuen demo bideoa',
+		'video.puncture-transcript':
+			'Transkripzioa: Bideo honek fisioterapian erabilitako puntzio lehor teknika espezializatuak erakusten ditu, pazienteen arreta seguru eta eraginkorra erakutsiz.'
 	}
 };
 

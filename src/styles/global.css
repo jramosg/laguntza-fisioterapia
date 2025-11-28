@@ -66,6 +66,13 @@ pre .language-id {
 	background-color: var(--theme-surface-2);
 }
 
+.card.card--not-interactive:hover,
+.card.card--not-interactive:focus-visible {
+	scale: unset;
+	transform: unset;
+	box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow-md);
+}
+
 /* Enhanced Focus States for Accessibility */
 *:focus-visible {
 	outline: 2px solid var(--theme-primary);

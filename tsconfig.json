@@ -19,7 +19,8 @@
 			"@i18n/*": ["i18n/*"],
 			"@images/*": ["images/*"],
 			"@icons/*": ["icons/*"],
-			"@types": ["types"]
+			"@types": ["types"],
+			"@videos/*": ["videos/*"]
 		}
 	}
 }

@@ -3,11 +3,35 @@ import Picture from 'astro/components/Picture.astro';
 import CircleCheck from '@icons/circle-check.svg';
 import { generateSlug } from '@utils/helpers';
 import { sectionImages, type ServiceBullet } from '@config/company';
+import punctureMp4 from '@videos/puncture.mp4';
+import punctureWebm from '@videos/puncture.webm';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 const { section, isEven } = Astro.props;
 const hash = generateSlug(section.title);
 
+const url = Astro.url;
+const lang = getLangFromUrl(url);
+const t = useTranslations(lang);
+
 const image = sectionImages[section.id as keyof typeof sectionImages];
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'VideoObject',
+	name: section.title,
+	description: section.desc,
+	thumbnailUrl: image.src,
+	uploadDate: '2025-11-28',
+	duration: 'PT1S', // Update this to match actual video duration
+	contentUrl: punctureMp4,
+	embedUrl: punctureMp4,
+	interactionStatistic: {
+		'@type': 'InteractionCounter',
+		interactionType: 'https://schema.org/WatchAction',
+		userInteractionCount: 0
+	}
+};
 ---
 
 <section
@@ -20,12 +44,37 @@ const image = sectionImages[section.id as keyof typeof sectionImages];
 	]}
 	id={hash}
 >
-	<Picture
-		src={image}
-		alt={section.title}
-		id="home-hero-image"
-		class="service-card__image"
-	/>
+	{
+		section.id === 'specialized-techniques' ? (
+			<figure>
+				<video
+					autoplay
+					muted
+					loop
+					playsinline
+					preload="metadata"
+					poster={image.src}
+					class="service-card__media"
+					aria-label={t('video.puncture-aria-label')}
+				>
+					<source src={punctureWebm} type="video/webm" />
+					<source src={punctureMp4} type="video/mp4" />
+					Your browser does not support the video tag.{' '}
+					<a href="/media/video.mp4">Download</a>
+				</video>
+				<figcaption class="sr-only">
+					{t('video.puncture-transcript')}
+				</figcaption>
+			</figure>
+		) : (
+			<Picture
+				src={image}
+				alt={section.title}
+				id="home-hero-image"
+				class="service-card__media"
+			/>
+		)
+	}
 	<div class="service-card__desc">
 		<h2>{section.title}</h2>
 		<p>{section.desc}</p>
@@ -53,6 +102,8 @@ const image = sectionImages[section.id as keyof typeof sectionImages];
 	</div>
 </section>
 
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
 <style>
 	.service-card {
 		display: grid;
@@ -74,10 +125,14 @@ const image = sectionImages[section.id as keyof typeof sectionImages];
 			color: var(--theme-text-secondary);
 		}
 	}
+	video.service-card__media {
+		width: 100%;
+	}
 
-	.service-card__image {
+	.service-card__media {
 		height: 100%;
 		width: 100%;
+		max-height: 500px;
 		object-fit: cover;
 		border-top-right-radius: var(--theme-shape-radius);
 		border-top-left-radius: var(--theme-shape-radius);
@@ -89,16 +144,16 @@ const image = sectionImages[section.id as keyof typeof sectionImages];
 			grid-auto-flow: column dense;
 			align-items: stretch;
 		}
-		.service-card__image {
+		.service-card__media {
 			height: 100%;
-			max-height: none;
 			aspect-ratio: 1/1;
 			object-fit: cover;
+			max-height: unset;
 		}
 		.service-card__desc {
 			height: 100%;
 		}
-		.odd-service .service-card__image {
+		.odd-service .service-card__media {
 			grid-column-start: 2;
 		}
 
@@ -106,12 +161,12 @@ const image = sectionImages[section.id as keyof typeof sectionImages];
 			grid-column-start: 1;
 		}
 
-		.even-service .service-card__image {
+		.even-service .service-card__media {
 			border-top-left-radius: var(--theme-shape-radius);
 			border-bottom-left-radius: var(--theme-shape-radius);
 			border-top-right-radius: unset;
 		}
-		.odd-service .service-card__image {
+		.odd-service .service-card__media {
 			border-top-right-radius: var(--theme-shape-radius);
 			border-bottom-right-radius: var(--theme-shape-radius);
 			border-top-left-radius: unset;
@@ -143,5 +198,17 @@ const image = sectionImages[section.id as keyof typeof sectionImages];
 		p {
 			font-weight: unset;
 		}
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 </style>
