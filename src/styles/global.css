@@ -39,8 +39,8 @@ pre .language-id {
 .card--elevated:hover,
 .card--elevated:focus-visible {
 	box-shadow: var(--ring-offset-shadow), var(--ring-shadow), var(--shadow-2xl);
-	scale: 1.02 !important;
-	transform: translateY(-4px) !important;
+	scale: 1.02;
+	transform: translateY(-4px);
 	background-color: var(--theme-bg);
 }
 
