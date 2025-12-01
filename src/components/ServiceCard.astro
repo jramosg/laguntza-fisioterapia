@@ -5,6 +5,7 @@ import { generateSlug } from '@utils/helpers';
 import { sectionImages, type ServiceBullet } from '@config/company';
 import punctureMp4 from '@videos/puncture.mp4';
 import punctureWebm from '@videos/puncture.webm';
+import PunctureMobile from '@images/puncture-mobile.webp';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 const { section, isEven } = Astro.props;
@@ -54,7 +55,22 @@ const structuredData = {
 					playsinline
 					preload="metadata"
 					poster={image.src}
-					class="service-card__media"
+					class="service-card__media desktop-video"
+					aria-label={t('video.puncture-aria-label')}
+				>
+					<source src={punctureWebm} type="video/webm" />
+					<source src={punctureMp4} type="video/mp4" />
+					Your browser does not support the video tag.{' '}
+					<a href="/media/video.mp4">Download</a>
+				</video>
+				<video
+					autoplay
+					muted
+					loop
+					playsinline
+					preload="metadata"
+					poster={PunctureMobile.src}
+					class="service-card__media mobile-video"
 					aria-label={t('video.puncture-aria-label')}
 				>
 					<source src={punctureWebm} type="video/webm" />
@@ -138,6 +154,14 @@ const structuredData = {
 		border-top-left-radius: var(--theme-shape-radius);
 	}
 
+	.desktop-video {
+		display: none;
+	}
+
+	.mobile-video {
+		display: block;
+	}
+
 	@media (min-width: 1024px) {
 		.service-card {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -149,6 +173,13 @@ const structuredData = {
 			aspect-ratio: 1/1;
 			object-fit: cover;
 			max-height: unset;
+		}
+
+		.desktop-video {
+			display: block;
+		}
+		.mobile-video {
+			display: none;
 		}
 		.service-card__desc {
 			height: 100%;
