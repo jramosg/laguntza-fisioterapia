@@ -131,7 +131,14 @@ const contacts = [
 						whatsapp: <Icon name="ic:baseline-whatsapp" />,
 						address: <MarkerIcon fill="currentColor" />
 					} as const;
+					const ariaLabels = {
+						phone: item.ctas[0].label,
+						email: item.ctas[0].label,
+						whatsapp: item.ctas[0].label,
+						address: item.ctas[0].label
+					} as const;
 					const icon = icons[item.id as keyof typeof icons];
+					const ariaLabel = ariaLabels[item.id as keyof typeof ariaLabels];
 					return (
 						<div
 							class="contact-card card card--elevated"
@@ -145,6 +152,7 @@ const contacts = [
 								href={item.ctas[0].href}
 								target="_blank"
 								rel="noopener noreferrer"
+								aria-label={ariaLabel}
 							>
 								{icon}
 							</a>
