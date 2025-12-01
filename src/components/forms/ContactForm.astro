@@ -9,9 +9,9 @@ const lang = getLangFromUrl(Astro.url);
 
 <Container narrow>
 	<div class="form-header">
-		<h3 class="form-title">
+		<h2 class="form-title">
 			{lang === 'eu' ? 'Harremanetan jarri' : 'Ponte en contacto'}
-		</h3>
+		</h2>
 		<p class="form-subtitle">
 			{
 				lang === 'eu'
@@ -840,10 +840,6 @@ const lang = getLangFromUrl(Astro.url);
 	}
 
 	@media (max-width: 480px) {
-		.form-title {
-			font-size: var(--font-size-md);
-		}
-
 		.laguntza-fisio-contact-form {
 			padding: var(--s5) var(--s3);
 		}
