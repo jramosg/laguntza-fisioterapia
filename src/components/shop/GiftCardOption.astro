@@ -1,0 +1,212 @@
+---
+import { useTranslations } from '@i18n/utils';
+import type { Langs } from '@i18n/ui';
+
+interface Props {
+	id: string;
+	sessions: number;
+	price: number;
+	popular?: boolean;
+	bestValue?: boolean;
+	custom?: boolean;
+	lang: Langs;
+}
+
+const { id, sessions, price, popular, bestValue, custom, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const sessionText = sessions === 1 ? t('shop.session') : t('shop.sessions');
+---
+
+<div 
+	class:list={['gift-card-option', { popular, 'best-value': bestValue, custom }]}
+	data-gift-card
+	data-price={price}
+	data-sessions={sessions}
+	data-custom={custom}
+	data-id={id}
+>
+	{popular && <span class="badge popular-badge">{t('shop.popular')}</span>}
+	{bestValue && <span class="badge best-value-badge">{t('shop.best-value')}</span>}
+	
+	<div class="card-content">
+		{custom ? (
+			<>
+				<h3>{t('shop.custom-amount')}</h3>
+				<div class="custom-input-wrapper">
+					<input 
+						type="number" 
+						id="custom-amount"
+						min="30" 
+						max="500" 
+						placeholder="€"
+						class="custom-amount-input"
+					/>
+					<span class="currency">€</span>
+				</div>
+				<p class="custom-hint">{t('shop.min-amount')} - {t('shop.max-amount')}</p>
+			</>
+		) : (
+			<>
+				<h3>{sessions} {sessionText}</h3>
+				<div class="price">
+					<span class="amount">{price}</span>
+					<span class="currency">€</span>
+				</div>
+				{sessions > 1 && (
+					<p class="per-session">({Math.round(price / sessions)}€ / {t('shop.session')})</p>
+				)}
+			</>
+		)}
+	</div>
+
+	<button class="select-btn" type="button">
+		{t('shop.buy-now')}
+	</button>
+</div>
+
+<style>
+	.gift-card-option {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: var(--s5);
+		background: var(--theme-surface-1);
+		border: 2px solid var(--theme-outline);
+		border-radius: var(--theme-shape-radius);
+		cursor: pointer;
+		transition: all var(--theme-transition);
+	}
+
+	.gift-card-option:hover {
+		border-color: var(--theme-primary);
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.gift-card-option.active {
+		border-color: var(--theme-primary);
+		background: var(--theme-primary-100);
+	}
+
+	.gift-card-option.popular {
+		border-color: var(--theme-primary);
+	}
+
+	.gift-card-option.best-value {
+		border-color: var(--theme-secondary);
+	}
+
+	.badge {
+		position: absolute;
+		top: -12px;
+		left: 50%;
+		transform: translateX(-50%);
+		padding: var(--s) var(--s3);
+		border-radius: 2rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.popular-badge {
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+	}
+
+	.best-value-badge {
+		background: var(--theme-secondary);
+		color: var(--theme-on-accent);
+	}
+
+	.card-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		margin-bottom: var(--s4);
+	}
+
+	h3 {
+		margin: 0 0 var(--s3);
+		font-size: 1.125rem;
+		color: var(--theme-on-bg);
+	}
+
+	.price {
+		display: flex;
+		align-items: baseline;
+		gap: 4px;
+	}
+
+	.amount {
+		font-size: 2.5rem;
+		font-weight: 700;
+		color: var(--theme-primary);
+	}
+
+	.currency {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--theme-text-secondary);
+	}
+
+	.per-session {
+		margin: var(--s) 0 0;
+		font-size: 0.875rem;
+		color: var(--theme-text-secondary);
+	}
+
+	.custom-input-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	.custom-amount-input {
+		width: 120px;
+		padding: var(--s3) var(--s4);
+		font-size: 1.5rem;
+		font-weight: 700;
+		text-align: center;
+		border: 2px solid var(--theme-outline);
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		background: var(--theme-bg);
+		color: var(--theme-primary);
+	}
+
+	.custom-amount-input:focus {
+		outline: none;
+		border-color: var(--theme-primary);
+	}
+
+	.custom-hint {
+		margin: var(--s3) 0 0;
+		font-size: 0.75rem;
+		color: var(--theme-text-secondary);
+	}
+
+	.select-btn {
+		width: 100%;
+		padding: var(--s3) var(--s4);
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		border: none;
+		border-radius: var(--theme-button-border-radius);
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background var(--theme-transition);
+	}
+
+	.select-btn:hover {
+		background: var(--theme-primary-dark);
+	}
+
+	.gift-card-option.active .select-btn {
+		background: var(--theme-secondary);
+	}
+</style>

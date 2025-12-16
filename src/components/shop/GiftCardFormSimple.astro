@@ -1,0 +1,710 @@
+---
+import { useTranslations } from '@i18n/utils';
+import type { Langs } from '@i18n/ui';
+
+interface Props {
+	lang: Langs;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const stripePublicKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY || '';
+const isDev = import.meta.env.DEV;
+---
+
+<div class="gift-card-form-wrapper" data-stripe-key={stripePublicKey} data-dev={isDev}>
+	<!-- Step 1: Form -->
+	<form id="gift-card-form" class="gift-card-form">
+		<input type="hidden" id="selected-amount" name="amount" value="45" />
+		<input type="hidden" id="selected-sessions" name="sessions" value="1" />
+		
+		<div class="form-section">
+			<h3>{lang === 'eu' ? 'Hartzailearen datuak' : 'Datos del destinatario'}</h3>
+			<div class="form-grid">
+				<div class="form-field">
+					<label for="recipient-name">{t('shop.recipient-name')} *</label>
+					<input type="text" id="recipient-name" name="recipientName" required class="input" />
+				</div>
+				<div class="form-field">
+					<label for="recipient-email">{t('shop.recipient-email')}</label>
+					<input type="email" id="recipient-email" name="recipientEmail" class="input" 
+						placeholder={lang === 'eu' ? 'Zuzenean bidaltzeko' : 'Para enviar directamente'} />
+				</div>
+			</div>
+			<div class="form-field">
+				<label for="gift-message">{t('shop.personal-message')}</label>
+				<textarea id="gift-message" name="message" rows="3" class="textarea"
+					placeholder={t('shop.gift-message-placeholder')}></textarea>
+			</div>
+		</div>
+
+		<div class="form-section">
+			<h3>{lang === 'eu' ? 'Zure datuak' : 'Tus datos'}</h3>
+			<div class="form-grid">
+				<div class="form-field">
+					<label for="sender-name">{t('shop.sender-name')} *</label>
+					<input type="text" id="sender-name" name="senderName" required class="input" />
+				</div>
+				<div class="form-field">
+					<label for="sender-email">{t('shop.sender-email')} *</label>
+					<input type="email" id="sender-email" name="senderEmail" required class="input" />
+				</div>
+			</div>
+		</div>
+
+		<!-- Order Summary -->
+		<div class="order-summary">
+			<h3>{lang === 'eu' ? 'Laburpena' : 'Resumen'}</h3>
+			<div class="summary-row">
+				<span id="summary-sessions">1 {lang === 'eu' ? 'saio' : 'sesión'}</span>
+				<span id="summary-amount" class="summary-amount">45€</span>
+			</div>
+			<div class="summary-total">
+				<span>{t('shop.total')}</span>
+				<span id="total-amount" class="total-amount">45€</span>
+			</div>
+		</div>
+
+		<!-- Payment Section (only if Stripe is configured) -->
+		{stripePublicKey && (
+			<div class="payment-section">
+				<h3>{t('shop.secure-payment')}</h3>
+				<div id="card-element" class="card-element"></div>
+				<div id="card-errors" class="card-errors" role="alert"></div>
+				<p class="stripe-info">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+					</svg>
+					{t('shop.powered-by-stripe')}
+				</p>
+			</div>
+		)}
+
+		<!-- Dev mode notice -->
+		{isDev && !stripePublicKey && (
+			<div class="dev-notice">
+				<p>🧪 <strong>Modo desarrollo</strong> - Stripe no configurado</p>
+				<p>El pago se simulará automáticamente</p>
+			</div>
+		)}
+
+		<button type="submit" class="submit-btn" id="submit-btn">
+			<span class="btn-text">{t('shop.buy-now')}</span>
+			<span class="btn-loading" style="display: none;">
+				<span class="spinner"></span>
+				{t('shop.processing')}
+			</span>
+		</button>
+	</form>
+
+	<!-- Step 2: Success Result -->
+	<div id="purchase-result" class="purchase-result" style="display: none;">
+		<div class="result-header">
+			<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+				<polyline points="22,4 12,14.01 9,11.01"></polyline>
+			</svg>
+			<h3>{lang === 'eu' ? 'Eskerrik asko!' : '¡Gracias!'}</h3>
+			<p>{t('shop.payment-success')}</p>
+		</div>
+
+		<div class="gift-card-preview">
+			<div class="gift-card-code">
+				<span class="label">{lang === 'eu' ? 'Kodea' : 'Código'}</span>
+				<span id="result-code" class="code">LF-XXXX-XXXX</span>
+			</div>
+			<div class="gift-card-qr">
+				<img id="result-qr" src="" alt="QR Code" />
+			</div>
+			<div class="gift-card-details">
+				<p><strong>{lang === 'eu' ? 'Saioak' : 'Sesiones'}:</strong> <span id="result-sessions">1</span></p>
+				<p><strong>{lang === 'eu' ? 'Iraungitzea' : 'Caduca'}:</strong> <span id="result-expires"></span></p>
+			</div>
+		</div>
+
+		<p class="email-notice">
+			📧 {t('shop.email-sent')}
+		</p>
+
+		<div class="result-actions">
+			<button type="button" id="copy-code-btn" class="action-btn">
+				📋 {lang === 'eu' ? 'Kodea kopiatu' : 'Copiar código'}
+			</button>
+			<button type="button" id="new-purchase-btn" class="action-btn secondary">
+				🎁 {lang === 'eu' ? 'Beste bat erosi' : 'Comprar otro'}
+			</button>
+		</div>
+	</div>
+
+	<!-- Error Message -->
+	<div id="purchase-error" class="purchase-error" style="display: none;">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<circle cx="12" cy="12" r="10"></circle>
+			<line x1="15" y1="9" x2="9" y2="15"></line>
+			<line x1="9" y1="9" x2="15" y2="15"></line>
+		</svg>
+		<p id="error-message">{t('shop.payment-error')}</p>
+		<button type="button" id="retry-btn" class="action-btn">
+			{lang === 'eu' ? 'Berriro saiatu' : 'Intentar de nuevo'}
+		</button>
+	</div>
+</div>
+
+<style>
+	.gift-card-form-wrapper {
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.gift-card-form {
+		padding: var(--s5);
+		background: var(--theme-bg);
+		border-radius: var(--theme-shape-radius);
+		box-shadow: var(--shadow-md);
+	}
+
+	.form-section {
+		margin-bottom: var(--s5);
+	}
+
+	.form-section h3 {
+		margin: 0 0 var(--s4);
+		font-size: 1.125rem;
+		color: var(--theme-on-bg);
+		padding-bottom: var(--s3);
+		border-bottom: 1px solid var(--theme-outline);
+	}
+
+	.form-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: var(--s4);
+	}
+
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: var(--s3);
+	}
+
+	.form-field label {
+		margin-bottom: var(--s);
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--theme-on-bg);
+	}
+
+	.input,
+	.textarea {
+		padding: var(--s3) var(--s4);
+		border: 1px solid var(--theme-outline);
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		background: var(--theme-bg);
+		color: var(--theme-on-bg);
+		font-size: 1rem;
+		transition: border-color var(--theme-transition);
+	}
+
+	.input:focus,
+	.textarea:focus {
+		outline: none;
+		border-color: var(--theme-primary);
+	}
+
+	.textarea {
+		resize: vertical;
+		min-height: 80px;
+	}
+
+	/* Order Summary */
+	.order-summary {
+		margin-bottom: var(--s5);
+		padding: var(--s4);
+		background: var(--theme-surface-1);
+		border-radius: calc(var(--theme-shape-radius) / 2);
+	}
+
+	.order-summary h3 {
+		margin: 0 0 var(--s3);
+		font-size: 1rem;
+		color: var(--theme-on-bg);
+	}
+
+	.summary-row {
+		display: flex;
+		justify-content: space-between;
+		padding: var(--s) 0;
+		color: var(--theme-text-secondary);
+	}
+
+	.summary-total {
+		display: flex;
+		justify-content: space-between;
+		padding-top: var(--s3);
+		margin-top: var(--s3);
+		border-top: 1px solid var(--theme-outline);
+		font-weight: 700;
+		font-size: 1.125rem;
+		color: var(--theme-on-bg);
+	}
+
+	.total-amount {
+		color: var(--theme-primary);
+	}
+
+	/* Payment Section */
+	.payment-section {
+		margin-bottom: var(--s5);
+	}
+
+	.payment-section h3 {
+		margin: 0 0 var(--s4);
+		font-size: 1.125rem;
+		color: var(--theme-on-bg);
+	}
+
+	.card-element {
+		padding: var(--s4);
+		border: 1px solid var(--theme-outline);
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		background: var(--theme-bg);
+	}
+
+	.card-errors {
+		margin-top: var(--s3);
+		color: var(--theme-error);
+		font-size: 0.875rem;
+	}
+
+	.stripe-info {
+		display: flex;
+		align-items: center;
+		gap: var(--s);
+		margin-top: var(--s3);
+		font-size: 0.875rem;
+		color: var(--theme-text-secondary);
+	}
+
+	/* Dev Notice */
+	.dev-notice {
+		margin-bottom: var(--s5);
+		padding: var(--s4);
+		background: #fef3c7;
+		border: 1px solid #f59e0b;
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		text-align: center;
+	}
+
+	.dev-notice p {
+		margin: 0;
+		font-size: 0.875rem;
+		color: #92400e;
+	}
+
+	.dev-notice p:first-child {
+		margin-bottom: var(--s);
+	}
+
+	/* Submit Button */
+	.submit-btn {
+		width: 100%;
+		padding: var(--s4);
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		border: none;
+		border-radius: var(--theme-button-border-radius);
+		font-size: 1.125rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background var(--theme-transition);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--s);
+	}
+
+	.submit-btn:hover:not(:disabled) {
+		background: var(--theme-primary-700);
+	}
+
+	.submit-btn:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
+
+	.spinner {
+		width: 20px;
+		height: 20px;
+		border: 2px solid transparent;
+		border-top-color: currentColor;
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	/* Purchase Result */
+	.purchase-result {
+		padding: var(--s6);
+		background: var(--theme-bg);
+		border-radius: var(--theme-shape-radius);
+		box-shadow: var(--shadow-md);
+		text-align: center;
+	}
+
+	.result-header {
+		margin-bottom: var(--s5);
+	}
+
+	.result-header svg {
+		color: var(--theme-primary);
+		margin-bottom: var(--s3);
+	}
+
+	.result-header h3 {
+		margin: 0 0 var(--s);
+		color: var(--theme-on-bg);
+	}
+
+	.result-header p {
+		margin: 0;
+		color: var(--theme-text-secondary);
+	}
+
+	/* Gift Card Preview */
+	.gift-card-preview {
+		padding: var(--s5);
+		background: var(--theme-surface-1);
+		border-radius: var(--theme-shape-radius);
+		margin-bottom: var(--s5);
+	}
+
+	.gift-card-code {
+		margin-bottom: var(--s4);
+	}
+
+	.gift-card-code .label {
+		display: block;
+		font-size: 0.75rem;
+		color: var(--theme-text-secondary);
+		margin-bottom: var(--s);
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+
+	.gift-card-code .code {
+		font-family: monospace;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--theme-primary);
+		letter-spacing: 2px;
+	}
+
+	.gift-card-qr {
+		margin-bottom: var(--s4);
+	}
+
+	.gift-card-qr img {
+		width: 150px;
+		height: 150px;
+		border-radius: calc(var(--theme-shape-radius) / 2);
+	}
+
+	.gift-card-details p {
+		margin: var(--s) 0;
+		font-size: 0.875rem;
+		color: var(--theme-text-secondary);
+	}
+
+	.email-notice {
+		margin-bottom: var(--s5);
+		color: var(--theme-text-secondary);
+		font-size: 0.875rem;
+	}
+
+	/* Action Buttons */
+	.result-actions {
+		display: flex;
+		gap: var(--s3);
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.action-btn {
+		padding: var(--s3) var(--s4);
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		border: none;
+		border-radius: var(--theme-button-border-radius);
+		font-size: 0.875rem;
+		cursor: pointer;
+		transition: background var(--theme-transition);
+	}
+
+	.action-btn:hover {
+		background: var(--theme-primary-700);
+	}
+
+	.action-btn.secondary {
+		background: transparent;
+		border: 1px solid var(--theme-outline);
+		color: var(--theme-on-bg);
+	}
+
+	.action-btn.secondary:hover {
+		background: var(--theme-surface-1);
+	}
+
+	/* Error State */
+	.purchase-error {
+		padding: var(--s6);
+		background: var(--theme-bg);
+		border-radius: var(--theme-shape-radius);
+		box-shadow: var(--shadow-md);
+		text-align: center;
+		border: 1px solid var(--theme-error);
+	}
+
+	.purchase-error svg {
+		color: var(--theme-error);
+		margin-bottom: var(--s3);
+	}
+
+	.purchase-error p {
+		margin: 0 0 var(--s4);
+		color: var(--theme-error);
+	}
+</style>
+
+<script>
+	import { actions } from 'astro:actions';
+
+	// Types
+	declare global {
+		interface Window {
+			Stripe: any;
+		}
+	}
+
+	// Elements
+	const wrapper = document.querySelector('.gift-card-form-wrapper') as HTMLElement;
+	const form = document.getElementById('gift-card-form') as HTMLFormElement;
+	const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+	const btnText = submitBtn?.querySelector('.btn-text') as HTMLElement;
+	const btnLoading = submitBtn?.querySelector('.btn-loading') as HTMLElement;
+	const resultDiv = document.getElementById('purchase-result') as HTMLElement;
+	const errorDiv = document.getElementById('purchase-error') as HTMLElement;
+
+	// Config
+	const stripeKey = wrapper?.dataset.stripeKey;
+	const isDev = wrapper?.dataset.dev === 'true';
+
+	// State
+	let stripe: any = null;
+	let cardElement: any = null;
+
+	// Load Stripe if configured
+	async function initStripe() {
+		if (!stripeKey) return;
+
+		await new Promise<void>((resolve) => {
+			if (window.Stripe) { resolve(); return; }
+			const script = document.createElement('script');
+			script.src = 'https://js.stripe.com/v3/';
+			script.onload = () => resolve();
+			document.head.appendChild(script);
+		});
+
+		stripe = window.Stripe(stripeKey);
+		const elements = stripe.elements();
+		cardElement = elements.create('card', {
+			style: {
+				base: { fontSize: '16px', color: '#424770' },
+				invalid: { color: '#9e2146' },
+			},
+		});
+		cardElement.mount('#card-element');
+		cardElement.on('change', (e: any) => {
+			const errEl = document.getElementById('card-errors');
+			if (errEl) errEl.textContent = e.error?.message || '';
+		});
+	}
+
+	// Update summary when card is selected
+	function setupCardSelection() {
+		const amountInput = document.getElementById('selected-amount') as HTMLInputElement;
+		const sessionsInput = document.getElementById('selected-sessions') as HTMLInputElement;
+		const summaryAmount = document.getElementById('summary-amount');
+		const totalAmount = document.getElementById('total-amount');
+		const summarySessions = document.getElementById('summary-sessions');
+
+		document.querySelectorAll('[data-gift-card]').forEach(card => {
+			card.addEventListener('click', () => {
+				const price = card.getAttribute('data-price') || '45';
+				const sessions = card.getAttribute('data-sessions') || '1';
+				
+				amountInput.value = price;
+				sessionsInput.value = sessions;
+				
+				if (summaryAmount) summaryAmount.textContent = `${price}€`;
+				if (totalAmount) totalAmount.textContent = `${price}€`;
+				if (summarySessions) {
+					const lang = document.documentElement.lang || 'es';
+					const sesionText = parseInt(sessions) === 1 
+						? (lang === 'eu' ? 'saio' : 'sesión')
+						: (lang === 'eu' ? 'saio' : 'sesiones');
+					summarySessions.textContent = `${sessions} ${sesionText}`;
+				}
+			});
+		});
+
+		// Custom amount
+		const customInput = document.getElementById('custom-amount') as HTMLInputElement;
+		if (customInput) {
+			customInput.addEventListener('input', () => {
+				const val = customInput.value || '0';
+				amountInput.value = val;
+				if (summaryAmount) summaryAmount.textContent = `${val}€`;
+				if (totalAmount) totalAmount.textContent = `${val}€`;
+			});
+		}
+	}
+
+	// Show loading state
+	function setLoading(loading: boolean) {
+		submitBtn.disabled = loading;
+		btnText.style.display = loading ? 'none' : 'inline';
+		btnLoading.style.display = loading ? 'flex' : 'none';
+	}
+
+	// Show result
+	function showResult(data: any) {
+		form.style.display = 'none';
+		errorDiv.style.display = 'none';
+		resultDiv.style.display = 'block';
+
+		const codeEl = document.getElementById('result-code');
+		const qrEl = document.getElementById('result-qr') as HTMLImageElement;
+		const sessionsEl = document.getElementById('result-sessions');
+		const expiresEl = document.getElementById('result-expires');
+
+		if (codeEl) codeEl.textContent = data.code;
+		if (qrEl) qrEl.src = data.qrUrl;
+		if (sessionsEl) sessionsEl.textContent = data.sessions || '1';
+		if (expiresEl) {
+			const date = new Date(data.expiresAt);
+			expiresEl.textContent = date.toLocaleDateString();
+		}
+	}
+
+	// Show error
+	function showError(message: string) {
+		form.style.display = 'none';
+		resultDiv.style.display = 'none';
+		errorDiv.style.display = 'block';
+		
+		const msgEl = document.getElementById('error-message');
+		if (msgEl) msgEl.textContent = message;
+	}
+
+	// Reset form
+	function resetForm() {
+		form.reset();
+		form.style.display = 'block';
+		resultDiv.style.display = 'none';
+		errorDiv.style.display = 'none';
+	}
+
+	// Handle form submission
+	async function handleSubmit(e: Event) {
+		e.preventDefault();
+		setLoading(true);
+
+		try {
+			const formData = new FormData(form);
+			const amount = parseInt(formData.get('amount') as string) || 45;
+			const sessions = parseInt(formData.get('sessions') as string) || 1;
+			
+			let paymentIntentId = 'dev_' + Date.now();
+
+			// Process payment with Stripe if configured
+			if (stripe && cardElement) {
+				// 1. Create payment intent
+				const { data: paymentData, error: paymentError } = await actions.createPayment({
+					amount,
+					sessions
+				});
+
+				if (paymentError) throw new Error(paymentError.message);
+
+				// 2. Confirm card payment
+				const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+					paymentData.clientSecret,
+					{
+						payment_method: {
+							card: cardElement,
+							billing_details: {
+								name: formData.get('senderName') as string,
+								email: formData.get('senderEmail') as string,
+							},
+						},
+					}
+				);
+
+				if (stripeError) throw new Error(stripeError.message);
+				paymentIntentId = paymentIntent.id;
+			}
+
+			// 3. Generate gift card
+			const { data, error } = await actions.generateGiftCard({
+				paymentIntentId,
+				sessions,
+				amount,
+				recipientName: formData.get('recipientName') as string,
+				recipientEmail: (formData.get('recipientEmail') as string) || undefined,
+				senderName: formData.get('senderName') as string,
+				senderEmail: formData.get('senderEmail') as string,
+				message: (formData.get('message') as string) || undefined,
+			});
+
+			if (error) throw new Error(error.message);
+
+			showResult({ ...data, sessions });
+
+		} catch (err: any) {
+			console.error('Purchase error:', err);
+			showError(err.message || 'Error al procesar la compra');
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	// Copy code to clipboard
+	function setupCopyButton() {
+		const copyBtn = document.getElementById('copy-code-btn');
+		copyBtn?.addEventListener('click', async () => {
+			const code = document.getElementById('result-code')?.textContent || '';
+			await navigator.clipboard.writeText(code);
+			copyBtn.textContent = '✅ Copiado!';
+			setTimeout(() => {
+				copyBtn.textContent = '📋 Copiar código';
+			}, 2000);
+		});
+	}
+
+	// Init
+	document.addEventListener('DOMContentLoaded', async () => {
+		await initStripe();
+		setupCardSelection();
+		setupCopyButton();
+
+		form?.addEventListener('submit', handleSubmit);
+
+		document.getElementById('retry-btn')?.addEventListener('click', resetForm);
+		document.getElementById('new-purchase-btn')?.addEventListener('click', resetForm);
+	});
+</script>

@@ -1,0 +1,254 @@
+---
+import { useTranslations } from '@i18n/utils';
+import type { Langs } from '@i18n/ui';
+
+interface Props {
+	lang: Langs;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="verify-code-container">
+	<form id="verify-code-form" class="verify-form">
+		<div class="input-group">
+			<input 
+				type="text" 
+				id="code-input" 
+				name="code"
+				placeholder={t('shop.code-placeholder')}
+				class="code-input"
+				pattern="LF-[A-Z0-9]{4}-[A-Z0-9]{4}"
+				maxlength="14"
+			/>
+			<button type="submit" class="verify-btn">
+				{t('shop.verify-code')}
+			</button>
+		</div>
+	</form>
+
+	<div id="verify-result" class="verify-result" style="display: none;">
+		<div id="result-valid" class="result valid" style="display: none;">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+				<polyline points="22,4 12,14.01 9,11.01"></polyline>
+			</svg>
+			<p>{t('shop.code-valid')}</p>
+			<div class="code-details">
+				<p class="detail-item"><strong>{lang === 'eu' ? 'Zenbatekoa' : 'Importe'}:</strong> <span id="code-amount"></span></p>
+				<p class="detail-item"><strong>{lang === 'eu' ? 'Iraungitze data' : 'Fecha de caducidad'}:</strong> <span id="code-expiry"></span></p>
+				<p class="detail-item"><strong>{lang === 'eu' ? 'Egoera' : 'Estado'}:</strong> <span id="code-status"></span></p>
+			</div>
+		</div>
+		<div id="result-invalid" class="result invalid" style="display: none;">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<circle cx="12" cy="12" r="10"></circle>
+				<line x1="15" y1="9" x2="9" y2="15"></line>
+				<line x1="9" y1="9" x2="15" y2="15"></line>
+			</svg>
+			<p>{t('shop.code-invalid')}</p>
+		</div>
+	</div>
+</div>
+
+<style>
+	.verify-code-container {
+		max-width: 500px;
+		margin: 0 auto;
+	}
+
+	.verify-form {
+		display: flex;
+		justify-content: center;
+	}
+
+	.input-group {
+		display: flex;
+		gap: var(--s3);
+		width: 100%;
+		max-width: 400px;
+	}
+
+	.code-input {
+		flex: 1;
+		padding: var(--s4);
+		font-size: 1.125rem;
+		font-family: monospace;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		text-align: center;
+		border: 2px solid var(--theme-outline);
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		background: var(--theme-bg);
+		color: var(--theme-on-bg);
+	}
+
+	.code-input:focus {
+		outline: none;
+		border-color: var(--theme-primary);
+	}
+
+	.code-input::placeholder {
+		text-transform: none;
+		letter-spacing: normal;
+		color: var(--theme-text-secondary);
+	}
+
+	.verify-btn {
+		padding: var(--s4) var(--s5);
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		border: none;
+		border-radius: var(--theme-button-border-radius);
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		white-space: nowrap;
+		transition: background var(--theme-transition);
+	}
+
+	.verify-btn:hover {
+		background: var(--theme-primary-dark);
+	}
+
+	.verify-result {
+		margin-top: var(--s5);
+	}
+
+	.result {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: var(--s5);
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		text-align: center;
+	}
+
+	.result.valid {
+		background: var(--theme-primary-100);
+		border: 1px solid var(--theme-primary);
+	}
+
+	.result.invalid {
+		background: #fef2f2;
+		border: 1px solid var(--theme-error);
+	}
+
+	.result svg {
+		margin-bottom: var(--s3);
+	}
+
+	.result.valid svg {
+		color: var(--theme-primary);
+	}
+
+	.result.invalid svg {
+		color: var(--theme-error);
+	}
+
+	.result p {
+		margin: 0;
+		font-weight: 600;
+	}
+
+	.code-details {
+		margin-top: var(--s4);
+		text-align: left;
+	}
+
+	.detail-item {
+		margin: var(--s) 0;
+		font-weight: 400 !important;
+		font-size: 0.875rem;
+	}
+
+	.detail-item strong {
+		color: var(--theme-on-bg);
+	}
+
+	@media (max-width: 480px) {
+		.input-group {
+			flex-direction: column;
+		}
+
+		.verify-btn {
+			width: 100%;
+		}
+	}
+</style>
+
+<script>
+	import { actions } from 'astro:actions';
+
+	document.addEventListener('DOMContentLoaded', () => {
+		const form = document.getElementById('verify-code-form') as HTMLFormElement;
+		const codeInput = document.getElementById('code-input') as HTMLInputElement;
+		const resultContainer = document.getElementById('verify-result');
+		const validResult = document.getElementById('result-valid');
+		const invalidResult = document.getElementById('result-invalid');
+
+		// Format input as user types
+		codeInput.addEventListener('input', (e) => {
+			let value = (e.target as HTMLInputElement).value.toUpperCase();
+			
+			// Remove non-alphanumeric characters except hyphens
+			value = value.replace(/[^A-Z0-9-]/g, '');
+			
+			// Auto-format: LF-XXXX-XXXX
+			if (value.length === 2 && !value.includes('-')) {
+				value = value + '-';
+			} else if (value.length === 7 && value.split('-').length === 2) {
+				value = value + '-';
+			}
+			
+			(e.target as HTMLInputElement).value = value;
+		});
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			const code = codeInput.value.trim();
+			if (!code) return;
+
+			// Hide previous results
+			resultContainer!.style.display = 'none';
+			validResult!.style.display = 'none';
+			invalidResult!.style.display = 'none';
+
+			try {
+				const { data, error } = await actions.verifyCode({ code });
+
+				resultContainer!.style.display = 'block';
+
+				if (error || !data?.valid) {
+					invalidResult!.style.display = 'flex';
+					const invalidText = invalidResult!.querySelector('p');
+					if (invalidText && data?.message) {
+						invalidText.textContent = data.message;
+					}
+				} else {
+					validResult!.style.display = 'flex';
+					
+					// Update details
+					const amountEl = document.getElementById('code-amount');
+					const expiryEl = document.getElementById('code-expiry');
+					const statusEl = document.getElementById('code-status');
+
+					if (amountEl) amountEl.textContent = `${data.sessions} sesiones (${data.amount}€)`;
+					if (expiryEl) {
+						const expDate = new Date(data.expiresAt!);
+						expiryEl.textContent = expDate.toLocaleDateString();
+					}
+					if (statusEl) {
+						statusEl.textContent = document.documentElement.lang === 'eu' ? 'Baliozkoa' : 'Válido';
+						statusEl.style.color = 'var(--theme-primary)';
+					}
+				}
+			} catch (err) {
+				invalidResult!.style.display = 'flex';
+				resultContainer!.style.display = 'block';
+			}
+		});
+	});
+</script>

@@ -1,0 +1,262 @@
+---
+import Layout from '@layouts/Page.astro';
+import {
+	getLangFromUrl,
+	useTranslations
+} from '@i18n/utils';
+import Container from '@components/core/Container.astro';
+import { Langs } from '@i18n/ui';
+import SectionHero from '@components/SectionHero.astro';
+import Button from '@components/buttons/Button.astro';
+import GiftCardFormSimple from '@components/shop/GiftCardFormSimple.astro';
+import GiftCardOption from '@components/shop/GiftCardOption.astro';
+
+export const prerender = false;
+
+const lang: Langs = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// SEO data for shop page
+const seo = {
+	title:
+		lang === 'eu'
+			? 'Opari Txartelak - Laguntza Fisioterapia Urnieta | Ongizatea Oparitu'
+			: 'Vales Regalo - Laguntza Fisioterapia Urnieta | Regala Bienestar',
+	description:
+		lang === 'eu'
+			? 'Erosi fisioterapia opari txartelak online. Oparitu osasuna eta ongizatea maite dituzunei. Ordainketa segurua eta bidalketa berehalakoa emailez.'
+			: 'Compra vales regalo de fisioterapia online. Regala salud y bienestar a quienes más quieres. Pago seguro y envío inmediato por email.',
+	keywords:
+		lang === 'eu'
+			? 'opari txartela fisioterapia, fisioterapia oparia Urnieta, osasun oparia, ongizate oparia Gipuzkoa'
+			: 'vale regalo fisioterapia, regalo fisioterapia Urnieta, regalo salud, regalo bienestar Gipuzkoa'
+};
+
+// Gift card options
+const giftCardOptions = [
+	{ id: 'gc-1', sessions: 1, price: 45, popular: false, bestValue: false },
+	{ id: 'gc-3', sessions: 3, price: 120, popular: true, bestValue: false },
+	{ id: 'gc-5', sessions: 5, price: 190, popular: false, bestValue: true },
+	{ id: 'gc-custom', sessions: 0, price: 0, popular: false, bestValue: false, custom: true }
+];
+
+const steps = [
+	{ number: 1, text: t('shop.step1') },
+	{ number: 2, text: t('shop.step2') },
+	{ number: 3, text: t('shop.step3') },
+	{ number: 4, text: t('shop.step4') }
+];
+---
+
+<Layout {seo}>
+	<SectionHero id="shop-hero" class="hero-section__shop">
+		{
+			lang === 'eu' ? (
+				<h1 slot="title">
+					<span class="hero-section__remark">Opari</span> Txartelak
+				</h1>
+			) : (
+				<h1 slot="title">
+					Vales <span class="hero-section__remark">Regalo</span>
+				</h1>
+			)
+		}
+		<Fragment slot="desc">
+			{t('shop.description')}
+		</Fragment>
+	</SectionHero>
+
+	<!-- How it works section -->
+	<Container class="how-it-works" tag="section">
+		<h2>{t('shop.how-it-works')}</h2>
+		<div class="steps-grid">
+			{steps.map(step => (
+				<div class="step">
+					<div class="step-number">{step.number}</div>
+					<p>{step.text}</p>
+				</div>
+			))}
+		</div>
+	</Container>
+
+	<!-- Gift Card Options -->
+	<Container class="gift-cards-section" tag="section">
+		<h2>{t('shop.select-amount')}</h2>
+		<div class="gift-cards-grid">
+			{giftCardOptions.map(option => (
+				<GiftCardOption
+					id={option.id}
+					sessions={option.sessions}
+					price={option.price}
+					popular={option.popular}
+					bestValue={option.bestValue}
+					custom={option.custom}
+					lang={lang}
+				/>
+			))}
+		</div>
+	</Container>
+
+	<!-- Purchase Form -->
+	<Container class="purchase-section" tag="section" id="purchase-form">
+		<GiftCardFormSimple lang={lang} />
+	</Container>
+
+	<!-- Terms and validity -->
+	<Container class="terms-section" tag="section">
+		<p class="validity">{t('shop.validity')}</p>
+		<p class="terms">{t('shop.terms')}</p>
+	</Container>
+</Layout>
+
+<style>
+	/* How it works section */
+	.how-it-works {
+		padding: var(--s7) 0;
+		text-align: center;
+	}
+
+	.how-it-works h2 {
+		margin-bottom: var(--s6);
+		color: var(--theme-on-bg);
+	}
+
+	.steps-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: var(--s4);
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: var(--s4);
+		background: var(--theme-surface-1);
+		border-radius: var(--theme-shape-radius);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.step-number {
+		width: 48px;
+		height: 48px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		border-radius: 50%;
+		font-size: 1.25rem;
+		font-weight: 700;
+		margin-bottom: var(--s3);
+	}
+
+	.step p {
+		margin: 0;
+		color: var(--theme-text-secondary);
+		text-align: center;
+	}
+
+	/* Gift Cards Section */
+	.gift-cards-section {
+		padding: var(--s7) 0;
+	}
+
+	.gift-cards-section h2 {
+		text-align: center;
+		margin-bottom: var(--s6);
+		color: var(--theme-on-bg);
+	}
+
+	.gift-cards-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: var(--s4);
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+
+	/* Purchase Section */
+	.purchase-section {
+		padding: var(--s7) 0;
+		background: var(--theme-surface-1);
+	}
+
+	/* Terms Section */
+	.terms-section {
+		padding: var(--s6) 0;
+		text-align: center;
+	}
+
+	.validity {
+		font-weight: 600;
+		color: var(--theme-on-bg);
+		margin-bottom: var(--s3);
+	}
+
+	.terms {
+		font-size: 0.875rem;
+		color: var(--theme-text-secondary);
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.steps-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.gift-cards-grid {
+			grid-template-columns: 1fr;
+			max-width: 400px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.steps-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script>
+	// Handle gift card selection
+	document.addEventListener('DOMContentLoaded', () => {
+		const cards = document.querySelectorAll('.gift-card-option');
+		const hiddenInput = document.getElementById('selected-amount') as HTMLInputElement;
+		const customInput = document.getElementById('custom-amount') as HTMLInputElement;
+
+		cards.forEach(card => {
+			card.addEventListener('click', () => {
+				// Remove active class from all cards
+				cards.forEach(c => c.classList.remove('active'));
+				// Add active class to clicked card
+				card.classList.add('active');
+				
+				const price = card.getAttribute('data-price');
+				const isCustom = card.getAttribute('data-custom') === 'true';
+
+				if (isCustom && customInput) {
+					customInput.focus();
+				} else if (price && hiddenInput) {
+					hiddenInput.value = price;
+				}
+
+				// Scroll to form
+				const form = document.getElementById('purchase-form');
+				if (form) {
+					form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				}
+			});
+		});
+
+		// Handle custom amount input
+		if (customInput && hiddenInput) {
+			customInput.addEventListener('input', (e) => {
+				const target = e.target as HTMLInputElement;
+				hiddenInput.value = target.value;
+			});
+		}
+	});
+</script>

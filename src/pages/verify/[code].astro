@@ -1,0 +1,248 @@
+---
+export const prerender = false;
+
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
+const { code } = Astro.params;
+const token = Astro.url.searchParams.get('token');
+const VERIFY_SECRET = import.meta.env.VERIFY_SECRET || 'laguntza-verify-2024';
+
+// Verificar token secreto
+const isAuthorized = token === VERIFY_SECRET;
+
+if (!isAuthorized) {
+	return new Response('No autorizado', { status: 401 });
+}
+
+interface GiftCardRecord {
+	code: string;
+	sessions: number;
+	amount: number;
+	recipientName: string;
+	recipientEmail: string;
+	senderName: string;
+	senderEmail: string;
+	message: string;
+	createdAt: string;
+	expiresAt: string;
+	used: boolean;
+	usedAt: string | null;
+}
+
+let giftCard: GiftCardRecord | null = null;
+let error: string | null = null;
+
+try {
+	const storagePath = path.join(process.cwd(), 'data', 'gift-cards.json');
+	const content = await fs.readFile(storagePath, 'utf-8');
+	const cards: Record<string, GiftCardRecord> = JSON.parse(content);
+	giftCard = cards[code?.toUpperCase() || ''] || null;
+	
+	if (!giftCard) {
+		error = 'Codigo no encontrado';
+	}
+} catch (e) {
+	error = 'Error al cargar datos';
+}
+
+const isExpired = giftCard ? new Date(giftCard.expiresAt) < new Date() : false;
+const isValid = giftCard && !giftCard.used && !isExpired;
+
+const formatDate = (dateStr: string) => {
+	return new Date(dateStr).toLocaleDateString('es-ES', {
+		day: '2-digit',
+		month: '2-digit', 
+		year: 'numeric'
+	});
+};
+---
+
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex, nofollow">
+	<title>Verificar Vale - Laguntza</title>
+	<style>
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			background: #f5f5f5;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 1rem;
+		}
+		.card {
+			background: white;
+			border-radius: 16px;
+			box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+			max-width: 400px;
+			width: 100%;
+			overflow: hidden;
+		}
+		.header {
+			padding: 2rem;
+			text-align: center;
+			color: white;
+		}
+		.header.valid { background: linear-gradient(135deg, #10b981, #059669); }
+		.header.used { background: linear-gradient(135deg, #f59e0b, #d97706); }
+		.header.expired { background: linear-gradient(135deg, #6b7280, #4b5563); }
+		.header.notfound { background: linear-gradient(135deg, #ef4444, #dc2626); }
+		.icon { width: 64px; height: 64px; margin-bottom: 1rem; }
+		.status { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+		.code-display { font-family: monospace; font-size: 1.25rem; opacity: 0.9; letter-spacing: 2px; }
+		.details { padding: 1.5rem 2rem; }
+		.detail-row {
+			display: flex;
+			justify-content: space-between;
+			padding: 0.75rem 0;
+			border-bottom: 1px solid #e5e7eb;
+		}
+		.detail-row:last-child { border-bottom: none; }
+		.detail-label { color: #6b7280; font-size: 0.875rem; }
+		.detail-value { font-weight: 600; color: #1f2937; }
+		.actions { padding: 1.5rem 2rem; background: #f9fafb; }
+		.mark-used-btn {
+			width: 100%;
+			padding: 1rem;
+			background: #10b981;
+			color: white;
+			border: none;
+			border-radius: 8px;
+			font-size: 1rem;
+			font-weight: 600;
+			cursor: pointer;
+		}
+		.mark-used-btn:hover { background: #059669; }
+		.mark-used-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+		.toast {
+			position: fixed;
+			bottom: 2rem;
+			left: 50%;
+			transform: translateX(-50%);
+			background: #10b981;
+			color: white;
+			padding: 1rem 2rem;
+			border-radius: 8px;
+			font-weight: 600;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	{error ? (
+		<div class="card">
+			<div class="header notfound">
+				<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="15" y1="9" x2="9" y2="15"></line>
+					<line x1="9" y1="9" x2="15" y2="15"></line>
+				</svg>
+				<div class="status">NO ENCONTRADO</div>
+				<div class="code-display">{code}</div>
+			</div>
+		</div>
+	) : giftCard && (
+		<div class="card">
+			<div class={`header ${isValid ? 'valid' : giftCard.used ? 'used' : 'expired'}`}>
+				{isValid ? (
+					<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+						<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+						<polyline points="22,4 12,14.01 9,11.01"></polyline>
+					</svg>
+				) : (
+					<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<circle cx="12" cy="12" r="10"></circle>
+						<line x1="12" y1="8" x2="12" y2="12"></line>
+						<line x1="12" y1="16" x2="12.01" y2="16"></line>
+					</svg>
+				)}
+				<div class="status">
+					{isValid ? 'VALIDO' : giftCard.used ? 'YA USADO' : 'CADUCADO'}
+				</div>
+				<div class="code-display">{giftCard.code}</div>
+			</div>
+			
+			<div class="details">
+				<div class="detail-row">
+					<span class="detail-label">Sesiones</span>
+					<span class="detail-value">{giftCard.sessions}</span>
+				</div>
+				<div class="detail-row">
+					<span class="detail-label">Valor</span>
+					<span class="detail-value">{giftCard.amount} EUR</span>
+				</div>
+				<div class="detail-row">
+					<span class="detail-label">Para</span>
+					<span class="detail-value">{giftCard.recipientName}</span>
+				</div>
+				<div class="detail-row">
+					<span class="detail-label">De</span>
+					<span class="detail-value">{giftCard.senderName}</span>
+				</div>
+				<div class="detail-row">
+					<span class="detail-label">Comprado</span>
+					<span class="detail-value">{formatDate(giftCard.createdAt)}</span>
+				</div>
+				<div class="detail-row">
+					<span class="detail-label">Caduca</span>
+					<span class="detail-value">{formatDate(giftCard.expiresAt)}</span>
+				</div>
+				{giftCard.used && giftCard.usedAt && (
+					<div class="detail-row">
+						<span class="detail-label">Usado el</span>
+						<span class="detail-value">{formatDate(giftCard.usedAt)}</span>
+					</div>
+				)}
+			</div>
+			
+			{isValid && (
+				<div class="actions">
+					<button class="mark-used-btn" id="mark-used-btn" data-code={giftCard.code}>
+						Marcar como USADO
+					</button>
+				</div>
+			)}
+		</div>
+	)}
+	
+	<div class="toast" id="toast">Vale marcado como usado!</div>
+
+	<script>
+		import { actions } from 'astro:actions';
+		
+		const btn = document.getElementById('mark-used-btn') as HTMLButtonElement;
+		const toast = document.getElementById('toast') as HTMLElement;
+		
+		btn?.addEventListener('click', async () => {
+			const code = btn.dataset.code;
+			if (!code) return;
+			
+			btn.disabled = true;
+			btn.textContent = 'Procesando...';
+			
+			try {
+				const { error } = await actions.markUsed({ code });
+				
+				if (error) {
+					alert('Error: ' + error.message);
+					btn.disabled = false;
+					btn.textContent = 'Marcar como USADO';
+					return;
+				}
+				
+				toast.style.display = 'block';
+				setTimeout(() => window.location.reload(), 1500);
+			} catch (e) {
+				alert('Error al marcar como usado');
+				btn.disabled = false;
+				btn.textContent = 'Marcar como USADO';
+			}
+		});
+	</script>
+</body>
+</html>
