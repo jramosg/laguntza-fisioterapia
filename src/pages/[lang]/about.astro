@@ -15,20 +15,20 @@ export function getStaticPaths() {
 
 const lang: Langs = getLangFromUrl(Astro.url);
 
-// SEO data for about page
+// SEO data for about page - optimized for Gipuzkoa keywords
 const seo = {
 	title:
 		lang === 'eu'
-			? 'Niri buruz - Jokin Ramos | Fisioterapeuta eta Osteopata Urnietan'
-			: 'Sobre mí - Jokin Ramos | Fisioterapeuta y Osteópata en Urnieta',
+			? 'Jokin Ramos | Fisioterapeuta eta Osteopata Gipuzkoan | Urnieta'
+			: 'Jokin Ramos | Fisioterapeuta y Osteópata en Gipuzkoa | Urnieta',
 	description:
 		lang === 'eu'
-			? 'Ezagutu Jokin Ramos, Urnietako fisioterapeuta eta osteopata. Esperientzia klinika lanetan, kirol fisioterapian eta osteopatian. Tratamendu pertsonalizatua Zubitxo Plazan.'
-			: 'Conoce a Jokin Ramos, fisioterapeuta y osteópata en Urnieta. Experiencia en trabajo clínico, fisioterapia deportiva y osteopatía. Tratamiento personalizado en Plaza Zubitxo.',
+			? 'Ezagutu Jokin Ramos, Gipuzkoako fisioterapeuta eta osteopata Urnietan. Esperientzia klinika lanetan, kirol fisioterapian, terapia manualean eta osteopatian. Errehabilitazioa eta ariketa terapeutikoak Guipuzcoan.'
+			: 'Conoce a Jokin Ramos, fisioterapeuta y osteópata en Gipuzkoa. Experiencia en trabajo clínico, fisioterapia deportiva, terapia manual y osteopatía. Rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
 	keywords:
 		lang === 'eu'
-			? 'Jokin Ramos fisioterapeuta, osteopata Urnieta, fisioterapia Gipuzkoa, Laguntza Fisioterapia, Zubitxo Plaza, fisioterapeuta Donostia'
-			: 'Jokin Ramos fisioterapeuta, osteópata Urnieta, fisioterapia Gipuzkoa, Laguntza Fisioterapia, Plaza Zubitxo, fisioterapeuta Donostia'
+			? 'Jokin Ramos fisioterapeuta, osteopata Gipuzkoa, fisioterapia Gipuzkoa, terapia manuala Gipuzkoa, Laguntza Fisioterapia, Zubitxo Plaza Urnieta, fisioterapeuta Donostia gertu, errehabilitazioa Gipuzkoa'
+			: 'Jokin Ramos fisioterapeuta, osteópata Gipuzkoa, fisioterapia Gipuzkoa, fisioterapia Guipúzcoa, terapia manual Gipuzkoa, Laguntza Fisioterapia, Plaza Zubitxo Urnieta, fisioterapeuta cerca Donostia, rehabilitación Gipuzkoa'
 };
 ---
 

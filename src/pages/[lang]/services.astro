@@ -21,20 +21,20 @@ export function getStaticPaths() {
 const lang: Langs = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// SEO data for services page
+// SEO data for services page - optimized for target keywords
 const seo = {
 	title:
 		lang === 'eu'
-			? 'Fisioterapia Zerbitzuak Urnietan | Osteopatia, Puntzio Lehorra - Gipuzkoa'
-			: 'Servicios de Fisioterapia Urnieta | Osteopatía, Punción Seca - Gipuzkoa',
+			? 'Fisioterapia eta Osteopatia Gipuzkoan | Terapia Manuala eta Errehabilitazioa Urnietan'
+			: 'Fisioterapia y Osteopatía Gipuzkoa | Terapia Manual, Rehabilitación y Ejercicio Terapéutico Urnieta',
 	description:
 		lang === 'eu'
-			? 'Fisioterapia zerbitzu espezializatuak Urnietan, Gipuzkoan: minaren tratamendua, lesioen berregokitzea, osteopatia, puntzio lehorra, neuromodulazioa eta terapia manuala. Donostia, Hernani eta Andoaindik gertu.'
-			: 'Servicios especializados de fisioterapia en Urnieta, Gipuzkoa: tratamiento del dolor, rehabilitación de lesiones, osteopatía, punción seca, neuromodulación y terapia manual. Cerca de Donostia, Hernani y Andoain.',
+			? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioa eta ariketa terapeutikoak Urnietan. Puntzio lehorra, neuromodulazioa. Guipúzcoa osoan zerbitzua. Donostia, Hernani eta Andoaindik gertu.'
+			: 'Fisioterapia, osteopatía y terapia manual en Gipuzkoa. Rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa. Punción seca, neuromodulación. Servicio personalizado cerca de Donostia, Hernani y Andoain.',
 	keywords:
 		lang === 'eu'
-			? 'fisioterapia zerbitzuak Urnieta, osteopatia Urnieta, puntzio lehorra Gipuzkoa, neuromodulazioa Donostia, terapia manuala, lesioen berregokitzea, minaren tratamendua, fisioterapia kirolari Gipuzkoa'
-			: 'servicios fisioterapia Urnieta, osteopatía Urnieta, punción seca Gipuzkoa, neuromodulación Donostia, terapia manual, rehabilitación lesiones, tratamiento dolor, fisioterapia deportiva Gipuzkoa'
+			? 'fisioterapia Gipuzkoa, osteopatia Gipuzkoa, terapia manuala Gipuzkoa, errehabilitazioa Gipuzkoa, ariketa terapeutikoak Guipuzcoa, fisioterapia Urnieta, puntzio lehorra Gipuzkoa, neuromodulazioa Donostia, lesioen berregokitzea, minaren tratamendua, fisioterapia kirolari Gipuzkoa, fisioterapia zentroa Guipuzcoa'
+			: 'fisioterapia Gipuzkoa, fisioterapia Guipúzcoa, osteopatía Gipuzkoa, terapia manual Gipuzkoa, rehabilitación Gipuzkoa, ejercicio terapéutico Gipuzkoa, ejercicio terapéutico Guipúzcoa, rehabilitación ejercicio terapéutico Guipúzcoa, fisioterapia Urnieta, punción seca Gipuzkoa, neuromodulación Donostia, rehabilitación lesiones, tratamiento dolor, fisioterapia deportiva Gipuzkoa, centro fisioterapia Guipúzcoa'
 };
 ---
 

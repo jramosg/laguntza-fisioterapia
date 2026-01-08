@@ -13,7 +13,7 @@ export const ui = {
 		'Ireki menua': 'Abrir menú',
 		'Itxi menua': 'Cerrar menú',
 		'seo.main-description':
-			'Centro de fisioterapia en Urnieta, Gipuzkoa, especializado en tratamiento del dolor y rehabilitación de lesiones. Fisioterapeuta profesional cerca de Donostia, San Sebastián, Hernani y Andoain. Osteopatía, punción seca, neuromodulación y terapia manual. Atención personalizada en el corazón de Gipuzkoa.',
+			'Fisioterapia, osteopatía y terapia manual en Gipuzkoa. Centro especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa. Tratamiento del dolor, punción seca y neuromodulación. Fisioterapeuta profesional cerca de Donostia, San Sebastián, Hernani y Andoain. Atención personalizada en el corazón de Gipuzkoa.',
 		'Menua ireki': 'Abrir menú',
 		'Menua itxi': 'Cerrar menú',
 		'contact-jarri': 'Ponte en',
@@ -86,7 +86,7 @@ export const ui = {
 		'nav.about': 'Niri buruz',
 		'nav.contact': 'Kontaktua',
 		'seo.main-description':
-			'Fisioterapia zentroa Urnietan, Gipuzkoan, minaren tratamenduan eta kirol lesioen berregokitzean espezializatua. Fisioterapeuta profesionala Donostia, Hernani eta Andoaindik gertu. Osteopatia, puntzio lehorra, neuromodulazioa eta terapia manuala. Arreta pertsonalizatua Gipuzkoako bihotzean.',
+			'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan. Minaren tratamendua, puntzio lehorra eta neuromodulazioa. Fisioterapeuta profesionala Donostia, Hernani eta Andoaindik gertu. Arreta pertsonalizatua Gipuzkoako bihotzean.',
 
 		'contact-jarri': 'Jarri',
 		'contact-kontaktuan': 'kontaktuan',

@@ -12,8 +12,10 @@ const structuredData = {
 	'@type': 'MedicalBusiness',
 	'@id': 'https://laguntzafisioterapia.com#business',
 	name: 'Laguntza Fisioterapia',
-	alternateName: 'Centro de Fisioterapia Laguntza',
-	description: t(settings.description),
+	alternateName: ['Centro de Fisioterapia Laguntza', 'Fisioterapia Gipuzkoa Laguntza', 'Osteopatía Gipuzkoa Laguntza'],
+	description: lang === 'eu'
+		? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan.'
+		: 'Centro de fisioterapia, osteopatía y terapia manual en Gipuzkoa. Especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
 	url: 'https://laguntzafisioterapia.com',
 	logo: {
 		'@type': 'ImageObject',
@@ -151,39 +153,54 @@ const structuredData = {
 	availableService: [
 		{
 			'@type': 'MedicalTherapy',
-			name: 'Fisioterapia General',
+			name: 'Fisioterapia General en Gipuzkoa',
 			description:
-				'Tratamiento integral de lesiones y dolor mediante técnicas de fisioterapia avanzada'
+				'Tratamiento integral de lesiones y dolor mediante técnicas de fisioterapia avanzada en Urnieta, Gipuzkoa'
 		},
 		{
 			'@type': 'MedicalTherapy',
-			name: 'Osteopatía',
-			description: 'Tratamiento holístico para recuperar el equilibrio corporal'
+			name: 'Osteopatía Gipuzkoa',
+			description: 'Servicio de osteopatía en Gipuzkoa. Tratamiento holístico para recuperar el equilibrio corporal en Urnieta, Guipúzcoa'
 		},
 		{
 			'@type': 'MedicalTherapy',
-			name: 'Punción Seca',
+			name: 'Terapia Manual Gipuzkoa',
+			description: 'Servicio de terapia manual en Gipuzkoa. Técnicas especializadas para mejorar articulaciones, músculos y sistema nervioso en Urnieta'
+		},
+		{
+			'@type': 'MedicalTherapy',
+			name: 'Rehabilitación y Ejercicio Terapéutico Gipuzkoa',
+			description: 'Programas de rehabilitación y ejercicio terapéutico personalizados en Gipuzkoa. Recuperación funcional en Urnieta, Guipúzcoa'
+		},
+		{
+			'@type': 'MedicalTherapy',
+			name: 'Punción Seca Gipuzkoa',
 			description:
-				'Técnica especializada para tratar puntos gatillo miofasciales'
+				'Técnica especializada de punción seca para tratar puntos gatillo miofasciales en Gipuzkoa'
 		},
 		{
 			'@type': 'MedicalTherapy',
-			name: 'Neuromodulación',
-			description: 'Técnicas avanzadas de estimulación del sistema nervioso'
+			name: 'Neuromodulación Gipuzkoa',
+			description: 'Técnicas avanzadas de neuromodulación y estimulación del sistema nervioso en Gipuzkoa'
 		},
 		{
 			'@type': 'MedicalTherapy',
-			name: 'Rehabilitación Deportiva',
-			description: 'Recuperación específica para atletas y deportistas'
+			name: 'Fisioterapia Deportiva Gipuzkoa',
+			description: 'Recuperación específica y rehabilitación para atletas y deportistas en Gipuzkoa, Guipúzcoa'
 		}
 	],
 	hasMap: Address.url,
 	isAccessibleForFree: false,
 	knowsAbout: [
 		'Fisioterapia',
+		'Fisioterapia Gipuzkoa',
 		'Osteopatía',
-		'Rehabilitación',
+		'Osteopatía Gipuzkoa',
 		'Terapia Manual',
+		'Terapia Manual Gipuzkoa',
+		'Rehabilitación',
+		'Rehabilitación Gipuzkoa',
+		'Ejercicio Terapéutico',
 		'Punción Seca',
 		'Neuromodulación',
 		'Medicina Deportiva'
@@ -238,8 +255,8 @@ const localBusinessData = {
 	name: 'Laguntza Fisioterapia',
 	description:
 		lang === 'eu'
-			? 'Fisioterapia zentroa Urnietan, Gipuzkoan, minaren tratamenduan eta lesioen berregokitzean espezializatua'
-			: 'Centro de fisioterapia en Urnieta, Gipuzkoa, especializado en tratamiento del dolor y rehabilitación de lesiones',
+			? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan, Guipuzcoan.'
+			: 'Centro de fisioterapia, osteopatía y terapia manual en Gipuzkoa. Especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
 	image: [
 		'https://laguntzafisioterapia.com/main-logo-horizontal.png',
 		'https://laguntzafisioterapia.com/open-graph.jpg'

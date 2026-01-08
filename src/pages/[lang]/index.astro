@@ -28,17 +28,17 @@ const url = Astro.url;
 const lang = getLangFromUrl(url);
 const t = useTranslations(lang);
 
-// SEO data for the home page
+// SEO data for the home page - optimized for Gipuzkoa/Guipúzcoa keywords
 const seo = {
 	title:
 		lang === 'eu'
-			? 'Laguntza Fisioterapia | Urnieta | Minaren Tratamendua Gipuzkoan - Donostia, Hernani'
-			: 'Laguntza Fisioterapia | Urnieta |Tratamiento del Dolor en Gipuzkoa - Donostia, Hernani',
+			? 'Laguntza Fisioterapia | Fisioterapia eta Osteopatia Gipuzkoan | Urnieta'
+			: 'Laguntza Fisioterapia | Fisioterapia y Osteopatía en Gipuzkoa | Rehabilitación Urnieta',
 	description: t(settings.description),
 	keywords:
 		lang === 'eu'
-			? 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, fisioterapia Donostia, minaren tratamendua, lesioen berregokitzea, osteopatia Urnieta, puntzio lehorra Gipuzkoa, neuromodulazioa, fisioterapia zentroa, Zubitxo Plaza, fisioterapeuta Hernani, fisioterapia Andoain'
-			: 'fisioterapia Urnieta, fisioterapeuta Gipuzkoa, fisioterapia Donostia, tratamiento dolor Urnieta, rehabilitación lesiones Gipuzkoa, osteopatía Urnieta, punción seca Gipuzkoa, neuromodulación, centro fisioterapia, Zubitxo Plaza, fisioterapeuta Hernani, fisioterapia Andoain'
+			? 'fisioterapia Gipuzkoa, fisioterapeuta Gipuzkoa, osteopatia Gipuzkoa, terapia manuala Gipuzkoa, errehabilitazioa Gipuzkoa, ariketa terapeutikoak Gipuzkoa, fisioterapia Urnieta, fisioterapia Donostia, puntzio lehorra Gipuzkoa, neuromodulazioa Gipuzkoa, fisioterapia zentroa Gipuzkoa, Zubitxo Plaza Urnieta'
+			: 'fisioterapia Gipuzkoa, fisioterapia Guipúzcoa, fisioterapeuta Gipuzkoa, osteopatía Gipuzkoa, terapia manual Gipuzkoa, rehabilitación Gipuzkoa, rehabilitación ejercicio terapéutico Guipúzcoa, ejercicio terapéutico Gipuzkoa, fisioterapia Urnieta, fisioterapia Donostia, punción seca Gipuzkoa, neuromodulación Gipuzkoa, centro fisioterapia Guipúzcoa, Zubitxo Plaza Urnieta'
 };
 ---
 
