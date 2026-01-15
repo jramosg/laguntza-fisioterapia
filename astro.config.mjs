@@ -8,7 +8,18 @@ import partytown from '@astrojs/partytown';
 export default defineConfig({
 	site: 'https://laguntzafisioterapia.com/',
 	sitemap: true,
-	integrations: [sitemap(), icon(), partytown()], // Add renderers to the config
+	integrations: [
+		sitemap({
+			i18n: {
+				defaultLocale: 'es',
+				locales: {
+					eu: 'eu'
+				}
+			}
+		}),
+		icon(),
+		partytown()
+	],
 	i18n: {
 		locales: ['es', 'eu'],
 		defaultLocale: 'es'
