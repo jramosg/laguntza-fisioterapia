@@ -16,11 +16,11 @@
 		"check-updates": "npm-check-updates -u --dep dev"
 	},
 	"devDependencies": {
-		"@astrojs/sitemap": "^3.6.0",
+		"@astrojs/sitemap": "^3.6.1",
 		"@iconify-json/ic": "^1.2.4",
 		"@iconify-json/mdi": "^1.2.3",
 		"@types/leaflet": "^1.9.21",
-		"astro": "^5.16.5",
+		"astro": "^5.16.7",
 		"astro-icon": "^1.1.5",
 		"date-fns": "^4.1.0",
 		"prettier": "^3.7.4",
