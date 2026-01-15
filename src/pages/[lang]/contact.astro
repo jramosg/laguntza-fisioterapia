@@ -18,6 +18,9 @@ import EmailIcon from '@icons/email.svg';
 import Button from '@components/buttons/Button.astro';
 import MarkerIcon from '@icons/marker.svg';
 import ContactForm from '@components/forms/ContactForm.astro';
+import { Image } from 'astro:assets';
+import KristalaFrentez from '@images/kristala-frentez.jpg';
+import KristalaLateralez from '@images/kristala-lateralez.jpg';
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
@@ -201,8 +204,28 @@ const contacts = [
 					zoom={17}
 				/>
 			</section>
+			<Container
+				class="service-section-card service-section-card--gallery gallery-img--desktop"
+			>
+				<Image
+					src={KristalaLateralez}
+					alt="Laguntza Fisioterapia Window"
+					class="gallery-img gallery-img--desktop"
+				/>
+			</Container>
 		</Container>
 	</div>
+
+	<Container
+		class="service-section-card service-section-card--gallery gallery-img--mobile"
+	>
+		<Image
+			src={KristalaFrentez}
+			height={KristalaFrentez.height}
+			alt="Laguntza Fisioterapia Exterior"
+			class="gallery-img"
+		/>
+	</Container>
 </Layout>
 
 <style>
@@ -244,6 +267,65 @@ const contacts = [
 		overflow: hidden;
 		border-radius: var(--theme-shape-radius);
 		margin-top: var(--s4);
+	}
+
+	/* Gallery Section Styles */
+	.service-section-card.service-section-card--gallery {
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		margin-top: var(--s8);
+		margin-bottom: var(--s8);
+	}
+
+	.service-section-card--gallery .gallery-img {
+		flex: 1;
+		object-fit: cover;
+		height: 100%;
+		width: 100%;
+	}
+
+	.service-section-card--gallery .service-section-card__desc {
+		width: 100%;
+		height: auto;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+		padding: var(--s4);
+		padding-top: var(--s8);
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-start;
+		pointer-events: none;
+	}
+
+	.service-section-card--gallery .service-section-card__desc h2 {
+		margin: 0;
+		color: white;
+		font-size: var(--font-size-xl);
+		font-weight: 500;
+	}
+
+	.gallery-img {
+		border-radius: var(--theme-shape-radius);
+	}
+	.gallery-img--mobile {
+		display: none;
+	}
+
+	@media (max-width: 768px) {
+		.service-section-card.service-section-card--gallery {
+			aspect-ratio: 1 / 1.4;
+		}
+
+		.service-section-card--gallery .gallery-img {
+			width: 100%;
+		}
+
+		.gallery-img--desktop {
+			display: none;
+		}
+
+		.gallery-img--mobile {
+			display: block;
+		}
 	}
 
 	.map-contact-data-grid {
