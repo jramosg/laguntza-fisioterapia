@@ -13,7 +13,7 @@ export const ui = {
 		'Ireki menua': 'Abrir menú',
 		'Itxi menua': 'Cerrar menú',
 		'seo.main-description':
-			'Fisioterapia, osteopatía y terapia manual en Gipuzkoa. Centro especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa. Tratamiento del dolor, punción seca y neuromodulación. Fisioterapeuta profesional cerca de Donostia, San Sebastián, Hernani y Andoain. Atención personalizada en el corazón de Gipuzkoa.',
+			'Fisioterapia, osteopatía y terapia manual en Gipuzkoa. Centro especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa. Tratamiento del dolor, punción seca y neuromodulación. Fisioterapeuta profesional cerca de Donostia, San Sebastián, Hernani y Andoain. Atención personalizada Gipuzkoa.',
 		'Menua ireki': 'Abrir menú',
 		'Menua itxi': 'Cerrar menú',
 		'contact-jarri': 'Ponte en',
@@ -100,7 +100,7 @@ export const ui = {
 		'service.cta-button': 'Contactar',
 		'service.location-title': 'Dónde estamos',
 		'service.location-text':
-			'Nuestro centro está ubicado en Urnieta, en el corazón de Gipuzkoa, con fácil acceso desde Donostia-San Sebastián, Hernani, Andoain y localidades cercanas.',
+			'Nuestro centro está ubicado en Urnieta, en Gipuzkoa, con fácil acceso desde Donostia-San Sebastián, Hernani, Andoain y localidades cercanas.',
 		'service.view-all': 'Ver todos los servicios',
 		'service.main.hero-title':
 			'Nuestros servicios de <span class="hero-section__remark">fisioterapia</span>',
@@ -128,13 +128,17 @@ export const ui = {
 			'Mejora de trastornos digestivos funcionales',
 		'service.osteopathy.conditions-title': '¿Qué patologías tratamos?',
 		'service.osteopathy.condition-1-title': 'Hernias discales',
-		'service.osteopathy.condition-1-text': 'Tratamiento de hernias y protusiones discales.',
+		'service.osteopathy.condition-1-text':
+			'Tratamiento de hernias y protusiones discales.',
 		'service.osteopathy.condition-2-title': 'Ciática',
-		'service.osteopathy.condition-2-text': 'Alivio del dolor irradiado y problemas del nervio ciático.',
+		'service.osteopathy.condition-2-text':
+			'Alivio del dolor irradiado y problemas del nervio ciático.',
 		'service.osteopathy.condition-3-title': 'Cervicalgias',
-		'service.osteopathy.condition-3-text': 'Tratamiento de tortícolis y dolores en la zona cervical.',
+		'service.osteopathy.condition-3-text':
+			'Tratamiento de tortícolis y dolores en la zona cervical.',
 		'service.osteopathy.condition-4-title': 'ATM',
-		'service.osteopathy.condition-4-text': 'Problemas de la articulación temporomandibular (mandíbula).',
+		'service.osteopathy.condition-4-text':
+			'Problemas de la articulación temporomandibular (mandíbula).',
 		'service.osteopathy.condition-5': 'Problemas de ATM (mandíbula)',
 		'service.osteopathy.condition-6': 'Restricciones de movilidad articular',
 		// Manual Therapy page
@@ -152,13 +156,17 @@ export const ui = {
 			'La terapia manual es el conjunto de técnicas realizadas con las manos del fisioterapeuta para evaluar, diagnosticar y tratar disfunciones del sistema neuromusculoesquelético. Es una de las herramientas más efectivas en fisioterapia.',
 		'service.manual-therapy.techniques-title': 'Técnicas que utilizamos',
 		'service.manual-therapy.technique-1-title': 'Movilizaciones',
-		'service.manual-therapy.technique-1-text': 'Movilizaciones articulares para mejorar el rango de movimiento.',
+		'service.manual-therapy.technique-1-text':
+			'Movilizaciones articulares para mejorar el rango de movimiento.',
 		'service.manual-therapy.technique-2-title': 'Manipulaciones',
-		'service.manual-therapy.technique-2-text': 'Manipulaciones vertebrales y articulares específicas.',
+		'service.manual-therapy.technique-2-text':
+			'Manipulaciones vertebrales y articulares específicas.',
 		'service.manual-therapy.technique-3-title': 'Tejido blando',
-		'service.manual-therapy.technique-3-text': 'Técnicas dirigidas a músculos, fascias y ligamentos.',
+		'service.manual-therapy.technique-3-text':
+			'Técnicas dirigidas a músculos, fascias y ligamentos.',
 		'service.manual-therapy.technique-4-title': 'Neurodinamia',
-		'service.manual-therapy.technique-4-text': 'Técnicas para mejorar la movilidad del sistema nervioso.',
+		'service.manual-therapy.technique-4-text':
+			'Técnicas para mejorar la movilidad del sistema nervioso.',
 		'service.manual-therapy.technique-1': 'Movilizaciones articulares',
 		'service.manual-therapy.technique-2': 'Manipulaciones vertebrales',
 		'service.manual-therapy.technique-3': 'Técnicas de tejido blando',
@@ -206,11 +214,13 @@ export const ui = {
 		'service.rehab.conditions-title': '¿Para quién está indicado?',
 		'service.rehab.for-whom-title': '¿Para quién está indicado?',
 		'service.rehab.for-whom-1-title': 'Postquirúrgicos',
-		'service.rehab.for-whom-1-text': 'Recuperación tras intervenciones quirúrgicas.',
+		'service.rehab.for-whom-1-text':
+			'Recuperación tras intervenciones quirúrgicas.',
 		'service.rehab.for-whom-2-title': 'Deportistas',
 		'service.rehab.for-whom-2-text': 'Readaptación tras lesiones deportivas.',
 		'service.rehab.for-whom-3-title': 'Mayores',
-		'service.rehab.for-whom-3-text': 'Mejora de la fragilidad y prevención de caídas.',
+		'service.rehab.for-whom-3-text':
+			'Mejora de la fragilidad y prevención de caídas.',
 		'service.rehab.condition-1': 'Recuperación postquirúrgica',
 		'service.rehab.condition-2': 'Lesiones deportivas',
 		'service.rehab.condition-3': 'Dolor crónico de espalda',
@@ -229,7 +239,7 @@ export const ui = {
 			'Tratamiento profesional y personalizado para tu bienestar',
 		'service.physio.what-is-title': 'Tu centro de Fisioterapia en Urnieta',
 		'service.physio.what-is-text':
-			'En Laguntza Fisioterapia ofrecemos un servicio completo de fisioterapia en el corazón de Gipuzkoa. Combinamos diferentes técnicas y enfoques para ofrecer el tratamiento más adecuado a cada paciente.',
+			'En Laguntza Fisioterapia ofrecemos un servicio completo de fisioterapia en Gipuzkoa. Combinamos diferentes técnicas y enfoques para ofrecer el tratamiento más adecuado a cada paciente.',
 		'service.physio.services-title': 'Nuestros servicios de fisioterapia',
 		'service.physio.service-1-title': 'Terapia Manual',
 		'service.physio.service-1-text':
@@ -259,7 +269,7 @@ export const ui = {
 		'service.physio.benefit-2': 'Mejora de la movilidad y función',
 		'service.physio.benefit-3': 'Prevención de futuras lesiones',
 		'service.physio.benefit-4': 'Recuperación funcional acelerada',
-		'service.physio.benefit-5': 'Mejora de la calidad de vida',
+		'service.physio.benefit-5': 'Mejora de la calidad de vida'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -370,13 +380,17 @@ export const ui = {
 			'Nahasmendu digestibo funtzionalen hobekuntza',
 		'service.osteopathy.conditions-title': 'Zein patologia tratatzen ditugu?',
 		'service.osteopathy.condition-1-title': 'Disko herniak',
-		'service.osteopathy.condition-1-text': 'Disko herniak eta protusioen tratamendua.',
+		'service.osteopathy.condition-1-text':
+			'Disko herniak eta protusioen tratamendua.',
 		'service.osteopathy.condition-2-title': 'Ziatika',
-		'service.osteopathy.condition-2-text': 'Min irradiatua eta ziatika arazoen arintzea.',
+		'service.osteopathy.condition-2-text':
+			'Min irradiatua eta ziatika arazoen arintzea.',
 		'service.osteopathy.condition-3-title': 'Zerbikoalgiak',
-		'service.osteopathy.condition-3-text': 'Tortikolis eta zerbikaletako minen tratamendua.',
+		'service.osteopathy.condition-3-text':
+			'Tortikolis eta zerbikaletako minen tratamendua.',
 		'service.osteopathy.condition-4-title': 'ATM',
-		'service.osteopathy.condition-4-text': 'Masailezurreko artikulazioaren arazoak (ATM).',
+		'service.osteopathy.condition-4-text':
+			'Masailezurreko artikulazioaren arazoak (ATM).',
 		'service.osteopathy.condition-5': 'ATM arazoak (masailezurra)',
 		'service.osteopathy.condition-6': 'Artikulazio mugikortasun murrizketak',
 		// Manual Therapy page
@@ -394,13 +408,17 @@ export const ui = {
 			'Terapia manuala fisioterapeutaren eskuekin egindako teknika multzoa da sistema neuromuskuloeskeletikoaren disfuntzioak diagnostikatu eta tratatzeko. Fisioterapiako tresnarik eraginkorrenetako bat da.',
 		'service.manual-therapy.techniques-title': 'Erabiltzen ditugun teknikak',
 		'service.manual-therapy.technique-1-title': 'Mobilizazioak',
-		'service.manual-therapy.technique-1-text': 'Artikulazio mobilizazioak mugimendu-eremua hobetzeko.',
+		'service.manual-therapy.technique-1-text':
+			'Artikulazio mobilizazioak mugimendu-eremua hobetzeko.',
 		'service.manual-therapy.technique-2-title': 'Manipulazioak',
-		'service.manual-therapy.technique-2-text': 'Bizkarrezur eta artikulazio manipulazio espezifikoak.',
+		'service.manual-therapy.technique-2-text':
+			'Bizkarrezur eta artikulazio manipulazio espezifikoak.',
 		'service.manual-therapy.technique-3-title': 'Ehun biguna',
-		'service.manual-therapy.technique-3-text': 'Gihar, faszia eta lotailuetara zuzendutako teknikak.',
+		'service.manual-therapy.technique-3-text':
+			'Gihar, faszia eta lotailuetara zuzendutako teknikak.',
 		'service.manual-therapy.technique-4-title': 'Neurodinamia',
-		'service.manual-therapy.technique-4-text': 'Nerbio-sistemaren mugikortasuna hobetzeko teknikak.',
+		'service.manual-therapy.technique-4-text':
+			'Nerbio-sistemaren mugikortasuna hobetzeko teknikak.',
 		'service.manual-therapy.technique-1': 'Artikulazio mobilizazioak',
 		'service.manual-therapy.technique-2': 'Bizkarrezur manipulazioak',
 		'service.manual-therapy.technique-3': 'Ehun bigunaren teknikak',
@@ -452,7 +470,8 @@ export const ui = {
 		'service.rehab.for-whom-2-title': 'Kirolariak',
 		'service.rehab.for-whom-2-text': 'Kirol lesioen ondorengo erreadaptazioa.',
 		'service.rehab.for-whom-3-title': 'Adinekoak',
-		'service.rehab.for-whom-3-text': 'Hauskortasuna hobetzea eta erorketen prebentzioa.',
+		'service.rehab.for-whom-3-text':
+			'Hauskortasuna hobetzea eta erorketen prebentzioa.',
 		'service.rehab.condition-1': 'Ebakuntza osteko berreskurapena',
 		'service.rehab.condition-2': 'Kirol lesioak',
 		'service.rehab.condition-3': 'Bizkar-min kronikoa',
@@ -501,7 +520,7 @@ export const ui = {
 		'service.physio.benefit-2': 'Mugikortasuna eta funtzioa hobetzea',
 		'service.physio.benefit-3': 'Etorkizuneko lesioen prebentzioa',
 		'service.physio.benefit-4': 'Berreskuratze funtzional azkartua',
-		'service.physio.benefit-5': 'Bizi-kalitatearen hobekuntza',
+		'service.physio.benefit-5': 'Bizi-kalitatearen hobekuntza'
 	}
 };
 
