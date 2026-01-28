@@ -1,0 +1,90 @@
+---
+interface Item {
+	title: string;
+	text: string;
+	href?: string;
+}
+
+interface Props {
+	title: string;
+	items: Item[];
+	columns?: number;
+	id?: string;
+}
+
+const { title, items, columns = 2, id } = Astro.props;
+---
+
+<section class="service-grid-section" id={id}>
+	<h2>{title}</h2>
+	<div class="grid" style={`--grid-cols: ${columns}`}>
+		{
+			items.map(item =>
+				item.href ? (
+					<a href={item.href} class="item-card item-card--link">
+						<h3>{item.title}</h3>
+						<p>{item.text}</p>
+					</a>
+				) : (
+					<div class="item-card">
+						<h3>{item.title}</h3>
+						<p>{item.text}</p>
+					</div>
+				)
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.service-grid-section {
+		margin-bottom: var(--s8);
+	}
+
+	.service-grid-section h2 {
+		color: var(--theme-primary);
+		margin-bottom: var(--s5);
+		text-align: center;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(var(--grid-cols), 1fr);
+		gap: var(--s4);
+	}
+
+	.item-card {
+		background: var(--theme-surface-1);
+		padding: var(--s5);
+		border-radius: calc(var(--theme-shape-radius) / 2);
+		border-left: 4px solid var(--theme-primary);
+		text-decoration: none;
+		color: inherit;
+		transition:
+			transform var(--theme-transition),
+			box-shadow var(--theme-transition);
+	}
+
+	.item-card--link:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	.item-card h3 {
+		color: var(--theme-primary-dark);
+		margin-bottom: var(--s2);
+		font-size: var(--font-size-md);
+	}
+
+	.item-card p {
+		color: var(--theme-on-surface-1);
+		line-height: 1.6;
+		margin: 0;
+	}
+
+	@media (max-width: 768px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

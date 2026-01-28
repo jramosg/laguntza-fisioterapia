@@ -40,18 +40,7 @@ const seo = {
 
 <Layout {seo}>
 	<SectionHero id="services-hero">
-		{
-			lang === 'eu' ? (
-				<h1 slot="title">
-					Gure <span class="hero-section__remark">fisioterapia</span> zerbitzuak
-				</h1>
-			) : (
-				<h1 slot="title">
-					Nuestros servicios de{' '}
-					<span class="hero-section__remark">fisioterapia</span>
-				</h1>
-			)
-		}
+		<h1 slot="title" set:html={t('service.main.hero-title')} />
 		<Fragment slot="desc">
 			{SERVICES[lang].intro}
 		</Fragment>

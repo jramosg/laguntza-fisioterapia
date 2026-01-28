@@ -1,0 +1,51 @@
+---
+interface Props {
+	title: string;
+	benefits: string[];
+}
+
+const { title, benefits } = Astro.props;
+---
+
+<section class="service-benefits">
+	<h2>{title}</h2>
+	<ul class="benefits-list">
+		{benefits.map(benefit => <li>{benefit}</li>)}
+	</ul>
+</section>
+
+<style>
+	.service-benefits {
+		background: var(--theme-primary-container-alt);
+		padding: var(--s6);
+		border-radius: var(--theme-shape-radius);
+		margin-bottom: var(--s8);
+	}
+
+	.service-benefits h2 {
+		color: var(--theme-primary-dark);
+		margin-bottom: var(--s4);
+	}
+
+	.benefits-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: var(--s3);
+	}
+
+	.benefits-list li {
+		position: relative;
+		padding-left: var(--s6);
+		line-height: 1.6;
+	}
+
+	.benefits-list li::before {
+		content: '✓';
+		position: absolute;
+		left: 0;
+		color: var(--theme-primary);
+		font-weight: bold;
+	}
+</style>

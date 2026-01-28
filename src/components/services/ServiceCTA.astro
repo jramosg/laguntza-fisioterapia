@@ -1,0 +1,48 @@
+---
+import Button from '@components/buttons/Button.astro';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import type { Langs } from '@i18n/ui';
+
+interface Props {
+	title?: string;
+	text?: string;
+	lang?: Langs;
+}
+
+const lang = Astro.props.lang || getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { title = t('service.cta-title'), text = t('service.cta-text') } =
+	Astro.props;
+---
+
+<section class="service-cta">
+	<h2>{title}</h2>
+	<p>{text}</p>
+	<Button href={`/${lang}/contact`}>
+		{t('nav.contact')}
+	</Button>
+</section>
+
+<style>
+	.service-cta {
+		text-align: center;
+		padding: var(--s8) var(--s4);
+		background: var(--theme-container-gradient);
+		border-radius: var(--theme-shape-radius);
+		color: var(--theme-on-container-gradient);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.service-cta h2 {
+		margin-bottom: var(--s3);
+	}
+
+	.service-cta p {
+		margin-bottom: var(--s5);
+		opacity: 0.9;
+	}
+</style>

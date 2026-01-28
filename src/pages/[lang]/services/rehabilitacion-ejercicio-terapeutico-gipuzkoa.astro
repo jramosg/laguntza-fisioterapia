@@ -1,0 +1,126 @@
+---
+import Layout from '@layouts/Page.astro';
+import Container from '@components/core/Container.astro';
+import SectionHero from '@components/SectionHero.astro';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
+import { Langs } from '@i18n/ui';
+import Prevention from '@images/prevention.webp';
+import ServiceIntro from '@components/services/ServiceIntro.astro';
+import ServiceGridSection from '@components/services/ServiceGridSection.astro';
+import ServiceBenefits from '@components/services/ServiceBenefits.astro';
+import ServiceLocation from '@components/services/ServiceLocation.astro';
+import ServiceCTA from '@components/services/ServiceCTA.astro';
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+
+const lang: Langs = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const seo = {
+	title: t('service.rehab.seo-title'),
+	description: t('service.rehab.seo-description'),
+	keywords: t('service.rehab.seo-keywords')
+};
+
+const rehabProcess = [
+	{
+		title: t('service.rehab.step-1-title'),
+		text: t('service.rehab.step-1-text')
+	},
+	{
+		title: t('service.rehab.step-2-title'),
+		text: t('service.rehab.step-2-text')
+	},
+	{
+		title: t('service.rehab.step-3-title'),
+		text: t('service.rehab.step-3-text')
+	},
+	{
+		title: t('service.rehab.step-4-title'),
+		text: t('service.rehab.step-4-text')
+	}
+];
+
+const rehabBenefits = [
+	t('service.rehab.benefit-1'),
+	t('service.rehab.benefit-2'),
+	t('service.rehab.benefit-3'),
+	t('service.rehab.benefit-4'),
+	t('service.rehab.benefit-5')
+];
+
+const rehabForWhom = [
+	{
+		title: t('service.rehab.for-whom-1-title'),
+		text: t('service.rehab.for-whom-1-text')
+	},
+	{
+		title: t('service.rehab.for-whom-2-title'),
+		text: t('service.rehab.for-whom-2-text')
+	},
+	{
+		title: t('service.rehab.for-whom-3-title'),
+		text: t('service.rehab.for-whom-3-text')
+	}
+];
+---
+
+<Layout {seo}>
+	<SectionHero id="rehab-hero">
+		<h1 slot="title">
+			{t('service.rehab.hero-title')}
+		</h1>
+		<Fragment slot="desc">
+			{t('service.rehab.hero-subtitle')}
+		</Fragment>
+	</SectionHero>
+
+	<Container class="service-page">
+		<article class="service-content">
+			<ServiceIntro
+				title={t('service.rehab.what-is-title')}
+				text={t('service.rehab.what-is-text')}
+				image={Prevention}
+				imageAlt={t('service.rehab.hero-title')}
+			/>
+
+			<ServiceGridSection
+				title={t('service.rehab.process-title')}
+				items={rehabProcess}
+				columns={4}
+			/>
+
+			<ServiceBenefits
+				title={t('service.rehab.benefits-title')}
+				benefits={rehabBenefits}
+			/>
+
+			<ServiceGridSection
+				title={t('service.rehab.for-whom-title')}
+				items={rehabForWhom}
+				columns={3}
+			/>
+
+			<ServiceLocation />
+
+			<ServiceCTA />
+		</article>
+	</Container>
+</Layout>
+
+<style>
+	.service-page {
+		padding: var(--s6) 0;
+	}
+
+	.service-content {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+</style>

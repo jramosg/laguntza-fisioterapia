@@ -39,7 +39,8 @@ export const SERVICES = {
 			{
 				id: 'assessment-diagnosis',
 				title: 'Balorazio eta Diagnostiko Pertsonalizatua',
-				desc: `Balorazio eta diagnostiko funtzionala Gipuzkoako gure fisioterapia zerbitzu guztien abiapuntua da. Paziente bakoitzari elkarrizketa, azterketa kliniko eta proba espezifikoak egiten dizkiogu, arazoaren jatorria eta egoera zehatza identifikatzeko. Horrela, tratamendu eta ariketa terapeutiko programak guztiz pertsonalizatuak diseinatzen ditugu Urnietan.`
+				desc: `Balorazio eta diagnostiko funtzionala Gipuzkoako gure fisioterapia zerbitzu guztien abiapuntua da. Paziente bakoitzari elkarrizketa, azterketa kliniko eta proba espezifikoak egiten dizkiogu, arazoaren jatorria eta egoera zehatza identifikatzeko. Horrela, tratamendu eta ariketa terapeutiko programak guztiz pertsonalizatuak diseinatzen ditugu Urnietan.`,
+				href: 'fisioterapia-gipuzkoa'
 			},
 			{
 				id: 'exercise-prevention',
@@ -54,12 +55,14 @@ export const SERVICES = {
 						title: 'Prebentziora zuzendutako ariketak',
 						desc: 'Lesioak saihesteko, osasuna mantentzeko eta gaitasun fisikoa hobetzeko ariketak.'
 					}
-				]
+				],
+				href: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
 			},
 			{
 				id: 'rehab-readaptation',
 				title: 'Errehabilitazioa eta Erreadaptazio Funtzionala',
-				desc: `Errehabilitazio zerbitzua Gipuzkoan: lesio, ebakuntza edo gaixotasun baten ondoren gaitasun funtzionala eta autonomia berreskuratzeko tratamendu pertsonalizatuak. Ariketa terapeutikoak, terapia manuala eta teknika aurreratuak konbinatzen ditugu pertsona bere jarduera fisiko edo kirol mailara itzultzeko. Indarra, koordinazioa eta segurtasuna lantzen dira, lesioak berriro agertzea saihesteko. Errehabilitazio osoa gure Urnietako zentroan, Guipuzcoan.`
+				desc: `Errehabilitazio zerbitzua Gipuzkoan: lesio, ebakuntza edo gaixotasun baten ondoren gaitasun funtzionala eta autonomia berreskuratzeko tratamendu pertsonalizatuak. Ariketa terapeutikoak, terapia manuala eta teknika aurreratuak konbinatzen ditugu pertsona bere jarduera fisiko edo kirol mailara itzultzeko. Indarra, koordinazioa eta segurtasuna lantzen dira, lesioak berriro agertzea saihesteko. Errehabilitazio osoa gure Urnietako zentroan, Guipuzcoan.`,
+				href: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
 			},
 			{
 				id: 'specialized-techniques',
@@ -68,11 +71,13 @@ export const SERVICES = {
 				bullets: [
 					{
 						title: 'Terapia manuala',
-						desc: 'Terapia manuala Gipuzkoan. Eskuzko teknika espezializatuak, artikulazio, muskulu eta nerbio sistemaren funtzionamendua hobetzeko, mina arintzeko eta mugimendua berreskuratzeko. Terapia manual zerbitzua gure Urnietako zentroan, Guipuzcoan.'
+						desc: 'Terapia manuala Gipuzkoan. Eskuzko teknika espezializatuak, artikulazio, muskulu eta nerbio sistemaren funtzionamendua hobetzeko, mina arintzeko eta mugimendua berreskuratzeko. Terapia manual zerbitzua gure Urnietako zentroan, Guipuzcoan.',
+						href: 'terapia-manual-gipuzkoa'
 					},
 					{
 						title: 'Osteopatia',
-						desc: 'Osteopatia zerbitzua Gipuzkoan. Gorputzaren oreka eta funtzio egokia berreskuratzeko esku bidezko tratamendu integrala, ikuspegi holistikoarekin eta pertsonalizazio osoz. Osteopata profesionala Urnietan, Donostia eta Hernanitik gertu, Guipuzcoan.'
+						desc: 'Osteopatia zerbitzua Gipuzkoan. Gorputzaren oreka eta funtzio egokia berreskuratzeko esku bidezko tratamendu integrala, ikuspegi holistikoarekin eta pertsonalizazio osoz. Osteopata profesionala Urnietan, Donostia eta Hernanitik gertu, Guipuzcoan.',
+						href: 'osteopatia-gipuzkoa'
 					},
 					{
 						title: 'Puntzio lehorra',
@@ -82,7 +87,8 @@ export const SERVICES = {
 						title: 'Neuromodulazioa',
 						desc: 'Sistema nerbiosoaren jarduera erregulatzeko teknika aurreratuak, mina eta disfuntzio neurologikoak arintzeko. Neuromodulazio perkutaneoa, besteak beste, elektroestimulazioa erabiliz egiten da, eta mugimenduaren eta funtzioaren hobekuntza bilatzen du, pazientearen egoerara egokituta.'
 					}
-				]
+				],
+				href: 'terapia-manual-gipuzkoa'
 			}
 		]
 	},
@@ -94,7 +100,8 @@ export const SERVICES = {
 			{
 				id: 'assessment-diagnosis',
 				title: 'Valoración y Diagnóstico Personalizado',
-				desc: `La valoración y el diagnóstico funcional son el punto de partida de todos nuestros servicios de fisioterapia en Gipuzkoa. Realizamos una entrevista, exploración clínica y pruebas específicas a cada paciente para identificar el origen del problema y su situación concreta. Así, diseñamos tratamientos y programas de ejercicio terapéutico totalmente personalizados.`
+				desc: `La valoración y el diagnóstico funcional son el punto de partida de todos nuestros servicios de fisioterapia en Gipuzkoa. Realizamos una entrevista, exploración clínica y pruebas específicas a cada paciente para identificar el origen del problema y su situación concreta. Así, diseñamos tratamientos y programas de ejercicio terapéutico totalmente personalizados.`,
+				href: 'fisioterapia-gipuzkoa'
 			},
 			{
 				id: 'exercise-prevention',
@@ -109,12 +116,14 @@ export const SERVICES = {
 						title: 'Ejercicios orientados a la prevención',
 						desc: 'Actividades diseñadas para evitar lesiones, mantener la salud y mejorar la condición física.'
 					}
-				]
+				],
+				href: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
 			},
 			{
 				id: 'rehab-readaptation',
 				title: 'Rehabilitación y Readaptación Funcional',
-				desc: `Servicio de rehabilitación en Gipuzkoa con tratamientos personalizados para recuperar la capacidad funcional y la autonomía tras una lesión, intervención quirúrgica o enfermedad. Combinamos ejercicio terapéutico, terapia manual y técnicas avanzadas para que puedas volver a tu actividad física o deportiva habitual. Se trabajan la fuerza, la coordinación y la seguridad para evitar recaídas. Rehabilitación completa en nuestra clínica de Urnieta, Guipúzcoa.`
+				desc: `Servicio de rehabilitación en Gipuzkoa con tratamientos personalizados para recuperar la capacidad funcional and la autonomía tras una lesión, intervención quirúrgica o enfermedad. Combinamos ejercicio terapéutico, terapia manual y técnicas avanzadas para que puedas volver a tu actividad física o deportiva habitual. Se trabajan la fuerza, la coordinación y la seguridad para evitar recaídas. Rehabilitación completa en nuestra clínica de Urnieta, Guipúzcoa.`,
+				href: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
 			},
 			{
 				id: 'specialized-techniques',
@@ -123,11 +132,13 @@ export const SERVICES = {
 				bullets: [
 					{
 						title: 'Terapia Manual',
-						desc: 'Servicio de terapia manual en Gipuzkoa. Técnicas especializadas de fisioterapia manual para mejorar el funcionamiento de las articulaciones, músculos y sistema nervioso. Tratamiento de terapia manual para aliviar el dolor y recuperar el movimiento en nuestra clínica de Urnieta, Guipúzcoa.'
+						desc: 'Servicio de terapia manual en Gipuzkoa. Técnicas especializadas de fisioterapia manual para mejorar el funcionamiento de las articulaciones, músculos y sistema nervioso. Tratamiento de terapia manual para aliviar el dolor y recuperar el movimiento en nuestra clínica de Urnieta, Guipúzcoa.',
+						href: 'terapia-manual-gipuzkoa'
 					},
 					{
 						title: 'Osteopatía',
-						desc: 'Servicio de osteopatía en Gipuzkoa con enfoque holístico. Tratamiento de osteopatía para recuperar el equilibrio y la función corporal mediante técnicas manuales especializadas. Osteópata profesional en Urnieta, cerca de Donostia y Hernani en Guipúzcoa.'
+						desc: 'Servicio de osteopatía en Gipuzkoa con enfoque holístico. Tratamiento de osteopatía para recuperar el equilibrio y la función corporal mediante técnicas manuales especializadas. Osteópata profesional en Urnieta, cerca de Donostia y Hernani en Guipúzcoa.',
+						href: 'osteopatia-gipuzkoa'
 					},
 					{
 						title: 'Punción Seca',
@@ -137,7 +148,8 @@ export const SERVICES = {
 						title: 'Neuromodulación',
 						desc: 'Técnicas avanzadas para regular la actividad del sistema nervioso, aliviar el dolor y tratar disfunciones neurológicas. La neuromodulación percutanea, entre otras, se realiza mediante electroestimulación y busca mejorar el movimiento y la función, adaptándose a la situación del paciente.'
 					}
-				]
+				],
+				href: 'terapia-manual-gipuzkoa'
 			}
 		]
 	}
@@ -146,4 +158,5 @@ export const SERVICES = {
 export type ServiceBullet = {
 	title: string;
 	desc: string;
+	href?: string;
 };

@@ -102,7 +102,16 @@ const structuredData = {
 							<li class="service-card__bullet">
 								<CircleCheck color="currentColor" />
 								<div>
-									<h3>{bullet.title}</h3>
+									{bullet.href ? (
+										<a
+											href={`/${lang}/services/${bullet.href}`}
+											class="bullet-link"
+										>
+											<h3>{bullet.title}</h3>
+										</a>
+									) : (
+										<h3>{bullet.title}</h3>
+									)}
 									{bullet.desc && (
 										<>
 											<p>{bullet.desc}</p>
@@ -113,6 +122,18 @@ const structuredData = {
 						);
 					})}
 				</ul>
+			)
+		}
+		{
+			section.href && (
+				<div class="service-card__cta">
+					<a
+						href={`/${lang}/services/${section.href}`}
+						class="learn-more-link"
+					>
+						{t('Ikusi gehiago')} →
+					</a>
+				</div>
 			)
 		}
 	</div>
@@ -210,10 +231,29 @@ const structuredData = {
 		margin: var(--s4) 0 0;
 	}
 
+	.service-card__cta {
+		margin-top: var(--s6);
+	}
+
+	.learn-more-link {
+		color: var(--theme-primary);
+		font-weight: bold;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--s2);
+		transition: color var(--theme-transition);
+	}
+
+	.learn-more-link:hover {
+		color: var(--theme-primary-dark);
+		text-decoration: underline;
+	}
+
 	.service-card__bullet {
 		margin: var(--s2) 0;
 		display: grid;
-		grid-template-columns: 1fr auto;
+		grid-template-columns: auto 1fr;
 		gap: var(--s2);
 		svg {
 			color: var(--theme-primary);
@@ -228,6 +268,17 @@ const structuredData = {
 
 		p {
 			font-weight: unset;
+		}
+	}
+
+	.bullet-link {
+		text-decoration: none;
+		color: var(--theme-primary);
+		transition: color var(--theme-transition);
+
+		&:hover {
+			color: var(--theme-primary-dark);
+			text-decoration: underline;
 		}
 	}
 

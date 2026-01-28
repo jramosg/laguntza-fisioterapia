@@ -1,0 +1,103 @@
+---
+import Layout from '@layouts/Page.astro';
+import Container from '@components/core/Container.astro';
+import SectionHero from '@components/SectionHero.astro';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
+import { Langs } from '@i18n/ui';
+import Interview from '@images/interview.webp';
+import ServiceIntro from '@components/services/ServiceIntro.astro';
+import ServiceGridSection from '@components/services/ServiceGridSection.astro';
+import ServiceBenefits from '@components/services/ServiceBenefits.astro';
+import ServiceLocation from '@components/services/ServiceLocation.astro';
+import ServiceCTA from '@components/services/ServiceCTA.astro';
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+
+const lang: Langs = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const seo = {
+	title: t('service.osteopathy.seo-title'),
+	description: t('service.osteopathy.seo-description'),
+	keywords: t('service.osteopathy.seo-keywords')
+};
+
+const osteopathyBenefits = [
+	t('service.osteopathy.benefit-1'),
+	t('service.osteopathy.benefit-2'),
+	t('service.osteopathy.benefit-3'),
+	t('service.osteopathy.benefit-4'),
+];
+
+const osteopathyConditions = [
+	{
+		title: t('service.osteopathy.condition-1-title'),
+		text: t('service.osteopathy.condition-1-text')
+	},
+	{
+		title: t('service.osteopathy.condition-2-title'),
+		text: t('service.osteopathy.condition-2-text')
+	},
+	{
+		title: t('service.osteopathy.condition-3-title'),
+		text: t('service.osteopathy.condition-3-text')
+	},
+	{
+		title: t('service.osteopathy.condition-4-title'),
+		text: t('service.osteopathy.condition-4-text')
+	}
+];
+---
+
+<Layout {seo}>
+	<SectionHero id="osteopathy-hero">
+		<h1 slot="title">
+			{t('service.osteopathy.hero-title')}
+		</h1>
+		<Fragment slot="desc">
+			{t('service.osteopathy.hero-subtitle')}
+		</Fragment>
+	</SectionHero>
+
+	<Container class="service-page">
+		<article class="service-content">
+			<ServiceIntro
+				title={t('service.osteopathy.what-is-title')}
+				text={t('service.osteopathy.what-is-text')}
+				image={Interview}
+				imageAlt={t('service.osteopathy.hero-title')}
+			/>
+
+			<ServiceBenefits
+				title={t('service.osteopathy.benefits-title')}
+				benefits={osteopathyBenefits}
+			/>
+
+			<ServiceGridSection
+				title={t('service.osteopathy.conditions-title')}
+				items={osteopathyConditions}
+			/>
+
+			<ServiceLocation />
+
+			<ServiceCTA />
+		</article>
+	</Container>
+</Layout>
+
+<style>
+	.service-page {
+		padding: var(--s6) 0;
+	}
+
+	.service-content {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+</style>

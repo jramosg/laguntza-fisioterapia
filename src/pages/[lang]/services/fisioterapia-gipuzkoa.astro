@@ -1,0 +1,108 @@
+---
+import Layout from '@layouts/Page.astro';
+import Container from '@components/core/Container.astro';
+import SectionHero from '@components/SectionHero.astro';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
+import { Langs } from '@i18n/ui';
+import Rehab from '@images/rehab.webp';
+import ServiceIntro from '@components/services/ServiceIntro.astro';
+import ServiceGridSection from '@components/services/ServiceGridSection.astro';
+import ServiceBenefits from '@components/services/ServiceBenefits.astro';
+import ServiceLocation from '@components/services/ServiceLocation.astro';
+import ServiceCTA from '@components/services/ServiceCTA.astro';
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+
+const lang: Langs = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const seo = {
+	title: t('service.physio.seo-title'),
+	description: t('service.physio.seo-description'),
+	keywords: t('service.physio.seo-keywords')
+};
+
+const physioServices = [
+	{
+		title: t('service.physio.service-1-title'),
+		text: t('service.physio.service-1-text'),
+		href: `/${lang}/services/osteopatia-gipuzkoa`
+	},
+	{
+		title: t('service.physio.service-2-title'),
+		text: t('service.physio.service-2-text'),
+		href: `/${lang}/services/terapia-manual-gipuzkoa`
+	},
+	{
+		title: t('service.physio.service-3-title'),
+		text: t('service.physio.service-3-text'),
+		href: `/${lang}/services/rehabilitacion-ejercicio-terapeutico-gipuzkoa`
+	},
+	{
+		title: t('service.physio.service-4-title'),
+		text: t('service.physio.service-4-text'),
+		href: `/${lang}/services`
+	}
+];
+
+const physioBenefits = [
+	t('service.physio.benefit-1'),
+	t('service.physio.benefit-2'),
+	t('service.physio.benefit-3'),
+	t('service.physio.benefit-4'),
+	t('service.physio.benefit-5')
+];
+---
+
+<Layout {seo}>
+	<SectionHero id="physio-hero">
+		<h1 slot="title">
+			{t('service.physio.hero-title')}
+		</h1>
+		<Fragment slot="desc">
+			{t('service.physio.hero-subtitle')}
+		</Fragment>
+	</SectionHero>
+
+	<Container class="service-page">
+		<article class="service-content">
+			<ServiceIntro
+				title={t('service.physio.what-is-title')}
+				text={t('service.physio.what-is-text')}
+				image={Rehab}
+				imageAlt={t('service.physio.hero-title')}
+			/>
+
+			<ServiceGridSection
+				title={t('service.physio.services-title')}
+				items={physioServices}
+			/>
+
+			<ServiceBenefits
+				title={t('service.physio.benefits-title')}
+				benefits={physioBenefits}
+			/>
+
+			<ServiceLocation />
+
+			<ServiceCTA />
+		</article>
+	</Container>
+</Layout>
+
+<style>
+	.service-page {
+		padding: var(--s6) 0;
+	}
+
+	.service-content {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+</style>

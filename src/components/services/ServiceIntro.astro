@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+	title: string;
+	text: string;
+	image: any;
+	imageAlt: string;
+}
+
+const { title, text, image, imageAlt } = Astro.props;
+---
+
+<section class="service-intro">
+	<div class="service-intro__text">
+		<h2>{title}</h2>
+		<p>{text}</p>
+	</div>
+	<div class="service-intro__image">
+		<Image
+			src={image}
+			alt={imageAlt}
+			class="service-image"
+			width={600}
+			height={400}
+		/>
+	</div>
+</section>
+
+<style>
+	.service-intro {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--s6);
+		align-items: center;
+		margin-bottom: var(--s8);
+	}
+
+	.service-intro__text h2 {
+		color: var(--theme-primary);
+		margin-bottom: var(--s4);
+	}
+
+	.service-intro__text p {
+		line-height: 1.8;
+		color: var(--theme-on-bg);
+	}
+
+	.service-image {
+		border-radius: var(--theme-shape-radius);
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+
+	@media (max-width: 768px) {
+		.service-intro {
+			grid-template-columns: 1fr;
+		}
+
+		.service-intro__image {
+			order: -1;
+		}
+	}
+</style>

@@ -1,0 +1,43 @@
+---
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+interface Props {
+	title?: string;
+	text?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const {
+	title = t('service.location-title'),
+	text = t('service.location-text')
+} = Astro.props;
+---
+
+<section class="service-location">
+	<h2>{title}</h2>
+	<p>{text}</p>
+</section>
+
+<style>
+	.service-location {
+		background: var(--theme-primary-container);
+		padding: var(--s6);
+		border-radius: var(--theme-shape-radius);
+		margin-bottom: var(--s8);
+		text-align: center;
+	}
+
+	.service-location h2 {
+		color: var(--theme-primary-dark);
+		margin-bottom: var(--s3);
+	}
+
+	.service-location p {
+		color: var(--theme-on-primary-container);
+		line-height: 1.8;
+		max-width: 700px;
+		margin: 0 auto;
+	}
+</style>
