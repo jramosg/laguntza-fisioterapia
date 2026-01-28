@@ -12,10 +12,15 @@ const structuredData = {
 	'@type': 'MedicalBusiness',
 	'@id': 'https://laguntzafisioterapia.com#business',
 	name: 'Laguntza Fisioterapia',
-	alternateName: ['Centro de Fisioterapia Laguntza', 'Fisioterapia Gipuzkoa Laguntza', 'Osteopatía Gipuzkoa Laguntza'],
-	description: lang === 'eu'
-		? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan.'
-		: 'Centro de fisioterapia, osteopatía y terapia manual en Gipuzkoa. Especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
+	alternateName: [
+		'Centro de Fisioterapia Laguntza',
+		'Fisioterapia Gipuzkoa Laguntza',
+		'Osteopatía Gipuzkoa Laguntza'
+	],
+	description:
+		lang === 'eu'
+			? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan.'
+			: 'Centro de fisioterapia, osteopatía y terapia manual en Gipuzkoa. Especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
 	url: 'https://laguntzafisioterapia.com',
 	logo: {
 		'@type': 'ImageObject',
@@ -160,17 +165,20 @@ const structuredData = {
 		{
 			'@type': 'MedicalTherapy',
 			name: 'Osteopatía Gipuzkoa',
-			description: 'Servicio de osteopatía en Gipuzkoa. Tratamiento holístico para recuperar el equilibrio corporal en Urnieta, Guipúzcoa'
+			description:
+				'Servicio de osteopatía en Gipuzkoa. Tratamiento holístico para recuperar el equilibrio corporal en Urnieta, Guipúzcoa'
 		},
 		{
 			'@type': 'MedicalTherapy',
 			name: 'Terapia Manual Gipuzkoa',
-			description: 'Servicio de terapia manual en Gipuzkoa. Técnicas especializadas para mejorar articulaciones, músculos y sistema nervioso en Urnieta'
+			description:
+				'Servicio de terapia manual en Gipuzkoa. Técnicas especializadas para mejorar articulaciones, músculos y sistema nervioso en Urnieta'
 		},
 		{
 			'@type': 'MedicalTherapy',
 			name: 'Rehabilitación y Ejercicio Terapéutico Gipuzkoa',
-			description: 'Programas de rehabilitación y ejercicio terapéutico personalizados en Gipuzkoa. Recuperación funcional en Urnieta, Guipúzcoa'
+			description:
+				'Programas de rehabilitación y ejercicio terapéutico personalizados en Gipuzkoa. Recuperación funcional en Urnieta, Guipúzcoa'
 		},
 		{
 			'@type': 'MedicalTherapy',
@@ -181,12 +189,14 @@ const structuredData = {
 		{
 			'@type': 'MedicalTherapy',
 			name: 'Neuromodulación Gipuzkoa',
-			description: 'Técnicas avanzadas de neuromodulación y estimulación del sistema nervioso en Gipuzkoa'
+			description:
+				'Técnicas avanzadas de neuromodulación y estimulación del sistema nervioso en Gipuzkoa'
 		},
 		{
 			'@type': 'MedicalTherapy',
 			name: 'Fisioterapia Deportiva Gipuzkoa',
-			description: 'Recuperación específica y rehabilitación para atletas y deportistas en Gipuzkoa, Guipúzcoa'
+			description:
+				'Recuperación específica y rehabilitación para atletas y deportistas en Gipuzkoa, Guipúzcoa'
 		}
 	],
 	hasMap: Address.url,
