@@ -1,0 +1,116 @@
+---
+interface Item {
+	title: string;
+	text: string;
+}
+
+interface Props {
+	title: string;
+	items: Item[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="service-stepper">
+	<h2>{title}</h2>
+	<div class="stepper">
+		{
+			items.map((item, index) => (
+				<div class="step">
+					<div class="step__number-container">
+						<div class="step__number">{index + 1}</div>
+						{index < items.length - 1 && <div class="step__line" />}
+					</div>
+					<div class="step__content">
+						<h3>{item.title}</h3>
+						<p>{item.text}</p>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.service-stepper {
+		margin-bottom: var(--s8);
+	}
+
+	.service-stepper h2 {
+		color: var(--theme-primary);
+		margin-bottom: var(--s6);
+		text-align: center;
+	}
+
+	.stepper {
+		max-width: 700px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: var(--s4);
+	}
+
+	.step {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--s6);
+	}
+
+	.step__number-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.step__number {
+		width: 48px;
+		height: 48px;
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: bold;
+		font-size: var(--font-size-md);
+		box-shadow: 0 4px 12px rgba(var(--theme-primary-rgb), 0.3);
+		z-index: 1;
+	}
+
+	.step__line {
+		width: 2px;
+		flex-grow: 1;
+		background: var(--theme-primary-light);
+		opacity: 0.3;
+		margin: var(--s2) 0;
+	}
+
+	.step__content {
+		padding-bottom: var(--s6);
+	}
+
+	.step__content h3 {
+		color: var(--theme-primary-dark);
+		margin-bottom: var(--s2);
+		font-size: var(--font-size-md);
+	}
+
+	.step__content p {
+		color: var(--theme-on-bg);
+		line-height: 1.6;
+		margin: 0;
+	}
+
+	@media (max-width: 768px) {
+		.step {
+			gap: var(--s4);
+		}
+
+		.step__number {
+			width: 40px;
+			height: 40px;
+			font-size: var(--font-size-base);
+		}
+	}
+</style>

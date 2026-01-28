@@ -14,6 +14,7 @@ import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
 import ServiceLocation from '@components/services/ServiceLocation.astro';
 import ServiceCTA from '@components/services/ServiceCTA.astro';
+import ServiceStepper from '@components/services/ServiceStepper.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -90,10 +91,9 @@ const rehabForWhom = [
 				imageAlt={t('service.rehab.hero-title')}
 			/>
 
-			<ServiceGridSection
+			<ServiceStepper
 				title={t('service.rehab.process-title')}
 				items={rehabProcess}
-				columns={4}
 			/>
 
 			<ServiceBenefits
@@ -116,7 +116,8 @@ const rehabForWhom = [
 
 <style>
 	.service-page {
-		padding: var(--s6) 0;
+		padding-top: var(--s6);
+		padding-bottom: var(--s6);
 	}
 
 	.service-content {
