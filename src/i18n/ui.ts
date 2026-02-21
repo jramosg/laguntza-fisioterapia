@@ -101,7 +101,7 @@ export const ui = {
 		'blog.related-posts': 'Artículos relacionados',
 		'blog.back-to-blog': 'Volver al blog',
 		// Service page translations - Common
-		'service.cta-title': '¿Necesitas este tratamiento?',
+		'service.cta-title': '¿Necesitas tratamiento?',
 		'service.cta-text':
 			'Contacta con nosotros para una valoración personalizada y comenzar tu recuperación.',
 		'service.cta-button': 'Contactar',
@@ -310,6 +310,21 @@ export const ui = {
 		'home.why-4-title': 'Enfoque Integral',
 		'home.why-4-text':
 			'Tratamos el cuerpo como un todo, entendiendo la biomecánica y las compensaciones para un resultado duradero.',
+		'home.stat-1': 'años de experiencia clínica',
+		'home.stat-2': 'tratamiento personalizado',
+		'home.stat-3': 'horas de formación anual',
+		'home.service-card-1-title': 'Fisioterapia',
+		'home.service-card-1-desc':
+			'Valoración, diagnóstico y tratamiento integral del dolor y las lesiones musculoesqueléticas.',
+		'home.service-card-2-title': 'Osteopatía',
+		'home.service-card-2-desc':
+			'Tratamiento manual holístico para restaurar el equilibrio y la función corporal.',
+		'home.service-card-3-title': 'Terapia Manual',
+		'home.service-card-3-desc':
+			'Técnicas especializadas de movilización y manipulación para aliviar el dolor y mejorar la movilidad.',
+		'home.service-card-4-title': 'Rehabilitación',
+		'home.service-card-4-desc':
+			'Programas de ejercicio terapéutico personalizados para tu recuperación funcional completa.',
 		'Hitzordua hartu': 'Pedir cita'
 	},
 	eu: {
@@ -391,7 +406,7 @@ export const ui = {
 		'blog.related-posts': 'Erlazionatutako artikuluak',
 		'blog.back-to-blog': 'Blogera itzuli',
 		// Service page translations - Common
-		'service.cta-title': 'Tratamendu hau behar duzu?',
+		'service.cta-title': 'Tratamendua behar duzu?',
 		'service.cta-text':
 			'Jarri gurekin harremanetan balorazio pertsonalizatu bat egiteko eta zure berreskurapena hasteko.',
 		'service.cta-button': 'Kontaktatu',
@@ -600,7 +615,22 @@ export const ui = {
 			'Etengabe eguneratzen ari gara ebidentzia zientifikoan oinarritutako teknikak eta metodologiak.',
 		'home.why-4-title': 'Ikuspegi Integrala',
 		'home.why-4-text':
-			'Gorputza osoa tratatu behar dugu, biomekanikatik ulertzen dugularik emaitza iraunkorra lortzeko.'
+			'Gorputza osoa tratatu behar dugu, biomekanikatik ulertzen dugularik emaitza iraunkorra lortzeko.',
+		'home.stat-1': 'urteko esperientzia klinikoa',
+		'home.stat-2': 'tratamendu pertsonalizatua',
+		'home.stat-3': 'formakuntza ordu urtero',
+		'home.service-card-1-title': 'Fisioterapia',
+		'home.service-card-1-desc':
+			'Minaren eta lesio muskuloeskeletikoen balorazio, diagnostiko eta tratamendu integrala.',
+		'home.service-card-2-title': 'Osteopatia',
+		'home.service-card-2-desc':
+			'Gorputzaren oreka eta funtzioa berreskuratzeko eskuzko tratamendu holistikoa.',
+		'home.service-card-3-title': 'Terapia Manuala',
+		'home.service-card-3-desc':
+			'Mina arintzeko eta mugikortasuna hobetzeko mobilizazio eta manipulazio teknika espezializatuak.',
+		'home.service-card-4-title': 'Errehabilitazioa',
+		'home.service-card-4-desc':
+			'Zure berreskuratze funtzional osorako ariketa terapeutiko programa pertsonalizatuak.'
 	}
 };
 
