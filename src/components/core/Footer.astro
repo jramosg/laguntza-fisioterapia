@@ -219,6 +219,8 @@ const props = Astro.props;
 	}
 	.footer-socials__link {
 		padding: var(--s2);
+		min-width: 48px;
+		min-height: 48px;
 		border-radius: 100%;
 		display: flex;
 		align-items: center;
@@ -276,11 +278,23 @@ const props = Astro.props;
 	}
 	.footer-link_icon {
 		display: flex;
-		align-items: flex-start;
+		align-items: center;
 		gap: var(--s);
+		min-height: 48px;
+		a {
+			display: inline-flex;
+			align-items: center;
+			padding: 0 var(--s);
+		}
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+
+	.phone-link {
+		display: inline-flex;
+		align-items: center;
+		min-height: 48px;
 	}
 
 	.footer-dev-credit__author-label {
