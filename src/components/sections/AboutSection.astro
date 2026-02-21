@@ -28,6 +28,7 @@ const t = useTranslations(lang);
 				<Image
 					src={JokinImage}
 					alt="Jokin Ramos González"
+					sizes="(max-width: 1024px) 100vw, 400px"
 					class="about-section__image"
 					width={2343}
 					height={1562}
@@ -66,6 +67,15 @@ const t = useTranslations(lang);
 				</h2>
 				<p class="about-section__paragraph">
 					{t('about.community-text')}
+				</p>
+			</section>
+
+			<section class="about-section__card about-section__card--highlight">
+				<h2 class="about-section__card-title title--highlight">
+					{t('about.credentials-title')}
+				</h2>
+				<p class="about-section__paragraph">
+					{t('about.credentials-text')}
 				</p>
 			</section>
 		</div>
