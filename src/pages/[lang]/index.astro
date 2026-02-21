@@ -86,7 +86,8 @@ const seo = {
 
 		<section class="landing-content">
 			<div id="when">
-				<h1 class="coming-soon__label">{t('Dagoeneko irekita!')}</h1>
+				<h1 class="landing-h1">{t('home.h1')}</h1>
+				<p class="landing-h1-sub">{t('home.h1.subtitle')}</p>
 				<a
 					class="coming-soon__address"
 					href={Address.url}
@@ -94,7 +95,7 @@ const seo = {
 					rel="noopener noreferrer"
 				>
 					<MarkerIcon fill="currentColor" />
-					<h2 class="coming-soon__label">{Address.name}</h2></a
+					<span class="coming-soon__label">{Address.name}</span></a
 				>
 				<a
 					href={`/${lang}/contact`}
@@ -337,6 +338,21 @@ const seo = {
 		}
 	}
 
+	.landing-h1 {
+		font-size: clamp(1.5rem, 4vw, 2.2rem);
+		font-weight: 700;
+		text-align: center;
+		letter-spacing: -0.02em;
+		line-height: 1.2;
+		margin: 0;
+	}
+	.landing-h1-sub {
+		font-size: var(--font-size-sm);
+		text-align: center;
+		opacity: 0.7;
+		font-weight: 400;
+		margin: var(--s2) 0 0;
+	}
 	.coming-soon__label {
 		font-size: var(--font-size-md);
 		text-align: center;

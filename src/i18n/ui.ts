@@ -28,6 +28,10 @@ export const ui = {
 		'Ireki mapan': 'Abrir en el mapa',
 		'Gure kokalekua': 'Nuestra ubicación',
 		'Dagoeneko irekita!': '¡Ya hemos abierto!',
+		'home.h1':
+			'Fisioterapia y Osteopatía en Gipuzkoa',
+		'home.h1.subtitle':
+			'Centro de fisioterapia en Urnieta · Tratamiento personalizado y rehabilitación',
 		'Ikusi gehiago': 'Ver más',
 		'Orri nagusira joan': 'Ir a la página principal',
 		'developed-by': 'Diseñado y desarrollado por:',
@@ -561,6 +565,10 @@ export const ui = {
 		'service.physio.benefit-3': 'Etorkizuneko lesioen prebentzioa',
 		'service.physio.benefit-4': 'Berreskuratze funtzional azkartua',
 		'service.physio.benefit-5': 'Bizi-kalitatearen hobekuntza',
+		'home.h1':
+			'Fisioterapia eta Osteopatia Gipuzkoan',
+		'home.h1.subtitle':
+			'Fisioterapia zentroa Urnietan · Tratamendu pertsonalizatua eta errehabilitazioa',
 		// Homepage content
 		'home.intro': 'Ongi etorri zure fisioterapia zentrora Gipuzkoan',
 		'home.value-proposition':
