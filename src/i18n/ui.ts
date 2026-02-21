@@ -269,7 +269,8 @@ export const ui = {
 		'service.physio.benefit-2': 'Mejora de la movilidad y función',
 		'service.physio.benefit-3': 'Prevención de futuras lesiones',
 		'service.physio.benefit-4': 'Recuperación funcional acelerada',
-		'service.physio.benefit-5': 'Mejora de la calidad de vida'
+		'service.physio.benefit-5': 'Mejora de la calidad de vida',
+		'Hitzordua hartu': 'Pedir cita'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
