@@ -2,8 +2,6 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 
-import partytown from '@astrojs/partytown';
-
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://laguntzafisioterapia.com/',
@@ -21,7 +19,6 @@ export default defineConfig({
 			}
 		}),
 		icon(),
-		partytown()
 	],
 	i18n: {
 		locales: ['es', 'eu'],
