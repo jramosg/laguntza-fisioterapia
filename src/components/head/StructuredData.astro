@@ -1,12 +1,10 @@
 ---
-import { settings } from '@config/settings';
 import { Address, Phone, Email } from '@config/company';
 import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// Main business structured data
 const structuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'MedicalBusiness',
@@ -34,7 +32,16 @@ const structuredData = {
 	],
 	telephone: Phone.name,
 	email: Email.name.replace('mailto:', ''),
-	sameAs: ['https://laguntzafisioterapia.com'],
+	founder: {
+		'@id': 'https://laguntzafisioterapia.com#jokin-ramos'
+	},
+	contactPoint: {
+		'@type': 'ContactPoint',
+		telephone: Phone.name,
+		contactType: 'customer service',
+		availableLanguage: ['Spanish', 'Basque'],
+		areaServed: 'ES'
+	},
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: 'Zubitxo Plaza, 3',
@@ -131,10 +138,6 @@ const structuredData = {
 				'@type': 'Country',
 				name: 'España'
 			}
-		},
-		{
-			'@type': 'Country',
-			name: 'España'
 		}
 	],
 	medicalSpecialty: [
@@ -235,68 +238,23 @@ const professionalData = {
 		'Rehabilitación Deportiva',
 		'Terapia Manual'
 	],
-	alumniOf: 'Universidad Pública de Navarra',
-	hasCredential: 'Colegio Profesional de Fisioterapeutas de País Vasco',
-	email: Email.name.replace('mailto:', ''),
-	telephone: Phone.name
-};
-
-// Organization data for additional context
-const organizationData = {
-	'@context': 'https://schema.org',
-	'@type': 'Organization',
-	name: 'Laguntza Fisioterapia',
-	url: 'https://laguntzafisioterapia.com',
-	logo: 'https://laguntzafisioterapia.com/main-logo-horizontal.png',
-	contactPoint: {
-		'@type': 'ContactPoint',
-		telephone: Phone.name,
-		contactType: 'customer service',
-		availableLanguage: ['Spanish', 'Basque'],
-		areaServed: 'ES'
-	}
-};
-
-// LocalBusiness schema for better local SEO
-const localBusinessData = {
-	'@context': 'https://schema.org',
-	'@type': 'LocalBusiness',
-	'@id': 'https://laguntzafisioterapia.com#localbusiness',
-	name: 'Laguntza Fisioterapia',
-	description:
-		lang === 'eu'
-			? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan, Guipuzcoan.'
-			: 'Centro de fisioterapia, osteopatía y terapia manual en Gipuzkoa. Especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
-	image: [
-		'https://laguntzafisioterapia.com/main-logo-horizontal.png',
-		'https://laguntzafisioterapia.com/open-graph.jpg'
-	],
-	url: 'https://laguntzafisioterapia.com',
-	telephone: Phone.name,
-	priceRange: '€€',
-	address: {
-		'@type': 'PostalAddress',
-		streetAddress: 'Zubitxo Plaza, 3',
-		addressLocality: 'Urnieta',
-		addressRegion: 'Gipuzkoa',
-		postalCode: '20130',
-		addressCountry: 'ES'
+	alumniOf: {
+		'@type': 'CollegeOrUniversity',
+		name: 'Universidad Pública de Navarra'
 	},
-	geo: {
-		'@type': 'GeoCoordinates',
-		latitude: 43.24656113552193,
-		longitude: -1.9932571315890595
-	},
-	openingHoursSpecification: [
+	hasCredential: [
 		{
-			'@type': 'OpeningHoursSpecification',
-			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-			opens: '08:00',
-			closes: '20:00'
+			'@type': 'EducationalOccupationalCredential',
+			credentialCategory: 'degree',
+			name: 'Grado en Fisioterapia',
+			recognizedBy: {
+				'@type': 'Organization',
+				name: 'Colegio Profesional de Fisioterapeutas del País Vasco'
+			}
 		}
 	],
-	servesCuisine: null,
-	hasMap: Address.url
+	email: Email.name.replace('mailto:', ''),
+	telephone: Phone.name
 };
 ---
 
@@ -304,12 +262,4 @@ const localBusinessData = {
 <script
 	type="application/ld+json"
 	set:html={JSON.stringify(professionalData)}
-/>
-<script
-	type="application/ld+json"
-	set:html={JSON.stringify(organizationData)}
-/>
-<script
-	type="application/ld+json"
-	set:html={JSON.stringify(localBusinessData)}
 />
