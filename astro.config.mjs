@@ -10,6 +10,8 @@ export default defineConfig({
 	sitemap: true,
 	integrations: [
 		sitemap({
+			filter: (page) =>
+				page !== 'https://laguntzafisioterapia.com/',
 			i18n: {
 				defaultLocale: 'es',
 				locales: {
