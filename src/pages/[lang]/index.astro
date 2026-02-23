@@ -437,6 +437,7 @@ const seo = {
 		transition: all 0.3s ease-in-out;
 		box-shadow: 0 4px 12px rgba(232, 148, 74, 0.3);
 		white-space: nowrap;
+		z-index: var(--z-index-tooltip);
 	}
 
 	.cta-button:hover {
@@ -1071,6 +1072,7 @@ const seo = {
 		tl.to('#hero-key', { scale: 1 })
 			.to('#hero-key-logo', { opacity: 0 }, '<')
 			.to('#logo-see-more', { opacity: 0 }, '<')
+			.to('#hero-footer', { maxHeight: '15vh' }, '<')
 			.to(
 				'#logo-mask',
 				{
@@ -1087,11 +1089,11 @@ const seo = {
 				0.4
 			)
 
-			.to('#when', { opacity: 1, y: -100 }, '>')
+			.to('#when', { opacity: 1, y: -150 }, '>')
 			.to(
 				'#logo-mask',
 				{
-					maskPosition: '50% 25%'
+					maskPosition: '50% 15%'
 				},
 				'<'
 			)
