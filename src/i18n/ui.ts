@@ -325,7 +325,11 @@ export const ui = {
 		'home.service-card-4-title': 'Rehabilitación',
 		'home.service-card-4-desc':
 			'Programas de ejercicio terapéutico personalizados para tu recuperación funcional completa.',
-		'Hitzordua hartu': 'Pedir cita'
+		'Hitzordua hartu': 'Pedir cita',
+		'nav.main': 'Navegación principal',
+		'footer.call': 'Llamar a',
+		'footer.go-to': 'Ir a',
+		'footer.scroll-down': 'Desplazarse hacia abajo'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -630,7 +634,11 @@ export const ui = {
 			'Mina arintzeko eta mugikortasuna hobetzeko mobilizazio eta manipulazio teknika espezializatuak.',
 		'home.service-card-4-title': 'Errehabilitazioa',
 		'home.service-card-4-desc':
-			'Zure berreskuratze funtzional osorako ariketa terapeutiko programa pertsonalizatuak.'
+			'Zure berreskuratze funtzional osorako ariketa terapeutiko programa pertsonalizatuak.',
+		'nav.main': 'Nabigazio nagusia',
+		'footer.call': 'Deitu honi:',
+		'footer.go-to': 'Joan hona:',
+		'footer.scroll-down': 'Behera jaitsi'
 	}
 };
 

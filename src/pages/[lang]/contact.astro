@@ -83,6 +83,12 @@ const contacts = [
 ---
 
 <Layout {seo}>
+	<Fragment slot="head">
+		<link rel="preconnect" href="https://a.tile.openstreetmap.org" />
+		<link rel="preconnect" href="https://b.tile.openstreetmap.org" />
+		<link rel="preconnect" href="https://c.tile.openstreetmap.org" />
+		<link rel="dns-prefetch" href="https://unpkg.com" />
+	</Fragment>
 	<SectionHero id="contact-hero" class="hero-section__contact">
 		<h1 slot="title">
 			{t('contact-jarri')}
@@ -127,7 +133,7 @@ const contacts = [
 				{t('Hurrengo moduetan jarri zaitezke harremanetan:')}
 			</p>
 			{
-				contacts.map(item => {
+				contacts.map((item, index) => {
 					const icons = {
 						phone: <PhoneIcon fill="currentColor" />,
 						email: <EmailIcon fill="currentColor" />,
@@ -146,6 +152,9 @@ const contacts = [
 						<div
 							class="contact-card card card--elevated"
 							data-main-href={item.ctas[0].href}
+role="button"
+							tabindex={index}
+							aria-label={item.title}
 						>
 							<a
 								class:list={[
@@ -210,6 +219,7 @@ const contacts = [
 				<Image
 					src={KristalaLateralez}
 					alt="Laguntza Fisioterapia Window"
+					sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 70vw"
 					class="gallery-img gallery-img--desktop"
 				/>
 			</Container>
@@ -224,6 +234,7 @@ const contacts = [
 			height={KristalaFrentez.height}
 			alt="Laguntza Fisioterapia Exterior"
 			class="gallery-img"
+			sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 100vw"
 		/>
 	</Container>
 </Layout>

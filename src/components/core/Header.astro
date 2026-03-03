@@ -30,7 +30,7 @@ const t = useTranslations(lang);
 	</div>
 
 	<div class="header-nav__container">
-		<nav>
+		<nav aria-label={t('nav.main')}>
 			<ul>
 				{
 					navData.map(navItem => (
