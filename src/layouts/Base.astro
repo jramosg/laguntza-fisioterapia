@@ -14,21 +14,13 @@ const lang = getLangFromUrl(Astro.url);
 <html lang={lang}>
 	<head>
 		<BaseHead {...seo} />
+		<slot name="head" />
 	</head>
 
 	<body itemscope itemtype="https://schema.org/WebPage">
-		<!-- Google Tag Manager (noscript) -->
-		<!-- Google Tag Manager (noscript) -->
-		<noscript
-			><iframe
-				src="https://www.googletagmanager.com/ns.html?id=GTM-N42TGP72"
-				height="0"
-				width="0"
-				style="display:none;visibility:hidden"></iframe></noscript
-		>
-		<!-- End Google Tag Manager (noscript) -->
+		<a href="#content" class="skip-to-content">Skip to content</a>
 		<slot name="header" />
-		<main id="content" class="main-content" role="main">
+		<main id="content" class="main-content">
 			<slot />
 		</main>
 		<slot name="footer" />
@@ -38,5 +30,22 @@ const lang = getLangFromUrl(Astro.url);
 <style>
 	.main-content {
 		padding-top: var(--header-height);
+	}
+
+	.skip-to-content {
+		position: fixed;
+		top: -100%;
+		left: var(--s2);
+		z-index: 9999;
+		padding: var(--s2) var(--s4);
+		background: var(--theme-primary);
+		color: var(--theme-on-primary);
+		font-weight: 600;
+		border-radius: 0 0 var(--theme-shape-radius) var(--theme-shape-radius);
+		text-decoration: none;
+		transition: top 0.2s;
+	}
+	.skip-to-content:focus {
+		top: 0;
 	}
 </style>
