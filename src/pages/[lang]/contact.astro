@@ -133,7 +133,7 @@ const contacts = [
 				{t('Hurrengo moduetan jarri zaitezke harremanetan:')}
 			</p>
 			{
-				contacts.map((item, index) => {
+				contacts.map(item => {
 					const icons = {
 						phone: <PhoneIcon fill="currentColor" />,
 						email: <EmailIcon fill="currentColor" />,
@@ -153,7 +153,7 @@ const contacts = [
 							class="contact-card card card--elevated"
 							data-main-href={item.ctas[0].href}
 							role="button"
-							tabindex={index}
+							tabindex="0"
 							aria-label={item.title}
 						>
 							<a
