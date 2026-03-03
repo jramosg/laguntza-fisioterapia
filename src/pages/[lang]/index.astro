@@ -248,14 +248,16 @@ const seo = {
 	</div>
 
 	<footer id="hero-footer" slot="footer" class="landing-hero-footer">
-		<LogoIsotipoWhite
-			id="logo-see-more"
-			class="logo-see-more-img"
-			width={128}
-			height={128}
-		/>
-		<p class="hero-footer-label">{t('Ikusi gehiago')}</p>
-		<KeepScrolling class="keep-scrolling-icon" fill="currentColor" />
+		<button class="hero-footer-btn" aria-label={t('footer.scroll-down')}>
+			<LogoIsotipoWhite
+				id="logo-see-more"
+				class="logo-see-more-img"
+				width={128}
+				height={128}
+			/>
+			<p class="hero-footer-label">{t('Ikusi gehiago')}</p>
+			<KeepScrolling class="keep-scrolling-icon" fill="currentColor" />
+		</button>
 	</footer>
 	<Footer id="site-footer" />
 </Layout>
@@ -529,7 +531,7 @@ const seo = {
 	.hc-body {
 		font-size: var(--font-size-md);
 		line-height: 1.85;
-		color: rgba(255, 255, 255, 0.72);
+		color: rgba(255, 255, 255, 0.85);
 		margin: 0;
 	}
 	.hc-label {
@@ -879,14 +881,22 @@ const seo = {
 		bottom: var(--s2);
 		color: white;
 		z-index: 1202;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+	}
+
+	.hero-footer-btn {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		gap: var(--s2);
-		left: 50%;
-		transform: translateX(-50%);
+		background: none;
+		border: none;
 		cursor: pointer;
+		color: inherit;
+		padding: 0;
 	}
 
 	@keyframes bounce-pulse {
@@ -1121,7 +1131,6 @@ const seo = {
 		tl.to('#hero-footer', { opacity: 0, duration: 0 }, '>');
 
 		heroFooter?.addEventListener('click', () => {
-			console.log('Scrolling down...');
 			window.scrollBy({
 				top: (window.innerHeight / 3) * 2,
 				left: 0,
