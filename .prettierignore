@@ -5,3 +5,5 @@ pnpm-lock.yaml
 .astro/
 *.md
 *.min.css
+
+design-system/
