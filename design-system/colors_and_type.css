@@ -1,0 +1,191 @@
+/* ============================================================================
+   Laguntza Fisioterapia — Colors & Type
+   Foundational + semantic design tokens, lifted verbatim from the production
+   Astro site (src/styles/theme.css + typography.css).
+   Load this file, then use the semantic vars (--fg-1, --h1, --primary, …).
+   ============================================================================ */
+
+/* Inter — the brand typeface (production uses @fontsource-variable/inter).
+   Self-hosted variable fonts (opsz 14–32, wght 100–900) from /fonts. */
+@font-face {
+	font-family: 'Inter';
+	font-weight: 100 900;
+	font-stretch: 75% 125%;
+	font-style: normal;
+	font-display: swap;
+	src: url('fonts/Inter-VariableFont_opsz_wght.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Inter';
+	font-weight: 100 900;
+	font-stretch: 75% 125%;
+	font-style: italic;
+	font-display: swap;
+	src: url('fonts/Inter-Italic-VariableFont_opsz_wght.ttf') format('truetype');
+}
+
+:root {
+	/* ---- Brand palette · Primary (teal) ------------------------------------ */
+	--primary: #458295;
+	--primary-100: #e3eef2;
+	--primary-200: #cbe0e8;
+	--primary-300: #a3c6d3;
+	--primary-400: #6fa6b7;
+	--primary-500: #458295;
+	--primary-600: #37697a;
+	--primary-700: #2d5a66;
+	--primary-800: #234652;
+	--primary-900: #18313a;
+	--primary-light: var(--primary-300);
+	--primary-dark: var(--primary-700);
+	--on-primary: #ffffff;
+	--on-primary-container: #15343c;
+
+	/* ---- Brand palette · Secondary (warm orange) --------------------------- */
+	--secondary: #e8944a;
+	--secondary-100: #fbeee3;
+	--secondary-200: #f7dcc2;
+	--secondary-300: #f2c79a;
+	--secondary-400: #eead6a;
+	--secondary-500: #e8944a;
+	--secondary-600: #c97a36;
+	--secondary-700: #a35f27;
+	--secondary-800: #7a471b;
+	--secondary-900: #4d2a0c;
+	--secondary-light: var(--secondary-300);
+	--secondary-dark: var(--secondary-700);
+	--on-secondary: #ffffff;
+	--on-secondary-container: #3a220e;
+
+	/* ---- Gradients (the only brand gradients — teal diagonal) -------------- */
+	--gradient-primary: linear-gradient(135deg, #458295 0%, #56a4bd 50%, #3d6f7f 100%);
+
+	/* ---- Semantic surfaces ------------------------------------------------- */
+	--bg: #ffffff;
+	--on-bg: #000000;
+	--surface-1: #f2f2f2;       /* subtle grey card fill */
+	--on-surface-1: #000000;
+	--surface-dark: #0a0e10;    /* editorial near-black used on the homepage */
+	--text-secondary: #6f6f70;
+	--outline: hsl(240 5.9% 90%);
+
+	/* ---- Status ------------------------------------------------------------ */
+	--error: #dc2626;
+	--error-dark: #b91c1c;
+	--success: #16a34a;
+	--on-error: #ffffff;
+
+	/* ---- Neutral grey scale (Figma) ---------------------------------------- */
+	--grey-50: #fafafb;
+	--grey-100: #f4f5f6;
+	--grey-200: #e9eaec;
+	--grey-300: #d3d5da;
+	--grey-400: #b5b8be;
+	--grey-500: #969ba3;
+	--grey-600: #757982;
+	--grey-700: #5c5f66;
+	--grey-800: #3d4045;
+	--grey-900: #232427;
+
+	/* ---- Foreground aliases (for convenience) ------------------------------ */
+	--fg-1: var(--on-bg);              /* primary text */
+	--fg-2: var(--text-secondary);     /* muted / secondary text */
+	--fg-3: var(--grey-500);           /* faint text, captions */
+
+	/* ========================================================================
+	   TYPOGRAPHY
+	   Fluid type scale (clamp). All headings = Inter 700, body = Inter 400.
+	   ======================================================================== */
+	--font-sans: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont;
+
+	--font-size-sm:   clamp(14.4px, 0.07vw + 14.13px, 15px);
+	--font-size-base: clamp(18px,   0.23vw + 17.09px, 20px);
+	--font-size-md:   clamp(22.5px, 0.47vw + 20.61px, 26.66px);
+	--font-size-lg:   clamp(28.13px, 0.84vw + 24.76px, 35.54px);
+	--font-size-xl:   clamp(35.16px, 1.39vw + 29.6px,  47.37px);
+	--font-size-xxl:  clamp(43.95px, 2.18vw + 35.22px, 63.15px);
+	--font-size-xxxl: clamp(54.93px, 3.32vw + 41.64px, 84.17px);
+
+	/* Semantic text roles ---------------------------------------------------- */
+	--h1-size: var(--font-size-xxl);   --h1-weight: 700; --h1-lh: 1.1;
+	--h2-size: var(--font-size-xl);    --h2-weight: 700; --h2-lh: 1.1;
+	--h3-size: var(--font-size-lg);    --h3-weight: 500; --h3-lh: 1.2;
+	--body-size: var(--font-size-base);--body-weight: 400;--body-lh: 1.5;
+	--small-size: var(--font-size-sm); --small-weight: 400;
+	--label-tracking: 0.14em;          /* uppercase eyebrow labels */
+
+	/* ========================================================================
+	   SHAPE · SPACING · ELEVATION · MOTION
+	   ======================================================================== */
+	--shape-radius: clamp(1rem, 2rem, 3rem); /* cards, images */
+	--button-radius: 3rem;                   /* pill buttons */
+
+	/* 13-step spacing scale */
+	--s:   0.25rem;
+	--s2:  0.5rem;
+	--s3:  0.75rem;
+	--s4:  1rem;
+	--s5:  1.5rem;
+	--s6:  2rem;
+	--s7:  3rem;
+	--s8:  4rem;
+	--s9:  6rem;
+	--s10: 8rem;
+	--s11: 12rem;
+	--s12: 16rem;
+	--s13: 24rem;
+
+	/* Layout */
+	--container-max: 1440px;
+	--container-narrow: 960px;
+	--header-height: 5.8rem;
+
+	/* Shadows (Tailwind-style ramp) */
+	--shadow-sm:  0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--shadow:     0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px 0 rgb(0 0 0 / 0.06);
+	--shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	--shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+	--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+	/* Motion */
+	--transition: 0.2s ease-in-out;
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* reveals, hovers, links */
+}
+
+/* ---- Dark theme (the site ships a real dark mode) ------------------------ */
+[data-theme='dark'] {
+	color-scheme: dark;
+	--bg: hsl(0, 0%, 2%);
+	--on-bg: hsl(0, 0%, 100%);
+	--surface-1: hsl(0, 0%, 20%);
+	--text-secondary: #b3b3b4;
+	--outline: hsl(240 3.7% 15.9%);
+	--on-primary-container: #ffffff;
+	--fg-1: var(--on-bg);
+	--fg-2: var(--text-secondary);
+}
+
+/* ============================================================================
+   Optional base element styles — opt in by adding class="laguntza-type"
+   on a wrapper, or copy these rules into your own reset.
+   ============================================================================ */
+.laguntza-type {
+	font-family: var(--font-sans);
+	font-size: var(--body-size);
+	line-height: var(--body-lh);
+	color: var(--fg-1);
+}
+.laguntza-type h1 { font-size: var(--h1-size); font-weight: var(--h1-weight); line-height: var(--h1-lh); letter-spacing: -0.02em; }
+.laguntza-type h2 { font-size: var(--h2-size); font-weight: var(--h2-weight); line-height: var(--h2-lh); letter-spacing: -0.02em; }
+.laguntza-type h3 { font-size: var(--h3-size); font-weight: var(--h3-weight); line-height: var(--h3-lh); }
+.laguntza-type p  { font-size: var(--body-size); line-height: var(--body-lh); }
+.laguntza-type .eyebrow {
+	font-size: 0.78rem; font-weight: 600;
+	letter-spacing: var(--label-tracking); text-transform: uppercase;
+	color: var(--secondary);
+}
+.laguntza-type blockquote {
+	font-style: italic; font-weight: 500;
+	padding-left: 1.5rem; border-left: 0.25rem solid currentColor;
+}

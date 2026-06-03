@@ -1,0 +1,25 @@
+/* Shared styles for Design System preview cards (each ~700px wide) */
+@import url('../colors_and_type.css');
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+	font-family: var(--font-sans);
+	color: var(--fg-1);
+	background: #ffffff;
+	padding: 22px 26px;
+	-webkit-font-smoothing: antialiased;
+}
+.card-dark { background: var(--surface-dark); color: #fff; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: 10px; }
+.cap { font-size: 11px; letter-spacing: 0.04em; color: var(--fg-3); font-weight: 500; }
+.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+/* swatches */
+.swatch { display: flex; flex-direction: column; gap: 6px; }
+.chip { height: 56px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.06); }
+.chip-row { display: flex; gap: 8px; }
+.chip-cell { flex: 1; }
+.chip-cell .lbl { font-size: 10px; color: var(--fg-2); margin-top: 5px; display: block; }
+.chip-cell .hex { font-size: 10px; color: var(--fg-3); }

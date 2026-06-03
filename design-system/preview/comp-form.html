@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="card.css"></head><body>
+<style>
+ .fl{font-size:14px;font-weight:600;color:var(--fg-1);display:block;margin-bottom:6px}
+ .fi{width:100%;padding:0.7rem 1rem;border:2px solid var(--outline);border-radius:var(--button-radius);font-size:15px;font-family:var(--font-sans);color:var(--fg-1);min-height:48px}
+ .fi.focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(69,130,149,.1)}
+ textarea.fi{border-radius:18px;resize:none}
+</style>
+<div class="row" style="gap:16px;align-items:flex-start">
+ <div style="flex:1"><label class="fl">Nombre <span style="color:var(--error)">*</span></label><input class="fi" value="Nerea D."></div>
+ <div style="flex:1"><label class="fl">Email <span style="color:var(--error)">*</span></label><input class="fi focus" value="hola@email.com"></div>
+</div>
+<div style="margin-top:14px"><label class="fl">Mensaje</label><textarea class="fi" rows="2">Cuéntanos tu caso…</textarea></div></body></html>

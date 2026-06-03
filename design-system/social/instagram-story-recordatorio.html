@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gogoratu · Recuerda — Ordutegi berria</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #0f1416; }
+  .stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .story {
+    width: 1080px; height: 1920px; position: relative; overflow: hidden;
+    background:
+      radial-gradient(1200px 760px at 82% -6%, rgba(232,148,74,.12), transparent 58%),
+      radial-gradient(1200px 860px at 8% 106%, rgba(69,130,149,.16), transparent 52%),
+      #eef2f3;
+    font-family: var(--font-sans); color: var(--fg-1);
+    transform-origin: center center;
+    /* Instagram-safe: keep all content between these paddings */
+    padding: 150px 84px 270px;
+    display: flex; flex-direction: column; justify-content: center; gap: 0;
+  }
+
+  /* Header */
+  .head { display: flex; align-items: center; justify-content: space-between; }
+  .head img { height: 84px; }
+  .head .ig { font-size: 27px; font-weight: 600; color: var(--primary-700); }
+
+  /* Title */
+  .titlewrap { margin-top: 52px; }
+  .kicker { font-size: 29px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--secondary); }
+  .title { margin-top: 16px; font-weight: 800; letter-spacing: -.03em; line-height: .94; color: var(--primary-700); }
+  .title .eu { display: block; font-size: 124px; }
+  .title .es { display: block; font-size: 60px; margin-top: 12px; color: var(--primary); font-weight: 700; letter-spacing: -.02em; }
+  .lead { margin-top: 30px; font-size: 37px; line-height: 1.32; font-weight: 600; color: var(--primary-800); max-width: 840px; }
+  .lead .es { display: block; color: var(--fg-2); font-weight: 400; font-size: 33px; margin-top: 6px; }
+
+  /* Schedule */
+  .sched { margin-top: 50px; display: flex; flex-direction: column; gap: 22px; }
+  .day { display: flex; align-items: stretch; border-radius: 28px; overflow: hidden; background: #fff; box-shadow: 0 24px 54px -30px rgba(35,70,82,.6); }
+  .day__label { flex: 0 0 350px; background: var(--gradient-primary); color: #fff; padding: 30px 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 9px; }
+  .day__label svg { width: 50px; height: 50px; }
+  .day__label .eu { font-size: 35px; font-weight: 700; line-height: 1.04; }
+  .day__label .dash { width: 56px; height: 4px; background: var(--secondary); border-radius: 4px; margin: 3px 0; }
+  .day__label .es { font-size: 25px; font-weight: 500; opacity: .92; line-height: 1.04; }
+  .day__times { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 26px 42px; }
+  .time { display: flex; align-items: center; gap: 24px; }
+  .time svg { width: 48px; height: 48px; color: var(--primary); flex: 0 0 auto; }
+  .time span { font-size: 48px; font-weight: 700; color: var(--primary-800); }
+  .time + .time { border-top: 2px solid var(--grey-100); padding-top: 12px; }
+
+  /* Contact */
+  .contact { margin-top: 46px; display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .crow { display: flex; align-items: center; gap: 16px; font-size: 29px; font-weight: 600; color: var(--primary-800); }
+  .crow .ic { width: 56px; height: 56px; border-radius: 50%; background: var(--primary-100); color: var(--primary-700); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .crow .ic svg { width: 30px; height: 30px; }
+  .contact .sep { width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="story" id="story">
+    <div class="head">
+      <img src="../assets/logos/logo-color-horizontal.svg" alt="Laguntza Fisioterapia" />
+      <span class="ig">@laguntzafisioterapia</span>
+    </div>
+
+    <div class="titlewrap">
+      <div class="kicker">Gogoan izan · Recuerda</div>
+      <h1 class="title">
+        <span class="eu">Ordutegi berria</span>
+        <span class="es">Nuevo horario</span>
+      </h1>
+      <p class="lead">Gogoratu ordutegi berria dugula!<span class="es">Recuerda que tenemos nuevo horario.</span></p>
+    </div>
+
+    <div class="sched">
+      <div class="day">
+        <div class="day__label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><circle cx="8" cy="13" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="13" r="1.1" fill="currentColor" stroke="none"/></svg>
+          <span class="eu">Astelehena<br/>eta Asteazkena</span>
+          <span class="dash"></span>
+          <span class="es">Lunes y miércoles</span>
+        </div>
+        <div class="day__times">
+          <div class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg><span>08:00 – 13:30</span></div>
+          <div class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg><span>19:30 – 21:30</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day__label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><circle cx="8" cy="13" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="13" r="1.1" fill="currentColor" stroke="none"/></svg>
+          <span class="eu">Asteartea<br/>eta Osteguna</span>
+          <span class="dash"></span>
+          <span class="es">Martes y jueves</span>
+        </div>
+        <div class="day__times">
+          <div class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg><span>08:00 – 13:30</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day__label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><circle cx="8" cy="13" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="13" r="1.1" fill="currentColor" stroke="none"/></svg>
+          <span class="eu">Ostirala</span>
+          <span class="dash"></span>
+          <span class="es">Viernes</span>
+        </div>
+        <div class="day__times">
+          <div class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg><span>15:00 – 21:30</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact">
+      <div class="crow"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a9.9 9.9 0 0 0-8.4 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 0 1 6.9 12.6.9.9 0 0 0-.1.8l.5 1.8-1.9-.5a.9.9 0 0 0-.7.1A8.2 8.2 0 1 1 12 3.8Zm-2.7 3.6c-.2 0-.5 0-.7.3-.3.3-1 1-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 4.9 4.2 2.4 1 2.9.8 3.4.7.5 0 1.6-.6 1.8-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.1-.7.2l-.7.9c-.1.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5Z"/></svg></span>688 734 113</div>
+      <span class="sep"></span>
+      <div class="crow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>Zubitxo Plaza, 3 · Urnieta</div>
+    </div>
+  </div>
+</div>
+<script>
+  function fit() {
+    const s = document.getElementById('story');
+    const scale = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+    s.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ordutegi berria · Nuevo horario — Instagram Story</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #14181a; }
+  .stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .story {
+    width: 1080px; height: 1920px; position: relative; overflow: hidden;
+    background: var(--bg); font-family: var(--font-sans); color: var(--fg-1);
+    transform-origin: center center;
+  }
+
+  /* ---- Top teal band ---- */
+  .band {
+    position: relative; height: 760px; padding: 96px 90px 0;
+    background: var(--gradient-primary); color: #fff; overflow: hidden;
+  }
+  .band::after { /* soft radial glow */
+    content: ''; position: absolute; right: -120px; top: -140px; width: 560px; height: 560px;
+    background: radial-gradient(circle, rgba(232,148,74,.28) 0%, transparent 70%); pointer-events: none;
+  }
+  .band__top { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; }
+  .iso { height: 92px; filter: brightness(0) invert(1); }
+  .handle { font-size: 30px; font-weight: 500; letter-spacing: .01em; opacity: .92; }
+  .eyebrow {
+    position: relative; z-index: 2; margin-top: 120px;
+    font-size: 30px; font-weight: 600; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--secondary-200);
+  }
+  .title { position: relative; z-index: 2; margin-top: 26px; font-weight: 800; letter-spacing: -.02em; line-height: .98; }
+  .title .eu { font-size: 132px; display: block; }
+  .title .es { font-size: 70px; display: block; margin-top: 14px; color: rgba(255,255,255,.82); font-weight: 600; }
+
+  /* notch divider */
+  .band__foot {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 8px;
+    background: var(--secondary);
+  }
+
+  /* ---- Schedule ---- */
+  .sched { padding: 86px 90px 0; display: flex; flex-direction: column; gap: 46px; }
+  .row { display: flex; align-items: center; gap: 38px; }
+  .row__day { flex: 0 0 360px; }
+  .row__day .eu { display: block; font-size: 46px; font-weight: 700; letter-spacing: -.01em; line-height: 1.08; color: var(--primary-700); }
+  .row__day .es { display: block; font-size: 33px; font-weight: 500; color: var(--fg-2); margin-top: 6px; }
+  .row__times { flex: 1; display: flex; flex-wrap: wrap; gap: 18px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: var(--primary-100); color: var(--primary-800);
+    border-radius: 100px; padding: 22px 40px; font-size: 46px; font-weight: 700;
+    letter-spacing: .01em; white-space: nowrap;
+  }
+  .pill .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--secondary); flex: 0 0 auto; }
+  .sep { height: 2px; background: var(--outline); margin: 0 0; }
+
+  /* ---- Footer ---- */
+  .foot {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 64px 90px 80px;
+    display: flex; flex-direction: column; gap: 18px; align-items: center; text-align: center;
+  }
+  .foot__addr { display: inline-flex; align-items: center; gap: 14px; font-size: 34px; color: var(--fg-1); font-weight: 500; }
+  .foot__addr img { width: 34px; height: 34px; }
+  .foot__phone { font-size: 32px; color: var(--fg-2); }
+  .foot__rule { width: 120px; height: 5px; border-radius: 5px; background: var(--secondary); margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="story" id="story">
+    <div class="band">
+      <div class="band__top">
+        <img class="iso" src="../assets/logos/isotipo-white.svg" alt="Laguntza" />
+        <span class="handle">@laguntzafisioterapia</span>
+      </div>
+      <div class="eyebrow">Urnieta · Gipuzkoa</div>
+      <h1 class="title">
+        <span class="eu">Ordutegi<br/>berria</span>
+        <span class="es">Nuevo horario</span>
+      </h1>
+      <div class="band__foot"></div>
+    </div>
+
+    <div class="sched">
+      <div class="row">
+        <div class="row__day">
+          <span class="eu">Astelehena eta&nbsp;Asteazkena</span>
+          <span class="es">Lunes y miércoles</span>
+        </div>
+        <div class="row__times">
+          <span class="pill"><span class="dot"></span>08:00 – 13:30</span>
+          <span class="pill"><span class="dot"></span>19:30 – 21:30</span>
+        </div>
+      </div>
+      <div class="sep"></div>
+
+      <div class="row">
+        <div class="row__day">
+          <span class="eu">Asteartea eta&nbsp;Osteguna</span>
+          <span class="es">Martes y jueves</span>
+        </div>
+        <div class="row__times">
+          <span class="pill"><span class="dot"></span>08:00 – 13:30</span>
+        </div>
+      </div>
+      <div class="sep"></div>
+
+      <div class="row">
+        <div class="row__day">
+          <span class="eu">Ostirala</span>
+          <span class="es">Viernes</span>
+        </div>
+        <div class="row__times">
+          <span class="pill"><span class="dot"></span>15:00 – 21:30</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="foot__rule"></div>
+      <div class="foot__addr"><img src="../assets/icons/marker.svg" alt="" /> Zubitxo Plaza, 3 · Urnieta</div>
+      <div class="foot__phone">943 036 070 · 688 734 113</div>
+    </div>
+  </div>
+</div>
+<script>
+  function fit() {
+    const s = document.getElementById('story');
+    const scale = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+    s.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>
