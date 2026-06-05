@@ -14,7 +14,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(image || '/open-graph.jpg', Astro.site).toString();
+const ogImage = new URL(image || '/og-image-teal.jpeg', Astro.site).toString();
 const title = titleProp || settings.title;
 const description = desc || t(settings.description);
 const siteName = 'Laguntza Fisioterapia';
