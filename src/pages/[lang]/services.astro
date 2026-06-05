@@ -14,6 +14,8 @@ import { generateSlug } from '@utils/helpers';
 import Button from '@components/buttons/Button.astro';
 import { SERVICES } from '@config/company';
 import ServiceCard from '@components/ServiceCard.astro';
+import FAQ from '@components/sections/FAQ.astro';
+import FAQSchema from '@components/head/FAQSchema.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -34,11 +36,19 @@ const seo = {
 	keywords:
 		lang === 'eu'
 			? 'fisioterapia Gipuzkoa, osteopatia Gipuzkoa, terapia manuala Gipuzkoa, errehabilitazioa Gipuzkoa, ariketa terapeutikoak Guipuzcoa, fisioterapia Urnieta, puntzio lehorra Gipuzkoa, neuromodulazioa Donostia, lesioen berregokitzea, minaren tratamendua, fisioterapia kirolari Gipuzkoa, fisioterapia zentroa Guipuzcoa'
-			: 'fisioterapia Gipuzkoa, fisioterapia Guipúzcoa, osteopatía Gipuzkoa, terapia manual Gipuzkoa, rehabilitación Gipuzkoa, ejercicio terapéutico Gipuzkoa, ejercicio terapéutico Guipúzcoa, rehabilitación ejercicio terapéutico Guipúzcoa, fisioterapia Urnieta, punción seca Gipuzkoa, neuromodulación Donostia, rehabilitación lesiones, tratamiento dolor, fisioterapia deportiva Gipuzkoa, centro fisioterapia Guipúzcoa'
+			: 'fisioterapia Gipuzkoa, fisioterapia Guipúzcoa, osteopatía Gipuzkoa, terapia manual Gipuzkoa, rehabilitación Gipuzkoa, ejercicio terapéutico Gipuzkoa, ejercicio terapéutico Guipúzcoa, rehabilitación ejercicio terapéutico Guipúzcoa, fisioterapia Urnieta, punción seca Gipuzkoa, neuromodulación Donostia, rehabilitación lesiones, tratamiento dolor, fisioterapia deportiva Gipuzkoa, centro fisioterapia Guipúzcoa',
+	breadcrumb: [
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
+		{
+			name: lang === 'eu' ? 'Zerbitzuak' : 'Servicios',
+			url: `/${lang}/services`
+		}
+	]
 };
 ---
 
 <Layout {seo}>
+	<FAQSchema slot="head" />
 	<SectionHero id="services-hero">
 		<h1 slot="title" set:html={t('service.main.hero-title')} />
 		<Fragment slot="desc">
@@ -74,6 +84,7 @@ const seo = {
 	<Button class="services-cta" href={`/${lang}/contact`}>
 		{t('nav.contact')}
 	</Button>
+	<FAQ />
 </Layout>
 
 <style>
