@@ -428,7 +428,7 @@ const seo = {
 		background-color: var(--theme-secondary, #e8944a);
 		color: var(--theme-on-secondary, #000);
 		text-decoration: none;
-		border-radius: 0.5rem;
+		border-radius: var(--button-radius, 3rem);
 		font-weight: 600;
 		font-size: var(--font-size-base);
 		min-height: 48px;
@@ -926,7 +926,7 @@ const seo = {
 	}
 
 	.service-section-card {
-		background: var(--theme-surface-1,);
+		background: var(--theme-surface-1, #f2f2f2);
 		position: fixed;
 		top: 50%;
 		left: 50%;
@@ -935,7 +935,6 @@ const seo = {
 		max-height: 75vh;
 		aspect-ratio: 1 / 1;
 		transform: translateY(-50%) translateX(-50%);
-		position: fixed;
 		color: var(--theme-on-surface-1, #000);
 		border-radius: var(--theme-shape-radius);
 		box-shadow: var(--shadow-lg);
@@ -944,7 +943,6 @@ const seo = {
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
-		position: fixed;
 		overflow: hidden;
 		img {
 			height: 100%;
@@ -1026,6 +1024,37 @@ const seo = {
 		pointer-events: none;
 		transition: opacity 0.4s;
 	}
+
+	/* ====== Reduced-motion fallback ======
+	   The hero is a 550vh GSAP scroll sequence. For users who prefer reduced
+	   motion we skip it (see the script) and show a calm static hero: the logo
+	   over the photo, the H1/CTA, and no scroll-jacking or empty scroll. */
+	:global(html.rm-hero) #logo-mask {
+		display: none;
+	}
+	:global(html.rm-hero) .landing-page {
+		height: 100vh;
+	}
+	:global(html.rm-hero) #when {
+		opacity: 1;
+	}
+	:global(html.rm-hero) .service-section {
+		display: none;
+	}
+	:global(html.rm-hero) .landing-hero-footer {
+		display: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		[data-reveal] {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+		.keep-scrolling-icon {
+			animation: none;
+		}
+	}
 </style>
 
 <script>
@@ -1058,6 +1087,18 @@ const seo = {
 		if (!comingSoonContainer) {
 			return;
 		}
+
+		// Respect reduced-motion: skip the scroll-jacked GSAP sequence entirely
+		// and fall back to a static hero (see html.rm-hero styles).
+		const prefersReducedMotion = window.matchMedia(
+			'(prefers-reduced-motion: reduce)'
+		).matches;
+		if (prefersReducedMotion) {
+			document.documentElement.classList.add('rm-hero');
+			hideGlobalLoader();
+			return;
+		}
+
 		window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 
 		gsap.registerPlugin(ScrollTrigger);
