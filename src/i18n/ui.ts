@@ -39,7 +39,8 @@ export const ui = {
 		'Kontaktuan jarri': 'Ponte en contacto',
 		'Hurrengo moduetan jarri zaitezke harremanetan:':
 			'Puedes ponerte en contacto de las siguientes maneras:',
-		'working-hours': 'De lunes a viernes, de 08:00 a 20:00',
+		'working-hours':
+			'Lunes y miércoles: 08:00–13:30 y 19:30–21:30 · Martes y jueves: 08:00–13:30 · Viernes: 15:00–21:30',
 		Deitu: 'Llamar',
 		Idatzi: 'Escribir',
 		'Bidali WhatsAppa': 'Enviar WhatsApp',
@@ -350,7 +351,8 @@ export const ui = {
 		'developed-by': 'Diseñadore eta garatzaileak:',
 		'quick-link': 'Esteka azkarrak',
 		'theme-switcher': 'Aldatu itxura',
-		'working-hours': 'Astelehenetik ostiralera, 08:00etatik 20:00etara',
+		'working-hours':
+			'Astelehena eta asteazkena: 08:00–13:30 eta 19:30–21:30 · Asteartea eta osteguna: 08:00–13:30 · Ostirala: 15:00–21:30',
 		'we-respond-soon': 'Laister erantzungo dizugu.',
 		'we-respond-inmediately': 'Segituan erantzungo dizugu.',
 		'inauguration.title': 'Inaugurazioa',

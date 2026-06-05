@@ -58,9 +58,27 @@ const structuredData = {
 	openingHoursSpecification: [
 		{
 			'@type': 'OpeningHoursSpecification',
-			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			dayOfWeek: ['Monday', 'Wednesday'],
 			opens: '08:00',
-			closes: '20:00'
+			closes: '13:30'
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday'],
+			opens: '19:30',
+			closes: '21:30'
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Thursday'],
+			opens: '08:00',
+			closes: '13:30'
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday'],
+			opens: '15:00',
+			closes: '21:30'
 		}
 	],
 	priceRange: '€€',
