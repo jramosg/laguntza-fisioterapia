@@ -1,8 +1,36 @@
 ---
-import OpenGraph from '@components/head/OpenGraph.astro';
-import { settings } from '@config/settings';
 import { defaultLang } from '@i18n/ui';
+
+const title = 'Fisioterapia y Osteopatía en Urnieta, Gipuzkoa | Laguntza';
+const description =
+	'Fisioterapia y osteopatía en Urnieta, Gipuzkoa. Rehabilitación, terapia manual, ejercicio terapéutico y tratamiento del dolor cerca de Donostia.';
+const canonical = new URL(`/${defaultLang}/`, Astro.site).toString();
+const euUrl = new URL('/eu/', Astro.site).toString();
+const ogImage = new URL('/og-image-teal.jpeg', Astro.site).toString();
 ---
 
-<meta http-equiv="refresh" content={`0;url=/${defaultLang}`} />
-<OpenGraph desc={settings.descriptionBillingual} />
+<!doctype html>
+<html lang={defaultLang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex, follow" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="alternate" hreflang="es" href={canonical} />
+		<link rel="alternate" hreflang="eu" href={euUrl} />
+		<link rel="alternate" hreflang="x-default" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Laguntza Fisioterapia" />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:locale" content="es_ES" />
+	</head>
+	<body>
+		<a href={`/${defaultLang}/`}>Laguntza Fisioterapia</a>
+	</body>
+</html>
