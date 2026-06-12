@@ -180,6 +180,11 @@ const isPortrait = Boolean(image && image.height > image.width);
 			padding: 0;
 		}
 		width: 100%;
+		/* As a grid item it must be allowed to shrink below its content,
+		   or wide content (the services chip carousel) pushes the whole
+		   hero off-screen on mobile */
+		min-width: 0;
+		max-width: 100%;
 		position: relative;
 		z-index: 3;
 	}
