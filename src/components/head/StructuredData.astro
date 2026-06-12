@@ -4,11 +4,15 @@ import { getLangFromUrl, useTranslations } from '@i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const siteUrl = 'https://laguntzafisioterapia.com';
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const businessId = `${siteUrl}#business`;
+const personId = `${siteUrl}#jokin-ramos`;
 
 const structuredData = {
 	'@context': 'https://schema.org',
 	'@type': ['Physiotherapy', 'MedicalClinic', 'LocalBusiness'],
-	'@id': 'https://laguntzafisioterapia.com#business',
+	'@id': businessId,
 	name: 'Laguntza Fisioterapia',
 	alternateName: [
 		'Centro de Fisioterapia Laguntza',
@@ -19,22 +23,22 @@ const structuredData = {
 		lang === 'eu'
 			? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan.'
 			: 'Centro de fisioterapia, osteopatía y terapia manual en Gipuzkoa. Especializado en rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
-	url: 'https://laguntzafisioterapia.com',
+	url: siteUrl,
 	logo: {
 		'@type': 'ImageObject',
-		url: 'https://laguntzafisioterapia.com/main-logo-horizontal.png',
+		url: `${siteUrl}/main-logo-horizontal.png`,
 		width: 300,
 		height: 224
 	},
 	image: [
-		'https://laguntzafisioterapia.com/main-logo-horizontal.png',
-		'https://laguntzafisioterapia.com/og-image-teal.jpeg'
+		`${siteUrl}/main-logo-horizontal.png`,
+		`${siteUrl}/og-image-teal.jpeg`
 	],
 	sameAs: ['https://www.instagram.com/laguntzafisioterapia', Address.url],
 	telephone: Phone.name,
 	email: Email.name.replace('mailto:', ''),
 	founder: {
-		'@id': 'https://laguntzafisioterapia.com#jokin-ramos'
+		'@id': personId
 	},
 	contactPoint: {
 		'@type': 'ContactPoint',
@@ -243,11 +247,11 @@ const structuredData = {
 const professionalData = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
-	'@id': 'https://laguntzafisioterapia.com#jokin-ramos',
+	'@id': personId,
 	name: 'Jokin Ramos',
 	jobTitle: 'Fisioterapeuta Colegiado',
 	worksFor: {
-		'@id': 'https://laguntzafisioterapia.com#business'
+		'@id': businessId
 	},
 	knowsAbout: [
 		'Fisioterapia',
@@ -275,6 +279,42 @@ const professionalData = {
 	email: Email.name.replace('mailto:', ''),
 	telephone: Phone.name
 };
+
+const websiteData = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	'@id': `${siteUrl}#website`,
+	name: 'Laguntza Fisioterapia',
+	alternateName: 'Laguntza Fisio',
+	url: siteUrl,
+	inLanguage: ['es', 'eu'],
+	publisher: {
+		'@id': businessId
+	}
+};
+
+const webPageData = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	'@id': `${pageUrl}#webpage`,
+	url: pageUrl,
+	name:
+		lang === 'eu'
+			? 'Laguntza Fisioterapia Urnieta'
+			: 'Laguntza Fisioterapia Urnieta',
+	description: t('seo.main-description'),
+	inLanguage: lang,
+	isPartOf: {
+		'@id': `${siteUrl}#website`
+	},
+	about: {
+		'@id': businessId
+	},
+	primaryImageOfPage: {
+		'@type': 'ImageObject',
+		url: `${siteUrl}/og-image-teal.jpeg`
+	}
+};
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
@@ -282,3 +322,5 @@ const professionalData = {
 	type="application/ld+json"
 	set:html={JSON.stringify(professionalData)}
 />
+<script type="application/ld+json" set:html={JSON.stringify(websiteData)} />
+<script type="application/ld+json" set:html={JSON.stringify(webPageData)} />
