@@ -99,13 +99,6 @@ const seo = {
 					<MarkerIcon fill="currentColor" />
 					<span class="coming-soon__label">{Address.name}</span></a
 				>
-				<a
-					href={`/${lang}/contact`}
-					class="cta-button"
-					aria-label={t('Hitzordua hartu') || 'Book Appointment'}
-				>
-					{t('Hitzordua hartu') || 'Book Appointment'}
-				</a>
 			</div>
 		</section>
 
@@ -426,36 +419,6 @@ const seo = {
 		gap: var(--s4);
 	}
 
-	.cta-button {
-		display: inline-block;
-		padding: var(--s3) var(--s5);
-		background-color: var(--theme-secondary, #e8944a);
-		color: var(--theme-on-secondary, #000);
-		text-decoration: none;
-		border-radius: var(--button-radius, 3rem);
-		font-weight: 600;
-		font-size: var(--font-size-base);
-		min-height: 48px;
-		min-width: 48px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.3s ease-in-out;
-		box-shadow: 0 4px 12px rgba(232, 148, 74, 0.3);
-		white-space: nowrap;
-		z-index: var(--z-index-tooltip);
-	}
-
-	.cta-button:hover {
-		background-color: var(--theme-secondary-variant, #d67a2e);
-		box-shadow: 0 6px 16px rgba(232, 148, 74, 0.5);
-		transform: translateY(-2px);
-	}
-
-	.cta-button:active {
-		transform: translateY(0);
-	}
-
 	.home-intro-text {
 		font-size: var(--font-size-lg);
 		font-weight: 500;
@@ -470,7 +433,10 @@ const seo = {
 
 	.homepage-content {
 		position: relative;
-		z-index: 1400;
+		/* Above the fixed hero/service layers (1201-1202) but below the
+		   drawer (--z-index-drawer 1210) and the burger header, so the menu
+		   keeps working while this section scrolls over the hero. */
+		z-index: 1203;
 		background: linear-gradient(
 			180deg,
 			#020202 0%,
@@ -1007,7 +973,7 @@ const seo = {
 
 	#site-footer {
 		position: relative;
-		z-index: 1400;
+		z-index: 1203;
 	}
 
 	.global-loader {

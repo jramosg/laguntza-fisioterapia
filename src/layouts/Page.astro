@@ -28,3 +28,48 @@ const { seo } = Astro.props as Props;
 		<Logo slot="logo" />
 	</Footer>
 </Layout>
+
+<style is:global>
+	/* Scroll-reveal for inner page sections (class added by the script
+	   below, so content stays visible without JS or with reduced motion) */
+	.pre-reveal {
+		opacity: 0;
+		transform: translateY(32px);
+		transition:
+			opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.pre-reveal.revealed {
+		opacity: 1;
+		transform: translateY(0);
+	}
+</style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const prefersReducedMotion = window.matchMedia(
+			'(prefers-reduced-motion: reduce)'
+		).matches;
+		if (prefersReducedMotion) return;
+
+		const sections = document.querySelectorAll('.service-content > *');
+		if (!sections.length) return;
+
+		const observer = new IntersectionObserver(
+			entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('revealed');
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+		);
+
+		sections.forEach(el => {
+			el.classList.add('pre-reveal');
+			observer.observe(el);
+		});
+	});
+</script>
