@@ -226,7 +226,30 @@ const seo = {
 			setStatus('Selecciona una hora disponible.');
 			return;
 		}
-		setStatus('El pago online se activará cuando el backend esté desplegado.');
+		const data = new FormData(form);
+		setStatus('Preparando pago seguro...');
+
+		fetch(`${apiBase}/api/bookings/checkout`, {
+			method: 'POST',
+			headers: { 'content-type': 'application/json' },
+			body: JSON.stringify({
+				service_id: data.get('service_id'),
+				starts_at: selectedSlot,
+				patient_name: data.get('patient_name'),
+				patient_email: data.get('patient_email'),
+				patient_phone: data.get('patient_phone'),
+				patient_locale: document.documentElement.lang || 'es',
+				terms_accepted: data.get('terms') === 'on'
+			})
+		})
+			.then(async response => {
+				const payload = await response.json();
+				if (!response.ok) throw new Error(payload.error || 'checkout_failed');
+				window.location.href = payload.checkout_url;
+			})
+			.catch(() => {
+				setStatus('No se ha podido iniciar el pago. Llámanos para reservar.');
+			});
 	});
 </script>
 

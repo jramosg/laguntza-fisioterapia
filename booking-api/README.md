@@ -12,6 +12,9 @@ Clojure backend for online and manual appointment booking.
 - Manual admin bookings are confirmed without pre-payment.
 - Telegram can notify the physiotherapist immediately. Email confirms the
   appointment and terms to the patient.
+- Admin sessions are signed server-side tokens. Passwords use PBKDF2 hashes.
+- Stripe webhooks are verified before a booking is confirmed as paid.
+- API errors are JSON. Security headers are applied at the API boundary.
 
 ## Hosting Recommendation
 
@@ -38,19 +41,30 @@ Move to managed PostgreSQL later when uptime requirements justify it.
 ## Environment
 
 ```bash
+APP_ENV=production
 PORT=4000
 JDBC_URL=jdbc:postgresql://localhost:5432/laguntza_booking?user=booking_app&password=booking_app
 PUBLIC_SITE_URL=https://laguntzafisioterapia.com
+BOOKING_API_URL=https://booking.laguntzafisioterapia.com
+BOOKING_SESSION_SECRET=generate-a-long-random-secret
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 BOOKING_ADMIN_EMAIL=info@laguntzafisioterapia.com
 BOOKING_ADMIN_PASSWORD_HASH=...
+BOOKING_STAFF_NAME=Laguntza Fisioterapia
 SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=...
 SMTP_PASS=...
+SMTP_FROM=info@laguntzafisioterapia.com
 TELEGRAM_BOT_TOKEN=...
 TELEGRAM_CHAT_ID=...
+```
+
+Generate an admin password hash from a trusted shell:
+
+```bash
+clojure -M -e "(require '[laguntza.booking.security :as s]) (println (s/password-hash \"replace-me\"))"
 ```
 
 ## API Contract
@@ -78,4 +92,35 @@ Admin:
 ```bash
 clojure -M:dev -m laguntza.booking.core
 clojure -M:test
+clj-kondo --lint src test
 ```
+
+Without `JDBC_URL`, `/api/health` still boots for smoke tests and reports
+`"database": false`. Booking, admin, and availability endpoints require
+PostgreSQL.
+
+## Docker
+
+For a single VPS, copy `booking-api/.env` from the environment template and run:
+
+```bash
+docker compose up -d --build
+```
+
+The compose file binds the API to `127.0.0.1:4000` so a reverse proxy can
+terminate TLS. PostgreSQL is private to Docker and persists in the
+`postgres-data` volume.
+
+## Deployment Checklist
+
+- Run behind TLS only.
+- Keep PostgreSQL private to the VPS or private network.
+- Do not expose PostgreSQL to the public internet.
+- Run migrations at API startup or as a deployment step.
+- Set `APP_ENV=production`; missing critical secrets will fail fast.
+- Configure Stripe webhook delivery to `/api/stripe/webhook`.
+- Run a cron or systemd timer against `/api/admin/notifications/process`.
+- Back up PostgreSQL daily to encrypted off-server storage.
+- Test restore monthly against a separate database.
+- Monitor API health, 5xx rate, Stripe webhook failures, and notification
+  failures.
