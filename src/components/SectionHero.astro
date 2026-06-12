@@ -69,7 +69,7 @@ const isPortrait = Boolean(image && image.height > image.width);
 		)
 	}
 	{hasMedia && <div class="hero-media-overlay" aria-hidden="true" />}
-	<div class="hero-header-glow" aria-hidden="true"></div>
+	{hasMedia && <div class="hero-header-glow" aria-hidden="true" />}
 	<Container class=`hero-header-container ${className || ''}` {...rest}>
 		<slot name="title" />
 		<p><slot name="desc" /></p>
@@ -83,16 +83,30 @@ const isPortrait = Boolean(image && image.height > image.width);
 	.hero-header-section {
 		position: relative;
 		overflow: hidden;
-		background: linear-gradient(180deg, #060a0c 0%, #0a0e10 60%, #0b1013 100%);
+		background: var(--theme-container-gradient);
+		background-size: 200% 200%;
+		animation: gradientMove 3s ease-in-out infinite alternate;
 		padding: var(--s9) 0 var(--s8);
 		text-align: center;
-		color: #fff;
+		color: var(--theme-on-container-gradient);
 	}
 
 	.hero-header-section--media {
 		min-height: clamp(440px, 64vh, 680px);
 		display: grid;
 		align-items: center;
+		background: linear-gradient(180deg, #060a0c 0%, #0a0e10 60%, #0b1013 100%);
+		animation: none;
+		color: #fff;
+	}
+
+	@keyframes gradientMove {
+		0% {
+			background-position: 0% 50%;
+		}
+		100% {
+			background-position: 100% 50%;
+		}
 	}
 
 	/* Full-bleed media, oversized so the parallax never shows edges */
@@ -145,7 +159,7 @@ const isPortrait = Boolean(image && image.height > image.width);
 	}
 
 	/* Subtle fractal-noise grain, same texture as the homepage dark stream */
-	.hero-header-section::before {
+	.hero-header-section--media::before {
 		content: '';
 		position: absolute;
 		inset: 0;
