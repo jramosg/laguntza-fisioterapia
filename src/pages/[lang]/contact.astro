@@ -44,7 +44,14 @@ const seo = {
 	keywords:
 		lang === 'eu'
 			? 'Laguntza Fisioterapia kontaktua, fisioterapia Urnieta, Zubitxo Plaza 3, telefonoa 943 036 070, WhatsApp fisioterapeuta Gipuzkoa, fisioterapia zentroa Donostia gertu'
-			: 'Laguntza Fisioterapia contacto, fisioterapia Urnieta, Zubitxo Plaza 3, teléfono 943 036 070, WhatsApp fisioterapeuta Gipuzkoa, centro fisioterapia cerca Donostia'
+			: 'Laguntza Fisioterapia contacto, fisioterapia Urnieta, Zubitxo Plaza 3, teléfono 943 036 070, WhatsApp fisioterapeuta Gipuzkoa, centro fisioterapia cerca Donostia',
+	breadcrumb: [
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
+		{
+			name: lang === 'eu' ? 'Kontaktua' : 'Contacto',
+			url: `/${lang}/contact`
+		}
+	]
 };
 
 const contacts = [

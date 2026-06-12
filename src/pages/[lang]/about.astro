@@ -28,7 +28,14 @@ const seo = {
 	keywords:
 		lang === 'eu'
 			? 'Jokin Ramos fisioterapeuta, osteopata Gipuzkoa, fisioterapia Gipuzkoa, terapia manuala Gipuzkoa, Laguntza Fisioterapia, Zubitxo Plaza Urnieta, fisioterapeuta Donostia gertu, errehabilitazioa Gipuzkoa'
-			: 'Jokin Ramos fisioterapeuta, osteópata Gipuzkoa, fisioterapia Gipuzkoa, fisioterapia Guipúzcoa, terapia manual Gipuzkoa, Laguntza Fisioterapia, Plaza Zubitxo Urnieta, fisioterapeuta cerca Donostia, rehabilitación Gipuzkoa'
+			: 'Jokin Ramos fisioterapeuta, osteópata Gipuzkoa, fisioterapia Gipuzkoa, fisioterapia Guipúzcoa, terapia manual Gipuzkoa, Laguntza Fisioterapia, Plaza Zubitxo Urnieta, fisioterapeuta cerca Donostia, rehabilitación Gipuzkoa',
+	breadcrumb: [
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
+		{
+			name: lang === 'eu' ? 'Niri buruz' : 'Sobre mí',
+			url: `/${lang}/about`
+		}
+	]
 };
 ---
 

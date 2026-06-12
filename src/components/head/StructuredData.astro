@@ -7,7 +7,7 @@ const t = useTranslations(lang);
 
 const structuredData = {
 	'@context': 'https://schema.org',
-	'@type': 'MedicalBusiness',
+	'@type': ['Physiotherapy', 'MedicalClinic', 'LocalBusiness'],
 	'@id': 'https://laguntzafisioterapia.com#business',
 	name: 'Laguntza Fisioterapia',
 	alternateName: [
@@ -28,8 +28,9 @@ const structuredData = {
 	},
 	image: [
 		'https://laguntzafisioterapia.com/main-logo-horizontal.png',
-		'https://laguntzafisioterapia.com/open-graph.jpg'
+		'https://laguntzafisioterapia.com/og-image-teal.jpeg'
 	],
+	sameAs: ['https://www.instagram.com/laguntzafisioterapia', Address.url],
 	telephone: Phone.name,
 	email: Email.name.replace('mailto:', ''),
 	founder: {

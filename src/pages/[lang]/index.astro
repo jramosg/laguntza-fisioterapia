@@ -73,7 +73,9 @@ const seo = {
 						id="hero-key-background"
 						src={Jokin}
 						class="background-image"
-						alt="Jokin Ramos González"
+						alt={lang === 'eu'
+							? 'Jokin Ramos, Laguntza Fisioterapiako fisioterapeuta eta osteopata Urnietan (Gipuzkoa)'
+							: 'Jokin Ramos, fisioterapeuta y osteópata de Laguntza Fisioterapia en Urnieta (Gipuzkoa)'}
 						layout="full-width"
 						fetchpriority="high"
 						loading="eager"
@@ -150,7 +152,9 @@ const seo = {
 						<div class="hc-about__photo-frame">
 							<Image
 								src={Jokin}
-								alt="Jokin Ramos González - Fisioterapeuta"
+								alt={lang === 'eu'
+									? 'Jokin Ramos fisioterapeuta, Laguntza Fisioterapia (Urnieta)'
+									: 'Jokin Ramos, fisioterapeuta en Laguntza Fisioterapia (Urnieta)'}
 								class="hc-about__img"
 								width={480}
 								height={640}

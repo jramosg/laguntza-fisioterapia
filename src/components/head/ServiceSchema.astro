@@ -1,0 +1,36 @@
+---
+import { getLangFromUrl } from '@i18n/utils';
+
+// Per-service structured data for the SEO landing pages. Links the service
+// back to the MedicalBusiness node (see StructuredData.astro) via @id.
+type Props = {
+	name: string;
+	description: string;
+};
+
+const { name, description } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+const serviceData = {
+	'@context': 'https://schema.org',
+	'@type': 'Service',
+	serviceType: name,
+	name,
+	description,
+	url: new URL(Astro.url.pathname, Astro.site).toString(),
+	inLanguage: lang,
+	provider: {
+		'@id': 'https://laguntzafisioterapia.com#business'
+	},
+	areaServed: {
+		'@type': 'AdministrativeArea',
+		name: 'Gipuzkoa'
+	}
+};
+---
+
+<script
+	is:inline
+	type="application/ld+json"
+	set:html={JSON.stringify(serviceData)}
+/>

@@ -1,0 +1,95 @@
+---
+import { Icon } from 'astro-icon/components';
+import { WhatsApp } from '@config/company';
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const href = `${WhatsApp.url}?text=${encodeURIComponent(t('whatsapp-msg'))}`;
+const label = t('Hitzordua hartu');
+---
+
+<a
+	class="wa-fab"
+	href={href}
+	target="_blank"
+	rel="noopener noreferrer"
+	aria-label={`${label} (WhatsApp)`}
+>
+	<Icon name="mdi:whatsapp" class="wa-fab__icon" aria-hidden="true" />
+	<span class="wa-fab__label">{label}</span>
+</a>
+
+<style>
+	.wa-fab {
+		position: fixed;
+		bottom: var(--s3);
+		right: var(--s3);
+		z-index: var(--z-index-popover, 1500);
+		display: inline-flex;
+		align-items: center;
+		gap: var(--s2);
+		min-height: 56px;
+		min-width: 56px;
+		padding: var(--s3);
+		border-radius: var(--button-radius, 3rem);
+		background: linear-gradient(135deg, #458295 0%, #56a4bd 55%, #3d6f7f 100%);
+		color: #fff;
+		text-decoration: none;
+		font-weight: 600;
+		font-size: var(--font-size-base);
+		box-shadow: var(--shadow-lg, 0 10px 24px rgba(0, 0, 0, 0.25));
+		transition:
+			transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.wa-fab:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-2xl, 0 18px 40px rgba(0, 0, 0, 0.35));
+	}
+
+	.wa-fab:active {
+		transform: translateY(0);
+	}
+
+	.wa-fab:focus-visible {
+		outline: 2px solid var(--theme-secondary, #e8944a);
+		outline-offset: 2px;
+	}
+
+	.wa-fab__icon {
+		width: 28px;
+		height: 28px;
+		flex-shrink: 0;
+	}
+
+	.wa-fab__label {
+		display: none;
+		white-space: nowrap;
+	}
+
+	@media (min-width: 768px) {
+		.wa-fab {
+			padding: var(--s3) var(--s5);
+		}
+		.wa-fab__label {
+			display: inline;
+		}
+	}
+
+	/* Keep the open navigation drawer unobstructed */
+	:global(body:has(header[drawer-open])) .wa-fab {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.wa-fab,
+		.wa-fab:hover {
+			transition: none;
+			transform: none;
+		}
+	}
+</style>

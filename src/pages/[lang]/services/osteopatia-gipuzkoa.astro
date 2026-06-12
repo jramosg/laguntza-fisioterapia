@@ -14,6 +14,7 @@ import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
 import ServiceLocation from '@components/services/ServiceLocation.astro';
 import ServiceCTA from '@components/services/ServiceCTA.astro';
+import ServiceSchema from '@components/head/ServiceSchema.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -25,7 +26,18 @@ const t = useTranslations(lang);
 const seo = {
 	title: t('service.osteopathy.seo-title'),
 	description: t('service.osteopathy.seo-description'),
-	keywords: t('service.osteopathy.seo-keywords')
+	keywords: t('service.osteopathy.seo-keywords'),
+	breadcrumb: [
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
+		{
+			name: lang === 'eu' ? 'Zerbitzuak' : 'Servicios',
+			url: `/${lang}/services`
+		},
+		{
+			name: t('service.osteopathy.hero-title'),
+			url: `/${lang}/services/osteopatia-gipuzkoa`
+		}
+	]
 };
 
 const osteopathyBenefits = [
@@ -56,6 +68,11 @@ const osteopathyConditions = [
 ---
 
 <Layout {seo}>
+	<ServiceSchema
+		slot="head"
+		name={t('service.osteopathy.hero-title')}
+		description={t('service.osteopathy.seo-description')}
+	/>
 	<SectionHero id="osteopathy-hero">
 		<h1 slot="title">
 			{t('service.osteopathy.hero-title')}
