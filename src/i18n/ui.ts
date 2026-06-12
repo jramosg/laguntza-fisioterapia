@@ -4,6 +4,7 @@ export const ui = {
 	es: {
 		'nav.home': 'Inicio',
 		'nav.services': 'Servicios',
+		'nav.book': 'Reserva online',
 		'nav.blog': 'Blog',
 		'nav.about': 'Sobre mí',
 		'nav.contact': 'Contacto',
@@ -334,6 +335,7 @@ export const ui = {
 	eu: {
 		'nav.home': 'Hasiera',
 		'nav.services': 'Zerbitzuak',
+		'nav.book': 'Hitzordua',
 		'nav.blog': 'Bloga',
 		'nav.about': 'Niri buruz',
 		'nav.contact': 'Kontaktua',
