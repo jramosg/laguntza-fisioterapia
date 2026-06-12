@@ -1,0 +1,241 @@
+(ns laguntza.booking.repo
+  (:require
+   [cheshire.core :as json]
+   [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
+   [next.jdbc.sql :as sql])
+  (:import
+   [org.postgresql.util PGobject]))
+
+(def opts {:builder-fn rs/as-unqualified-lower-maps})
+
+(defn- ->jsonb
+  "Clojure maps bind as hstore by default in pgjdbc; jsonb columns need
+  an explicit PGobject."
+  [value]
+  (doto (PGobject.)
+    (.setType "jsonb")
+    (.setValue (json/generate-string value))))
+
+(defn ensure-staff! [ds staff]
+  (jdbc/execute-one! ds
+                     ["insert into booking_staff (name, email)
+                       values (?, ?)
+                       on conflict (email) do update
+                       set name = excluded.name, active = true
+                       returning *"
+                      (:name staff) (:email staff)]
+                     opts))
+
+(defn ensure-admin! [ds admin]
+  (jdbc/execute-one! ds
+                     ["insert into booking_admins
+                       (staff_id, email, password_hash, role)
+                       values (?, ?, ?, ?)
+                       on conflict (email) do update
+                       set password_hash = excluded.password_hash,
+                           active = true
+                       returning *"
+                      (:staff_id admin)
+                      (:email admin)
+                      (:password_hash admin)
+                      (:role admin)]
+                     opts))
+
+(defn services [ds]
+  (jdbc/execute! ds
+                 ["select * from booking_services
+                   where active
+                   order by duration_minutes"]
+                 opts))
+
+(defn service [ds service-id]
+  (jdbc/execute-one! ds
+                     ["select * from booking_services where id = ? and active"
+                      service-id]
+                     opts))
+
+(defn default-staff [ds]
+  (jdbc/execute-one! ds
+                     ["select * from booking_staff
+                       where active
+                       order by created_at
+                       limit 1"]
+                     opts))
+
+(defn availability-windows [ds staff-id day-start day-end]
+  (jdbc/execute! ds
+                 ["select starts_at, ends_at from availability_windows
+                   where staff_id = ? and starts_at < ? and ends_at > ?
+                   order by starts_at"
+                  staff-id day-end day-start]
+                 opts))
+
+(defn busy-intervals [ds staff-id day-start day-end]
+  (jdbc/execute! ds
+                 ["select starts_at, ends_at from bookings
+                   where staff_id = ?
+                   and (status = 'confirmed'
+                        or (status = 'pending_payment'
+                            and (expires_at is null or expires_at > now())))
+                   and starts_at < ? and ends_at > ?
+                   union all
+                   select starts_at, ends_at from time_blocks
+                   where staff_id = ? and starts_at < ? and ends_at > ?"
+                  staff-id day-end day-start staff-id day-end day-start]
+                 opts))
+
+(defn expire-stale-pending!
+  "Release slots held by checkout sessions that were never paid."
+  [ds]
+  (jdbc/execute-one! ds
+                     ["update bookings
+                       set status = 'cancelled',
+                           payment_status = 'failed',
+                           cancel_reason = 'payment_timeout',
+                           cancelled_at = now(),
+                           updated_at = now()
+                       where status = 'pending_payment'
+                       and expires_at is not null
+                       and expires_at < now()"]))
+
+(defn admin-by-email [ds email]
+  (jdbc/execute-one! ds
+                     ["select * from booking_admins where email = ? and active"
+                      email]
+                     opts))
+
+(defn booking-by-id [ds id]
+  (jdbc/execute-one! ds ["select * from bookings where id = ?" id] opts))
+
+(defn booking-by-stripe-session [ds stripe-session-id]
+  (jdbc/execute-one! ds
+                     ["select * from bookings
+                       where stripe_checkout_session_id = ?"
+                      stripe-session-id]
+                     opts))
+
+(defn create-booking! [tx booking]
+  (sql/insert! tx :bookings booking opts))
+
+(defn save-stripe-session! [tx booking-id session]
+  (jdbc/execute-one! tx
+                     ["update bookings
+                       set stripe_checkout_session_id = ?, updated_at = now()
+                       where id = ?
+                       returning *"
+                      (:id session) booking-id]
+                     opts))
+
+(defn confirm-paid-booking!
+  "Confirm a pending booking once. Returns nil on webhook replays and
+  for bookings that are no longer pending."
+  [tx stripe-session-id payment-intent-id]
+  (jdbc/execute-one! tx
+                     ["update bookings
+                       set status = 'confirmed',
+                           payment_status = 'paid',
+                           stripe_payment_intent_id = ?,
+                           updated_at = now()
+                       where stripe_checkout_session_id = ?
+                       and status = 'pending_payment'
+                       returning *"
+                      payment-intent-id stripe-session-id]
+                     opts))
+
+(defn cancel-booking!
+  "Cancel an active booking. Returns nil when the booking is missing or
+  already finished, so callers can answer 404/409 instead of silently
+  re-cancelling."
+  [tx id reason]
+  (jdbc/execute-one! tx
+                     ["update bookings
+                       set status = 'cancelled',
+                           cancel_reason = ?,
+                           cancelled_at = now(),
+                           updated_at = now()
+                       where id = ?
+                       and status in ('pending_payment', 'confirmed')
+                       returning *"
+                      reason id]
+                     opts))
+
+(defn create-availability-window! [tx row]
+  (sql/insert! tx :availability_windows row opts))
+
+(defn recurring-windows-for-weekday [ds staff-id weekday]
+  (jdbc/execute! ds
+                 ["select * from recurring_windows
+                   where staff_id = ? and weekday = ? and active
+                   order by start_time"
+                  staff-id weekday]
+                 opts))
+
+(defn recurring-windows [ds staff-id]
+  (jdbc/execute! ds
+                 ["select * from recurring_windows
+                   where staff_id = ? and active
+                   order by weekday, start_time"
+                  staff-id]
+                 opts))
+
+(defn create-recurring-window! [tx row]
+  (sql/insert! tx :recurring_windows row opts))
+
+(defn deactivate-recurring-window! [tx id]
+  (jdbc/execute-one! tx
+                     ["update recurring_windows
+                       set active = false
+                       where id = ? and active
+                       returning *"
+                      id]
+                     opts))
+
+(defn create-time-block! [tx row]
+  (sql/insert! tx :time_blocks row opts))
+
+(defn admin-bookings [ds from to]
+  (jdbc/execute! ds
+                 ["select * from bookings
+                   where starts_at >= ? and starts_at < ?
+                   order by starts_at"
+                  from to]
+                 opts))
+
+(defn enqueue-notification! [tx booking channel event payload]
+  (sql/insert! tx
+               :notification_outbox
+               {:booking_id (:id booking)
+                :channel channel
+                :event event
+                :payload (->jsonb payload)}
+               opts))
+
+(defn pending-notifications [ds limit]
+  (jdbc/execute! ds
+                 ["select * from notification_outbox
+                   where status = 'pending' and run_after <= now()
+                   order by created_at
+                   limit ?"
+                  limit]
+                 opts))
+
+(defn mark-notification-sent! [tx id]
+  (jdbc/execute-one! tx
+                     ["update notification_outbox
+                       set status = 'sent', sent_at = now()
+                       where id = ?
+                       returning *"
+                      id]
+                     opts))
+
+(defn mark-notification-failed! [tx id error]
+  (jdbc/execute-one! tx
+                     ["update notification_outbox
+                       set status = 'failed',
+                           attempts = attempts + 1,
+                           last_error = ?
+                       where id = ?
+                       returning *"
+                      error id]
+                     opts))

@@ -1,0 +1,587 @@
+---
+import Layout from '@layouts/Page.astro';
+import Container from '@components/core/Container.astro';
+import Button from '@components/buttons/Button.astro';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
+import { Langs } from '@i18n/ui';
+
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+
+const lang: Langs = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const seo = {
+	title:
+		lang === 'eu'
+			? 'Hitzordua online | Laguntza Fisioterapia Urnieta'
+			: 'Reserva online | Laguntza Fisioterapia Urnieta',
+	description:
+		lang === 'eu'
+			? 'Erreserbatu fisioterapia saioa online Urnietan. 30 edo 60 minutuko saioak, ordainketa segurua eta 24 orduko ezeztapen politika.'
+			: 'Reserva una sesión de fisioterapia online en Urnieta. Sesiones de 30 o 60 minutos, pago seguro y cancelación hasta 24 horas antes.',
+	noindex: false
+};
+---
+
+<Layout {seo}>
+	<Container tag="section" class="booking-page">
+		<div class="booking-hero">
+			<p class="booking-kicker">
+				{lang === 'eu' ? 'Online erreserbak' : 'Reserva online'}
+			</p>
+			<h1>
+				{lang === 'eu' ? 'Aukeratu saioa eta ordua' : 'Elige sesión y hora'}
+			</h1>
+			<p>
+				{
+					lang === 'eu'
+						? 'Ordainketa Stripe bidez egiten da. Telefonoz edo WhatsAppez hartutako hitzorduak kontsultan ordaintzen dira.'
+						: 'El pago online se realiza con Stripe. Las citas tomadas por teléfono o WhatsApp se pagan en consulta.'
+				}
+			</p>
+		</div>
+
+		<p class="booking-banner" data-booking-banner hidden></p>
+
+		<div class="booking-shell" data-booking-root>
+			<form class="booking-panel" data-booking-form>
+				<label>
+					<span>{lang === 'eu' ? 'Saioa' : 'Sesión'}</span>
+					<select name="service_id">
+						<option value="session_60">
+							{lang === 'eu' ? '60 minutuko saioa' : 'Sesión 60 min'}
+						</option>
+						<option value="session_30">
+							{lang === 'eu' ? '30 minutuko saioa' : 'Sesión 30 min'}
+						</option>
+					</select>
+				</label>
+
+				<label>
+					<span>{lang === 'eu' ? 'Eguna' : 'Día'}</span>
+					<input name="date" type="date" data-date-input required />
+				</label>
+
+				<div class="slot-list" data-slot-list>
+					<p>
+						{
+							lang === 'eu'
+								? 'Aukeratu eguna ordutegi erabilgarriak ikusteko.'
+								: 'Elige un día para ver horarios disponibles.'
+						}
+					</p>
+				</div>
+
+				<div class="booking-fields">
+					<label>
+						<span>{lang === 'eu' ? 'Izena' : 'Nombre'}</span>
+						<input
+							name="patient_name"
+							autocomplete="name"
+							maxlength="120"
+							required
+						/>
+					</label>
+					<label>
+						<span>Email</span>
+						<input
+							name="patient_email"
+							type="email"
+							autocomplete="email"
+							maxlength="254"
+							required
+						/>
+					</label>
+					<label>
+						<span>{lang === 'eu' ? 'Telefonoa' : 'Teléfono'}</span>
+						<input
+							name="patient_phone"
+							type="tel"
+							autocomplete="tel"
+							maxlength="40"
+						/>
+					</label>
+				</div>
+
+				<label class="terms-row">
+					<input name="terms" type="checkbox" required />
+					<span>
+						{
+							lang === 'eu'
+								? 'Ezeztapen eta pribatutasun baldintzak onartzen ditut.'
+								: 'Acepto las condiciones de cancelación y privacidad.'
+						}
+					</span>
+				</label>
+
+				<Button class="booking-submit">
+					{lang === 'eu' ? 'Ordainketa segurura joan' : 'Ir al pago seguro'}
+				</Button>
+				<p class="booking-note" data-booking-status>
+					{
+						lang === 'eu'
+							? 'Ezeztatu edo aldatu dezakezu hitzordua 24 ordu lehenago arte.'
+							: 'Puedes cancelar o cambiar la cita hasta 24 horas antes.'
+					}
+				</p>
+			</form>
+
+			<aside class="booking-summary">
+				<h2>{lang === 'eu' ? 'Nola funtzionatzen du' : 'Cómo funciona'}</h2>
+				<ol>
+					<li>
+						{
+							lang === 'eu'
+								? 'Saioa eta eguna aukeratu.'
+								: 'Elige sesión y día.'
+						}
+					</li>
+					<li>
+						{
+							lang === 'eu'
+								? 'Ordu erabilgarria hautatu.'
+								: 'Selecciona una hora disponible.'
+						}
+					</li>
+					<li>
+						{
+							lang === 'eu'
+								? 'Ordainketa segurua egin.'
+								: 'Completa el pago seguro.'
+						}
+					</li>
+					<li>
+						{
+							lang === 'eu'
+								? 'Email bidez jasoko duzu baieztapena.'
+								: 'Recibirás la confirmación por email.'
+						}
+					</li>
+				</ol>
+			</aside>
+		</div>
+	</Container>
+</Layout>
+
+<script>
+	const apiBase = import.meta.env.PUBLIC_BOOKING_API_URL || '';
+	const root = document.querySelector('[data-booking-root]');
+	const form = document.querySelector<HTMLFormElement>('[data-booking-form]');
+	const slotList = document.querySelector('[data-slot-list]');
+	const status = document.querySelector('[data-booking-status]');
+	const banner = document.querySelector('[data-booking-banner]');
+	const dateInput =
+		document.querySelector<HTMLInputElement>('[data-date-input]');
+	const submitButton =
+		form?.querySelector<HTMLButtonElement>('.booking-submit');
+
+	const lang = document.documentElement.lang === 'eu' ? 'eu' : 'es';
+	const messages = {
+		es: {
+			loading: 'Buscando horarios...',
+			noSlots: 'No hay horarios disponibles para ese día.',
+			loadError: 'No se han podido cargar las horas. Inténtalo de nuevo.',
+			pickSlot: 'Selecciona una hora disponible.',
+			preparing: 'Preparando pago seguro...',
+			slotTaken: 'Esa hora se acaba de ocupar. Elige otra, por favor.',
+			checkoutError: 'No se ha podido iniciar el pago. Llámanos para reservar.',
+			success:
+				'Pago recibido: tu cita está confirmada. Te llegará un email con los detalles.',
+			cancelled: 'El pago se ha cancelado. Puedes intentarlo de nuevo.'
+		},
+		eu: {
+			loading: 'Ordutegiak bilatzen...',
+			noSlots: 'Ez dago ordu erabilgarririk egun horretarako.',
+			loadError: 'Ezin izan dira orduak kargatu. Saiatu berriro.',
+			pickSlot: 'Aukeratu ordu erabilgarri bat.',
+			preparing: 'Ordainketa segurua prestatzen...',
+			slotTaken: 'Ordu hori bete berri da. Aukeratu beste bat, mesedez.',
+			checkoutError:
+				'Ezin izan da ordainketa hasi. Deitu iezaguzu erreserbatzeko.',
+			success:
+				'Ordainketa jasota: zure hitzordua baieztatuta dago. Email bat jasoko duzu.',
+			cancelled:
+				'Ordainketa bertan behera geratu da. Saiatu berriro nahi duzunean.'
+		}
+	}[lang];
+
+	let selectedSlot: string | null = null;
+	let loadSequence = 0;
+
+	function setStatus(message: string) {
+		if (status) status.textContent = message;
+	}
+
+	function showSlotMessage(message: string) {
+		if (!slotList) return;
+		slotList.textContent = '';
+		const note = document.createElement('p');
+		note.textContent = message;
+		slotList.append(note);
+	}
+
+	function renderSlots(slots: { starts_at: string; label: string }[]) {
+		if (!slotList) return;
+		slotList.textContent = '';
+		for (const slot of slots) {
+			const button = document.createElement('button');
+			button.type = 'button';
+			button.className = 'slot-button';
+			button.dataset.start = slot.starts_at;
+			button.textContent = slot.label;
+			slotList.append(button);
+		}
+	}
+
+	async function loadSlots() {
+		if (!form || !slotList) return;
+		const data = new FormData(form);
+		const serviceId = String(data.get('service_id') || 'session_60');
+		const date = String(data.get('date') || '');
+
+		if (!date) return;
+
+		const sequence = ++loadSequence;
+		showSlotMessage(messages.loading);
+
+		const query = new URLSearchParams({ service_id: serviceId, date });
+		const response = await fetch(`${apiBase}/api/availability?${query}`);
+		if (sequence !== loadSequence) return;
+		if (!response.ok) throw new Error('availability_failed');
+
+		const payload = await response.json();
+		if (sequence !== loadSequence) return;
+
+		if (!payload.slots?.length) {
+			showSlotMessage(messages.noSlots);
+			return;
+		}
+		renderSlots(payload.slots);
+	}
+
+	function refreshSlots() {
+		selectedSlot = null;
+		loadSlots().catch(() => showSlotMessage(messages.loadError));
+	}
+
+	if (dateInput) {
+		const today = new Date();
+		dateInput.min = today.toISOString().slice(0, 10);
+		today.setDate(today.getDate() + 90);
+		dateInput.max = today.toISOString().slice(0, 10);
+	}
+
+	const bookingResult = new URLSearchParams(window.location.search).get(
+		'booking'
+	);
+	if (
+		banner &&
+		(bookingResult === 'success' || bookingResult === 'cancelled')
+	) {
+		banner.textContent =
+			bookingResult === 'success' ? messages.success : messages.cancelled;
+		banner.classList.add(
+			bookingResult === 'success' ? 'is-success' : 'is-notice'
+		);
+		banner.removeAttribute('hidden');
+		history.replaceState(null, '', window.location.pathname);
+	}
+
+	root?.addEventListener('change', event => {
+		const target = event.target;
+		if (
+			target instanceof HTMLInputElement ||
+			target instanceof HTMLSelectElement
+		) {
+			if (target.name === 'date' || target.name === 'service_id') {
+				refreshSlots();
+			}
+		}
+	});
+
+	slotList?.addEventListener('click', event => {
+		const target = event.target;
+		if (!(target instanceof HTMLButtonElement)) return;
+		selectedSlot = target.dataset.start ?? null;
+		slotList
+			.querySelectorAll('.slot-button')
+			.forEach(button => button.removeAttribute('aria-pressed'));
+		target.setAttribute('aria-pressed', 'true');
+	});
+
+	form?.addEventListener('submit', event => {
+		event.preventDefault();
+		if (!selectedSlot) {
+			setStatus(messages.pickSlot);
+			return;
+		}
+		const data = new FormData(form);
+		setStatus(messages.preparing);
+		if (submitButton) submitButton.disabled = true;
+
+		fetch(`${apiBase}/api/bookings/checkout`, {
+			method: 'POST',
+			headers: { 'content-type': 'application/json' },
+			body: JSON.stringify({
+				service_id: data.get('service_id'),
+				starts_at: selectedSlot,
+				patient_name: data.get('patient_name'),
+				patient_email: data.get('patient_email'),
+				patient_phone: data.get('patient_phone') || null,
+				patient_locale: lang,
+				terms_accepted: data.get('terms') === 'on'
+			})
+		})
+			.then(async response => {
+				const payload = await response.json();
+				if (!response.ok) throw new Error(payload.error || 'checkout_failed');
+				window.location.href = payload.checkout_url;
+			})
+			.catch((error: Error) => {
+				if (submitButton) submitButton.disabled = false;
+				if (error.message === 'slot_unavailable') {
+					setStatus(messages.slotTaken);
+					refreshSlots();
+				} else {
+					setStatus(messages.checkoutError);
+				}
+			});
+	});
+</script>
+
+<!-- is:global because the slot buttons are created in JS at runtime —
+     Astro-scoped styles never match them. All selectors are class-anchored. -->
+<style is:global>
+	.booking-page {
+		padding-top: var(--s7);
+		padding-bottom: var(--s7);
+	}
+
+	.booking-hero {
+		max-width: 760px;
+		margin-bottom: var(--s6);
+	}
+
+	.booking-kicker {
+		margin: 0 0 var(--s2);
+		color: var(--theme-secondary-600);
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.booking-hero h1 {
+		margin: 0 0 var(--s3);
+		font-size: clamp(2rem, 4vw, 4rem);
+		letter-spacing: -0.02em;
+		line-height: 1.02;
+	}
+
+	.booking-hero p {
+		color: var(--theme-text-secondary);
+	}
+
+	.booking-banner {
+		margin: 0 0 var(--s5);
+		padding: var(--s3) var(--s5);
+		border: 1px solid var(--grey-200);
+		border-radius: 1rem;
+		font-weight: 600;
+	}
+
+	.booking-banner.is-success {
+		border-color: var(--theme-primary-300);
+		background: var(--theme-primary-100);
+		color: var(--theme-primary-800);
+	}
+
+	.booking-banner.is-notice {
+		background: var(--grey-100);
+		color: var(--grey-700);
+	}
+
+	.booking-shell {
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+		gap: var(--s5);
+		align-items: start;
+	}
+
+	.booking-panel,
+	.booking-summary {
+		padding: var(--s6);
+		border: 1px solid var(--grey-200);
+		border-radius: 1.5rem;
+		background: var(--theme-bg);
+	}
+
+	.booking-panel {
+		display: grid;
+		gap: var(--s4);
+		box-shadow: var(--shadow-md);
+	}
+
+	.booking-panel label {
+		display: grid;
+		gap: var(--s);
+		color: var(--grey-800);
+		font-size: 0.9rem;
+		font-weight: 600;
+	}
+
+	.booking-panel input,
+	.booking-panel select,
+	.booking-panel textarea {
+		width: 100%;
+		min-height: 48px;
+		padding: 0.7rem 0.9rem;
+		border: 1.5px solid var(--grey-300);
+		border-radius: 0.8rem;
+		background: var(--theme-bg);
+		color: var(--theme-on-bg);
+		font-family: inherit;
+		font-size: 1rem;
+		transition:
+			border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.booking-panel input:hover,
+	.booking-panel select:hover {
+		border-color: var(--grey-400);
+	}
+
+	.booking-panel input:focus-visible,
+	.booking-panel select:focus-visible {
+		border-color: var(--theme-primary);
+		outline: none;
+		box-shadow: 0 0 0 4px rgb(69 130 149 / 0.15);
+	}
+
+	.slot-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+		gap: var(--s2);
+		min-height: 54px;
+		padding: var(--s4);
+		border: 1.5px dashed var(--grey-300);
+		border-radius: 1rem;
+		background: var(--grey-50);
+	}
+
+	.slot-list p {
+		grid-column: 1 / -1;
+		align-self: center;
+		margin: 0;
+		color: var(--theme-text-secondary);
+		font-size: 0.95rem;
+	}
+
+	.slot-button {
+		min-height: 44px;
+		border: 1.5px solid var(--theme-primary-300);
+		border-radius: 100px;
+		background: var(--theme-bg);
+		color: var(--theme-primary-700);
+		font-family: inherit;
+		font-size: 0.95rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		cursor: pointer;
+		transition:
+			background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.slot-button:hover {
+		border-color: var(--theme-primary-400);
+		background: var(--theme-primary-100);
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.slot-button:focus-visible {
+		outline: 2px solid var(--theme-primary);
+		outline-offset: 2px;
+	}
+
+	.slot-button[aria-pressed='true'] {
+		border-color: transparent;
+		background: var(--theme-container-gradient);
+		color: var(--theme-on-primary);
+		box-shadow: var(--shadow-md);
+	}
+
+	.booking-fields {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--s3);
+	}
+
+	.terms-row {
+		display: flex !important;
+		grid-template-columns: none !important;
+		align-items: center;
+		gap: var(--s2);
+		font-weight: 500 !important;
+	}
+
+	.terms-row input {
+		width: 20px;
+		min-height: 20px;
+		accent-color: var(--theme-primary);
+	}
+
+	.booking-submit {
+		min-height: 48px;
+	}
+
+	.booking-note {
+		margin: 0;
+		color: var(--theme-text-secondary);
+		font-size: 0.92rem;
+	}
+
+	.booking-summary h2 {
+		margin-top: 0;
+		font-size: 1.3rem;
+		letter-spacing: -0.01em;
+	}
+
+	.booking-summary ol {
+		display: grid;
+		gap: var(--s3);
+		margin: 0;
+		padding-left: 1.4rem;
+		color: var(--grey-700);
+	}
+
+	.booking-summary li::marker {
+		color: var(--theme-primary);
+		font-weight: 700;
+	}
+
+	@media (max-width: 860px) {
+		.booking-shell,
+		.booking-fields {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.booking-panel input,
+		.booking-panel select,
+		.slot-button {
+			transition: none;
+		}
+	}
+</style>

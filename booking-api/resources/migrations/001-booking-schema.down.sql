@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS audit_log;
+--;;
+DROP TABLE IF EXISTS notification_outbox;
+--;;
+DROP TABLE IF EXISTS bookings;
+--;;
+DROP TABLE IF EXISTS time_blocks;
+--;;
+DROP TABLE IF EXISTS availability_windows;
+--;;
+DROP TABLE IF EXISTS booking_admins;
+--;;
+DROP TABLE IF EXISTS booking_staff;
+--;;
+DROP TABLE IF EXISTS booking_services;

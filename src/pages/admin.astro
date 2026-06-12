@@ -1,0 +1,1536 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/index.css';
+import LogoWhite from '@images/logos/logo-white-horizontal.svg';
+import Isotipo from '@images/logos/isotipo-white.svg';
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>Panel de citas | Laguntza Fisioterapia</title>
+	</head>
+
+	<body class="admin">
+		<div class="glow" aria-hidden="true"></div>
+
+		<!-- Login -->
+		<section class="login" data-login hidden>
+			<form class="login-card fade-up" data-login-form>
+				<LogoWhite class="login-logo" />
+				<div>
+					<p class="eyebrow">Acceso restringido</p>
+					<h1>Panel de citas</h1>
+				</div>
+				<label>
+					<span>Email</span>
+					<input
+						name="email"
+						type="email"
+						autocomplete="username"
+						maxlength="254"
+						required
+					/>
+				</label>
+				<label>
+					<span>Contraseña</span>
+					<input
+						name="password"
+						type="password"
+						autocomplete="current-password"
+						required
+					/>
+				</label>
+				<button class="button-primary" type="submit">Entrar</button>
+				<p class="form-status" data-login-status></p>
+			</form>
+		</section>
+
+		<!-- Panel -->
+		<div class="shell" data-shell hidden>
+			<header class="topbar">
+				<div class="topbar-inner">
+					<Isotipo class="topbar-mark" />
+					<div class="topbar-brand">
+						<p class="topbar-name">Laguntza Fisioterapia</p>
+						<p class="topbar-role">Panel de citas</p>
+					</div>
+					<div class="topbar-session">
+						<span data-session-email></span>
+						<button class="button-ghost" type="button" data-logout>
+							Salir
+						</button>
+					</div>
+				</div>
+			</header>
+
+			<main class="content">
+				<section class="stats fade-up">
+					<article class="stat">
+						<p class="stat-value" data-stat-today>–</p>
+						<p class="stat-label">Citas hoy</p>
+					</article>
+					<article class="stat">
+						<p class="stat-value" data-stat-period>–</p>
+						<p class="stat-label">En el periodo</p>
+					</article>
+					<article class="stat">
+						<p class="stat-value" data-stat-pending>–</p>
+						<p class="stat-label">Pago pendiente</p>
+					</article>
+				</section>
+
+				<div class="layout">
+					<section class="panel agenda fade-up">
+						<div class="panel-head">
+							<div>
+								<p class="eyebrow">Agenda</p>
+								<h2>Citas</h2>
+							</div>
+							<div class="agenda-controls">
+								<label>
+									<span>Desde</span>
+									<input type="date" data-agenda-date />
+								</label>
+								<label>
+									<span>Periodo</span>
+									<select data-agenda-range>
+										<option value="1">1 día</option>
+										<option value="7" selected>7 días</option>
+										<option value="30">30 días</option>
+									</select>
+								</label>
+								<button class="button-ghost" type="button" data-agenda-reload>
+									Actualizar
+								</button>
+							</div>
+						</div>
+						<div class="agenda-list" data-agenda-list>
+							<p class="muted">Cargando citas...</p>
+						</div>
+					</section>
+
+					<aside class="panel actions fade-up">
+						<nav class="tabs" role="tablist" aria-label="Acciones">
+							<button
+								class="tab is-active"
+								type="button"
+								role="tab"
+								data-tab="manual"
+							>
+								Cita
+							</button>
+							<button class="tab" type="button" role="tab" data-tab="horario">
+								Horario
+							</button>
+							<button class="tab" type="button" role="tab" data-tab="bloqueo">
+								Bloqueo
+							</button>
+							<button class="tab" type="button" role="tab" data-tab="avisos">
+								Avisos
+							</button>
+						</nav>
+
+						<section data-tab-panel="manual">
+							<h2>Nueva cita manual</h2>
+							<p class="muted">
+								Para citas por teléfono o WhatsApp. Se confirma sin pago y envía
+								email al paciente.
+							</p>
+							<form class="stack" data-manual-form>
+								<label>
+									<span>Sesión</span>
+									<select name="service_id" data-service-select required>
+									</select>
+								</label>
+								<div class="row">
+									<label>
+										<span>Día</span>
+										<input name="date" type="date" required />
+									</label>
+									<label>
+										<span>Hora</span>
+										<input name="time" type="time" step="900" required />
+									</label>
+								</div>
+								<label>
+									<span>Nombre</span>
+									<input name="patient_name" maxlength="120" required />
+								</label>
+								<div class="row">
+									<label>
+										<span>Email</span>
+										<input
+											name="patient_email"
+											type="email"
+											maxlength="254"
+											required
+										/>
+									</label>
+									<label>
+										<span>Teléfono</span>
+										<input name="patient_phone" type="tel" maxlength="40" />
+									</label>
+								</div>
+								<label>
+									<span>Notas</span>
+									<textarea name="notes" rows="2" maxlength="2000"></textarea>
+								</label>
+								<button class="button-primary" type="submit">
+									Crear cita
+								</button>
+							</form>
+						</section>
+
+						<section data-tab-panel="horario" hidden>
+							<h2>Horario semanal</h2>
+							<p class="muted">
+								Se repite todas las semanas. Para vacaciones o ausencias usa la
+								pestaña Bloqueo.
+							</p>
+							<div class="recurring-list" data-recurring-list></div>
+							<form class="stack" data-recurring-form>
+								<label>
+									<span>Día de la semana</span>
+									<select name="weekday" required>
+										<option value="1">Lunes</option>
+										<option value="2">Martes</option>
+										<option value="3">Miércoles</option>
+										<option value="4">Jueves</option>
+										<option value="5">Viernes</option>
+										<option value="6">Sábado</option>
+										<option value="7">Domingo</option>
+									</select>
+								</label>
+								<div class="row">
+									<label>
+										<span>Desde</span>
+										<input name="from" type="time" step="900" required />
+									</label>
+									<label>
+										<span>Hasta</span>
+										<input name="to" type="time" step="900" required />
+									</label>
+								</div>
+								<button class="button-secondary" type="submit">
+									Añadir al horario
+								</button>
+							</form>
+
+							<hr class="divider" />
+
+							<h2>Día puntual</h2>
+							<p class="muted">
+								Abre horas sueltas un día concreto, fuera del horario semanal.
+							</p>
+							<form class="stack" data-window-form>
+								<label>
+									<span>Día</span>
+									<input name="date" type="date" required />
+								</label>
+								<div class="row">
+									<label>
+										<span>Desde</span>
+										<input name="from" type="time" step="900" required />
+									</label>
+									<label>
+										<span>Hasta</span>
+										<input name="to" type="time" step="900" required />
+									</label>
+								</div>
+								<label>
+									<span>Nota</span>
+									<input name="note" maxlength="200" />
+								</label>
+								<button class="button-secondary" type="submit">
+									Abrir horario
+								</button>
+							</form>
+						</section>
+
+						<section data-tab-panel="bloqueo" hidden>
+							<h2>Bloquear horario</h2>
+							<p class="muted">
+								Vacaciones, ausencias o pausas: estas horas dejan de ofrecerse
+								online.
+							</p>
+							<form class="stack" data-block-form>
+								<label class="check-row">
+									<input
+										name="full_days"
+										type="checkbox"
+										data-block-full-days
+									/>
+									<span>Días completos (cierre o vacaciones)</span>
+								</label>
+
+								<div class="stack" data-block-hours>
+									<label>
+										<span>Día</span>
+										<input name="date" type="date" required />
+									</label>
+									<div class="row">
+										<label>
+											<span>Desde</span>
+											<input name="from" type="time" step="900" required />
+										</label>
+										<label>
+											<span>Hasta</span>
+											<input name="to" type="time" step="900" required />
+										</label>
+									</div>
+								</div>
+
+								<div class="row" data-block-days hidden>
+									<label>
+										<span>Desde el día</span>
+										<input name="from_date" type="date" />
+									</label>
+									<label>
+										<span>Hasta el día</span>
+										<input name="to_date" type="date" />
+									</label>
+								</div>
+
+								<label>
+									<span>Motivo</span>
+									<input name="reason" maxlength="200" />
+								</label>
+								<button class="button-secondary" type="submit">
+									Bloquear
+								</button>
+							</form>
+						</section>
+
+						<section data-tab-panel="avisos" hidden>
+							<h2>Notificaciones</h2>
+							<p class="muted">
+								Envía los emails y avisos de Telegram pendientes.
+							</p>
+							<button
+								class="button-secondary"
+								type="button"
+								data-process-notifications
+							>
+								Procesar pendientes
+							</button>
+						</section>
+					</aside>
+				</div>
+			</main>
+		</div>
+
+		<p class="toast" data-toast role="status" hidden></p>
+
+		<script>
+			const apiBase = import.meta.env.PUBLIC_BOOKING_API_URL || '';
+			const TOKEN_KEY = 'laguntza-admin-token';
+			const EMAIL_KEY = 'laguntza-admin-email';
+
+			const loginView = document.querySelector<HTMLElement>('[data-login]');
+			const loginForm =
+				document.querySelector<HTMLFormElement>('[data-login-form]');
+			const loginStatus = document.querySelector('[data-login-status]');
+			const shell = document.querySelector<HTMLElement>('[data-shell]');
+			const sessionEmail = document.querySelector('[data-session-email]');
+			const agendaList = document.querySelector('[data-agenda-list]');
+			const agendaDate =
+				document.querySelector<HTMLInputElement>('[data-agenda-date]');
+			const agendaRange = document.querySelector<HTMLSelectElement>(
+				'[data-agenda-range]'
+			);
+			const serviceSelect = document.querySelector<HTMLSelectElement>(
+				'[data-service-select]'
+			);
+			const recurringList = document.querySelector('[data-recurring-list]');
+			const toast = document.querySelector<HTMLElement>('[data-toast]');
+			const statToday = document.querySelector('[data-stat-today]');
+			const statPeriod = document.querySelector('[data-stat-period]');
+			const statPending = document.querySelector('[data-stat-pending]');
+
+			const errorMessages: Record<string, string> = {
+				invalid_credentials: 'Email o contraseña incorrectos.',
+				too_many_attempts: 'Demasiados intentos. Espera 15 minutos.',
+				slot_unavailable: 'Esa hora ya está ocupada.',
+				unknown_service: 'Sesión no válida.',
+				invalid_interval: 'Revisa las horas: el fin debe ser posterior.',
+				invalid_patient_name: 'Revisa el nombre.',
+				invalid_patient_email: 'Revisa el email.',
+				invalid_patient_phone: 'Revisa el teléfono.',
+				invalid_range: 'Rango de fechas no válido.',
+				booking_not_found: 'No se ha encontrado la cita.',
+				invalid_recurring_window: 'Revisa el día y las horas del horario.',
+				recurring_window_not_found: 'Ese horario ya no existe.',
+				db_missing: 'La base de datos no está disponible.'
+			};
+
+			const weekdayNames: Record<number, string> = {
+				1: 'Lunes',
+				2: 'Martes',
+				3: 'Miércoles',
+				4: 'Jueves',
+				5: 'Viernes',
+				6: 'Sábado',
+				7: 'Domingo'
+			};
+
+			const statusLabels: Record<string, string> = {
+				pending_payment: 'Pago pendiente',
+				confirmed: 'Confirmada',
+				cancelled: 'Cancelada',
+				completed: 'Completada',
+				no_show: 'No presentado'
+			};
+
+			const dayFormat = new Intl.DateTimeFormat('es-ES', {
+				weekday: 'long',
+				day: 'numeric',
+				month: 'long',
+				timeZone: 'Europe/Madrid'
+			});
+			const timeFormat = new Intl.DateTimeFormat('es-ES', {
+				hour: '2-digit',
+				minute: '2-digit',
+				timeZone: 'Europe/Madrid'
+			});
+
+			let toastTimer: number | undefined;
+
+			function showToast(message: string, kind: 'ok' | 'error' = 'ok') {
+				if (!toast) return;
+				toast.textContent = message;
+				toast.classList.toggle('is-error', kind === 'error');
+				toast.removeAttribute('hidden');
+				window.clearTimeout(toastTimer);
+				toastTimer = window.setTimeout(
+					() => toast.setAttribute('hidden', ''),
+					4000
+				);
+			}
+
+			function errorText(code: string) {
+				return (
+					errorMessages[code] ||
+					'No se ha podido completar la operación. Inténtalo de nuevo.'
+				);
+			}
+
+			function token() {
+				return sessionStorage.getItem(TOKEN_KEY);
+			}
+
+			function showLogin() {
+				sessionStorage.removeItem(TOKEN_KEY);
+				sessionStorage.removeItem(EMAIL_KEY);
+				shell?.setAttribute('hidden', '');
+				loginView?.removeAttribute('hidden');
+			}
+
+			function showShell() {
+				loginView?.setAttribute('hidden', '');
+				shell?.removeAttribute('hidden');
+				if (sessionEmail) {
+					sessionEmail.textContent = sessionStorage.getItem(EMAIL_KEY) || '';
+				}
+			}
+
+			async function api(path: string, options: RequestInit = {}) {
+				const response = await fetch(`${apiBase}${path}`, {
+					...options,
+					headers: {
+						'content-type': 'application/json',
+						authorization: `Bearer ${token()}`,
+						...options.headers
+					}
+				});
+				if (response.status === 401) {
+					showLogin();
+					throw new Error('unauthorized');
+				}
+				const payload = await response.json().catch(() => ({}));
+				if (!response.ok) throw new Error(payload.error || 'request_failed');
+				return payload;
+			}
+
+			function toInstant(date: string, time: string) {
+				return new Date(`${date}T${time}`).toISOString();
+			}
+
+			async function withBusy(
+				button: HTMLButtonElement | null,
+				run: () => Promise<void>
+			) {
+				if (button) button.disabled = true;
+				try {
+					await run();
+				} finally {
+					if (button) button.disabled = false;
+				}
+			}
+
+			function quietly(promise: Promise<void>) {
+				promise.catch(error => {
+					if (error.message !== 'unauthorized') {
+						showToast(errorText(error.message), 'error');
+					}
+				});
+			}
+
+			/* ---------- Tabs ---------- */
+
+			const tabButtons =
+				document.querySelectorAll<HTMLButtonElement>('[data-tab]');
+			const tabPanels =
+				document.querySelectorAll<HTMLElement>('[data-tab-panel]');
+
+			tabButtons.forEach(button => {
+				button.addEventListener('click', () => {
+					tabButtons.forEach(other =>
+						other.classList.toggle('is-active', other === button)
+					);
+					tabPanels.forEach(panel => {
+						if (panel.dataset.tabPanel === button.dataset.tab) {
+							panel.removeAttribute('hidden');
+						} else {
+							panel.setAttribute('hidden', '');
+						}
+					});
+				});
+			});
+
+			/* ---------- Agenda ---------- */
+
+			function updateStats(bookings: any[]) {
+				const today = new Date().toDateString();
+				const active = bookings.filter(
+					booking =>
+						booking.status === 'confirmed' ||
+						booking.status === 'pending_payment'
+				);
+				if (statToday) {
+					statToday.textContent = String(
+						active.filter(
+							booking => new Date(booking.starts_at).toDateString() === today
+						).length
+					);
+				}
+				if (statPeriod) statPeriod.textContent = String(active.length);
+				if (statPending) {
+					statPending.textContent = String(
+						bookings.filter(booking => booking.status === 'pending_payment')
+							.length
+					);
+				}
+			}
+
+			function bookingRow(booking: any) {
+				const row = document.createElement('article');
+				row.className = `booking booking--${booking.status}`;
+
+				const time = document.createElement('p');
+				time.className = 'booking-time';
+				time.textContent = `${timeFormat.format(new Date(booking.starts_at))} – ${timeFormat.format(new Date(booking.ends_at))}`;
+
+				const who = document.createElement('div');
+				who.className = 'booking-who';
+				const name = document.createElement('p');
+				name.className = 'booking-name';
+				name.textContent = booking.patient_name;
+				const contact = document.createElement('p');
+				contact.className = 'booking-contact';
+				contact.textContent = [booking.patient_phone, booking.patient_email]
+					.filter(Boolean)
+					.join(' · ');
+				who.append(name, contact);
+
+				const meta = document.createElement('div');
+				meta.className = 'booking-meta';
+				const service = document.createElement('span');
+				service.className = 'pill';
+				service.textContent =
+					booking.service_id === 'session_30' ? '30 min' : '60 min';
+				const source = document.createElement('span');
+				source.className = 'pill';
+				source.textContent = booking.source === 'manual' ? 'Manual' : 'Online';
+				const status = document.createElement('span');
+				status.className = `pill status-${booking.status}`;
+				status.textContent = statusLabels[booking.status] || booking.status;
+				meta.append(service, source, status);
+
+				row.append(time, who, meta);
+
+				const active =
+					booking.status === 'confirmed' ||
+					booking.status === 'pending_payment';
+				if (active) {
+					const cancel = document.createElement('button');
+					cancel.type = 'button';
+					cancel.className = 'button-danger';
+					cancel.textContent = 'Cancelar';
+					let armed = false;
+					cancel.addEventListener('click', () => {
+						if (!armed) {
+							armed = true;
+							cancel.textContent = '¿Confirmar?';
+							window.setTimeout(() => {
+								armed = false;
+								cancel.textContent = 'Cancelar';
+							}, 4000);
+							return;
+						}
+						quietly(
+							withBusy(cancel, async () => {
+								await api(`/api/admin/bookings/${booking.id}/cancel`, {
+									method: 'POST',
+									body: JSON.stringify({ reason: 'recepcion' })
+								});
+								showToast('Cita cancelada.');
+								await loadAgenda();
+							})
+						);
+					});
+					row.append(cancel);
+				}
+				return row;
+			}
+
+			async function loadAgenda() {
+				if (!agendaList || !agendaDate || !agendaRange) return;
+				const from = new Date(`${agendaDate.value}T00:00`);
+				const to = new Date(from);
+				to.setDate(to.getDate() + Number(agendaRange.value));
+
+				const query = new URLSearchParams({
+					from: from.toISOString(),
+					to: to.toISOString()
+				});
+				const payload = await api(`/api/admin/bookings?${query}`);
+				const bookings = payload.bookings || [];
+
+				updateStats(bookings);
+				agendaList.textContent = '';
+				if (!bookings.length) {
+					const empty = document.createElement('p');
+					empty.className = 'muted';
+					empty.textContent = 'No hay citas en este periodo.';
+					agendaList.append(empty);
+					return;
+				}
+
+				let currentDay = '';
+				for (const booking of bookings) {
+					const day = dayFormat.format(new Date(booking.starts_at));
+					if (day !== currentDay) {
+						currentDay = day;
+						const heading = document.createElement('h3');
+						heading.className = 'agenda-day';
+						heading.textContent = day;
+						agendaList.append(heading);
+					}
+					agendaList.append(bookingRow(booking));
+				}
+			}
+
+			function refreshAgenda() {
+				quietly(loadAgenda());
+			}
+
+			/* ---------- Weekly schedule ---------- */
+
+			async function loadRecurring() {
+				if (!recurringList) return;
+				const payload = await api('/api/admin/recurring-windows');
+				const windows = payload.recurring_windows || [];
+				recurringList.textContent = '';
+
+				if (!windows.length) {
+					const empty = document.createElement('p');
+					empty.className = 'muted';
+					empty.textContent = 'Sin horario semanal todavía.';
+					recurringList.append(empty);
+					return;
+				}
+
+				for (const window_ of windows) {
+					const row = document.createElement('div');
+					row.className = 'recurring';
+
+					const label = document.createElement('p');
+					label.className = 'recurring-label';
+					label.textContent = `${weekdayNames[window_.weekday]} · ${window_.start_time} – ${window_.end_time}`;
+
+					const remove = document.createElement('button');
+					remove.type = 'button';
+					remove.className = 'button-danger';
+					remove.textContent = 'Quitar';
+					remove.addEventListener('click', () => {
+						quietly(
+							withBusy(remove, async () => {
+								await api(
+									`/api/admin/recurring-windows/${window_.id}/deactivate`,
+									{ method: 'POST' }
+								);
+								showToast('Horario eliminado.');
+								await loadRecurring();
+							})
+						);
+					});
+
+					row.append(label, remove);
+					recurringList.append(row);
+				}
+			}
+
+			function refreshRecurring() {
+				quietly(loadRecurring());
+			}
+
+			/* ---------- Services ---------- */
+
+			async function loadServices() {
+				if (!serviceSelect) return;
+				const response = await fetch(`${apiBase}/api/services`);
+				const payload = await response.json();
+				serviceSelect.textContent = '';
+				for (const service of payload.services || []) {
+					const option = document.createElement('option');
+					option.value = service.id;
+					option.textContent = service['name-es'] || service.id;
+					serviceSelect.append(option);
+				}
+			}
+
+			/* ---------- Forms ---------- */
+
+			function formButton(form: HTMLFormElement | null) {
+				return (
+					form?.querySelector<HTMLButtonElement>('button[type="submit"]') ??
+					null
+				);
+			}
+
+			loginForm?.addEventListener('submit', event => {
+				event.preventDefault();
+				const data = new FormData(loginForm);
+				const email = String(data.get('email') || '');
+				withBusy(formButton(loginForm), async () => {
+					const response = await fetch(`${apiBase}/api/admin/login`, {
+						method: 'POST',
+						headers: { 'content-type': 'application/json' },
+						body: JSON.stringify({
+							email,
+							password: data.get('password')
+						})
+					});
+					const payload = await response.json().catch(() => ({}));
+					if (!response.ok) {
+						throw new Error(payload.error || 'invalid_credentials');
+					}
+					sessionStorage.setItem(TOKEN_KEY, payload.token);
+					sessionStorage.setItem(EMAIL_KEY, email);
+					loginForm.reset();
+					if (loginStatus) loginStatus.textContent = '';
+					showShell();
+					refreshAgenda();
+					refreshRecurring();
+				}).catch(error => {
+					if (loginStatus) {
+						loginStatus.textContent = errorText(error.message);
+					}
+				});
+			});
+
+			document
+				.querySelector('[data-logout]')
+				?.addEventListener('click', showLogin);
+
+			const manualForm =
+				document.querySelector<HTMLFormElement>('[data-manual-form]');
+			manualForm?.addEventListener('submit', event => {
+				event.preventDefault();
+				const data = new FormData(manualForm);
+				quietly(
+					withBusy(formButton(manualForm), async () => {
+						await api('/api/admin/bookings/manual', {
+							method: 'POST',
+							body: JSON.stringify({
+								service_id: data.get('service_id'),
+								starts_at: toInstant(
+									String(data.get('date')),
+									String(data.get('time'))
+								),
+								patient_name: data.get('patient_name'),
+								patient_email: data.get('patient_email'),
+								patient_phone: data.get('patient_phone') || null,
+								notes: data.get('notes') || null,
+								patient_locale: 'es'
+							})
+						});
+						manualForm.reset();
+						showToast('Cita creada y confirmada.');
+						await loadAgenda();
+					})
+				);
+			});
+
+			const recurringForm = document.querySelector<HTMLFormElement>(
+				'[data-recurring-form]'
+			);
+			recurringForm?.addEventListener('submit', event => {
+				event.preventDefault();
+				const data = new FormData(recurringForm);
+				quietly(
+					withBusy(formButton(recurringForm), async () => {
+						await api('/api/admin/recurring-windows', {
+							method: 'POST',
+							body: JSON.stringify({
+								weekday: Number(data.get('weekday')),
+								start_time: data.get('from'),
+								end_time: data.get('to')
+							})
+						});
+						recurringForm.reset();
+						showToast('Horario semanal añadido.');
+						await loadRecurring();
+					})
+				);
+			});
+
+			const windowForm =
+				document.querySelector<HTMLFormElement>('[data-window-form]');
+			windowForm?.addEventListener('submit', event => {
+				event.preventDefault();
+				const data = new FormData(windowForm);
+				quietly(
+					withBusy(formButton(windowForm), async () => {
+						await api('/api/admin/availability-windows', {
+							method: 'POST',
+							body: JSON.stringify({
+								starts_at: toInstant(
+									String(data.get('date')),
+									String(data.get('from'))
+								),
+								ends_at: toInstant(
+									String(data.get('date')),
+									String(data.get('to'))
+								),
+								note: data.get('note') || null
+							})
+						});
+						windowForm.reset();
+						showToast('Horario abierto.');
+					})
+				);
+			});
+
+			const blockForm =
+				document.querySelector<HTMLFormElement>('[data-block-form]');
+			const blockFullDays = document.querySelector<HTMLInputElement>(
+				'[data-block-full-days]'
+			);
+			const blockHours =
+				document.querySelector<HTMLElement>('[data-block-hours]');
+			const blockDays =
+				document.querySelector<HTMLElement>('[data-block-days]');
+
+			function setBlockMode(fullDays: boolean) {
+				blockHours
+					?.querySelectorAll('input')
+					.forEach(input => (input.required = !fullDays));
+				blockDays
+					?.querySelectorAll('input')
+					.forEach(
+						(input, index) => (input.required = fullDays && index === 0)
+					);
+				if (fullDays) {
+					blockHours?.setAttribute('hidden', '');
+					blockDays?.removeAttribute('hidden');
+				} else {
+					blockDays?.setAttribute('hidden', '');
+					blockHours?.removeAttribute('hidden');
+				}
+			}
+
+			blockFullDays?.addEventListener('change', () =>
+				setBlockMode(blockFullDays.checked)
+			);
+
+			function blockInterval(data: FormData) {
+				if (blockFullDays?.checked) {
+					const fromDate = String(data.get('from_date'));
+					const toDate = String(data.get('to_date') || '') || fromDate;
+					const end = new Date(`${toDate}T00:00`);
+					end.setDate(end.getDate() + 1);
+					return {
+						starts_at: toInstant(fromDate, '00:00'),
+						ends_at: end.toISOString()
+					};
+				}
+				return {
+					starts_at: toInstant(
+						String(data.get('date')),
+						String(data.get('from'))
+					),
+					ends_at: toInstant(String(data.get('date')), String(data.get('to')))
+				};
+			}
+
+			blockForm?.addEventListener('submit', event => {
+				event.preventDefault();
+				const data = new FormData(blockForm);
+				quietly(
+					withBusy(formButton(blockForm), async () => {
+						await api('/api/admin/time-blocks', {
+							method: 'POST',
+							body: JSON.stringify({
+								...blockInterval(data),
+								reason: data.get('reason') || null
+							})
+						});
+						blockForm.reset();
+						setBlockMode(false);
+						showToast('Horario bloqueado.');
+						await loadAgenda();
+					})
+				);
+			});
+
+			const processButton = document.querySelector<HTMLButtonElement>(
+				'[data-process-notifications]'
+			);
+			processButton?.addEventListener('click', () => {
+				quietly(
+					withBusy(processButton, async () => {
+						const payload = await api('/api/admin/notifications/process', {
+							method: 'POST'
+						});
+						showToast(`${payload.processed ?? 0} notificaciones procesadas.`);
+					})
+				);
+			});
+
+			/* ---------- Boot ---------- */
+
+			if (agendaDate) {
+				agendaDate.value = new Date().toISOString().slice(0, 10);
+			}
+			agendaDate?.addEventListener('change', refreshAgenda);
+			agendaRange?.addEventListener('change', refreshAgenda);
+			document
+				.querySelector('[data-agenda-reload]')
+				?.addEventListener('click', refreshAgenda);
+
+			loadServices().catch(() => {});
+
+			if (token()) {
+				showShell();
+				refreshAgenda();
+				refreshRecurring();
+			} else {
+				showLogin();
+			}
+		</script>
+
+		{
+			/* is:global because agenda rows, pills, and buttons are built in
+		    JS at runtime — Astro-scoped styles never match them. */
+		}
+		<style is:global>
+			/* Author styles below set display on these containers, which would
+			   defeat the hidden attribute without this rule. */
+			[hidden] {
+				display: none !important;
+			}
+
+			.admin {
+				min-height: 100vh;
+				margin: 0;
+				background-color: #0a0e10;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+				color: #fff;
+				font-family: var(--theme-font-family);
+			}
+
+			.glow {
+				position: fixed;
+				inset: 0;
+				pointer-events: none;
+				background:
+					radial-gradient(
+						700px 420px at 10% -8%,
+						rgb(69 130 149 / 0.32),
+						transparent 70%
+					),
+					radial-gradient(
+						520px 340px at 102% 4%,
+						rgb(232 148 74 / 0.09),
+						transparent 70%
+					);
+			}
+
+			.fade-up {
+				animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+			}
+
+			@keyframes fade-up {
+				from {
+					opacity: 0;
+					transform: translateY(32px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.eyebrow {
+				margin: 0 0 var(--s2);
+				color: var(--theme-secondary);
+				font-size: 0.78rem;
+				font-weight: 700;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+			}
+
+			h1,
+			h2 {
+				margin: 0 0 var(--s3);
+				font-weight: 700;
+				letter-spacing: -0.02em;
+				line-height: 1.1;
+			}
+
+			h1 {
+				font-size: 1.8rem;
+			}
+
+			h2 {
+				font-size: 1.2rem;
+			}
+
+			.muted {
+				margin: 0 0 var(--s4);
+				color: rgb(255 255 255 / 0.55);
+				font-size: 0.92rem;
+				line-height: 1.5;
+			}
+
+			.divider {
+				margin: var(--s5) 0;
+				border: none;
+				border-top: 1px solid rgb(255 255 255 / 0.08);
+			}
+
+			/* ---------- Login ---------- */
+
+			.login {
+				position: relative;
+				display: grid;
+				place-items: center;
+				min-height: 100vh;
+				padding: var(--s5);
+			}
+
+			.login-card {
+				display: grid;
+				gap: var(--s4);
+				width: min(420px, 100%);
+				padding: var(--s7) var(--s6);
+				border: 1px solid rgb(255 255 255 / 0.1);
+				border-radius: 1.75rem;
+				background: rgb(255 255 255 / 0.03);
+				backdrop-filter: blur(10px);
+				box-shadow: var(--shadow-2xl);
+			}
+
+			.login-logo {
+				width: min(250px, 75%);
+				height: auto;
+				justify-self: start;
+				margin-bottom: var(--s2);
+			}
+
+			.form-status {
+				min-height: 1.2em;
+				margin: 0;
+				color: var(--theme-secondary-300);
+				font-size: 0.9rem;
+			}
+
+			/* ---------- Topbar ---------- */
+
+			.topbar {
+				position: sticky;
+				top: 0;
+				z-index: var(--z-index-app-bar);
+				border-bottom: 1px solid rgb(255 255 255 / 0.08);
+				background: rgb(10 14 16 / 0.75);
+				backdrop-filter: blur(10px);
+			}
+
+			.topbar-inner {
+				display: flex;
+				align-items: center;
+				gap: var(--s4);
+				max-width: 1280px;
+				margin: 0 auto;
+				padding: var(--s3) var(--s5);
+			}
+
+			.topbar-mark {
+				width: 42px;
+				height: 42px;
+				flex-shrink: 0;
+			}
+
+			.topbar-name {
+				margin: 0;
+				font-weight: 700;
+				letter-spacing: -0.01em;
+			}
+
+			.topbar-role {
+				margin: 0;
+				color: var(--theme-primary-300);
+				font-size: 0.8rem;
+				font-weight: 500;
+			}
+
+			.topbar-session {
+				display: flex;
+				align-items: center;
+				gap: var(--s3);
+				margin-left: auto;
+				color: rgb(255 255 255 / 0.55);
+				font-size: 0.88rem;
+			}
+
+			/* ---------- Layout ---------- */
+
+			.content {
+				position: relative;
+				max-width: 1280px;
+				margin: 0 auto;
+				padding: var(--s5) var(--s5) var(--s9);
+			}
+
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: var(--s4);
+				margin-bottom: var(--s5);
+			}
+
+			.stat {
+				padding: var(--s4) var(--s5);
+				border: 1px solid rgb(255 255 255 / 0.08);
+				border-radius: 1.25rem;
+				background: rgb(255 255 255 / 0.02);
+			}
+
+			.stat-value {
+				margin: 0;
+				font-size: 2rem;
+				font-weight: 700;
+				font-variant-numeric: tabular-nums;
+				letter-spacing: -0.02em;
+				color: var(--theme-primary-300);
+			}
+
+			.stat-label {
+				margin: 0;
+				color: rgb(255 255 255 / 0.55);
+				font-size: 0.85rem;
+				font-weight: 500;
+			}
+
+			.layout {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) 400px;
+				gap: var(--s5);
+				align-items: start;
+			}
+
+			.panel {
+				padding: var(--s5);
+				border: 1px solid rgb(255 255 255 / 0.08);
+				border-radius: 1.5rem;
+				background: rgb(255 255 255 / 0.02);
+			}
+
+			.actions {
+				position: sticky;
+				top: calc(var(--s5) + 70px);
+			}
+
+			/* ---------- Tabs ---------- */
+
+			.tabs {
+				display: flex;
+				gap: var(--s);
+				margin-bottom: var(--s5);
+				padding: var(--s);
+				border: 1px solid rgb(255 255 255 / 0.08);
+				border-radius: 100px;
+				background: rgb(0 0 0 / 0.3);
+			}
+
+			.tab {
+				flex: 1;
+				min-height: 38px;
+				padding: 0.35rem 0.6rem;
+				border: none;
+				border-radius: 100px;
+				background: transparent;
+				color: rgb(255 255 255 / 0.6);
+				font-family: inherit;
+				font-size: 0.88rem;
+				font-weight: 600;
+				cursor: pointer;
+				transition:
+					background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+					color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+
+			.tab:hover {
+				color: #fff;
+			}
+
+			.tab.is-active {
+				background: var(--theme-container-gradient);
+				color: #fff;
+			}
+
+			/* ---------- Agenda ---------- */
+
+			.panel-head {
+				display: flex;
+				flex-wrap: wrap;
+				gap: var(--s4);
+				align-items: end;
+				justify-content: space-between;
+				margin-bottom: var(--s4);
+			}
+
+			.agenda-controls {
+				display: flex;
+				flex-wrap: wrap;
+				gap: var(--s3);
+				align-items: end;
+			}
+
+			.agenda-day {
+				margin: var(--s5) 0 var(--s3);
+				color: var(--theme-primary-300);
+				font-size: 0.92rem;
+				font-weight: 700;
+				letter-spacing: 0.04em;
+				text-transform: capitalize;
+			}
+
+			.agenda-day:first-child {
+				margin-top: 0;
+			}
+
+			.booking {
+				display: grid;
+				grid-template-columns: auto minmax(0, 1fr) auto auto;
+				gap: var(--s4);
+				align-items: center;
+				margin-bottom: var(--s2);
+				padding: var(--s3) var(--s4);
+				border: 1px solid rgb(255 255 255 / 0.06);
+				border-left: 3px solid rgb(255 255 255 / 0.14);
+				border-radius: 1rem;
+				background: rgb(255 255 255 / 0.015);
+				transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+
+			.booking:hover {
+				border-color: rgb(69 130 149 / 0.55);
+			}
+
+			.booking--confirmed {
+				border-left-color: var(--theme-primary-400);
+			}
+
+			.booking--pending_payment {
+				border-left-color: var(--theme-secondary);
+			}
+
+			.booking--cancelled,
+			.booking--no_show {
+				opacity: 0.55;
+			}
+
+			.booking-time {
+				margin: 0;
+				font-variant-numeric: tabular-nums;
+				font-weight: 700;
+			}
+
+			.booking-who {
+				min-width: 0;
+			}
+
+			.booking-name {
+				margin: 0;
+				font-weight: 500;
+			}
+
+			.booking-contact {
+				margin: 0;
+				overflow: hidden;
+				color: rgb(255 255 255 / 0.5);
+				font-size: 0.85rem;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.booking-meta {
+				display: flex;
+				flex-wrap: wrap;
+				gap: var(--s2);
+			}
+
+			.pill {
+				padding: 0.2rem 0.7rem;
+				border: 1px solid rgb(255 255 255 / 0.14);
+				border-radius: 100px;
+				color: rgb(255 255 255 / 0.7);
+				font-size: 0.78rem;
+				font-weight: 500;
+				white-space: nowrap;
+			}
+
+			.status-confirmed {
+				border-color: rgb(111 166 183 / 0.6);
+				color: var(--theme-primary-300);
+			}
+
+			.status-pending_payment {
+				border-color: rgb(232 148 74 / 0.6);
+				color: var(--theme-secondary-300);
+			}
+
+			.status-cancelled,
+			.status-no_show {
+				color: rgb(255 255 255 / 0.4);
+				text-decoration: line-through;
+			}
+
+			/* ---------- Weekly schedule ---------- */
+
+			.recurring-list {
+				display: grid;
+				gap: var(--s2);
+				margin-bottom: var(--s4);
+			}
+
+			.recurring {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: var(--s3);
+				padding: var(--s2) var(--s4);
+				border: 1px solid rgb(255 255 255 / 0.08);
+				border-radius: 100px;
+				background: rgb(255 255 255 / 0.02);
+			}
+
+			.recurring-label {
+				margin: 0;
+				font-size: 0.92rem;
+				font-weight: 600;
+				font-variant-numeric: tabular-nums;
+			}
+
+			/* ---------- Forms ---------- */
+
+			.stack {
+				display: grid;
+				gap: var(--s3);
+			}
+
+			.row {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: var(--s3);
+			}
+
+			.row label {
+				min-width: 0;
+			}
+
+			label {
+				display: grid;
+				gap: var(--s);
+				color: rgb(255 255 255 / 0.75);
+				font-size: 0.85rem;
+				font-weight: 600;
+			}
+
+			.check-row {
+				display: flex;
+				align-items: center;
+				gap: var(--s2);
+				font-weight: 500;
+			}
+
+			.check-row input {
+				width: 20px;
+				min-height: 20px;
+				accent-color: var(--theme-primary-400);
+			}
+
+			input,
+			select,
+			textarea {
+				width: 100%;
+				min-width: 0;
+				min-height: 44px;
+				padding: 0.55rem 0.8rem;
+				border: 1px solid rgb(255 255 255 / 0.14);
+				border-radius: 0.8rem;
+				background: rgb(255 255 255 / 0.04);
+				color: #fff;
+				color-scheme: dark;
+				font-family: inherit;
+				font-size: 0.95rem;
+			}
+
+			textarea {
+				resize: vertical;
+			}
+
+			input:focus-visible,
+			select:focus-visible,
+			textarea:focus-visible,
+			button:focus-visible {
+				outline: 2px solid var(--theme-primary-400);
+				outline-offset: 2px;
+			}
+
+			/* ---------- Buttons ---------- */
+
+			.button-primary,
+			.button-secondary,
+			.button-ghost,
+			.button-danger {
+				min-height: 44px;
+				padding: 0.6rem 1.4rem;
+				border: 1px solid transparent;
+				border-radius: var(--theme-button-border-radius);
+				font-family: inherit;
+				font-size: 0.95rem;
+				font-weight: 600;
+				cursor: pointer;
+				transition:
+					transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+					box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+					background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+
+			.button-primary {
+				background: var(--theme-container-gradient);
+				color: #fff;
+			}
+
+			.button-secondary {
+				background: rgb(255 255 255 / 0.06);
+				border-color: rgb(255 255 255 / 0.16);
+				color: #fff;
+			}
+
+			.button-ghost {
+				min-height: 38px;
+				padding: 0.35rem 1rem;
+				background: transparent;
+				border-color: rgb(255 255 255 / 0.2);
+				color: rgb(255 255 255 / 0.75);
+			}
+
+			.button-danger {
+				min-height: 34px;
+				padding: 0.3rem 0.9rem;
+				background: transparent;
+				border-color: rgb(220 38 38 / 0.5);
+				color: #f1aaaa;
+				font-size: 0.85rem;
+			}
+
+			.button-primary:hover,
+			.button-secondary:hover,
+			.button-ghost:hover,
+			.button-danger:hover {
+				transform: translateY(-2px);
+				box-shadow: var(--shadow-lg);
+			}
+
+			button:disabled {
+				opacity: 0.55;
+				cursor: wait;
+				transform: none;
+			}
+
+			/* ---------- Toast ---------- */
+
+			.toast {
+				position: fixed;
+				bottom: var(--s5);
+				left: 50%;
+				z-index: var(--z-index-snackbar);
+				margin: 0;
+				padding: var(--s3) var(--s5);
+				border: 1px solid rgb(111 166 183 / 0.5);
+				border-radius: 100px;
+				background: #18313a;
+				color: #fff;
+				font-size: 0.92rem;
+				font-weight: 500;
+				box-shadow: var(--shadow-2xl);
+				transform: translateX(-50%);
+			}
+
+			.toast.is-error {
+				border-color: rgb(232 148 74 / 0.6);
+				background: #3a220e;
+			}
+
+			@media (max-width: 1200px) {
+				.layout {
+					grid-template-columns: 1fr;
+				}
+
+				.actions {
+					position: static;
+				}
+
+				.stats {
+					grid-template-columns: 1fr;
+				}
+
+				.booking {
+					grid-template-columns: auto minmax(0, 1fr);
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.fade-up {
+					animation: none;
+				}
+
+				.booking,
+				.tab,
+				.button-primary,
+				.button-secondary,
+				.button-ghost,
+				.button-danger {
+					transition: none;
+				}
+			}
+		</style>
+	</body>
+</html>

@@ -23,7 +23,7 @@ jobs:
             echo "version=$ver" >> $GITHUB_OUTPUT
           else
             # Fallback to a sensible default if .nvmrc is missing
-            echo "version=18" >> $GITHUB_OUTPUT
+            echo "version=22" >> $GITHUB_OUTPUT
           fi
 
       - name: Install pnpm
