@@ -1,2 +1,2 @@
 # Root domain redirect to Spanish version (HTTP 301)
-/ /es/ 301
+/ /es/ 301!
