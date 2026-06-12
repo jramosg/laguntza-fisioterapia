@@ -7,8 +7,22 @@ import {
 	useTranslations
 } from '@i18n/utils';
 import { v2 as cloudinary } from 'cloudinary';
-import { CldImage } from 'astro-cloudinary';
-import { CloudinaryResource } from '@cloudinary-util/types';
+
+type CloudinaryResource = {
+	public_id: string;
+	display_name?: string;
+	width: number;
+	height: number;
+	secure_url: string;
+};
+
+type GalleryImage = {
+	src: string;
+	alt: string;
+	width: number;
+	height: number;
+	secureUrl: string;
+};
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -45,7 +59,10 @@ const result = await cloudinary.search
 	.max_results(100)
 	.execute();
 
-const images: CloudinaryResource[] = result.resources.map(
+const getCloudinaryImageUrl = (src: string, width = 600, height = 400) =>
+	`https://res.cloudinary.com/${cloudName}/image/upload/c_fill,g_auto,w_${width},h_${height},q_auto/${src}`;
+
+const images: GalleryImage[] = result.resources.map(
 	(img: CloudinaryResource) => ({
 		src: img.public_id,
 		alt: img.display_name || img.public_id,
@@ -126,15 +143,13 @@ const images: CloudinaryResource[] = result.resources.map(
 							itemscope
 							itemtype="https://schema.org/ImageObject"
 						>
-							<CldImage
-								src={img.src}
+							<img
+								src={getCloudinaryImageUrl(img.src)}
 								alt={img.alt}
 								width={600}
 								height={400}
-								crop="fill"
-								gravity="auto"
-								quality="auto"
 								loading="lazy"
+								decoding="async"
 							/>
 							<meta itemprop="contentUrl" content={img.secureUrl} />
 							<meta itemprop="name" content={img.alt} />
