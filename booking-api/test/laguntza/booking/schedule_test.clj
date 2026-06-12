@@ -43,3 +43,30 @@
                              (instant "2026-06-15T08:00:00Z")))
   (is (not (schedule/cancellable? (instant "2026-06-14T08:00:01Z")
                                   (instant "2026-06-15T08:00:00Z")))))
+
+(deftest recurring-day-window-follows-clinic-local-time
+  (testing "09:00 local is 07:00Z in summer (CEST)"
+    (let [{:keys [starts-at ends-at]}
+          (schedule/day-window "2026-06-15" "09:00" "14:00")]
+      (is (= "2026-06-15T07:00:00Z" (str starts-at)))
+      (is (= "2026-06-15T12:00:00Z" (str ends-at)))))
+  (testing "09:00 local is 08:00Z in winter (CET)"
+    (let [{:keys [starts-at]}
+          (schedule/day-window "2026-12-14" "09:00" "14:00")]
+      (is (= "2026-12-14T08:00:00Z" (str starts-at))))))
+
+(deftest weekday-is-iso-numbered
+  (is (= 1 (schedule/weekday "2026-06-15")))
+  (is (= 7 (schedule/weekday "2026-06-21"))))
+
+(deftest overlapping-windows-do-not-duplicate-slots
+  (let [window {:starts-at (instant "2026-06-15T08:00:00Z")
+                :ends-at (instant "2026-06-15T10:00:00Z")}
+        slots (schedule/available-slots
+               {:date "2026-06-15"
+                :service-id "session_30"
+                :windows [window window]
+                :busy-intervals []
+                :now (instant "2026-06-14T10:00:00Z")})]
+    (is (= 4 (count slots)))
+    (is (apply distinct? (map :starts-at slots)))))

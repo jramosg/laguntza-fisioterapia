@@ -1,7 +1,10 @@
 (ns laguntza.booking.db
   (:require
    [laguntza.booking.config :as config]
-   [migratus.core :as migratus])
+   [migratus.core :as migratus]
+   ;; Loading this namespace teaches the PostgreSQL driver to bind
+   ;; java.time.Instant parameters as SQL timestamps.
+   [next.jdbc.date-time])
   (:import
    [com.zaxxer.hikari HikariConfig HikariDataSource]))
 

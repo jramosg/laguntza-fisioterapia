@@ -23,15 +23,25 @@
        (map encode-param)
        (str/join "&")))
 
+(def session-minutes
+  "Stripe's minimum checkout-session lifetime. Pending bookings hold
+  their slot slightly longer than this so a session can never be paid
+  after the hold has been released."
+  30)
+
 (defn create-checkout-session! [booking service]
   (let [secret (config/stripe-secret-key)
-        site-url (config/public-site-url)]
+        site-url (config/public-site-url)
+        locale (or (:patient_locale booking) "es")
+        return-url (str site-url "/" locale "/book")]
     (when-not secret
       (throw (ex-info "Stripe is not configured" {:error :stripe_missing})))
     (let [body (form-body
                 {"mode" "payment"
-                 "success_url" (str site-url "/es/book?booking=success")
-                 "cancel_url" (str site-url "/es/book?booking=cancelled")
+                 "success_url" (str return-url "?booking=success")
+                 "cancel_url" (str return-url "?booking=cancelled")
+                 "expires_at" (+ (.getEpochSecond (Instant/now))
+                                 (* 60 (inc session-minutes)))
                  "client_reference_id" (:id booking)
                  "customer_email" (:patient_email booking)
                  "line_items[0][price_data][currency]" (:currency service)

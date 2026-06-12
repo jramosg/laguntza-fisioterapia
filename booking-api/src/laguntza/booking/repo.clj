@@ -1,10 +1,21 @@
 (ns laguntza.booking.repo
   (:require
+   [cheshire.core :as json]
    [next.jdbc :as jdbc]
    [next.jdbc.result-set :as rs]
-   [next.jdbc.sql :as sql]))
+   [next.jdbc.sql :as sql])
+  (:import
+   [org.postgresql.util PGobject]))
 
 (def opts {:builder-fn rs/as-unqualified-lower-maps})
+
+(defn- ->jsonb
+  "Clojure maps bind as hstore by default in pgjdbc; jsonb columns need
+  an explicit PGobject."
+  [value]
+  (doto (PGobject.)
+    (.setType "jsonb")
+    (.setValue (json/generate-string value))))
 
 (defn ensure-staff! [ds staff]
   (jdbc/execute-one! ds
@@ -64,13 +75,29 @@
   (jdbc/execute! ds
                  ["select starts_at, ends_at from bookings
                    where staff_id = ?
-                   and status in ('pending_payment', 'confirmed')
+                   and (status = 'confirmed'
+                        or (status = 'pending_payment'
+                            and (expires_at is null or expires_at > now())))
                    and starts_at < ? and ends_at > ?
                    union all
                    select starts_at, ends_at from time_blocks
                    where staff_id = ? and starts_at < ? and ends_at > ?"
                   staff-id day-end day-start staff-id day-end day-start]
                  opts))
+
+(defn expire-stale-pending!
+  "Release slots held by checkout sessions that were never paid."
+  [ds]
+  (jdbc/execute-one! ds
+                     ["update bookings
+                       set status = 'cancelled',
+                           payment_status = 'failed',
+                           cancel_reason = 'payment_timeout',
+                           cancelled_at = now(),
+                           updated_at = now()
+                       where status = 'pending_payment'
+                       and expires_at is not null
+                       and expires_at < now()"]))
 
 (defn admin-by-email [ds email]
   (jdbc/execute-one! ds
@@ -100,7 +127,10 @@
                       (:id session) booking-id]
                      opts))
 
-(defn confirm-paid-booking! [tx stripe-session-id payment-intent-id]
+(defn confirm-paid-booking!
+  "Confirm a pending booking once. Returns nil on webhook replays and
+  for bookings that are no longer pending."
+  [tx stripe-session-id payment-intent-id]
   (jdbc/execute-one! tx
                      ["update bookings
                        set status = 'confirmed',
@@ -108,11 +138,16 @@
                            stripe_payment_intent_id = ?,
                            updated_at = now()
                        where stripe_checkout_session_id = ?
+                       and status = 'pending_payment'
                        returning *"
                       payment-intent-id stripe-session-id]
                      opts))
 
-(defn cancel-booking! [tx id reason]
+(defn cancel-booking!
+  "Cancel an active booking. Returns nil when the booking is missing or
+  already finished, so callers can answer 404/409 instead of silently
+  re-cancelling."
+  [tx id reason]
   (jdbc/execute-one! tx
                      ["update bookings
                        set status = 'cancelled',
@@ -120,12 +155,41 @@
                            cancelled_at = now(),
                            updated_at = now()
                        where id = ?
+                       and status in ('pending_payment', 'confirmed')
                        returning *"
                       reason id]
                      opts))
 
 (defn create-availability-window! [tx row]
   (sql/insert! tx :availability_windows row opts))
+
+(defn recurring-windows-for-weekday [ds staff-id weekday]
+  (jdbc/execute! ds
+                 ["select * from recurring_windows
+                   where staff_id = ? and weekday = ? and active
+                   order by start_time"
+                  staff-id weekday]
+                 opts))
+
+(defn recurring-windows [ds staff-id]
+  (jdbc/execute! ds
+                 ["select * from recurring_windows
+                   where staff_id = ? and active
+                   order by weekday, start_time"
+                  staff-id]
+                 opts))
+
+(defn create-recurring-window! [tx row]
+  (sql/insert! tx :recurring_windows row opts))
+
+(defn deactivate-recurring-window! [tx id]
+  (jdbc/execute-one! tx
+                     ["update recurring_windows
+                       set active = false
+                       where id = ? and active
+                       returning *"
+                      id]
+                     opts))
 
 (defn create-time-block! [tx row]
   (sql/insert! tx :time_blocks row opts))
@@ -144,7 +208,7 @@
                {:booking_id (:id booking)
                 :channel channel
                 :event event
-                :payload payload}
+                :payload (->jsonb payload)}
                opts))
 
 (defn pending-notifications [ds limit]

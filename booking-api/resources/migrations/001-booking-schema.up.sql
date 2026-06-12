@@ -1,6 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
+--;;
 CREATE EXTENSION IF NOT EXISTS btree_gist;
-
+--;;
 CREATE TABLE booking_services (
   id text PRIMARY KEY,
   name_es text NOT NULL,
@@ -11,7 +12,7 @@ CREATE TABLE booking_services (
   active boolean NOT NULL DEFAULT true,
   created_at timestamptz NOT NULL DEFAULT now()
 );
-
+--;;
 CREATE TABLE booking_staff (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text NOT NULL,
@@ -20,7 +21,7 @@ CREATE TABLE booking_staff (
   active boolean NOT NULL DEFAULT true,
   created_at timestamptz NOT NULL DEFAULT now()
 );
-
+--;;
 CREATE TABLE booking_admins (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   staff_id uuid REFERENCES booking_staff(id),
@@ -30,7 +31,7 @@ CREATE TABLE booking_admins (
   active boolean NOT NULL DEFAULT true,
   created_at timestamptz NOT NULL DEFAULT now()
 );
-
+--;;
 CREATE TABLE availability_windows (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   staff_id uuid NOT NULL REFERENCES booking_staff(id),
@@ -41,10 +42,10 @@ CREATE TABLE availability_windows (
   created_at timestamptz NOT NULL DEFAULT now(),
   CHECK (ends_at > starts_at)
 );
-
+--;;
 CREATE INDEX availability_windows_staff_time_idx
   ON availability_windows (staff_id, starts_at, ends_at);
-
+--;;
 CREATE TABLE time_blocks (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   staff_id uuid NOT NULL REFERENCES booking_staff(id),
@@ -55,10 +56,10 @@ CREATE TABLE time_blocks (
   created_at timestamptz NOT NULL DEFAULT now(),
   CHECK (ends_at > starts_at)
 );
-
+--;;
 CREATE INDEX time_blocks_staff_time_idx
   ON time_blocks (staff_id, starts_at, ends_at);
-
+--;;
 CREATE TABLE bookings (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   public_token text NOT NULL UNIQUE DEFAULT encode(gen_random_bytes(24), 'hex'),
@@ -94,7 +95,7 @@ CREATE TABLE bookings (
   updated_at timestamptz NOT NULL DEFAULT now(),
   CHECK (ends_at > starts_at)
 );
-
+--;;
 ALTER TABLE bookings
   ADD CONSTRAINT bookings_no_overlap
   EXCLUDE USING gist (
@@ -102,11 +103,13 @@ ALTER TABLE bookings
     tstzrange(starts_at, ends_at, '[)') WITH &&
   )
   WHERE (status IN ('pending_payment', 'confirmed'));
-
+--;;
 CREATE INDEX bookings_staff_time_idx ON bookings (staff_id, starts_at, ends_at);
+--;;
 CREATE INDEX bookings_status_idx ON bookings (status);
+--;;
 CREATE INDEX bookings_patient_email_idx ON bookings (patient_email);
-
+--;;
 CREATE TABLE notification_outbox (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   booking_id uuid REFERENCES bookings(id),
@@ -121,11 +124,11 @@ CREATE TABLE notification_outbox (
   created_at timestamptz NOT NULL DEFAULT now(),
   sent_at timestamptz
 );
-
+--;;
 CREATE INDEX notification_outbox_pending_idx
   ON notification_outbox (run_after, created_at)
   WHERE status = 'pending';
-
+--;;
 CREATE TABLE audit_log (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   actor_admin_id uuid REFERENCES booking_admins(id),
@@ -136,7 +139,7 @@ CREATE TABLE audit_log (
   user_agent text,
   created_at timestamptz NOT NULL DEFAULT now()
 );
-
+--;;
 INSERT INTO booking_services
   (id, name_es, name_eu, duration_minutes, price_cents)
 VALUES

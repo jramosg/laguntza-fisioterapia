@@ -33,10 +33,19 @@ Move to managed PostgreSQL later when uptime requirements justify it.
 
 - Services: 30 minute session and 60 minute session.
 - Cancellation and reschedule window: 24 hours before start time.
-- Availability is explicit per date/time window, not a repeating assumption.
+- Availability comes from two sources: a weekly recurring schedule
+  (`recurring_windows`, e.g. every Monday 09:00–14:00, clinic timezone)
+  plus explicit one-off date windows. Time blocks subtract from both,
+  so holidays are a block, not a schedule edit.
 - Admin can create manual phone/WhatsApp bookings without payment.
-- Online slots are held while Stripe Checkout is pending.
-- Confirmed, manual, and pending-payment bookings block overlapping slots.
+- Online slots are held for 35 minutes while Stripe Checkout is pending
+  (the Stripe session itself expires after ~30), then released.
+- Confirmed, manual, and pending-payment bookings block overlapping slots,
+  enforced both in the API and by a PostgreSQL exclusion constraint.
+- Checkout only accepts a `starts_at` that is currently an open slot.
+- Patient cancellation requires the booking id plus the `public_token`
+  from the confirmation email (`Referencia`).
+- Admin login is throttled per email and per IP (5 failures / 15 min).
 
 ## Environment
 
@@ -75,7 +84,7 @@ Public:
 - `GET /api/services`
 - `GET /api/availability?service_id=session_60&date=2026-06-15`
 - `POST /api/bookings/checkout`
-- `POST /api/bookings/:id/cancel`
+- `POST /api/bookings/:id/cancel` with body `{"token": "<public_token>"}`
 - `POST /api/stripe/webhook`
 
 Admin:
@@ -84,13 +93,22 @@ Admin:
 - `GET /api/admin/bookings?from=...&to=...`
 - `POST /api/admin/bookings/manual`
 - `POST /api/admin/availability-windows`
+- `GET|POST /api/admin/recurring-windows`
+  (`{"weekday": 1, "start_time": "09:00", "end_time": "14:00"}`,
+  weekday 1 = Monday .. 7 = Sunday)
+- `POST /api/admin/recurring-windows/:id/deactivate`
 - `POST /api/admin/time-blocks`
 - `POST /api/admin/bookings/:id/cancel`
 
 ## Development
 
 ```bash
+# Start the API (loads .env automatically)
 clojure -M:dev -m laguntza.booking.core
+
+# Seed dev admin — email from BOOKING_ADMIN_EMAIL, password: admin123
+clojure -M:dev -m laguntza.booking.seed
+
 clojure -M:test
 clj-kondo --lint src test
 ```
@@ -110,6 +128,53 @@ docker compose up -d --build
 The compose file binds the API to `127.0.0.1:4000` so a reverse proxy can
 terminate TLS. PostgreSQL is private to Docker and persists in the
 `postgres-data` volume.
+
+## Enterprise Readiness Roadmap
+
+Honest gap analysis from the perspective of a large multi-clinic buyer.
+The current system is production-ready for a single clinic with one
+therapist and one admin. To sell it as a product, close these in order.
+
+Deal-breakers (a technical reviewer finds these in the first hour):
+
+- Multi-staff / multi-location: every endpoint resolves `default-staff`
+  (the first active row). The schema already carries `staff_id`
+  everywhere; the API never lets the caller choose a therapist or
+  clinic.
+- Admin UI: see `/admin` for the current panel; it covers one
+  receptionist at one clinic and needs roles before a chain can use it.
+- `audit_log` is never written. Admin actions must insert audit rows
+  (actor, action, booking, ip) or remove the table.
+- One admin role, no SSO (SAML/OIDC), no 2FA.
+- CI only checks Prettier formatting; the Clojure test suite does not
+  run on push.
+- Single-instance assumptions: login throttling and app state are in
+  process memory, so they break behind a load balancer. No HA story.
+
+Product features clinics run on:
+
+- Reminder notifications (T-24h) — the main no-show reduction lever —
+  plus an internal scheduler instead of an external cron hitting
+  `/api/admin/notifications/process`.
+- Reschedule flow and Stripe refunds (`payment_status = 'refunded'`
+  exists in the schema; no code path calls the refund API).
+- Spanish physio specifics: bonos (multi-session packs),
+  mutuas/insurance billing, invoicing (VeriFactu).
+- `checkout.session.expired` webhook to release held slots early.
+- Patient accounts and history, intake/consent forms, waitlists,
+  Google Calendar sync (`google_calendar_id` exists, unused).
+
+Compliance and operations:
+
+- GDPR Article 9: booking notes are health data. Needs a retention and
+  erasure policy with a data-deletion path (none exists), a privacy
+  policy page the terms checkbox links to, a DPA template, and an
+  encryption-at-rest statement. Buyers will ask for a pen-test report
+  and ISO 27001 / SOC 2.
+- Observability: structured logs exist, but no metrics, error tracker,
+  or alerting on webhook/notification failures.
+- OpenAPI spec (reitit can generate Swagger), integration tests against
+  real PostgreSQL, load tests, a staging environment.
 
 ## Deployment Checklist
 

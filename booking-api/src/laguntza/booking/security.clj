@@ -62,14 +62,63 @@
     (str (b64-encode (.getBytes payload "UTF-8")) "." (sign payload))))
 
 (defn unsign-admin-token [token]
-  (let [[payload-part signature] (str/split (or token "") #"\.")
-        payload (String. (b64-decode payload-part) "UTF-8")
-        expected (sign payload)
-        data (json/parse-string payload true)]
-    (when (and (MessageDigest/isEqual (.getBytes expected "UTF-8")
-                                      (.getBytes signature "UTF-8"))
-               (< (.getEpochSecond (Instant/now)) (:exp data)))
-      data)))
+  (try
+    (let [[payload-part signature] (str/split (or token "") #"\." 2)
+          payload (String. (b64-decode payload-part) "UTF-8")
+          expected (sign payload)]
+      ;; Verify the signature before trusting the payload at all.
+      (when (MessageDigest/isEqual (.getBytes expected "UTF-8")
+                                   (.getBytes (or signature "") "UTF-8"))
+        (let [data (json/parse-string payload true)
+              exp (:exp data)]
+          (when (and (number? exp)
+                     (< (.getEpochSecond (Instant/now)) exp))
+            data))))
+    (catch Exception _
+      nil)))
+
+(defn token-matches? [expected provided]
+  (boolean (and (string? expected)
+                (string? provided)
+                (MessageDigest/isEqual (.getBytes ^String expected "UTF-8")
+                                       (.getBytes ^String provided "UTF-8")))))
+
+(def placeholder-hash
+  "Verified against when no account matches, so login latency does not
+  reveal whether an email exists."
+  (password-hash (str (random-uuid))))
+
+(def ^:private max-attempts 5)
+(def ^:private attempt-window-seconds 900)
+
+(defonce ^:private login-attempts (atom {}))
+
+(defn- expired-entry? [now {:keys [reset-at]}]
+  (not (.isBefore ^Instant now reset-at)))
+
+(defn throttled? [key now]
+  (let [{:keys [n] :as entry} (get @login-attempts key)]
+    (boolean (and entry
+                  (not (expired-entry? now entry))
+                  (>= n max-attempts)))))
+
+(defn record-failure! [key now]
+  (swap! login-attempts
+         (fn [attempts]
+           (let [attempts (into {}
+                                (remove #(expired-entry? now (val %)))
+                                attempts)
+                 entry (get attempts key)]
+             (assoc attempts key
+                    {:n (inc (:n entry 0))
+                     :reset-at (or (:reset-at entry)
+                                   (.plusSeconds ^Instant now
+                                                 attempt-window-seconds))}))))
+  nil)
+
+(defn clear-failures! [key]
+  (swap! login-attempts dissoc key)
+  nil)
 
 (defn bearer-token [request]
   (some-> (get-in request [:headers "authorization"])

@@ -3,7 +3,7 @@
    [java.net URI]))
 
 (defn env [k]
-  (System/getenv k))
+  (or (System/getenv k) (System/getProperty k)))
 
 (defn env-int [k default]
   (if-let [value (env k)]
@@ -24,21 +24,31 @@
 (defn booking-api-url []
   (or (env "BOOKING_API_URL") "http://localhost:4000"))
 
+(defn- origin-parts [url]
+  (let [uri (URI. url)]
+    [(.getScheme uri) (.getHost uri) (.getPort uri)]))
+
 (defn same-origin? [origin]
   (when origin
-    (= (.getHost (URI. origin))
-       (.getHost (URI. (public-site-url))))))
+    (try
+      (= (origin-parts origin) (origin-parts (public-site-url)))
+      (catch Exception _ false))))
 
 (defn jdbc-url []
   (or (env "JDBC_URL")
       (when (production?)
         (require-env! "JDBC_URL"))))
 
+(defonce ^:private boot-secret
+  (delay (str (random-uuid) (random-uuid))))
+
 (defn session-secret []
   (or (env "BOOKING_SESSION_SECRET")
       (when (production?)
         (require-env! "BOOKING_SESSION_SECRET"))
-      "dev-only-change-me"))
+      ;; Random per-boot fallback: an unconfigured deployment must never
+      ;; run with a guessable signing secret.
+      @boot-secret))
 
 (defn stripe-secret-key []
   (or (env "STRIPE_SECRET_KEY")
