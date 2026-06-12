@@ -9,6 +9,7 @@ import {
 } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
 import Rehab from '@images/rehab.webp';
+import Interview from '@images/interview.webp';
 import ServiceIntro from '@components/services/ServiceIntro.astro';
 import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
@@ -78,7 +79,13 @@ const physioBenefits = [
 		name={t('service.physio.hero-title')}
 		description={t('service.physio.seo-description')}
 	/>
-	<SectionHero id="physio-hero">
+	<SectionHero
+		id="physio-hero"
+		image={Interview}
+		imageAlt={lang === 'eu'
+			? 'Fisioterapia balorazioa Laguntza Fisioterapian, Urnietan'
+			: 'Valoración de fisioterapia en Laguntza Fisioterapia, Urnieta'}
+	>
 		<h1 slot="title">
 			{t('service.physio.hero-title')}
 		</h1>

@@ -96,7 +96,14 @@ const contacts = [
 		<link rel="preconnect" href="https://c.tile.openstreetmap.org" />
 		<link rel="dns-prefetch" href="https://unpkg.com" />
 	</Fragment>
-	<SectionHero id="contact-hero" class="hero-section__contact">
+	<SectionHero
+		id="contact-hero"
+		class="hero-section__contact"
+		image={KristalaFrentez}
+		imageAlt={lang === 'eu'
+			? 'Laguntza Fisioterapiaren sarrera Zubitxo plazan, Urnietan'
+			: 'Entrada de Laguntza Fisioterapia en Zubitxo Plaza, Urnieta'}
+	>
 		<h1 slot="title">
 			{t('contact-jarri')}
 			{' '}
@@ -115,7 +122,7 @@ const contacts = [
 			</Chip>
 			<Chip
 				text="Email"
-				href="mailto:info@laguntzafisio.eus"
+				href={Email.url}
 				target="_blank"
 				rel="noopener noreferrer"
 			>

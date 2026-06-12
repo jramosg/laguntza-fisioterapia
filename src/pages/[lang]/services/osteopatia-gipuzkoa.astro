@@ -9,6 +9,7 @@ import {
 } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
 import Interview from '@images/interview.webp';
+import Rehab from '@images/rehab.webp';
 import ServiceIntro from '@components/services/ServiceIntro.astro';
 import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
@@ -73,7 +74,13 @@ const osteopathyConditions = [
 		name={t('service.osteopathy.hero-title')}
 		description={t('service.osteopathy.seo-description')}
 	/>
-	<SectionHero id="osteopathy-hero">
+	<SectionHero
+		id="osteopathy-hero"
+		image={Rehab}
+		imageAlt={lang === 'eu'
+			? 'Osteopatia tratamendua Laguntza Fisioterapian, Urnietan'
+			: 'Tratamiento de osteopatía en Laguntza Fisioterapia, Urnieta'}
+	>
 		<h1 slot="title">
 			{t('service.osteopathy.hero-title')}
 		</h1>

@@ -1,9 +1,74 @@
 ---
+import { Image } from 'astro:assets';
 import Container from './core/Container.astro';
-const { id, class: className, ...rest } = Astro.props;
+
+const {
+	id,
+	class: className,
+	image,
+	imageAlt = '',
+	imagePosition = 'center',
+	video,
+	...rest
+} = Astro.props;
+
+const hasMedia = Boolean(image || video);
+const isPortrait = Boolean(image && image.height > image.width);
 ---
 
-<section id={id} class="hero-header-section">
+<section
+	id={id}
+	class:list={[
+		'hero-header-section',
+		{ 'hero-header-section--media': hasMedia }
+	]}
+>
+	{
+		image && !video && (
+			<div class:list={['hero-media', { 'hero-media--portrait': isPortrait }]}>
+				{isPortrait && (
+					<Image
+						src={image}
+						alt=""
+						aria-hidden="true"
+						class="hero-media__img hero-media__blur"
+						layout="full-width"
+						loading="eager"
+						sizes="100vw"
+					/>
+				)}
+				<Image
+					src={image}
+					alt={imageAlt}
+					class="hero-media__img hero-media__main"
+					layout="full-width"
+					loading="eager"
+					fetchpriority="high"
+					sizes="100vw"
+					style={`object-position: ${imagePosition}`}
+				/>
+			</div>
+		)
+	}
+	{
+		video && (
+			<div class="hero-media" aria-hidden="true">
+				<video
+					class="hero-media__video"
+					autoplay
+					muted
+					loop
+					playsinline
+					preload="metadata"
+					poster={video.poster}
+				>
+					{video.webm && <source src={video.webm} type="video/webm" />}
+					{video.mp4 && <source src={video.mp4} type="video/mp4" />}
+				</video>
+			</div>
+		)
+	}
+	{hasMedia && <div class="hero-media-overlay" aria-hidden="true" />}
 	<div class="hero-header-glow" aria-hidden="true"></div>
 	<Container class=`hero-header-container ${className || ''}` {...rest}>
 		<slot name="title" />
@@ -24,11 +89,67 @@ const { id, class: className, ...rest } = Astro.props;
 		color: #fff;
 	}
 
+	.hero-header-section--media {
+		min-height: clamp(440px, 64vh, 680px);
+		display: grid;
+		align-items: center;
+	}
+
+	/* Full-bleed media, oversized so the parallax never shows edges */
+	.hero-media {
+		position: absolute;
+		inset: -12% 0;
+		z-index: 0;
+		will-change: transform;
+	}
+	.hero-media :global(img),
+	.hero-media__video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+	}
+
+	.hero-media :global(img.hero-media__blur) {
+		position: absolute;
+		inset: 0;
+		display: none;
+		filter: blur(26px) brightness(0.6) saturate(1.1);
+		transform: scale(1.15);
+	}
+
+	/* Portrait photos on wide screens: show the full frame over a blurred
+	   self-backdrop instead of a tight, context-less crop */
+	@media (min-width: 769px) {
+		.hero-media--portrait :global(img.hero-media__blur) {
+			display: block;
+		}
+		.hero-media--portrait :global(img.hero-media__main) {
+			position: relative;
+			object-fit: contain;
+		}
+	}
+
+	/* Dark diagonal wash, same recipe as the homepage service cards */
+	.hero-media-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background: linear-gradient(
+			120deg,
+			rgba(3, 9, 11, 0.84) 0%,
+			rgba(3, 9, 11, 0.62) 52%,
+			rgba(6, 10, 12, 0.88) 100%
+		);
+	}
+
 	/* Subtle fractal-noise grain, same texture as the homepage dark stream */
 	.hero-header-section::before {
 		content: '';
 		position: absolute;
 		inset: 0;
+		z-index: 2;
 		pointer-events: none;
 		opacity: 0.03;
 		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -39,6 +160,7 @@ const { id, class: className, ...rest } = Astro.props;
 	.hero-header-glow {
 		position: absolute;
 		inset: 0;
+		z-index: 2;
 		pointer-events: none;
 		background:
 			radial-gradient(
@@ -59,7 +181,18 @@ const { id, class: className, ...rest } = Astro.props;
 		}
 		width: 100%;
 		position: relative;
+		z-index: 3;
+	}
+
+	/* Staggered rise-in: pure CSS so it also runs without JS */
+	.hero-header-container > :global(*) {
 		animation: hero-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+	.hero-header-container > :global(*:nth-child(2)) {
+		animation-delay: 0.12s;
+	}
+	.hero-header-container > :global(*:nth-child(3)) {
+		animation-delay: 0.24s;
 	}
 
 	.hero-header-container :global(h1) {
@@ -69,13 +202,19 @@ const { id, class: className, ...rest } = Astro.props;
 		color: #fff;
 		letter-spacing: -0.02em;
 		line-height: 1.1;
+		text-wrap: balance;
+	}
+
+	.hero-header-section--media :global(h1),
+	.hero-header-section--media > :global(.hero-header-container) > p {
+		text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
 	}
 
 	.hero-header-container > p {
 		padding: var(--container-padding);
 		margin: 0 auto;
 		max-width: 64ch;
-		color: rgba(255, 255, 255, 0.78);
+		color: rgba(255, 255, 255, 0.82);
 		line-height: 1.7;
 	}
 
@@ -90,7 +229,7 @@ const { id, class: className, ...rest } = Astro.props;
 		background-image: linear-gradient(
 			to right,
 			var(--theme-secondary),
-			var(--theme-secondary-300, #f2b27e)
+			var(--theme-secondary-300, #f2c79a)
 		);
 		background-clip: text;
 		color: transparent;
@@ -116,7 +255,7 @@ const { id, class: className, ...rest } = Astro.props;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.hero-header-container {
+		.hero-header-container > :global(*) {
 			animation: none;
 		}
 	}
@@ -138,3 +277,44 @@ const { id, class: className, ...rest } = Astro.props;
 		}
 	}
 </style>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	document.addEventListener('astro:page-load', () => {
+		const prefersReducedMotion = window.matchMedia(
+			'(prefers-reduced-motion: reduce)'
+		).matches;
+
+		const video =
+			document.querySelector<HTMLVideoElement>('.hero-media__video');
+		if (prefersReducedMotion) {
+			video?.pause();
+			return;
+		}
+
+		const hero = document.querySelector('.hero-header-section--media');
+		const media = hero?.querySelector('.hero-media');
+		if (!hero || !media) return;
+
+		gsap.registerPlugin(ScrollTrigger);
+
+		// Ken Burns settle on load, then a slow parallax drift on scroll
+		gsap.fromTo(
+			media,
+			{ scale: 1.1 },
+			{ scale: 1, duration: 1.6, ease: 'power2.out' }
+		);
+		gsap.to(media, {
+			yPercent: 9,
+			ease: 'none',
+			scrollTrigger: {
+				trigger: hero,
+				start: 'top top',
+				end: 'bottom top',
+				scrub: true
+			}
+		});
+	});
+</script>

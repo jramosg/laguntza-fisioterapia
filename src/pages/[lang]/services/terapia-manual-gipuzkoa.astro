@@ -9,6 +9,7 @@ import {
 } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
 import Rehab from '@images/rehab.webp';
+import DryNeedling from '@images/dry-needling.jpg';
 import ServiceIntro from '@components/services/ServiceIntro.astro';
 import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
@@ -74,7 +75,14 @@ const manualTherapyBenefits = [
 		name={t('service.manual-therapy.hero-title')}
 		description={t('service.manual-therapy.seo-description')}
 	/>
-	<SectionHero id="manual-therapy-hero">
+	<SectionHero
+		id="manual-therapy-hero"
+		image={DryNeedling}
+		imageAlt={lang === 'eu'
+			? 'Puntzio lehorra Laguntza Fisioterapian, Urnietan'
+			: 'Punción seca en Laguntza Fisioterapia, Urnieta'}
+		imagePosition="center 62%"
+	>
 		<h1 slot="title">
 			{t('service.manual-therapy.hero-title')}
 		</h1>
