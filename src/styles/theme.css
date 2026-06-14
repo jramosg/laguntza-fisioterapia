@@ -11,6 +11,9 @@
 	--theme-primary-900: #18313a;
 	--theme-primary-light: var(--theme-primary-300);
 	--theme-primary-dark: var(--theme-primary-700);
+	/* Link/text color that meets AA contrast on surface backgrounds */
+	--theme-link-on-surface: var(--theme-primary-700);
+	--theme-link-on-surface-hover: var(--theme-primary-800);
 	--theme-primary-container: var(--theme-primary-200);
 	--theme-primary-container-alt: var(--theme-primary-100);
 	--theme-on-primary: #fff;
@@ -157,6 +160,9 @@
 	--theme-primary-container: var(--theme-primary-800);
 	--theme-primary-container-alt: var(--theme-primary-900);
 	--theme-on-primary-container: #fff;
+	/* Lighter link color for contrast on dark surfaces */
+	--theme-link-on-surface: var(--theme-primary-300);
+	--theme-link-on-surface-hover: var(--theme-primary-200);
 
 	/* Secondary Colors (Dark) */
 	--theme-secondary-container: var(--theme-secondary-dark);
