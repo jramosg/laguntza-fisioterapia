@@ -17,6 +17,7 @@ import ServiceCard from '@components/ServiceCard.astro';
 import FAQ from '@components/sections/FAQ.astro';
 import FAQSchema from '@components/head/FAQSchema.astro';
 import KristalaLateralez from '@images/kristala-lateralez.jpg';
+import KristalaFrentez from '@images/kristala-frentez.jpg';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -53,10 +54,12 @@ const seo = {
 	<SectionHero
 		id="services-hero"
 		image={KristalaLateralez}
+		imageMobile={KristalaFrentez}
 		imageAlt={lang === 'eu'
 			? 'Laguntza Fisioterapia klinikaren kristala Urnietan (Gipuzkoa)'
 			: 'Cristalera de la clínica Laguntza Fisioterapia en Urnieta (Gipuzkoa)'}
 		imagePosition="72% center"
+		imageMobilePosition="60% center"
 	>
 		<h1 slot="title" set:html={t('service.main.hero-title')} />
 		<Fragment slot="desc">

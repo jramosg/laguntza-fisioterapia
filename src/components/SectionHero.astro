@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Container from './core/Container.astro';
 
 const {
@@ -8,12 +8,24 @@ const {
 	image,
 	imageAlt = '',
 	imagePosition = 'center',
+	imageMobile,
+	imageMobilePosition,
 	video,
 	...rest
 } = Astro.props;
 
 const hasMedia = Boolean(image || video);
 const isPortrait = Boolean(image && image.height > image.width);
+
+// Art direction: serve a different photo below 768px when provided
+const mobileVariant = imageMobile
+	? await getImage({
+			src: imageMobile,
+			widths: [640, 960, 1536],
+			sizes: '100vw',
+			format: 'webp'
+		})
+	: null;
 ---
 
 <section
@@ -37,16 +49,25 @@ const isPortrait = Boolean(image && image.height > image.width);
 						sizes="100vw"
 					/>
 				)}
-				<Image
-					src={image}
-					alt={imageAlt}
-					class="hero-media__img hero-media__main"
-					layout="full-width"
-					loading="eager"
-					fetchpriority="high"
-					sizes="100vw"
-					style={`object-position: ${imagePosition}`}
-				/>
+				<picture class="hero-media__picture">
+					{mobileVariant && (
+						<source
+							media="(max-width: 768px)"
+							srcset={mobileVariant.srcSet.attribute}
+							sizes="100vw"
+						/>
+					)}
+					<Image
+						src={image}
+						alt={imageAlt}
+						class="hero-media__img hero-media__main"
+						layout="full-width"
+						loading="eager"
+						fetchpriority="high"
+						sizes="100vw"
+						style={`--hero-pos: ${imagePosition}; --hero-pos-m: ${imageMobilePosition || imagePosition}`}
+					/>
+				</picture>
 			</div>
 		)
 	}
@@ -116,6 +137,9 @@ const isPortrait = Boolean(image && image.height > image.width);
 		z-index: 0;
 		will-change: transform;
 	}
+	.hero-media__picture {
+		display: contents;
+	}
 	.hero-media :global(img),
 	.hero-media__video {
 		width: 100%;
@@ -123,6 +147,15 @@ const isPortrait = Boolean(image && image.height > image.width);
 		object-fit: cover;
 		object-position: center;
 		display: block;
+	}
+
+	.hero-media :global(img.hero-media__main) {
+		object-position: var(--hero-pos, center);
+	}
+	@media (max-width: 768px) {
+		.hero-media :global(img.hero-media__main) {
+			object-position: var(--hero-pos-m, var(--hero-pos, center));
+		}
 	}
 
 	.hero-media :global(img.hero-media__blur) {
