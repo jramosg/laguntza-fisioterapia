@@ -6,6 +6,7 @@ export const ui = {
 		'nav.services': 'Servicios',
 		'nav.blog': 'Blog',
 		'nav.about': 'Sobre mí',
+		'nav.consulta': 'La consulta',
 		'nav.contact': 'Contacto',
 		'Laguntza fisioterapiari buruz': 'Sobre Laguntza Fisioterapia',
 		Euskera: 'Euskera',
@@ -336,6 +337,7 @@ export const ui = {
 		'nav.services': 'Zerbitzuak',
 		'nav.blog': 'Bloga',
 		'nav.about': 'Niri buruz',
+		'nav.consulta': 'Kontsulta',
 		'nav.contact': 'Kontaktua',
 		'seo.main-description':
 			'Fisioterapia eta osteopatia Urnietan, Gipuzkoan. Errehabilitazioa, terapia manuala, ariketa terapeutikoa eta minaren tratamendua Donostiatik gertu.',

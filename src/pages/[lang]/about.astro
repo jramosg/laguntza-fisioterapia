@@ -1,12 +1,7 @@
 ---
 import Layout from '@layouts/Page.astro';
-import {
-	getLangFromUrl,
-	getStaticLangPaths,
-	useTranslations
-} from '@i18n/utils';
+import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
-import SectionHero from '@components/SectionHero.astro';
 import AboutSection from '@components/sections/AboutSection.astro';
 
 export function getStaticPaths() {
