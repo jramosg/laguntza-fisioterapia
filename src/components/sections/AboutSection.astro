@@ -13,15 +13,6 @@ const t = useTranslations(lang);
 ---
 
 <Container tag="article">
-	<header class="about-section__header">
-		<h1 class="about-section__title title--highlight">
-			{t('about.title')}
-		</h1>
-		<p class="about-section__subtitle">
-			{t('about.subtitle')}
-		</p>
-	</header>
-
 	<div class="about-section__content">
 		<aside class="about-section__image-wrapper">
 			<div class="about-section__image-container">
@@ -83,37 +74,12 @@ const t = useTranslations(lang);
 </Container>
 
 <style>
-	.about-section__header {
-		text-align: left;
-		margin-top: var(--s4);
-		margin-bottom: var(--s9);
-	}
-
-	.about-section__title {
-		background: linear-gradient(
-			135deg,
-			var(--theme-primary) 0%,
-			var(--theme-primary-800) 100%
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin-bottom: var(--s2);
-	}
-
-	.about-section__subtitle {
-		font-size: var(--font-size-lg);
-		color: var(--theme-on-bg);
-		font-weight: 400;
-		margin: 0;
-		opacity: 0.8;
-	}
-
 	.about-section__content {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--s9);
 		align-items: start;
+		margin-top: var(--s7);
 		margin-bottom: var(--s4);
 	}
 
@@ -268,20 +234,9 @@ const t = useTranslations(lang);
 			padding: var(--s8) 0;
 		}
 
-		.about-section__header {
-			margin-bottom: var(--s7);
-		}
-
-		.about-section__title {
-			font-size: clamp(36px, 10vw, 48px);
-		}
-
-		.about-section__subtitle {
-			font-size: var(--font-size-lg);
-		}
-
 		.about-section__content {
 			gap: var(--s7);
+			margin-top: var(--s6);
 		}
 
 		.about-section__text {

@@ -219,528 +219,535 @@ const { lang = 'es' }: Props = Astro.props;
 			// modelo se acerca al viewport (mejor LCP en móvil).
 			const start = async () => {
 				const THREE = await import('three');
-				const { OrbitControls } = await import(
-					'three/examples/jsm/controls/OrbitControls.js'
-				);
+				const { OrbitControls } =
+					await import('three/examples/jsm/controls/OrbitControls.js');
 
-			const C = {
-				teal: 0x458295,
-				tealLight: 0x56a4bd,
-				orange: 0xe8944a,
-				ink: 0x0a0e10,
-				wall: 0xf4f1ec,
-				tealDark: 0x3d6f7f,
-				floorWarm: 0xd8c7b0,
-				floorTile: 0xe9e4dc,
-				wood: 0xb98a5e,
-				woodDark: 0x8a6440,
-				linen: 0xf3efe8,
-				metal: 0xc9ccce,
-				plant: 0x4e7a55,
-				glass: 0xbcd6dd,
-				white: 0xfbfaf7,
-				screen: 0x13343d
-			};
+				const C = {
+					teal: 0x458295,
+					tealLight: 0x56a4bd,
+					orange: 0xe8944a,
+					ink: 0x0a0e10,
+					wall: 0xf4f1ec,
+					tealDark: 0x3d6f7f,
+					floorWarm: 0xd8c7b0,
+					floorTile: 0xe9e4dc,
+					wood: 0xb98a5e,
+					woodDark: 0x8a6440,
+					linen: 0xf3efe8,
+					metal: 0xc9ccce,
+					plant: 0x4e7a55,
+					glass: 0xbcd6dd,
+					white: 0xfbfaf7,
+					screen: 0x13343d
+				};
 
-			const scene = new THREE.Scene();
-			scene.background = new THREE.Color(0x0a0e10);
-			scene.fog = new THREE.Fog(0x0a0e10, 26, 70);
+				const scene = new THREE.Scene();
+				scene.background = new THREE.Color(0x0a0e10);
+				scene.fog = new THREE.Fog(0x0a0e10, 26, 70);
 
-			const renderer = new THREE.WebGLRenderer({ antialias: true });
-			renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-			renderer.shadowMap.enabled = true;
-			renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-			renderer.outputColorSpace = THREE.SRGBColorSpace;
-			renderer.toneMapping = THREE.ACESFilmicToneMapping;
-			renderer.toneMappingExposure = 1.08;
-			host.appendChild(renderer.domElement);
+				const renderer = new THREE.WebGLRenderer({ antialias: true });
+				renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+				renderer.outputColorSpace = THREE.SRGBColorSpace;
+				renderer.toneMapping = THREE.ACESFilmicToneMapping;
+				renderer.toneMappingExposure = 1.08;
+				host.appendChild(renderer.domElement);
 
-			const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
-			camera.position.set(10, 10, 13);
+				const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
+				camera.position.set(10, 10, 13);
 
-			const controls = new OrbitControls(camera, renderer.domElement);
-			controls.enableDamping = true;
-			controls.dampingFactor = 0.07;
-			controls.target.set(0, 1, 0);
-			controls.maxPolarAngle = Math.PI / 2.05;
-			controls.minDistance = 5;
-			controls.maxDistance = 48;
+				const controls = new OrbitControls(camera, renderer.domElement);
+				controls.enableDamping = true;
+				controls.dampingFactor = 0.07;
+				controls.target.set(0, 1, 0);
+				controls.maxPolarAngle = Math.PI / 2.05;
+				controls.minDistance = 5;
+				controls.maxDistance = 48;
 
-			scene.add(new THREE.HemisphereLight(0xffffff, 0x6b7378, 0.92));
-			const sun = new THREE.DirectionalLight(0xfff1de, 1.4);
-			sun.position.set(-6, 18, 9);
-			sun.castShadow = true;
-			sun.shadow.mapSize.set(2048, 2048);
-			sun.shadow.camera.near = 1;
-			sun.shadow.camera.far = 64;
-			const d = 22;
-			Object.assign(sun.shadow.camera, {
-				left: -d,
-				right: d,
-				top: d,
-				bottom: -d
-			});
-			sun.shadow.bias = -0.0004;
-			scene.add(sun);
-			const fill = new THREE.DirectionalLight(0xe8944a, 0.2);
-			fill.position.set(9, 6, 2);
-			scene.add(fill);
-
-			const mat = (color: number, o: any = {}) =>
-				new THREE.MeshStandardMaterial({
-					color,
-					roughness: 0.85,
-					metalness: 0,
-					...o
+				scene.add(new THREE.HemisphereLight(0xffffff, 0x6b7378, 0.92));
+				const sun = new THREE.DirectionalLight(0xfff1de, 1.4);
+				sun.position.set(-6, 18, 9);
+				sun.castShadow = true;
+				sun.shadow.mapSize.set(2048, 2048);
+				sun.shadow.camera.near = 1;
+				sun.shadow.camera.far = 64;
+				const d = 22;
+				Object.assign(sun.shadow.camera, {
+					left: -d,
+					right: d,
+					top: d,
+					bottom: -d
 				});
-			const M: Record<string, THREE.Material> = {
-				wall: mat(C.wall, { roughness: 0.96 }),
-				trim: mat(C.tealDark, { roughness: 0.6 }),
-				floorWarm: mat(C.floorWarm, { roughness: 0.75 }),
-				floorTile: mat(C.floorTile, { roughness: 0.4 }),
-				wood: mat(C.wood, { roughness: 0.6 }),
-				woodDark: mat(C.woodDark, { roughness: 0.55 }),
-				linen: mat(C.linen, { roughness: 0.9 }),
-				teal: mat(C.teal, { roughness: 0.5 }),
-				orange: mat(C.orange, { roughness: 0.5 }),
-				metal: mat(C.metal, { roughness: 0.35, metalness: 0.7 }),
-				plant: mat(C.plant, { roughness: 0.85 }),
-				white: mat(C.white, { roughness: 0.5 }),
-				glass: new THREE.MeshStandardMaterial({
-					color: C.glass,
-					roughness: 0.08,
-					transparent: true,
-					opacity: 0.26
-				}),
-				screen: mat(C.screen, {
-					roughness: 0.2,
-					emissive: 0x16414c,
-					emissiveIntensity: 0.6
-				})
-			};
+				sun.shadow.bias = -0.0004;
+				scene.add(sun);
+				const fill = new THREE.DirectionalLight(0xe8944a, 0.2);
+				fill.position.set(9, 6, 2);
+				scene.add(fill);
 
-			/* ============================================================
+				const mat = (color: number, o: any = {}) =>
+					new THREE.MeshStandardMaterial({
+						color,
+						roughness: 0.85,
+						metalness: 0,
+						...o
+					});
+				const M: Record<string, THREE.Material> = {
+					wall: mat(C.wall, { roughness: 0.96 }),
+					trim: mat(C.tealDark, { roughness: 0.6 }),
+					floorWarm: mat(C.floorWarm, { roughness: 0.75 }),
+					floorTile: mat(C.floorTile, { roughness: 0.4 }),
+					wood: mat(C.wood, { roughness: 0.6 }),
+					woodDark: mat(C.woodDark, { roughness: 0.55 }),
+					linen: mat(C.linen, { roughness: 0.9 }),
+					teal: mat(C.teal, { roughness: 0.5 }),
+					orange: mat(C.orange, { roughness: 0.5 }),
+					metal: mat(C.metal, { roughness: 0.35, metalness: 0.7 }),
+					plant: mat(C.plant, { roughness: 0.85 }),
+					white: mat(C.white, { roughness: 0.5 }),
+					glass: new THREE.MeshStandardMaterial({
+						color: C.glass,
+						roughness: 0.08,
+						transparent: true,
+						opacity: 0.26
+					}),
+					screen: mat(C.screen, {
+						roughness: 0.2,
+						emissive: 0x16414c,
+						emissiveIntensity: 0.6
+					})
+				};
+
+				/* ============================================================
 			   PLAN (m). x→este, z→sur (entrada). z=0 fachada; x=0 cristal oeste.
 			   Sala1 z0..3.6 · Sala2 z3.6..6.4 · Entrada z6.4..9.4   (x0..3.2)
 			   Pasillo x3.2..4.5 (fondo ciego al norte)
 			   Baño x4.5..6.7, z0.8..3.2 (cuadrado, asoma al este). SIN portal.
 			   ============================================================ */
-			const WALL_H = 2.8,
-				WALL_T = 0.16;
-			const clinic = new THREE.Group();
-			clinic.position.set(-2.95, 0, -4.8);
-			scene.add(clinic);
+				const WALL_H = 2.8,
+					WALL_T = 0.16;
+				const clinic = new THREE.Group();
+				clinic.position.set(-2.95, 0, -4.8);
+				scene.add(clinic);
 
-			const box = (
-				w: number,
-				h: number,
-				dp: number,
-				m: THREE.Material,
-				x: number,
-				y: number,
-				z: number,
-				p: THREE.Object3D = clinic
-			) => {
-				const me = new THREE.Mesh(new THREE.BoxGeometry(w, h, dp), m);
-				me.position.set(x, y, z);
-				me.castShadow = true;
-				me.receiveShadow = true;
-				p.add(me);
-				return me;
-			};
-			const cyl = (
-				rt: number,
-				rb: number,
-				h: number,
-				m: THREE.Material,
-				x: number,
-				y: number,
-				z: number,
-				seg = 20,
-				p: THREE.Object3D = clinic
-			) => {
-				const me = new THREE.Mesh(
-					new THREE.CylinderGeometry(rt, rb, h, seg),
-					m
+				const box = (
+					w: number,
+					h: number,
+					dp: number,
+					m: THREE.Material,
+					x: number,
+					y: number,
+					z: number,
+					p: THREE.Object3D = clinic
+				) => {
+					const me = new THREE.Mesh(new THREE.BoxGeometry(w, h, dp), m);
+					me.position.set(x, y, z);
+					me.castShadow = true;
+					me.receiveShadow = true;
+					p.add(me);
+					return me;
+				};
+				const cyl = (
+					rt: number,
+					rb: number,
+					h: number,
+					m: THREE.Material,
+					x: number,
+					y: number,
+					z: number,
+					seg = 20,
+					p: THREE.Object3D = clinic
+				) => {
+					const me = new THREE.Mesh(
+						new THREE.CylinderGeometry(rt, rb, h, seg),
+						m
+					);
+					me.position.set(x, y, z);
+					me.castShadow = true;
+					me.receiveShadow = true;
+					p.add(me);
+					return me;
+				};
+				const wall = (
+					x1: number,
+					z1: number,
+					x2: number,
+					z2: number,
+					h = WALL_H
+				) => {
+					const dx = x2 - x1,
+						dz = z2 - z1,
+						len = Math.hypot(dx, dz),
+						ang = Math.atan2(dz, dx);
+					const mx = (x1 + x2) / 2,
+						mz = (z1 + z2) / 2;
+					const w = box(len + WALL_T, h, WALL_T, M.wall, mx, h / 2, mz);
+					w.rotation.y = -ang;
+					const t = box(
+						len + WALL_T,
+						0.05,
+						WALL_T + 0.02,
+						M.trim,
+						mx,
+						h - 0.04,
+						mz
+					);
+					t.rotation.y = -ang;
+				};
+				const glaze = (
+					x: number,
+					z1: number,
+					z2: number,
+					posts: number[] = []
+				) => {
+					const len = z2 - z1,
+						mz = (z1 + z2) / 2;
+					box(0.12, 0.1, len + 0.1, M.metal, x, 0.05, mz);
+					box(0.12, 0.1, len + 0.1, M.metal, x, WALL_H - 0.05, mz);
+					box(0.04, WALL_H - 0.18, len, M.glass, x, WALL_H / 2, mz);
+					const n = Math.max(1, Math.round(len / 1.15));
+					for (let i = 0; i <= n; i++)
+						box(
+							0.1,
+							WALL_H - 0.18,
+							0.07,
+							M.metal,
+							x,
+							WALL_H / 2,
+							z1 + (i * len) / n
+						);
+					posts.forEach(z => box(0.26, WALL_H, 0.26, M.wall, x, WALL_H / 2, z));
+				};
+
+				// floors
+				box(6.6, 0.04, 10.2, M.floorWarm, 2.95, 0, 4.8).receiveShadow = true;
+				const patch = (
+					x0: number,
+					z0: number,
+					x1: number,
+					z1: number,
+					m: THREE.Material,
+					y = 0.012
+				) => box(x1 - x0, 0.02, z1 - z0, m, (x0 + x1) / 2, y, (z0 + z1) / 2);
+				patch(3.72, 0.82, 5.88, 3.18, M.floorTile);
+				patch(2.62, 0.05, 3.68, 7.15, M.floorTile, 0.014);
+				const plaza = new THREE.Mesh(
+					new THREE.PlaneGeometry(160, 160),
+					mat(0x14191c, { roughness: 1 })
 				);
-				me.position.set(x, y, z);
-				me.castShadow = true;
-				me.receiveShadow = true;
-				p.add(me);
-				return me;
-			};
-			const wall = (
-				x1: number,
-				z1: number,
-				x2: number,
-				z2: number,
-				h = WALL_H
-			) => {
-				const dx = x2 - x1,
-					dz = z2 - z1,
-					len = Math.hypot(dx, dz),
-					ang = Math.atan2(dz, dx);
-				const mx = (x1 + x2) / 2,
-					mz = (z1 + z2) / 2;
-				const w = box(len + WALL_T, h, WALL_T, M.wall, mx, h / 2, mz);
-				w.rotation.y = -ang;
-				const t = box(
-					len + WALL_T,
-					0.05,
-					WALL_T + 0.02,
-					M.trim,
-					mx,
-					h - 0.04,
-					mz
-				);
-				t.rotation.y = -ang;
-			};
-			const glaze = (
-				x: number,
-				z1: number,
-				z2: number,
-				posts: number[] = []
-			) => {
-				const len = z2 - z1,
-					mz = (z1 + z2) / 2;
-				box(0.12, 0.1, len + 0.1, M.metal, x, 0.05, mz);
-				box(0.12, 0.1, len + 0.1, M.metal, x, WALL_H - 0.05, mz);
-				box(0.04, WALL_H - 0.18, len, M.glass, x, WALL_H / 2, mz);
-				const n = Math.max(1, Math.round(len / 1.15));
-				for (let i = 0; i <= n; i++)
+				plaza.rotation.x = -Math.PI / 2;
+				plaza.position.y = -0.03;
+				plaza.receiveShadow = true;
+				scene.add(plaza);
+
+				// WALLS  (salas x0..2.6 · pasillo x2.6..3.7 · baño x3.7..5.9 · entrada a TODO el ancho)
+				// La entrada ocupa el ancho de salas + pasillo. La puerta al pasillo está en su
+				// PARED NORTE, a la derecha, y da directamente al pasillo recto (sin hueco ni curva).
+				glaze(0, 0, 9.6, [0, 3.4, 7.2, 9.6]); // oeste: todo cristal
+				wall(0, 0, 3.7, 0); // fachada norte
+				wall(3.7, 0.8, 5.9, 0.8); // baño norte
+				wall(5.9, 0.8, 5.9, 3.2); // baño este
+				wall(3.7, 3.2, 5.9, 3.2); // baño sur
+				wall(3.7, 0, 3.7, 0.8); // pasillo este, sobre el baño (fondo ciego)
+				wall(3.7, 0.8, 3.7, 1.4);
+				wall(3.7, 2.2, 3.7, 3.2); // baño oeste, puerta z1.4..2.2
+				wall(3.7, 3.2, 3.7, 9.6); // pasillo/entrada este (exterior)
+				// muro salas / pasillo  x2.6  (puertas Sala1 y Sala2; baja pegado hasta la entrada)
+				wall(2.6, 0, 2.6, 1.1);
+				wall(2.6, 1.9, 2.6, 4.3);
+				wall(2.6, 5.1, 2.6, 7.2);
+				wall(0, 3.4, 2.6, 3.4); // Sala1/Sala2
+				// entrada: pared NORTE — sólida bajo las salas (x0..2.6); puerta al pasillo a la dcha (x2.6..3.7)
+				wall(0, 7.2, 2.6, 7.2);
+				wall(0, 9.6, 1.2, 9.6);
+				wall(2.4, 9.6, 3.7, 9.6); // sur entrada, hueco paso cubierto x1.2..2.4
+
+				// ventana norte sobre las salas
+				box(1.1, 1.25, 0.06, M.glass, 1.3, 1.55, 0.02);
+				box(1.17, 0.07, 0.09, M.woodDark, 1.3, 2.2, 0.01);
+				box(1.17, 0.07, 0.09, M.woodDark, 1.3, 0.9, 0.01);
+
+				// ---- furniture helpers ----
+				const grp = (x: number, z: number, rot = 0) => {
+					const g = new THREE.Group();
+					g.position.set(x, 0, z);
+					g.rotation.y = rot;
+					clinic.add(g);
+					return g;
+				};
+				const camilla = (x: number, z: number, rot = 0) => {
+					const g = grp(x, z, rot);
+					box(0.68, 0.15, 1.9, M.teal, 0, 0.72, 0, g);
+					box(0.68, 0.15, 0.42, M.orange, 0, 0.72, -0.72, g);
+					box(0.64, 0.1, 1.86, M.metal, 0, 0.6, 0, g);
+					cyl(0.15, 0.15, 0.07, M.linen, 0, 0.82, -0.78, 16, g);
+					[
+						[-0.27, -0.82],
+						[0.27, -0.82],
+						[-0.27, 0.82],
+						[0.27, 0.82]
+					].forEach(([lx, lz]) =>
+						box(0.07, 0.6, 0.07, M.metal, lx, 0.3, lz, g)
+					);
+				};
+				const stool = (x: number, z: number) => {
+					const g = grp(x, z);
+					cyl(0.19, 0.19, 0.07, M.orange, 0, 0.54, 0, 20, g);
+					cyl(0.035, 0.035, 0.48, M.metal, 0, 0.3, 0, 12, g);
+					cyl(0.2, 0.2, 0.04, M.metal, 0, 0.06, 0, 16, g);
+				};
+				const cabinet = (x: number, z: number, rot = 0, w = 1.0) => {
+					const g = grp(x, z, rot);
+					box(w, 0.95, 0.42, M.wood, 0, 0.48, 0, g);
+					box(w - 0.03, 0.04, 0.45, M.woodDark, 0, 0.97, 0, g);
+					for (let i = 0; i < 3; i++)
+						box(w - 0.1, 0.015, 0.02, M.woodDark, 0, 0.25 + i * 0.27, 0.22, g);
+					cyl(0.09, 0.07, 0.15, M.orange, w / 2 - 0.22, 1.07, 0, 12, g);
+					for (let i = 0; i < 5; i++) {
+						const a = (i / 5) * 6.28;
+						box(
+							0.035,
+							0.32,
+							0.035,
+							M.plant,
+							w / 2 - 0.22 + Math.cos(a) * 0.05,
+							1.26,
+							Math.sin(a) * 0.05,
+							g
+						);
+					}
+				};
+				const panel = (
+					x: number,
+					z: number,
+					rot: number,
+					color: THREE.Material
+				) => {
+					const g = grp(x, z, rot);
+					g.position.y = 1.7;
+					box(0.03, 0.85, 0.66, M.white, 0, 0, 0, g);
+					box(0.04, 0.66, 0.48, color, 0.004, 0, 0, g);
+				};
+				const plantPot = (x: number, z: number, s = 1) => {
+					const g = grp(x, z);
+					g.scale.setScalar(s);
+					cyl(0.22, 0.16, 0.36, M.orange, 0, 0.18, 0, 16, g);
+					for (let i = 0; i < 11; i++) {
+						const a = (i / 11) * 6.28,
+							r = 0.08 + Math.random() * 0.1;
+						const b = box(
+							0.045,
+							0.65 + Math.random() * 0.35,
+							0.045,
+							M.plant,
+							Math.cos(a) * r,
+							0.46,
+							Math.sin(a) * r,
+							g
+						);
+						b.rotation.z = Math.cos(a) * 0.4;
+						b.rotation.x = Math.sin(a) * 0.4;
+					}
+				};
+				const sillon = (x: number, z: number, rot = 0) => {
+					const g = grp(x, z, rot);
+					box(0.66, 0.18, 0.62, M.teal, 0, 0.42, 0, g);
+					box(0.6, 0.16, 0.56, M.linen, 0, 0.55, 0.02, g);
+					box(0.66, 0.6, 0.16, M.teal, 0, 0.7, -0.31, g);
+					box(0.14, 0.4, 0.6, M.teal, -0.32, 0.55, 0, g);
+					box(0.14, 0.4, 0.6, M.teal, 0.32, 0.55, 0, g);
+					[
+						[-0.28, -0.26],
+						[0.28, -0.26],
+						[-0.28, 0.26],
+						[0.28, 0.26]
+					].forEach(([lx, lz]) =>
+						box(0.06, 0.34, 0.06, M.woodDark, lx, 0.17, lz, g)
+					);
+				};
+				const sideTable = (x: number, z: number) => {
+					const g = grp(x, z);
+					cyl(0.28, 0.28, 0.04, M.wood, 0, 0.46, 0, 20, g);
+					cyl(0.04, 0.04, 0.46, M.woodDark, 0, 0.23, 0, 10, g);
+					cyl(0.18, 0.18, 0.02, M.metal, 0, 0.06, 0, 16, g);
+				};
+				const grifo = (x: number, z: number, rot = 0) => {
+					const g = grp(x, z, rot);
+					box(0.5, 0.14, 0.4, M.white, 0, 0.84, 0, g);
+					cyl(0.15, 0.15, 0.05, M.glass, 0, 0.86, 0.02, 16, g);
+					const sp = cyl(0.018, 0.018, 0.18, M.metal, 0, 1.0, -0.13, 8, g);
+					sp.rotation.x = Math.PI / 2.4;
+					cyl(0.02, 0.02, 0.12, M.metal, 0, 0.97, -0.16, 8, g);
+					box(0.6, 0.5, 0.04, M.glass, 0, 1.4, -0.18, g);
+					cyl(0.06, 0.05, 0.18, M.white, 0, 0.62, 0, 10, g);
+				};
+				const ecografo = (x: number, z: number, rot = 0) => {
+					const g = grp(x, z, rot);
+					box(0.46, 0.5, 0.56, M.white, 0, 0.3, 0, g);
+					[
+						[-0.18, -0.22],
+						[0.18, -0.22],
+						[-0.18, 0.22],
+						[0.18, 0.22]
+					].forEach(([lx, lz]) =>
+						cyl(0.05, 0.05, 0.06, M.ink, lx, 0.05, lz, 10, g)
+					);
+					box(0.5, 0.06, 0.6, M.metal, 0, 0.6, 0, g);
+					box(0.42, 0.03, 0.26, M.ink, 0, 0.66, 0.12, g);
+					cyl(0.04, 0.05, 0.55, M.metal, 0, 0.92, -0.12, 12, g);
+					const arm = box(0.07, 0.07, 0.34, M.metal, 0, 1.18, 0.04, g);
+					arm.rotation.x = -0.5;
+					box(0.62, 0.42, 0.05, M.ink, 0, 1.42, 0.14, g);
+					box(0.56, 0.36, 0.02, M.screen, 0, 1.42, 0.17, g);
+					box(0.07, 0.16, 0.07, M.ink, -0.26, 0.74, 0, g);
+					box(0.07, 0.16, 0.07, M.ink, 0.26, 0.74, 0, g);
+					cyl(0.015, 0.015, 0.5, M.ink, -0.26, 0.5, 0.18, 6, g);
+				};
+				const toilet = (x: number, z: number, rot = 0) => {
+					const g = grp(x, z, rot);
+					box(0.36, 0.4, 0.5, M.white, 0, 0.2, 0.02, g);
+					cyl(0.19, 0.19, 0.14, M.white, 0, 0.45, -0.05, 18, g);
+					box(0.36, 0.45, 0.16, M.white, 0, 0.42, -0.27, g);
+				};
+				const basin = (x: number, z: number, rot = 0) => {
+					const g = grp(x, z, rot);
+					box(0.5, 0.12, 0.4, M.white, 0, 0.82, 0, g);
+					cyl(0.16, 0.16, 0.05, M.glass, 0, 0.84, 0, 16, g);
+					cyl(0.05, 0.05, 0.4, M.white, 0, 0.6, 0, 8, g);
+					box(0.03, 0.5, 0.36, M.glass, -0.24, 1.35, 0, g);
+				};
+				const radiator = (x: number, z: number, rot = 0) => {
+					const g = grp(x, z, rot);
+					box(0.7, 0.5, 0.06, M.white, 0, 0.5, 0, g);
+					for (let i = 0; i < 7; i++)
+						box(0.06, 0.48, 0.08, M.metal, -0.3 + i * 0.1, 0.5, 0, g);
+				};
+				const runner = (
+					x0: number,
+					z0: number,
+					x1: number,
+					z1: number,
+					color: number
+				) =>
 					box(
-						0.1,
-						WALL_H - 0.18,
-						0.07,
-						M.metal,
-						x,
-						WALL_H / 2,
-						z1 + (i * len) / n
+						x1 - x0,
+						0.02,
+						z1 - z0,
+						mat(color, { roughness: 0.95 }),
+						(x0 + x1) / 2,
+						0.02,
+						(z0 + z1) / 2
 					);
-				posts.forEach(z => box(0.26, WALL_H, 0.26, M.wall, x, WALL_H / 2, z));
-			};
 
-			// floors
-			box(6.6, 0.04, 10.2, M.floorWarm, 2.95, 0, 4.8).receiveShadow = true;
-			const patch = (
-				x0: number,
-				z0: number,
-				x1: number,
-				z1: number,
-				m: THREE.Material,
-				y = 0.012
-			) => box(x1 - x0, 0.02, z1 - z0, m, (x0 + x1) / 2, y, (z0 + z1) / 2);
-			patch(3.72, 0.82, 5.88, 3.18, M.floorTile);
-			patch(2.62, 0.05, 3.68, 7.15, M.floorTile, 0.014);
-			const plaza = new THREE.Mesh(
-				new THREE.PlaneGeometry(160, 160),
-				mat(0x14191c, { roughness: 1 })
-			);
-			plaza.rotation.x = -Math.PI / 2;
-			plaza.position.y = -0.03;
-			plaza.receiveShadow = true;
-			scene.add(plaza);
-
-			// WALLS  (salas x0..2.6 · pasillo x2.6..3.7 · baño x3.7..5.9 · entrada a TODO el ancho)
-			// La entrada ocupa el ancho de salas + pasillo. La puerta al pasillo está en su
-			// PARED NORTE, a la derecha, y da directamente al pasillo recto (sin hueco ni curva).
-			glaze(0, 0, 9.6, [0, 3.4, 7.2, 9.6]); // oeste: todo cristal
-			wall(0, 0, 3.7, 0); // fachada norte
-			wall(3.7, 0.8, 5.9, 0.8); // baño norte
-			wall(5.9, 0.8, 5.9, 3.2); // baño este
-			wall(3.7, 3.2, 5.9, 3.2); // baño sur
-			wall(3.7, 0, 3.7, 0.8); // pasillo este, sobre el baño (fondo ciego)
-			wall(3.7, 0.8, 3.7, 1.4);
-			wall(3.7, 2.2, 3.7, 3.2); // baño oeste, puerta z1.4..2.2
-			wall(3.7, 3.2, 3.7, 9.6); // pasillo/entrada este (exterior)
-			// muro salas / pasillo  x2.6  (puertas Sala1 y Sala2; baja pegado hasta la entrada)
-			wall(2.6, 0, 2.6, 1.1);
-			wall(2.6, 1.9, 2.6, 4.3);
-			wall(2.6, 5.1, 2.6, 7.2);
-			wall(0, 3.4, 2.6, 3.4); // Sala1/Sala2
-			// entrada: pared NORTE — sólida bajo las salas (x0..2.6); puerta al pasillo a la dcha (x2.6..3.7)
-			wall(0, 7.2, 2.6, 7.2);
-			wall(0, 9.6, 1.2, 9.6);
-			wall(2.4, 9.6, 3.7, 9.6); // sur entrada, hueco paso cubierto x1.2..2.4
-
-			// ventana norte sobre las salas
-			box(1.1, 1.25, 0.06, M.glass, 1.3, 1.55, 0.02);
-			box(1.17, 0.07, 0.09, M.woodDark, 1.3, 2.2, 0.01);
-			box(1.17, 0.07, 0.09, M.woodDark, 1.3, 0.9, 0.01);
-
-			// ---- furniture helpers ----
-			const grp = (x: number, z: number, rot = 0) => {
-				const g = new THREE.Group();
-				g.position.set(x, 0, z);
-				g.rotation.y = rot;
-				clinic.add(g);
-				return g;
-			};
-			const camilla = (x: number, z: number, rot = 0) => {
-				const g = grp(x, z, rot);
-				box(0.68, 0.15, 1.9, M.teal, 0, 0.72, 0, g);
-				box(0.68, 0.15, 0.42, M.orange, 0, 0.72, -0.72, g);
-				box(0.64, 0.1, 1.86, M.metal, 0, 0.6, 0, g);
-				cyl(0.15, 0.15, 0.07, M.linen, 0, 0.82, -0.78, 16, g);
-				[
-					[-0.27, -0.82],
-					[0.27, -0.82],
-					[-0.27, 0.82],
-					[0.27, 0.82]
-				].forEach(([lx, lz]) => box(0.07, 0.6, 0.07, M.metal, lx, 0.3, lz, g));
-			};
-			const stool = (x: number, z: number) => {
-				const g = grp(x, z);
-				cyl(0.19, 0.19, 0.07, M.orange, 0, 0.54, 0, 20, g);
-				cyl(0.035, 0.035, 0.48, M.metal, 0, 0.3, 0, 12, g);
-				cyl(0.2, 0.2, 0.04, M.metal, 0, 0.06, 0, 16, g);
-			};
-			const cabinet = (x: number, z: number, rot = 0, w = 1.0) => {
-				const g = grp(x, z, rot);
-				box(w, 0.95, 0.42, M.wood, 0, 0.48, 0, g);
-				box(w - 0.03, 0.04, 0.45, M.woodDark, 0, 0.97, 0, g);
-				for (let i = 0; i < 3; i++)
-					box(w - 0.1, 0.015, 0.02, M.woodDark, 0, 0.25 + i * 0.27, 0.22, g);
-				cyl(0.09, 0.07, 0.15, M.orange, w / 2 - 0.22, 1.07, 0, 12, g);
-				for (let i = 0; i < 5; i++) {
-					const a = (i / 5) * 6.28;
-					box(
-						0.035,
-						0.32,
-						0.035,
-						M.plant,
-						w / 2 - 0.22 + Math.cos(a) * 0.05,
-						1.26,
-						Math.sin(a) * 0.05,
-						g
+				const markers: {
+					x: number;
+					z: number;
+					label: string;
+					world?: THREE.Vector3;
+				}[] = [];
+				const turnCircle = (
+					x: number,
+					z: number,
+					diam: number,
+					label: string
+				) => {
+					const r = diam / 2;
+					const ring = new THREE.Mesh(
+						new THREE.RingGeometry(r - 0.03, r, 48),
+						new THREE.MeshBasicMaterial({
+							color: C.teal,
+							transparent: true,
+							opacity: 0.5,
+							side: THREE.DoubleSide
+						})
 					);
-				}
-			};
-			const panel = (
-				x: number,
-				z: number,
-				rot: number,
-				color: THREE.Material
-			) => {
-				const g = grp(x, z, rot);
-				g.position.y = 1.7;
-				box(0.03, 0.85, 0.66, M.white, 0, 0, 0, g);
-				box(0.04, 0.66, 0.48, color, 0.004, 0, 0, g);
-			};
-			const plantPot = (x: number, z: number, s = 1) => {
-				const g = grp(x, z);
-				g.scale.setScalar(s);
-				cyl(0.22, 0.16, 0.36, M.orange, 0, 0.18, 0, 16, g);
-				for (let i = 0; i < 11; i++) {
-					const a = (i / 11) * 6.28,
-						r = 0.08 + Math.random() * 0.1;
-					const b = box(
-						0.045,
-						0.65 + Math.random() * 0.35,
-						0.045,
-						M.plant,
-						Math.cos(a) * r,
-						0.46,
-						Math.sin(a) * r,
-						g
-					);
-					b.rotation.z = Math.cos(a) * 0.4;
-					b.rotation.x = Math.sin(a) * 0.4;
-				}
-			};
-			const sillon = (x: number, z: number, rot = 0) => {
-				const g = grp(x, z, rot);
-				box(0.66, 0.18, 0.62, M.teal, 0, 0.42, 0, g);
-				box(0.6, 0.16, 0.56, M.linen, 0, 0.55, 0.02, g);
-				box(0.66, 0.6, 0.16, M.teal, 0, 0.7, -0.31, g);
-				box(0.14, 0.4, 0.6, M.teal, -0.32, 0.55, 0, g);
-				box(0.14, 0.4, 0.6, M.teal, 0.32, 0.55, 0, g);
-				[
-					[-0.28, -0.26],
-					[0.28, -0.26],
-					[-0.28, 0.26],
-					[0.28, 0.26]
-				].forEach(([lx, lz]) =>
-					box(0.06, 0.34, 0.06, M.woodDark, lx, 0.17, lz, g)
+					ring.rotation.x = -Math.PI / 2;
+					ring.position.set(x, 0.03, z);
+					clinic.add(ring);
+					markers.push({ x, z, label });
+				};
+
+				// ---- place ----
+				// Sala 1
+				camilla(1.0, 1.6, 0);
+				stool(2.1, 1.1);
+				cabinet(0.85, 0.45, 0, 1.0);
+				panel(1.6, 3.35, 0, M.teal);
+				plantPot(2.3, 3.05, 0.8);
+				// Sala 2 (grifo + ecógrafo) — baja pegada a la entrada
+				camilla(1.0, 5.2, 0);
+				stool(2.1, 6.0);
+				grifo(0.65, 3.46, 0);
+				ecografo(2.1, 4.4, -2.3);
+				panel(1.6, 7.15, 0, M.orange);
+				// Entrada / espera (ancho completo; 2 sillones al oeste; puerta al pasillo en la pared norte, dcha)
+				runner(0.4, 7.4, 2.0, 9.4, 0xcdb085);
+				sillon(0.5, 7.9, Math.PI / 2);
+				sillon(0.5, 9.0, Math.PI / 2);
+				sideTable(1.15, 8.45);
+				plantPot(3.4, 9.3, 0.9);
+				runner(1.2, 9.4, 2.4, 9.6, 0xbf9f78);
+				// Baño (cuadrado)
+				toilet(4.7, 1.15, 0);
+				basin(5.7, 2.4, -Math.PI / 2);
+				radiator(4.2, 3.14, 0);
+				box(0.5, 0.6, 0.05, M.glass, 5.87, 1.4, 2.0);
+				// Puerta entrada → pasillo (en la pared norte de la entrada, a la dcha)
+				box(1.1, 0.7, 0.16, M.wall, 3.15, 2.45, 7.2); // dintel sobre la puerta
+				box(0.06, 2.1, 0.2, M.white, 2.62, 1.05, 7.2); // jamba oeste
+				box(0.06, 2.1, 0.2, M.white, 3.68, 1.05, 7.2); // jamba este
+				const doorG = new THREE.Group(); // hoja entreabierta, abre al pasillo
+				doorG.position.set(2.62, 0, 7.2);
+				doorG.rotation.y = 1.05;
+				clinic.add(doorG);
+				box(0.92, 2.0, 0.04, M.wood, 0.46, 1.0, 0, doorG);
+				cyl(0.02, 0.02, 0.12, M.metal, 0.82, 1.0, 0.06, 8, doorG).rotation.x =
+					Math.PI / 2;
+
+				// Pasillo (recto)
+				runner(2.75, 0.4, 3.35, 7.0, 0xcaa97f);
+				plantPot(3.4, 6.7, 0.7);
+				const nook = new THREE.PointLight(0xffe9c8, 5, 4, 2);
+				nook.position.set(
+					clinic.position.x + 3.15,
+					2.4,
+					clinic.position.z + 0.4
 				);
-			};
-			const sideTable = (x: number, z: number) => {
-				const g = grp(x, z);
-				cyl(0.28, 0.28, 0.04, M.wood, 0, 0.46, 0, 20, g);
-				cyl(0.04, 0.04, 0.46, M.woodDark, 0, 0.23, 0, 10, g);
-				cyl(0.18, 0.18, 0.02, M.metal, 0, 0.06, 0, 16, g);
-			};
-			const grifo = (x: number, z: number, rot = 0) => {
-				const g = grp(x, z, rot);
-				box(0.5, 0.14, 0.4, M.white, 0, 0.84, 0, g);
-				cyl(0.15, 0.15, 0.05, M.glass, 0, 0.86, 0.02, 16, g);
-				const sp = cyl(0.018, 0.018, 0.18, M.metal, 0, 1.0, -0.13, 8, g);
-				sp.rotation.x = Math.PI / 2.4;
-				cyl(0.02, 0.02, 0.12, M.metal, 0, 0.97, -0.16, 8, g);
-				box(0.6, 0.5, 0.04, M.glass, 0, 1.4, -0.18, g);
-				cyl(0.06, 0.05, 0.18, M.white, 0, 0.62, 0, 10, g);
-			};
-			const ecografo = (x: number, z: number, rot = 0) => {
-				const g = grp(x, z, rot);
-				box(0.46, 0.5, 0.56, M.white, 0, 0.3, 0, g);
-				[
-					[-0.18, -0.22],
-					[0.18, -0.22],
-					[-0.18, 0.22],
-					[0.18, 0.22]
-				].forEach(([lx, lz]) =>
-					cyl(0.05, 0.05, 0.06, M.ink, lx, 0.05, lz, 10, g)
-				);
-				box(0.5, 0.06, 0.6, M.metal, 0, 0.6, 0, g);
-				box(0.42, 0.03, 0.26, M.ink, 0, 0.66, 0.12, g);
-				cyl(0.04, 0.05, 0.55, M.metal, 0, 0.92, -0.12, 12, g);
-				const arm = box(0.07, 0.07, 0.34, M.metal, 0, 1.18, 0.04, g);
-				arm.rotation.x = -0.5;
-				box(0.62, 0.42, 0.05, M.ink, 0, 1.42, 0.14, g);
-				box(0.56, 0.36, 0.02, M.screen, 0, 1.42, 0.17, g);
-				box(0.07, 0.16, 0.07, M.ink, -0.26, 0.74, 0, g);
-				box(0.07, 0.16, 0.07, M.ink, 0.26, 0.74, 0, g);
-				cyl(0.015, 0.015, 0.5, M.ink, -0.26, 0.5, 0.18, 6, g);
-			};
-			const toilet = (x: number, z: number, rot = 0) => {
-				const g = grp(x, z, rot);
-				box(0.36, 0.4, 0.5, M.white, 0, 0.2, 0.02, g);
-				cyl(0.19, 0.19, 0.14, M.white, 0, 0.45, -0.05, 18, g);
-				box(0.36, 0.45, 0.16, M.white, 0, 0.42, -0.27, g);
-			};
-			const basin = (x: number, z: number, rot = 0) => {
-				const g = grp(x, z, rot);
-				box(0.5, 0.12, 0.4, M.white, 0, 0.82, 0, g);
-				cyl(0.16, 0.16, 0.05, M.glass, 0, 0.84, 0, 16, g);
-				cyl(0.05, 0.05, 0.4, M.white, 0, 0.6, 0, 8, g);
-				box(0.03, 0.5, 0.36, M.glass, -0.24, 1.35, 0, g);
-			};
-			const radiator = (x: number, z: number, rot = 0) => {
-				const g = grp(x, z, rot);
-				box(0.7, 0.5, 0.06, M.white, 0, 0.5, 0, g);
-				for (let i = 0; i < 7; i++)
-					box(0.06, 0.48, 0.08, M.metal, -0.3 + i * 0.1, 0.5, 0, g);
-			};
-			const runner = (
-				x0: number,
-				z0: number,
-				x1: number,
-				z1: number,
-				color: number
-			) =>
-				box(
-					x1 - x0,
-					0.02,
-					z1 - z0,
-					mat(color, { roughness: 0.95 }),
-					(x0 + x1) / 2,
-					0.02,
-					(z0 + z1) / 2
-				);
+				scene.add(nook);
+				// paso cubierto (exterior)
+				patch(0.0, 9.6, 3.7, 11.2, mat(0xbfc3c4, { roughness: 0.9 }), 0.006);
 
-			const markers: {
-				x: number;
-				z: number;
-				label: string;
-				world?: THREE.Vector3;
-			}[] = [];
-			const turnCircle = (
-				x: number,
-				z: number,
-				diam: number,
-				label: string
-			) => {
-				const r = diam / 2;
-				const ring = new THREE.Mesh(
-					new THREE.RingGeometry(r - 0.03, r, 48),
-					new THREE.MeshBasicMaterial({
-						color: C.teal,
-						transparent: true,
-						opacity: 0.5,
-						side: THREE.DoubleSide
-					})
-				);
-				ring.rotation.x = -Math.PI / 2;
-				ring.position.set(x, 0.03, z);
-				clinic.add(ring);
-				markers.push({ x, z, label });
-			};
+				// ---- labels ----
+				const OFF = clinic.position;
+				const labelPos = [
+					[1.3, 2.0, 1.6],
+					[1.3, 2.0, 5.2],
+					[1.5, 2.0, 8.4],
+					[4.7, 2.0, 2.0],
+					[3.15, 1.9, 4.5]
+				];
+				const labelEls = copy.rooms.map((r, i) => {
+					const el = document.createElement('div');
+					el.className = 'c3d-label';
+					el.innerHTML = r.b ? `${r.a}<b>${r.b}</b>` : r.a;
+					host.appendChild(el);
+					const [x, y, z] = labelPos[i];
+					return { el, world: new THREE.Vector3(x + OFF.x, y, z + OFF.z) };
+				});
+				const markEls = markers.map(m => {
+					const el = document.createElement('div');
+					el.className = 'c3d-mark';
+					el.textContent = m.label;
+					host.appendChild(el);
+					m.world = new THREE.Vector3(m.x + OFF.x, 0.05, m.z + OFF.z);
+					return el;
+				});
 
-			// ---- place ----
-			// Sala 1
-			camilla(1.0, 1.6, 0);
-			stool(2.1, 1.1);
-			cabinet(0.85, 0.45, 0, 1.0);
-			panel(1.6, 3.35, 0, M.teal);
-			plantPot(2.3, 3.05, 0.8);
-			// Sala 2 (grifo + ecógrafo) — baja pegada a la entrada
-			camilla(1.0, 5.2, 0);
-			stool(2.1, 6.0);
-			grifo(0.65, 3.46, 0);
-			ecografo(2.1, 4.4, -2.3);
-			panel(1.6, 7.15, 0, M.orange);
-			// Entrada / espera (ancho completo; 2 sillones al oeste; puerta al pasillo en la pared norte, dcha)
-			runner(0.4, 7.4, 2.0, 9.4, 0xcdb085);
-			sillon(0.5, 7.9, Math.PI / 2);
-			sillon(0.5, 9.0, Math.PI / 2);
-			sideTable(1.15, 8.45);
-			plantPot(3.4, 9.3, 0.9);
-			runner(1.2, 9.4, 2.4, 9.6, 0xbf9f78);
-			// Baño (cuadrado)
-			toilet(4.7, 1.15, 0);
-			basin(5.7, 2.4, -Math.PI / 2);
-			radiator(4.2, 3.14, 0);
-			box(0.5, 0.6, 0.05, M.glass, 5.87, 1.4, 2.0);
-			// Puerta entrada → pasillo (en la pared norte de la entrada, a la dcha)
-			box(1.1, 0.7, 0.16, M.wall, 3.15, 2.45, 7.2); // dintel sobre la puerta
-			box(0.06, 2.1, 0.2, M.white, 2.62, 1.05, 7.2); // jamba oeste
-			box(0.06, 2.1, 0.2, M.white, 3.68, 1.05, 7.2); // jamba este
-			const doorG = new THREE.Group(); // hoja entreabierta, abre al pasillo
-			doorG.position.set(2.62, 0, 7.2);
-			doorG.rotation.y = 1.05;
-			clinic.add(doorG);
-			box(0.92, 2.0, 0.04, M.wood, 0.46, 1.0, 0, doorG);
-			cyl(0.02, 0.02, 0.12, M.metal, 0.82, 1.0, 0.06, 8, doorG).rotation.x =
-				Math.PI / 2;
-
-			// Pasillo (recto)
-			runner(2.75, 0.4, 3.35, 7.0, 0xcaa97f);
-			plantPot(3.4, 6.7, 0.7);
-			const nook = new THREE.PointLight(0xffe9c8, 5, 4, 2);
-			nook.position.set(clinic.position.x + 3.15, 2.4, clinic.position.z + 0.4);
-			scene.add(nook);
-			// paso cubierto (exterior)
-			patch(0.0, 9.6, 3.7, 11.2, mat(0xbfc3c4, { roughness: 0.9 }), 0.006);
-
-			// ---- labels ----
-			const OFF = clinic.position;
-			const labelPos = [
-				[1.3, 2.0, 1.6],
-				[1.3, 2.0, 5.2],
-				[1.5, 2.0, 8.4],
-				[4.7, 2.0, 2.0],
-				[3.15, 1.9, 4.5]
-			];
-			const labelEls = copy.rooms.map((r, i) => {
-				const el = document.createElement('div');
-				el.className = 'c3d-label';
-				el.innerHTML = r.b ? `${r.a}<b>${r.b}</b>` : r.a;
-				host.appendChild(el);
-				const [x, y, z] = labelPos[i];
-				return { el, world: new THREE.Vector3(x + OFF.x, y, z + OFF.z) };
-			});
-			const markEls = markers.map(m => {
-				const el = document.createElement('div');
-				el.className = 'c3d-mark';
-				el.textContent = m.label;
-				host.appendChild(el);
-				m.world = new THREE.Vector3(m.x + OFF.x, 0.05, m.z + OFF.z);
-				return el;
-			});
-
-			// ---- views ----
-			const VIEWS: Record<string, { pos: THREE.Vector3; tgt: THREE.Vector3 }> =
-				{
+				// ---- views ----
+				const VIEWS: Record<
+					string,
+					{ pos: THREE.Vector3; tgt: THREE.Vector3 }
+				> = {
 					orbit: {
 						pos: new THREE.Vector3(10, 10, 13),
 						tgt: new THREE.Vector3(0, 1, 0)
@@ -750,70 +757,71 @@ const { lang = 'es' }: Props = Astro.props;
 						tgt: new THREE.Vector3(0, 0, 0)
 					}
 				};
-			let targetView: { pos: THREE.Vector3; tgt: THREE.Vector3 } | null = null;
-			let viewT = 0,
-				fromPos = new THREE.Vector3(),
-				fromTgt = new THREE.Vector3();
-			host
-				.querySelectorAll<HTMLButtonElement>('.consulta3d__views button')
-				.forEach(b => {
-					b.addEventListener('click', () => {
-						host
-							.querySelectorAll('.consulta3d__views button')
-							.forEach(x => x.classList.remove('is-active'));
-						b.classList.add('is-active');
-						targetView = VIEWS[b.dataset.view!];
-						viewT = 0;
-						fromPos.copy(camera.position);
-						fromTgt.copy(controls.target);
+				let targetView: { pos: THREE.Vector3; tgt: THREE.Vector3 } | null =
+					null;
+				let viewT = 0,
+					fromPos = new THREE.Vector3(),
+					fromTgt = new THREE.Vector3();
+				host
+					.querySelectorAll<HTMLButtonElement>('.consulta3d__views button')
+					.forEach(b => {
+						b.addEventListener('click', () => {
+							host
+								.querySelectorAll('.consulta3d__views button')
+								.forEach(x => x.classList.remove('is-active'));
+							b.classList.add('is-active');
+							targetView = VIEWS[b.dataset.view!];
+							viewT = 0;
+							fromPos.copy(camera.position);
+							fromTgt.copy(controls.target);
+						});
 					});
-				});
 
-			// ---- sizing ----
-			const resize = () => {
-				const w = host.clientWidth || 1,
-					h = host.clientHeight || 1;
-				renderer.setSize(w, h, false);
-				camera.aspect = w / h;
-				camera.updateProjectionMatrix();
-			};
-			const ro = new ResizeObserver(resize);
-			ro.observe(host);
-			resize();
+				// ---- sizing ----
+				const resize = () => {
+					const w = host.clientWidth || 1,
+						h = host.clientHeight || 1;
+					renderer.setSize(w, h, false);
+					camera.aspect = w / h;
+					camera.updateProjectionMatrix();
+				};
+				const ro = new ResizeObserver(resize);
+				ro.observe(host);
+				resize();
 
-			host.classList.add('is-ready');
+				host.classList.add('is-ready');
 
-			// ---- loop ----
-			const v = new THREE.Vector3();
-			const project = (world: THREE.Vector3, el: HTMLElement) => {
-				v.copy(world).project(camera);
-				if (v.z > 1) {
-					el.style.opacity = '0';
-					return;
-				}
-				const w = host.clientWidth,
-					h = host.clientHeight;
-				el.style.left = (v.x * 0.5 + 0.5) * w + 'px';
-				el.style.top = (-v.y * 0.5 + 0.5) * h + 'px';
-				const dist = camera.position.distanceTo(world);
-				el.style.opacity = String(Math.max(0, Math.min(1, (42 - dist) / 18)));
-			};
-			const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-			const animate = () => {
-				requestAnimationFrame(animate);
-				if (targetView) {
-					viewT = Math.min(1, viewT + (reduce ? 1 : 0.02));
-					const e = 1 - Math.pow(1 - viewT, 3);
-					camera.position.lerpVectors(fromPos, targetView.pos, e);
-					controls.target.lerpVectors(fromTgt, targetView.tgt, e);
-					if (viewT >= 1) targetView = null;
-				}
-				controls.update();
-				labelEls.forEach(l => project(l.world, l.el));
-				markers.forEach((m, i) => project(m.world!, markEls[i]));
-				renderer.render(scene, camera);
-			};
-			animate();
+				// ---- loop ----
+				const v = new THREE.Vector3();
+				const project = (world: THREE.Vector3, el: HTMLElement) => {
+					v.copy(world).project(camera);
+					if (v.z > 1) {
+						el.style.opacity = '0';
+						return;
+					}
+					const w = host.clientWidth,
+						h = host.clientHeight;
+					el.style.left = (v.x * 0.5 + 0.5) * w + 'px';
+					el.style.top = (-v.y * 0.5 + 0.5) * h + 'px';
+					const dist = camera.position.distanceTo(world);
+					el.style.opacity = String(Math.max(0, Math.min(1, (42 - dist) / 18)));
+				};
+				const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+				const animate = () => {
+					requestAnimationFrame(animate);
+					if (targetView) {
+						viewT = Math.min(1, viewT + (reduce ? 1 : 0.02));
+						const e = 1 - Math.pow(1 - viewT, 3);
+						camera.position.lerpVectors(fromPos, targetView.pos, e);
+						controls.target.lerpVectors(fromTgt, targetView.tgt, e);
+						if (viewT >= 1) targetView = null;
+					}
+					controls.update();
+					labelEls.forEach(l => project(l.world, l.el));
+					markers.forEach((m, i) => project(m.world!, markEls[i]));
+					renderer.render(scene, camera);
+				};
+				animate();
 			};
 
 			if ('IntersectionObserver' in window) {

@@ -1,14 +1,21 @@
 ---
 import Layout from '@layouts/Page.astro';
-import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
+import {
+	getLangFromUrl,
+	getStaticLangPaths,
+	useTranslations
+} from '@i18n/utils';
 import { Langs } from '@i18n/ui';
+import SectionHero from '@components/SectionHero.astro';
 import AboutSection from '@components/sections/AboutSection.astro';
+import JokinImage from '@images/jokin.webp';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
 
 const lang: Langs = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 // SEO data for about page - optimized for Gipuzkoa keywords
 const seo = {
@@ -35,5 +42,19 @@ const seo = {
 ---
 
 <Layout {seo}>
+	<SectionHero
+		id="about-hero"
+		image={JokinImage}
+		imageAlt="Jokin Ramos González"
+		imagePosition="center 34%"
+		imageMobilePosition="center 24%"
+	>
+		<h1 slot="title" class="title--highlight">
+			{t('about.title')}
+		</h1>
+		<Fragment slot="desc">
+			{t('about.subtitle')}
+		</Fragment>
+	</SectionHero>
 	<AboutSection lang={lang} />
 </Layout>

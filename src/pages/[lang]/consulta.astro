@@ -7,11 +7,13 @@ import {
 } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
 import Container from '@components/core/Container.astro';
+import SectionHero from '@components/SectionHero.astro';
 import Consulta3D from '@components/Consulta3D.astro';
 import Button from '@components/buttons/Button.astro';
 import { Image } from 'astro:assets';
 import Rehab from '@images/rehab.webp';
 import ConsultaSala from '@images/consulta-sala.jpg';
+import ConsultaSala2 from '@images/consulta-sala2.jpg';
 import ConsultaEspera from '@images/consulta-espera.jpg';
 import KristalaFrentez from '@images/kristala-frentez.jpg';
 import KristalaLateralez from '@images/kristala-lateralez.jpg';
@@ -47,24 +49,29 @@ const seo = {
 ---
 
 <Layout {seo}>
+	<SectionHero
+		id="consulta-hero"
+		image={KristalaLateralez}
+		imageMobile={KristalaFrentez}
+		imageAlt={lang === 'eu'
+			? 'Laguntza Fisioterapiaren tratamendu gela, Urnietan'
+			: 'Sala de tratamiento de Laguntza Fisioterapia, Urnieta'}
+		imagePosition="center 58%"
+		imageMobilePosition="center"
+	>
+		<h1 slot="title">
+			{lang === 'eu' ? 'Kontsulta' : 'La consulta'}
+		</h1>
+		<Fragment slot="desc">
+			{
+				lang === 'eu'
+					? 'Espazio argitsu eta irisgarria Zubitxo Plazan, Urnietan (Gipuzkoa): sarrera, bi gela, komuna eta korridorea, kristalez betetako fatxada batekin soportaletara. Ibili eredu 3Dan etorri aurretik.'
+					: 'Un espacio luminoso y accesible en Zubitxo Plaza, Urnieta (Gipuzkoa): entrada, dos salas, baño y pasillo, con una fachada acristalada a los soportales. Recórrelo en 3D antes de venir.'
+			}
+		</Fragment>
+	</SectionHero>
 	<Container>
 		<section class="consulta">
-			<header class="consulta__intro">
-				<p class="consulta__eyebrow">
-					{lang === 'eu' ? 'GURE TXOKOA' : 'NUESTRO ESPACIO'}
-				</p>
-				<h1 class="consulta__title">
-					{lang === 'eu' ? 'Kontsulta' : 'La consulta'}
-				</h1>
-				<p class="consulta__lead">
-					{
-						lang === 'eu'
-							? 'Espazio argitsu eta irisgarria Zubitxo Plazan, Urnietan (Gipuzkoa): sarrera, bi gela, komuna eta korridorea, kristalez betetako fatxada batekin soportaletara. Ibili eredu 3Dan etorri aurretik.'
-							: 'Un espacio luminoso y accesible en Zubitxo Plaza, Urnieta (Gipuzkoa): entrada, dos salas, baño y pasillo, con una fachada acristalada a los soportales. Recórrelo en 3D antes de venir.'
-					}
-				</p>
-			</header>
-
 			<Consulta3D lang={lang} />
 
 			<figure class="consulta__featured">
@@ -81,7 +88,7 @@ const seo = {
 
 			<div class="consulta__photos">
 				<Image
-					src={ConsultaSala}
+					src={ConsultaSala2}
 					alt={lang === 'eu'
 						? 'Laguntza Fisioterapiaren tratamendu gela, ohatila eta ekografoarekin, Urnietan'
 						: 'Sala de tratamiento de Laguntza Fisioterapia con camilla y ecógrafo, Urnieta'}
@@ -111,8 +118,8 @@ const seo = {
 				<Image
 					src={KristalaLateralez}
 					alt={lang === 'eu'
-						? 'Laguntza Fisioterapiaren sarrera soportaletatik'
-						: 'Entrada de Laguntza Fisioterapia desde los soportales'}
+						? 'Laguntza Fisioterapiaren fatxada, Zubitxo Plaza, Urnieta'
+						: 'Fachada de Laguntza Fisioterapia, Zubitxo Plaza, Urnieta'}
 					widths={[480, 800, 1200]}
 					sizes="(max-width: 768px) 100vw, 50vw"
 					loading="lazy"
@@ -137,32 +144,8 @@ const seo = {
 
 <style>
 	.consulta {
-		padding-top: calc(var(--header-height, 5.8rem) + var(--s4, 2rem));
+		padding-top: var(--s5, 3rem);
 		margin-bottom: calc(var(--section-margin, 4rem) * 1.5);
-	}
-	.consulta__intro {
-		max-width: 62ch;
-		margin-bottom: var(--s4, 2rem);
-	}
-	.consulta__eyebrow {
-		margin: 0 0 0.5rem;
-		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.22em;
-		color: var(--theme-primary, #458295);
-	}
-	.consulta__title {
-		margin: 0 0 0.75rem;
-		font-size: var(--font-size-xxl, clamp(2.2rem, 5vw, 3.75rem));
-		font-weight: 700;
-		letter-spacing: -0.02em;
-		line-height: 1.08;
-	}
-	.consulta__lead {
-		margin: 0;
-		font-size: var(--font-size-lg, 1.15rem);
-		line-height: 1.55;
-		color: var(--theme-text-secondary, #6f6f70);
 	}
 
 	.consulta__featured {
