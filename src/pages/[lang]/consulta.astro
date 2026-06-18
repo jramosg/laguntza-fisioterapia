@@ -10,10 +10,12 @@ import Container from '@components/core/Container.astro';
 import SectionHero from '@components/SectionHero.astro';
 import Consulta3D from '@components/Consulta3D.astro';
 import Button from '@components/buttons/Button.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
 import Rehab from '@images/rehab.webp';
 import ConsultaSala from '@images/consulta-sala.jpg';
 import ConsultaSala2 from '@images/consulta-sala2.jpg';
+import ConsultaEntrada from '@images/consulta-entrada.webp';
 import ConsultaEspera from '@images/consulta-espera.jpg';
 import KristalaFrentez from '@images/kristala-frentez.jpg';
 import KristalaLateralez from '@images/kristala-lateralez.jpg';
@@ -46,6 +48,99 @@ const seo = {
 		}
 	]
 };
+
+const galleryImages = [
+	{
+		src: Rehab,
+		class: 'consulta__photo--featured',
+		alt:
+			lang === 'eu'
+				? 'Jokin Ramos paziente bati tratamendua ematen Laguntza Fisioterapiako kontsultan, Urnietan'
+				: 'Jokin Ramos tratando a una paciente en la consulta de Laguntza Fisioterapia, Urnieta',
+		widths: [480, 800, 1200],
+		sizes:
+			'(max-width: 700px) 82vw, (max-width: 980px) 84vw, (max-width: 1440px) calc((100vw - 3rem) * 0.42), 588px'
+	},
+	{
+		src: ConsultaSala,
+		class: 'consulta__photo--wide',
+		alt:
+			lang === 'eu'
+				? 'Laguntza Fisioterapiaren tratamendu gela nagusia, ohatilarekin, Urnietan'
+				: 'Sala de tratamiento principal de Laguntza Fisioterapia con camilla, Urnieta',
+		widths: [480, 800, 1200],
+		sizes:
+			'(max-width: 700px) 82vw, (max-width: 980px) 84vw, (max-width: 1440px) calc((100vw - 3rem) * 0.58), 820px'
+	},
+	{
+		src: ConsultaSala2,
+		class: 'consulta__photo--portrait consulta__photo--room-portrait',
+		alt:
+			lang === 'eu'
+				? 'Laguntza Fisioterapiaren bigarren tratamendu gela, ekografo eta harraskarekin, Urnietan'
+				: 'Segunda sala de tratamiento de Laguntza Fisioterapia con ecógrafo y lavabo, Urnieta',
+		widths: [480, 800, 1200],
+		sizes:
+			'(max-width: 700px) 76vw, (max-width: 980px) 72vw, (max-width: 1440px) calc((100vw - 3rem) * 0.42), 588px'
+	},
+	{
+		src: ConsultaEntrada,
+		class: 'consulta__photo--portrait consulta__photo--entrance',
+		alt:
+			lang === 'eu'
+				? 'Laguntza Fisioterapiaren sarrera, atea, logotipoa eta harremanetarako datuekin, Urnietan'
+				: 'Entrada de Laguntza Fisioterapia con puerta, logotipo y datos de contacto, Urnieta',
+		widths: [360, 540, 720, 1086],
+		sizes:
+			'(max-width: 700px) 76vw, (max-width: 980px) 72vw, (max-width: 1440px) calc((100vw - 3rem) * 0.42), 588px'
+	},
+	{
+		src: ConsultaEspera,
+		class: 'consulta__photo--portrait consulta__photo--waiting',
+		alt:
+			lang === 'eu'
+				? 'Laguntza Fisioterapiaren itxarongela, besaulkiekin eta logotipoarekin, Urnietan'
+				: 'Sala de espera de Laguntza Fisioterapia con sillones y el logotipo, Urnieta',
+		widths: [480, 800, 1200],
+		sizes:
+			'(max-width: 700px) 76vw, (max-width: 980px) 72vw, (max-width: 1440px) calc((100vw - 3rem) * 0.34), 480px'
+	},
+	{
+		src: KristalaFrentez,
+		class: 'consulta__photo--facade',
+		alt:
+			lang === 'eu'
+				? 'Laguntza Fisioterapiaren fatxada, Zubitxo Plaza, Urnieta'
+				: 'Fachada de Laguntza Fisioterapia, Zubitxo Plaza, Urnieta',
+		widths: [480, 800, 1200],
+		sizes:
+			'(max-width: 700px) 82vw, (max-width: 980px) 84vw, (max-width: 1440px) calc((100vw - 3rem) * 0.58), 820px'
+	},
+	{
+		src: KristalaLateralez,
+		class: 'consulta__photo--panorama',
+		alt:
+			lang === 'eu'
+				? 'Laguntza Fisioterapiaren fatxada, Zubitxo Plaza, Urnieta'
+				: 'Fachada de Laguntza Fisioterapia, Zubitxo Plaza, Urnieta',
+		widths: [480, 800, 1200],
+		sizes:
+			'(max-width: 700px) 82vw, (max-width: 980px) 84vw, (max-width: 1440px) calc((100vw - 3rem) * 0.66), 928px'
+	}
+];
+
+// Crisp-but-optimized WebP variants for the full-screen lightbox. Referenced
+// lazily via data-attributes so nothing is fetched until a photo is opened.
+const lightboxImages = await Promise.all(
+	galleryImages.map(image =>
+		getImage({
+			src: image.src,
+			width: Math.min(image.src.width, 1800),
+			format: 'webp',
+			quality: 80
+		})
+	)
+);
 ---
 
 <Layout {seo}>
@@ -74,56 +169,81 @@ const seo = {
 		<section class="consulta">
 			<Consulta3D lang={lang} />
 
-			<figure class="consulta__featured">
-				<Image
-					src={Rehab}
-					alt={lang === 'eu'
-						? 'Jokin Ramos paziente bati tratamendua ematen Laguntza Fisioterapiako kontsultan, Urnietan'
-						: 'Jokin Ramos tratando a una paciente en la consulta de Laguntza Fisioterapia, Urnieta'}
-					widths={[480, 760, 1040]}
-					sizes="(max-width: 760px) 100vw, 520px"
-					loading="lazy"
-				/>
-			</figure>
-
 			<div class="consulta__photos">
-				<Image
-					src={ConsultaSala2}
-					alt={lang === 'eu'
-						? 'Laguntza Fisioterapiaren tratamendu gela, ohatila eta ekografoarekin, Urnietan'
-						: 'Sala de tratamiento de Laguntza Fisioterapia con camilla y ecógrafo, Urnieta'}
-					widths={[480, 800, 1200]}
-					sizes="(max-width: 768px) 100vw, 50vw"
-					loading="lazy"
-				/>
-				<Image
-					src={ConsultaEspera}
-					class="consulta__photo--tall"
-					alt={lang === 'eu'
-						? 'Laguntza Fisioterapiaren itxarongela, besaulkiekin eta logotipoarekin, Urnietan'
-						: 'Sala de espera de Laguntza Fisioterapia con sillones y el logotipo, Urnieta'}
-					widths={[480, 800, 1200]}
-					sizes="(max-width: 768px) 100vw, 50vw"
-					loading="lazy"
-				/>
-				<Image
-					src={KristalaFrentez}
-					alt={lang === 'eu'
-						? 'Laguntza Fisioterapiaren fatxada, Zubitxo Plaza, Urnieta'
-						: 'Fachada de Laguntza Fisioterapia, Zubitxo Plaza, Urnieta'}
-					widths={[480, 800, 1200]}
-					sizes="(max-width: 768px) 100vw, 50vw"
-					loading="lazy"
-				/>
-				<Image
-					src={KristalaLateralez}
-					alt={lang === 'eu'
-						? 'Laguntza Fisioterapiaren fatxada, Zubitxo Plaza, Urnieta'
-						: 'Fachada de Laguntza Fisioterapia, Zubitxo Plaza, Urnieta'}
-					widths={[480, 800, 1200]}
-					sizes="(max-width: 768px) 100vw, 50vw"
-					loading="lazy"
-				/>
+				{
+					galleryImages.map((image, index) => (
+						<button
+							class={`consulta__photo ${image.class}`}
+							type="button"
+							data-gallery-item
+							data-index={index}
+							data-full-src={lightboxImages[index].src}
+							data-full-width={image.src.width}
+							data-full-height={image.src.height}
+							aria-label={
+								lang === 'eu'
+									? `Ireki argazkia ${index + 1}/${galleryImages.length}`
+									: `Abrir foto ${index + 1}/${galleryImages.length}`
+							}
+						>
+							<Image
+								src={image.src}
+								class="consulta__photo-image"
+								alt={image.alt}
+								widths={image.widths}
+								sizes={image.sizes}
+								loading="lazy"
+							/>
+							<span class="consulta__photo-overlay" aria-hidden="true">
+								<Icon name="mdi:magnify-plus-outline" />
+							</span>
+						</button>
+					))
+				}
+			</div>
+
+			<div
+				class="consulta-lightbox"
+				id="consulta-lightbox"
+				aria-hidden="true"
+				aria-modal="true"
+				role="dialog"
+			>
+				<button
+					class="consulta-lightbox__control consulta-lightbox__close"
+					type="button"
+					aria-label={lang === 'eu' ? 'Itxi galeria' : 'Cerrar galería'}
+				>
+					<Icon name="mdi:close" />
+				</button>
+				<button
+					class="consulta-lightbox__control consulta-lightbox__prev"
+					type="button"
+					aria-label={lang === 'eu' ? 'Aurreko argazkia' : 'Foto anterior'}
+				>
+					<Icon name="mdi:chevron-left" />
+				</button>
+				<figure class="consulta-lightbox__content">
+					<img
+						id="consulta-lightbox-image"
+						class="consulta-lightbox__image"
+						alt=""
+						width={galleryImages[0].src.width}
+						height={galleryImages[0].src.height}
+						decoding="async"
+					/>
+					<figcaption class="consulta-lightbox__caption">
+						<span class="consulta-lightbox__caption-text"></span>
+						<span class="consulta-lightbox__counter"></span>
+					</figcaption>
+				</figure>
+				<button
+					class="consulta-lightbox__control consulta-lightbox__next"
+					type="button"
+					aria-label={lang === 'eu' ? 'Hurrengo argazkia' : 'Foto siguiente'}
+				>
+					<Icon name="mdi:chevron-right" />
+				</button>
 			</div>
 
 			<div class="consulta__cta">
@@ -148,33 +268,240 @@ const seo = {
 		margin-bottom: calc(var(--section-margin, 4rem) * 1.5);
 	}
 
-	.consulta__featured {
-		margin: var(--s3, 1.5rem) auto 0;
-		max-width: 520px;
-	}
-	.consulta__featured :global(img) {
-		width: 100%;
-		height: auto;
-		aspect-ratio: 3 / 2;
-		object-fit: cover;
-		border-radius: var(--theme-shape-radius);
-	}
-
 	.consulta__photos {
-		margin-top: var(--s2, 1rem);
+		margin-top: var(--s5, 1.5rem);
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--s2, 1rem);
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		grid-auto-rows: clamp(4.25rem, 5vw, 5.5rem);
+		grid-template-areas:
+			'featured featured featured featured featured room room room room room room room'
+			'featured featured featured featured featured room room room room room room room'
+			'featured featured featured featured featured room room room room room room room'
+			'featured featured featured featured featured room room room room room room room'
+			'waiting waiting waiting waiting sala2 sala2 sala2 sala2 entrance entrance entrance entrance'
+			'waiting waiting waiting waiting sala2 sala2 sala2 sala2 entrance entrance entrance entrance'
+			'waiting waiting waiting waiting sala2 sala2 sala2 sala2 entrance entrance entrance entrance'
+			'waiting waiting waiting waiting sala2 sala2 sala2 sala2 entrance entrance entrance entrance'
+			'waiting waiting waiting waiting sala2 sala2 sala2 sala2 entrance entrance entrance entrance'
+			'waiting waiting waiting waiting sala2 sala2 sala2 sala2 entrance entrance entrance entrance'
+			'facade facade facade facade facade facade panorama panorama panorama panorama panorama panorama'
+			'facade facade facade facade facade facade panorama panorama panorama panorama panorama panorama'
+			'facade facade facade facade facade facade panorama panorama panorama panorama panorama panorama'
+			'facade facade facade facade facade facade panorama panorama panorama panorama panorama panorama';
+		gap: clamp(0.75rem, 1.35vw, 1.35rem);
+		align-items: stretch;
 	}
-	.consulta__photos :global(img) {
+	.consulta__photo {
+		position: relative;
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
-		aspect-ratio: 4 / 3;
-		border-radius: var(--theme-shape-radius);
+		padding: 0;
+		overflow: hidden;
+		border: 0;
+		border-radius: clamp(1.25rem, 2.2vw, 2.25rem);
+		background: var(--theme-surface-1, #f2f2f2);
+		box-shadow: 0 1.5rem 3.5rem rgb(10 14 16 / 0.12);
+		cursor: zoom-in;
 	}
-	.consulta__photos :global(.consulta__photo--tall) {
+	.consulta__photo:focus-visible {
+		outline: 2px solid var(--theme-primary);
+		outline-offset: 4px;
+	}
+	.consulta__photo :global(.consulta__photo-image) {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+		transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.consulta__photo-overlay {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		color: white;
+		background:
+			linear-gradient(180deg, rgb(10 14 16 / 0.05), rgb(10 14 16 / 0.38)),
+			rgb(69 130 149 / 0.18);
+		opacity: 0;
+		transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.consulta__photo-overlay :global(svg) {
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0.55rem;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.16);
+		backdrop-filter: blur(10px);
+		box-shadow: 0 1rem 2rem rgb(10 14 16 / 0.22);
+	}
+	.consulta__photo:hover :global(.consulta__photo-image),
+	.consulta__photo:focus-visible :global(.consulta__photo-image) {
+		transform: scale(1.035);
+	}
+	.consulta__photo:hover .consulta__photo-overlay,
+	.consulta__photo:focus-visible .consulta__photo-overlay {
+		opacity: 1;
+	}
+	.consulta__photo--featured {
+		grid-area: featured;
+	}
+	.consulta__photo--wide {
+		grid-area: room;
+	}
+	.consulta__photo--portrait :global(.consulta__photo-image) {
+		object-position: center;
+	}
+	.consulta__photo--room-portrait {
+		grid-area: sala2;
+	}
+	.consulta__photo--entrance {
+		grid-area: entrance;
+	}
+	.consulta__photo--waiting {
+		grid-area: waiting;
+	}
+	.consulta__photo--waiting :global(.consulta__photo-image) {
 		object-position: center 56%;
+	}
+	.consulta__photo--facade {
+		grid-area: facade;
+	}
+	.consulta__photo--facade :global(.consulta__photo-image) {
+		object-position: center 45%;
+	}
+	.consulta__photo--panorama {
+		grid-area: panorama;
+	}
+	.consulta__photo--panorama :global(.consulta__photo-image) {
+		object-position: center 58%;
+	}
+
+	.consulta-lightbox {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		display: grid;
+		grid-template-columns: minmax(3.5rem, 1fr) minmax(0, 84rem) minmax(
+				3.5rem,
+				1fr
+			);
+		align-items: center;
+		padding: clamp(1rem, 3vw, 2rem);
+		background: rgb(10 14 16 / 0);
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+			background-color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+			visibility 0.28s;
+	}
+	.consulta-lightbox[aria-hidden='false'] {
+		background: rgb(10 14 16 / 0.94);
+		opacity: 1;
+		visibility: visible;
+	}
+	.consulta-lightbox__content {
+		grid-column: 2;
+		margin: 0;
+		display: grid;
+		justify-items: center;
+		gap: 1rem;
+		transform: translateY(0.75rem) scale(0.98);
+		transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.consulta-lightbox[aria-hidden='false'] .consulta-lightbox__content {
+		transform: translateY(0) scale(1);
+	}
+	.consulta-lightbox__image {
+		max-width: min(100%, 84rem);
+		max-height: 80vh;
+		width: auto;
+		height: auto;
+		border-radius: clamp(1rem, 2vw, 1.75rem);
+		box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.45);
+		background: rgb(255 255 255 / 0.04);
+		transition: opacity 0.2s ease;
+	}
+	.consulta-lightbox__image[data-loading='true'] {
+		opacity: 0;
+	}
+	.consulta-lightbox__caption {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		max-width: min(100%, 84rem);
+		color: white;
+	}
+	/* Photo description: announced to screen readers, hidden visually. */
+	.consulta-lightbox__caption-text {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		clip-path: inset(50%);
+		white-space: nowrap;
+		border: 0;
+	}
+	.consulta-lightbox__counter {
+		flex: 0 0 auto;
+		padding: 0.4rem 0.8rem;
+		border: 1px solid rgb(255 255 255 / 0.14);
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.1);
+		backdrop-filter: blur(10px);
+		font-size: var(--font-size-sm, 0.9375rem);
+		font-variant-numeric: tabular-nums;
+	}
+	.consulta-lightbox__control {
+		position: absolute;
+		z-index: 1;
+		width: 3rem;
+		height: 3rem;
+		display: grid;
+		place-items: center;
+		border: 1px solid rgb(255 255 255 / 0.16);
+		border-radius: 999px;
+		color: white;
+		background: rgb(255 255 255 / 0.1);
+		backdrop-filter: blur(10px);
+		cursor: pointer;
+		transition:
+			transform 0.2s ease,
+			background-color 0.2s ease;
+	}
+	.consulta-lightbox__control:hover,
+	.consulta-lightbox__control:focus-visible {
+		background: rgb(255 255 255 / 0.18);
+		transform: translateY(-1px);
+	}
+	.consulta-lightbox__control :global(svg) {
+		width: 1.65rem;
+		height: 1.65rem;
+	}
+	.consulta-lightbox__close {
+		top: clamp(1rem, 3vw, 2rem);
+		right: clamp(1rem, 3vw, 2rem);
+	}
+	.consulta-lightbox__prev,
+	.consulta-lightbox__next {
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.consulta-lightbox__prev:hover,
+	.consulta-lightbox__prev:focus-visible,
+	.consulta-lightbox__next:hover,
+	.consulta-lightbox__next:focus-visible {
+		transform: translateY(calc(-50% - 1px));
+	}
+	.consulta-lightbox__prev {
+		left: clamp(1rem, 3vw, 2rem);
+	}
+	.consulta-lightbox__next {
+		right: clamp(1rem, 3vw, 2rem);
 	}
 
 	.consulta__cta {
@@ -201,9 +528,232 @@ const seo = {
 		min-height: 44px;
 	}
 
-	@media (max-width: 640px) {
+	@media (max-width: 980px) {
 		.consulta__photos {
+			margin-inline: -1rem;
+			padding-inline: 1rem;
+			padding-bottom: 0.75rem;
+			display: flex;
+			gap: clamp(0.75rem, 2vw, 1rem);
+			overflow-x: auto;
+			overflow-y: hidden;
+			scroll-padding-inline: 1rem;
+			scroll-snap-type: x mandatory;
+			overscroll-behavior-inline: contain;
+			-webkit-overflow-scrolling: touch;
+		}
+		.consulta__photo {
+			width: min(84vw, 34rem);
+			height: auto;
+			flex: 0 0 auto;
+			aspect-ratio: 16 / 10;
+			scroll-snap-align: center;
+			scroll-snap-stop: always;
+		}
+		.consulta__photo--featured,
+		.consulta__photo--wide,
+		.consulta__photo--portrait,
+		.consulta__photo--entrance,
+		.consulta__photo--waiting,
+		.consulta__photo--facade,
+		.consulta__photo--panorama {
+			grid-area: auto;
+		}
+		.consulta__photos::-webkit-scrollbar {
+			height: 0.45rem;
+		}
+		.consulta__photos::-webkit-scrollbar-track {
+			background: var(--theme-surface-1, #f2f2f2);
+			border-radius: 999px;
+		}
+		.consulta__photos::-webkit-scrollbar-thumb {
+			background: color-mix(in srgb, var(--theme-primary) 55%, white);
+			border-radius: 999px;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.consulta__photos {
+			margin-inline: -1rem;
+			scroll-padding-inline: 1rem;
+		}
+		.consulta__photo {
+			width: min(82vw, 24rem);
+			aspect-ratio: 4 / 3;
+		}
+		.consulta-lightbox {
 			grid-template-columns: 1fr;
+			padding: 4.5rem 1rem 1.25rem;
+		}
+		.consulta-lightbox__content {
+			grid-column: 1;
+		}
+		.consulta-lightbox__image {
+			max-height: 74vh;
+		}
+		.consulta-lightbox__control {
+			width: 2.75rem;
+			height: 2.75rem;
+		}
+		.consulta-lightbox__prev {
+			left: 1rem;
+		}
+		.consulta-lightbox__next {
+			right: 1rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.consulta__photo :global(.consulta__photo-image),
+		.consulta__photo-overlay,
+		.consulta-lightbox,
+		.consulta-lightbox__content,
+		.consulta-lightbox__image,
+		.consulta-lightbox__control {
+			transition: none;
+		}
+		.consulta__photo:hover :global(.consulta__photo-image),
+		.consulta__photo:focus-visible :global(.consulta__photo-image) {
+			transform: none;
 		}
 	}
 </style>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const galleryButtons = Array.from(
+			document.querySelectorAll<HTMLButtonElement>('[data-gallery-item]')
+		);
+		const lightbox = document.getElementById('consulta-lightbox');
+		const lightboxImage = document.getElementById(
+			'consulta-lightbox-image'
+		) as HTMLImageElement | null;
+		const counter = lightbox?.querySelector('.consulta-lightbox__counter');
+		const captionText = lightbox?.querySelector(
+			'.consulta-lightbox__caption-text'
+		);
+		const closeButton = lightbox?.querySelector<HTMLButtonElement>(
+			'.consulta-lightbox__close'
+		);
+		const prevButton = lightbox?.querySelector<HTMLButtonElement>(
+			'.consulta-lightbox__prev'
+		);
+		const nextButton = lightbox?.querySelector<HTMLButtonElement>(
+			'.consulta-lightbox__next'
+		);
+
+		if (!lightbox || !lightboxImage || galleryButtons.length === 0) return;
+
+		let currentIndex = 0;
+		let activeButton: HTMLButtonElement | null = null;
+
+		const images = galleryButtons.map(button => {
+			const thumb = button.querySelector('img') as HTMLImageElement;
+
+			return {
+				// Optimized full-screen WebP, generated at build via getImage()
+				src: button.dataset.fullSrc || thumb.currentSrc || thumb.src,
+				alt: thumb.alt,
+				width: button.dataset.fullWidth || thumb.getAttribute('width') || '',
+				height: button.dataset.fullHeight || thumb.getAttribute('height') || ''
+			};
+		});
+
+		function updateLightboxImage() {
+			const image = images[currentIndex];
+			if (!image) return;
+
+			// Fade out, swap, fade back in only once the new image has decoded —
+			// avoids flashing the previous photo at the wrong aspect ratio.
+			lightboxImage.dataset.loading = 'true';
+			lightboxImage.alt = image.alt;
+			if (image.width) lightboxImage.width = Number(image.width);
+			if (image.height) lightboxImage.height = Number(image.height);
+			lightboxImage.src = image.src;
+
+			const reveal = () => {
+				lightboxImage.dataset.loading = 'false';
+			};
+			if (lightboxImage.complete) {
+				reveal();
+			} else {
+				lightboxImage.addEventListener('load', reveal, { once: true });
+				lightboxImage.addEventListener('error', reveal, { once: true });
+			}
+
+			if (counter) {
+				counter.textContent = `${currentIndex + 1} / ${images.length}`;
+			}
+			if (captionText) {
+				captionText.textContent = image.alt;
+			}
+		}
+
+		function openLightbox(index: number, button: HTMLButtonElement) {
+			currentIndex = index;
+			activeButton = button;
+			updateLightboxImage();
+			lightbox.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+			closeButton?.focus();
+		}
+
+		function closeLightbox() {
+			lightbox.setAttribute('aria-hidden', 'true');
+			document.body.style.overflow = '';
+			activeButton?.focus();
+		}
+
+		function showNext() {
+			currentIndex = (currentIndex + 1) % images.length;
+			updateLightboxImage();
+		}
+
+		function showPrev() {
+			currentIndex = (currentIndex - 1 + images.length) % images.length;
+			updateLightboxImage();
+		}
+
+		galleryButtons.forEach((button, index) => {
+			button.addEventListener('click', () => openLightbox(index, button));
+		});
+
+		closeButton?.addEventListener('click', closeLightbox);
+		prevButton?.addEventListener('click', showPrev);
+		nextButton?.addEventListener('click', showNext);
+		lightbox.addEventListener('click', event => {
+			if (event.target === lightbox) closeLightbox();
+		});
+
+		document.addEventListener('keydown', event => {
+			if (lightbox.getAttribute('aria-hidden') === 'true') return;
+
+			if (event.key === 'Escape') closeLightbox();
+			if (event.key === 'ArrowRight') showNext();
+			if (event.key === 'ArrowLeft') showPrev();
+		});
+
+		// Swipe between photos on touch devices.
+		let touchStartX = 0;
+		let touchStartY = 0;
+		lightbox.addEventListener(
+			'touchstart',
+			event => {
+				touchStartX = event.changedTouches[0].clientX;
+				touchStartY = event.changedTouches[0].clientY;
+			},
+			{ passive: true }
+		);
+		lightbox.addEventListener(
+			'touchend',
+			event => {
+				const dx = event.changedTouches[0].clientX - touchStartX;
+				const dy = event.changedTouches[0].clientY - touchStartY;
+				if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+					dx < 0 ? showNext() : showPrev();
+				}
+			},
+			{ passive: true }
+		);
+	});
+</script>
