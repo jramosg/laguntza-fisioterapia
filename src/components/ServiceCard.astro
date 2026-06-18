@@ -85,9 +85,11 @@ const structuredData = {
 		) : (
 			<Picture
 				src={image}
+				formats={['avif', 'webp']}
+				fallbackFormat="webp"
 				alt={section.title}
-				id="home-hero-image"
 				class="service-card__media"
+				sizes="(min-width: 1024px) 50vw, 100vw"
 			/>
 		)
 	}
