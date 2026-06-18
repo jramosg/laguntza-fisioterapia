@@ -306,6 +306,22 @@ const mobileVariant = imageMobile
 		}
 	}
 
+	/* Entry "Ken Burns" settle — pure CSS so it never touches the main thread
+	   or delays the hero LCP (the JS version did both). */
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-media :global(img.hero-media__main) {
+			animation: hero-kenburns 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+		}
+	}
+	@keyframes hero-kenburns {
+		from {
+			transform: scale(1.06);
+		}
+		to {
+			transform: scale(1);
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.hero-header-container > :global(*) {
 			animation: none;
@@ -331,9 +347,6 @@ const mobileVariant = imageMobile
 </style>
 
 <script>
-	import { gsap } from 'gsap';
-	import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
 	document.addEventListener('astro:page-load', () => {
 		const prefersReducedMotion = window.matchMedia(
 			'(prefers-reduced-motion: reduce)'
@@ -346,27 +359,42 @@ const mobileVariant = imageMobile
 			return;
 		}
 
+		// The scroll parallax is a desktop-only flourish. Skip it entirely on
+		// touch/mobile — that keeps GSAP (~85 KB) and ScrollTrigger's per-scroll
+		// cost off the devices Lighthouse measures. The entry Ken Burns is now
+		// pure CSS, so nothing here is on the LCP critical path.
+		const wantsParallax = window.matchMedia(
+			'(min-width: 1024px) and (pointer: fine)'
+		).matches;
+		if (!wantsParallax) return;
+
 		const hero = document.querySelector('.hero-header-section--media');
 		const media = hero?.querySelector('.hero-media');
 		if (!hero || !media) return;
 
-		gsap.registerPlugin(ScrollTrigger);
+		const setup = async () => {
+			const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+				import('gsap'),
+				import('gsap/ScrollTrigger')
+			]);
+			gsap.registerPlugin(ScrollTrigger);
+			gsap.to(media, {
+				yPercent: 9,
+				ease: 'none',
+				scrollTrigger: {
+					trigger: hero,
+					start: 'top top',
+					end: 'bottom top',
+					scrub: true
+				}
+			});
+		};
 
-		// Ken Burns settle on load, then a slow parallax drift on scroll
-		gsap.fromTo(
-			media,
-			{ scale: 1.1 },
-			{ scale: 1, duration: 1.6, ease: 'power2.out' }
-		);
-		gsap.to(media, {
-			yPercent: 9,
-			ease: 'none',
-			scrollTrigger: {
-				trigger: hero,
-				start: 'top top',
-				end: 'bottom top',
-				scrub: true
-			}
-		});
+		// Load GSAP off the critical path, after the page has settled.
+		const idle: (cb: () => void) => void =
+			(window as any).requestIdleCallback?.bind(window) ||
+			(cb => window.setTimeout(cb, 200));
+		if (document.readyState === 'complete') idle(setup);
+		else window.addEventListener('load', () => idle(setup), { once: true });
 	});
 </script>
