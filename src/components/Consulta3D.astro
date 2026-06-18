@@ -824,20 +824,33 @@ const { lang = 'es' }: Props = Astro.props;
 				animate();
 			};
 
-			if ('IntersectionObserver' in window) {
-				const io = new IntersectionObserver(
-					(entries, obs) => {
-						if (entries.some(e => e.isIntersecting)) {
-							obs.disconnect();
-							void start();
-						}
-					},
-					{ rootMargin: '300px 0px' }
-				);
-				io.observe(this);
-			} else {
-				void start();
-			}
+			// Three.js (~176 KB + ~1.3 s of execution) must never compete with the
+			// hero LCP. Hold the whole pipeline until the page has loaded, then
+			// load it only when the model is actually near the viewport, and even
+			// then defer the heavy import to idle time.
+			const idle: (cb: () => void) => void =
+				(window as any).requestIdleCallback?.bind(window) ||
+				(cb => window.setTimeout(cb, 200));
+
+			const observe = () => {
+				if ('IntersectionObserver' in window) {
+					const io = new IntersectionObserver(
+						(entries, obs) => {
+							if (entries.some(e => e.isIntersecting)) {
+								obs.disconnect();
+								idle(() => void start());
+							}
+						},
+						{ rootMargin: '150px 0px' }
+					);
+					io.observe(host);
+				} else {
+					idle(() => void start());
+				}
+			};
+
+			if (document.readyState === 'complete') observe();
+			else window.addEventListener('load', observe, { once: true });
 		}
 	}
 
