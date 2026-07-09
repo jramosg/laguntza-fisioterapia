@@ -1,0 +1,167 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	lang: 'es' | 'eu';
+}
+
+const { lang } = Astro.props;
+const labels =
+	lang === 'eu'
+		? {
+				title: 'Ordutegia',
+				note: 'Aldez aurreko hitzorduarekin',
+				mondayWednesday: 'Astelehena eta asteazkena',
+				tuesdayThursday: 'Asteartea eta osteguna',
+				friday: 'Ostirala'
+			}
+		: {
+				title: 'Horario',
+				note: 'Atención con cita previa',
+				mondayWednesday: 'Lunes y miércoles',
+				tuesdayThursday: 'Martes y jueves',
+				friday: 'Viernes'
+			};
+
+const schedule = [
+	{ days: labels.mondayWednesday, times: ['08:00–13:30', '19:30–21:30'] },
+	{ days: labels.tuesdayThursday, times: ['08:00–13:30'] },
+	{ days: labels.friday, times: ['15:00–21:30'] }
+];
+---
+
+<section class="opening-hours" aria-labelledby="opening-hours-title">
+	<header class="opening-hours__header">
+		<Icon name="ic:round-calendar-today" aria-hidden="true" />
+		<div>
+			<h4 id="opening-hours-title">{labels.title}</h4>
+		</div>
+	</header>
+	<dl class="opening-hours__list">
+		{
+			schedule.map(({ days, times }) => (
+				<div class="opening-hours__row">
+					<dt>{days}</dt>
+					<dd>
+						{times.map(time => (
+							<span>
+								<Icon name="ic:round-access-time" aria-hidden="true" />
+								{time}
+							</span>
+						))}
+					</dd>
+				</div>
+			))
+		}
+	</dl>
+</section>
+
+<style>
+	.opening-hours {
+		width: 100%;
+		margin: var(--s5) 0 var(--s4);
+		overflow: hidden;
+		border: 1px solid var(--theme-primary-200);
+		border-radius: calc(var(--theme-shape-radius) * 0.7);
+		box-shadow: var(--shadow-sm);
+		text-align: left;
+	}
+
+	.opening-hours__header {
+		display: flex;
+		align-items: center;
+		gap: var(--s3);
+		padding: var(--s4) var(--s5);
+		background: var(--theme-container-gradient);
+		color: var(--theme-on-primary);
+	}
+
+	.opening-hours__header > svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
+	.opening-hours__header p,
+	.opening-hours__header h4 {
+		margin: 0;
+	}
+
+	.opening-hours__header p {
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		opacity: 0.8;
+	}
+
+	.opening-hours__header h4 {
+		font-size: var(--font-size-md);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+	}
+
+	.opening-hours__list {
+		margin: 0;
+	}
+
+	.opening-hours__row {
+		display: grid;
+		grid-template-columns: minmax(10rem, 0.9fr) minmax(0, 1.1fr);
+		border-top: 1px solid var(--theme-primary-100);
+	}
+
+	.opening-hours__row dt {
+		display: flex;
+		align-items: center;
+		padding: var(--s4) var(--s5);
+		background: var(--theme-primary-700);
+		color: var(--theme-on-primary);
+		font-size: var(--font-size-sm);
+		font-weight: 700;
+		line-height: 1.25;
+	}
+
+	.opening-hours__row dd {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		margin: 0;
+		padding: var(--s2) var(--s4);
+		background: var(--theme-bg);
+	}
+
+	.opening-hours__row dd span {
+		display: flex;
+		align-items: center;
+		gap: var(--s2);
+		min-height: 2rem;
+		color: var(--theme-primary-dark);
+		font-size: var(--font-size-base);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+	}
+
+	.opening-hours__row dd span + span {
+		border-top: 1px solid var(--theme-primary-100);
+	}
+
+	.opening-hours__row dd svg {
+		width: 1.1rem;
+		height: 1.1rem;
+		color: var(--theme-primary);
+	}
+
+	@media (max-width: 420px) {
+		.opening-hours__row {
+			grid-template-columns: 1fr;
+		}
+
+		.opening-hours__row dt {
+			padding: var(--s3) var(--s4);
+		}
+
+		.opening-hours__row dd {
+			padding: var(--s2) var(--s4);
+		}
+	}
+</style>

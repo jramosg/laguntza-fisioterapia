@@ -18,6 +18,7 @@ import EmailIcon from '@icons/email.svg';
 import Button from '@components/buttons/Button.astro';
 import MarkerIcon from '@icons/marker.svg';
 import ContactForm from '@components/forms/ContactForm.astro';
+import OpeningHours from '@components/OpeningHours.astro';
 import { Image } from 'astro:assets';
 import KristalaFrentez from '@images/kristala-frentez.jpg';
 import KristalaLateralez from '@images/kristala-lateralez.jpg';
@@ -55,7 +56,6 @@ const contacts = [
 		title: t('Telefonoz'),
 		desc: t('Deitu'),
 		id: 'phone',
-		subdesc: t('working-hours'),
 		ctas: [
 			{ label: WhatsApp.name, href: WhatsApp.urlCall },
 			{ label: Phone.name, href: Phone.url }
@@ -79,7 +79,6 @@ const contacts = [
 		title: t('Bisitatu'),
 		id: 'address',
 		desc: Address.name,
-		subdesc: t('working-hours'),
 		ctas: [{ label: t('Ireki mapan'), href: Address.url }]
 	}
 ];
@@ -142,6 +141,7 @@ const contacts = [
 			<p class="contact-data-section__text">
 				{t('Hurrengo moduetan jarri zaitezke harremanetan:')}
 			</p>
+			<OpeningHours {lang} />
 			{
 				contacts.map(item => {
 					const icons = {
@@ -160,7 +160,12 @@ const contacts = [
 					const ariaLabel = ariaLabels[item.id as keyof typeof ariaLabels];
 					return (
 						<div
-							class="contact-card card card--elevated"
+							class:list={[
+								'contact-card',
+								'card',
+								'card--elevated',
+								`contact-card--${item.id}`
+							]}
 							data-main-href={item.ctas[0].href}
 							role="button"
 							tabindex="0"
@@ -383,6 +388,17 @@ const contacts = [
 			width: 1.5rem;
 			height: 1.5rem;
 		}
+	}
+
+	.contact-card--phone {
+		align-items: stretch;
+		padding: var(--s6);
+	}
+
+	.contact-card--phone .contact-card__icon-container,
+	.contact-card--phone .contact-card__title,
+	.contact-card--phone .contact-card__desc {
+		align-self: center;
 	}
 
 	.contact-card:not(:last-child) {
