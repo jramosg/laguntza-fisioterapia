@@ -117,8 +117,6 @@ export const ui = {
 			'Osteopatía en Urnieta, Gipuzkoa | Laguntza Fisioterapia',
 		'service.osteopathy.seo-description':
 			'Osteopatía en Urnieta, Gipuzkoa para dolor de espalda, cervicalgias y movilidad. Tratamiento manual cerca de Donostia, Hernani y Andoain.',
-		'service.osteopathy.seo-keywords':
-			'osteopatía Gipuzkoa, osteópata Urnieta, tratamiento integral, bienestar, Urnieta, Donostia, Hernani, Andoain',
 		'service.osteopathy.hero-title': 'Osteopatía en Gipuzkoa',
 		'service.osteopathy.hero-subtitle':
 			'Tratamiento integral del cuerpo para restaurar tu equilibrio y bienestar',
@@ -154,8 +152,6 @@ export const ui = {
 			'Terapia Manual en Urnieta, Gipuzkoa | Laguntza',
 		'service.manual-therapy.seo-description':
 			'Terapia manual en Urnieta para dolor, movilidad y lesiones musculoesqueléticas. Fisioterapia manual en Gipuzkoa cerca de Donostia.',
-		'service.manual-therapy.seo-keywords':
-			'terapia manual Gipuzkoa, fisioterapia manual Urnieta, tratamiento dolor, movilizaciones, manipulaciones, Urnieta, Guipúzcoa',
 		'service.manual-therapy.hero-title': 'Terapia Manual en Gipuzkoa',
 		'service.manual-therapy.hero-subtitle':
 			'Técnicas especializadas de fisioterapia manual para tu recuperación',
@@ -192,8 +188,6 @@ export const ui = {
 			'Rehabilitación y Ejercicio Terapéutico en Urnieta',
 		'service.rehab.seo-description':
 			'Rehabilitación y ejercicio terapéutico en Urnieta, Gipuzkoa. Programas personalizados para lesiones, cirugía, deporte y personas mayores.',
-		'service.rehab.seo-keywords':
-			'rehabilitación Gipuzkoa, ejercicio terapéutico Urnieta, recuperación funcional, postquirúrgico, lesiones deportivas, Urnieta, Guipúzcoa',
 		'service.rehab.hero-title': 'Rehabilitación y Ejercicio Terapéutico',
 		'service.rehab.hero-subtitle':
 			'Programas personalizados para tu recuperación funcional en Gipuzkoa',
@@ -240,8 +234,6 @@ export const ui = {
 			'Fisioterapia en Urnieta, Gipuzkoa | Laguntza Fisioterapia',
 		'service.physio.seo-description':
 			'Centro de fisioterapia en Urnieta, Gipuzkoa. Tratamiento del dolor, lesiones, rehabilitación, punción seca y ejercicio terapéutico.',
-		'service.physio.seo-keywords':
-			'fisioterapia Gipuzkoa, fisioterapeuta Urnieta, rehabilitación, punción seca, neuromodulación, ecografía, Urnieta, Guipúzcoa',
 		'service.physio.hero-title': 'Fisioterapia en Gipuzkoa',
 		'service.physio.hero-subtitle':
 			'Tratamiento profesional y personalizado para tu bienestar',
@@ -304,7 +296,7 @@ export const ui = {
 			'Cada paciente es único. Realizo una valoración completa para diseñar el tratamiento específico que necesitas.',
 		'home.why-2-title': 'Proximidad',
 		'home.why-2-text':
-			'Ubicado en Urnieta, somos tu centro de fisioterapia local accesible desde toda la comarca.',
+			'Ubicado en Urnieta, somos tu centro de fisioterapia local accesible desde toda la comarca de Gipuzkoa.',
 		'home.why-3-title': 'Formación Continua',
 		'home.why-3-text':
 			'Actualización constante en técnicas y metodologías basadas en evidencia científica para ofrecerte lo mejor.',
@@ -428,8 +420,6 @@ export const ui = {
 			'Osteopatia Urnietan, Gipuzkoan | Laguntza Fisioterapia',
 		'service.osteopathy.seo-description':
 			'Osteopatia Urnietan, Gipuzkoan. Bizkarreko mina, lepoko mina eta mugikortasuna lantzeko. Esku bidezko tratamendua Donostia eta Hernanitik gertu.',
-		'service.osteopathy.seo-keywords':
-			'osteopatia Gipuzkoa, osteopata Urnieta, tratamendu integrala, ongizatea, Urnieta, Donostia, Hernani, Andoain',
 		'service.osteopathy.hero-title': 'Osteopatia Gipuzkoan',
 		'service.osteopathy.hero-subtitle':
 			'Gorputzaren tratamendu integrala zure oreka eta ongizatea berreskuratzeko',
@@ -464,8 +454,6 @@ export const ui = {
 			'Terapia Manuala Urnietan, Gipuzkoan | Laguntza',
 		'service.manual-therapy.seo-description':
 			'Terapia manuala Urnietan. Mina, mugikortasuna eta lesio muskuloeskeletikoak lantzeko. Fisioterapia manuala Gipuzkoan.',
-		'service.manual-therapy.seo-keywords':
-			'terapia manuala Gipuzkoa, fisioterapia manuala Urnieta, minaren tratamendua, mobilizazioak, manipulazioak, Urnieta, Gipuzkoa',
 		'service.manual-therapy.hero-title': 'Terapia Manuala Gipuzkoan',
 		'service.manual-therapy.hero-subtitle':
 			'Zure berreskuraperako fisioterapia manual teknika espezializatuak',
@@ -503,8 +491,6 @@ export const ui = {
 			'Errehabilitazioa eta Ariketa Terapeutikoa Urnietan',
 		'service.rehab.seo-description':
 			'Errehabilitazioa eta ariketa terapeutikoa Urnietan, Gipuzkoan. Lesio, ebakuntza, kirol eta adinekoentzako programa pertsonalizatuak.',
-		'service.rehab.seo-keywords':
-			'errehabilitazioa Gipuzkoa, ariketa terapeutikoa Urnieta, berreskuratze funtzionala, postkirurgikoa, kirol lesioak, Urnieta, Gipuzkoa',
 		'service.rehab.hero-title': 'Errehabilitazioa eta Ariketa Terapeutikoak',
 		'service.rehab.hero-subtitle':
 			'Gipuzkoan zure berreskuratze funtzionalerako programa pertsonalizatuak',
@@ -549,8 +535,6 @@ export const ui = {
 			'Fisioterapia Urnietan, Gipuzkoan | Laguntza Fisioterapia',
 		'service.physio.seo-description':
 			'Fisioterapia zentroa Urnietan, Gipuzkoan. Minaren tratamendua, lesioak, errehabilitazioa, puntzio lehorra eta ariketa terapeutikoa.',
-		'service.physio.seo-keywords':
-			'fisioterapia Gipuzkoa, fisioterapeuta Urnieta, errehabilitazioa, puntzio lehorra, neuromodulazioa, ekografia, Urnieta, Gipuzkoa',
 		'service.physio.hero-title': 'Fisioterapia Gipuzkoan',
 		'service.physio.hero-subtitle':
 			'Zure ongizaterako tratamendu profesional eta pertsonalizatua',

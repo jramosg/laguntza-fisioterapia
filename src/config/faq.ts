@@ -15,8 +15,8 @@ const faq: FaqSource[] = [
 			es: '¿Dónde estáis y qué zonas de Gipuzkoa atendéis?'
 		},
 		a: {
-			eu: 'Zubitxo Plaza 3, 20130 Urnieta (Gipuzkoa). Donostia, Hernani, Andoain, Lasarte-Oria eta Astigarragatik oso gertu, aparkaleku erosoarekin eta garraio publikoa inguruan.',
-			es: 'Estamos en Zubitxo Plaza 3, 20130 Urnieta (Gipuzkoa), muy cerca de Donostia, Hernani, Andoain, Lasarte-Oria y Astigarraga. Hay aparcamiento cómodo y transporte público en los alrededores.'
+			eu: 'Zubitxo Plaza 3, 2. etxabea, 20130 Urnieta (Gipuzkoa). Donostia, Hernani, Andoain, Lasarte-Oria eta Astigarragatik oso gertu, aparkaleku erosoarekin eta garraio publikoa inguruan.',
+			es: 'Estamos en Zubitxo Plaza 3, bajo 2, 20130 Urnieta (Gipuzkoa), muy cerca de Donostia, Hernani, Andoain, Lasarte-Oria y Astigarraga. Hay aparcamiento cómodo y transporte público en los alrededores.'
 		}
 	},
 	{

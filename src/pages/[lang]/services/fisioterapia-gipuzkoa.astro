@@ -16,6 +16,7 @@ import ServiceBenefits from '@components/services/ServiceBenefits.astro';
 import ServiceLocation from '@components/services/ServiceLocation.astro';
 import ServiceCTA from '@components/services/ServiceCTA.astro';
 import ServiceSchema from '@components/head/ServiceSchema.astro';
+import ClinicalCareNotice from '@components/services/ClinicalCareNotice.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -27,7 +28,6 @@ const t = useTranslations(lang);
 const seo = {
 	title: t('service.physio.seo-title'),
 	description: t('service.physio.seo-description'),
-	keywords: t('service.physio.seo-keywords'),
 	breadcrumb: [
 		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
 		{
@@ -102,6 +102,8 @@ const physioBenefits = [
 				image={Rehab}
 				imageAlt={t('service.physio.hero-title')}
 			/>
+
+			<ClinicalCareNotice {lang} />
 
 			<ServiceGridSection
 				title={t('service.physio.services-title')}

@@ -16,6 +16,7 @@ import ServiceBenefits from '@components/services/ServiceBenefits.astro';
 import ServiceLocation from '@components/services/ServiceLocation.astro';
 import ServiceCTA from '@components/services/ServiceCTA.astro';
 import ServiceSchema from '@components/head/ServiceSchema.astro';
+import ClinicalCareNotice from '@components/services/ClinicalCareNotice.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -27,7 +28,6 @@ const t = useTranslations(lang);
 const seo = {
 	title: t('service.osteopathy.seo-title'),
 	description: t('service.osteopathy.seo-description'),
-	keywords: t('service.osteopathy.seo-keywords'),
 	breadcrumb: [
 		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
 		{
@@ -97,6 +97,8 @@ const osteopathyConditions = [
 				image={Interview}
 				imageAlt={t('service.osteopathy.hero-title')}
 			/>
+
+			<ClinicalCareNotice {lang} />
 
 			<ServiceBenefits
 				title={t('service.osteopathy.benefits-title')}

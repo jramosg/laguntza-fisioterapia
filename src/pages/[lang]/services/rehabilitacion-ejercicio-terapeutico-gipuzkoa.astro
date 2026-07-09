@@ -16,6 +16,7 @@ import ServiceLocation from '@components/services/ServiceLocation.astro';
 import ServiceCTA from '@components/services/ServiceCTA.astro';
 import ServiceStepper from '@components/services/ServiceStepper.astro';
 import ServiceSchema from '@components/head/ServiceSchema.astro';
+import ClinicalCareNotice from '@components/services/ClinicalCareNotice.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -27,7 +28,6 @@ const t = useTranslations(lang);
 const seo = {
 	title: t('service.rehab.seo-title'),
 	description: t('service.rehab.seo-description'),
-	keywords: t('service.rehab.seo-keywords'),
 	breadcrumb: [
 		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
 		{
@@ -107,6 +107,8 @@ const rehabForWhom = [
 				image={Prevention}
 				imageAlt={t('service.rehab.hero-title')}
 			/>
+
+			<ClinicalCareNotice {lang} />
 
 			<ServiceStepper
 				title={t('service.rehab.process-title')}

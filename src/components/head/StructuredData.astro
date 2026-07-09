@@ -1,11 +1,21 @@
 ---
 import { Address, Phone, Email } from '@config/company';
-import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import { getLangFromUrl } from '@i18n/utils';
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+}
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const { title, description, image } = Astro.props;
 const siteUrl = 'https://laguntzafisioterapia.com';
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const pageImage = new URL(
+	image || '/og-image-teal.jpeg',
+	Astro.site
+).toString();
 const businessId = `${siteUrl}#business`;
 const personId = `${siteUrl}#jokin-ramos`;
 
@@ -49,7 +59,7 @@ const structuredData = {
 	},
 	address: {
 		'@type': 'PostalAddress',
-		streetAddress: 'Zubitxo Plaza, 3',
+		streetAddress: 'Zubitxo Plaza, 3, Bajo 2',
 		addressLocality: 'Urnieta',
 		addressRegion: 'Gipuzkoa',
 		postalCode: '20130',
@@ -163,24 +173,7 @@ const structuredData = {
 			}
 		}
 	],
-	medicalSpecialty: [
-		{
-			'@type': 'MedicalSpecialty',
-			name: 'Physical Therapy'
-		},
-		{
-			'@type': 'MedicalSpecialty',
-			name: 'Sports Medicine'
-		},
-		{
-			'@type': 'MedicalSpecialty',
-			name: 'Pain Management'
-		},
-		{
-			'@type': 'MedicalSpecialty',
-			name: 'Osteopathy'
-		}
-	],
+	medicalSpecialty: 'Physiotherapy',
 	availableService: [
 		{
 			'@type': 'MedicalTherapy',
@@ -226,7 +219,6 @@ const structuredData = {
 		}
 	],
 	hasMap: Address.url,
-	isAccessibleForFree: false,
 	knowsAbout: [
 		'Fisioterapia',
 		'Fisioterapia Gipuzkoa',
@@ -298,11 +290,8 @@ const webPageData = {
 	'@type': 'WebPage',
 	'@id': `${pageUrl}#webpage`,
 	url: pageUrl,
-	name:
-		lang === 'eu'
-			? 'Laguntza Fisioterapia Urnieta'
-			: 'Laguntza Fisioterapia Urnieta',
-	description: t('seo.main-description'),
+	name: title,
+	description,
 	inLanguage: lang,
 	isPartOf: {
 		'@id': `${siteUrl}#website`
@@ -312,7 +301,7 @@ const webPageData = {
 	},
 	primaryImageOfPage: {
 		'@type': 'ImageObject',
-		url: `${siteUrl}/og-image-teal.jpeg`
+		url: pageImage
 	}
 };
 ---

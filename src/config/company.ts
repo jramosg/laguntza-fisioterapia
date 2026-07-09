@@ -4,7 +4,7 @@ import Puncture from '@images/puncture.webp';
 import Interview from '@images/interview.webp';
 
 export const Address = {
-	name: 'Zubitxo Plaza, 3, 20130 Urnieta, Gipuzkoa',
+	name: 'Zubitxo Plaza, 3, Bajo 2, 20130 Urnieta, Gipuzkoa',
 	url: 'https://maps.app.goo.gl/ct7ZQvDpocAY3V5ZA'
 };
 

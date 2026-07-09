@@ -1,0 +1,60 @@
+---
+interface Props {
+	lang: 'es' | 'eu';
+}
+
+const { lang } = Astro.props;
+const isBasque = lang === 'eu';
+const aboutUrl = `/${lang}/about`;
+---
+
+<aside class="clinical-care-notice" aria-labelledby="clinical-care-title">
+	<h2 id="clinical-care-title">
+		{
+			isBasque
+				? 'Arreta informatua eta pertsonalizatua'
+				: 'Atención informada y personalizada'
+		}
+	</h2>
+	<p>
+		{
+			isBasque
+				? 'Jokin Ramos Fisioterapiako Graduatua da Nafarroako Unibertsitate Publikoan, eta Euskal Herriko Fisioterapeuten Elkargo Profesionaleko fisioterapeuta kolegiatua.'
+				: 'Jokin Ramos es Graduado en Fisioterapia por la Universidad Pública de Navarra y fisioterapeuta colegiado en el Colegio Profesional de Fisioterapeutas del País Vasco.'
+		}
+		<a href={aboutUrl}>
+			{isBasque ? 'Ezagutu bere prestakuntza.' : 'Conoce su formación.'}
+		</a>
+	</p>
+	<p>
+		{
+			isBasque
+				? 'Tratamenduaren helburuak eta teknikak banakako balorazioaren ondoren adosten dira. Orrialde honetako informazioa orokorra da eta ez du ordezkatzen balorazio kliniko pertsonalizatua.'
+				: 'Los objetivos y las técnicas se acuerdan tras una valoración individual. La información de esta página es general y no sustituye una valoración clínica personalizada.'
+		}
+	</p>
+</aside>
+
+<style>
+	.clinical-care-notice {
+		margin: var(--s7) 0;
+		padding: var(--s5);
+		border: 1px solid color-mix(in srgb, var(--theme-primary) 25%, transparent);
+		border-radius: var(--theme-shape-radius);
+		background: color-mix(in srgb, var(--theme-primary) 6%, transparent);
+	}
+
+	.clinical-care-notice h2 {
+		margin: 0 0 var(--s3);
+		color: var(--theme-primary-dark);
+	}
+
+	.clinical-care-notice p {
+		margin: var(--s2) 0 0;
+		line-height: 1.6;
+	}
+
+	.clinical-care-notice a {
+		font-weight: 600;
+	}
+</style>
