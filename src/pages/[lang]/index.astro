@@ -17,7 +17,6 @@ import Footer from '@components/core/Footer.astro';
 import Container from '@components/core/Container.astro';
 import LanguageToggle from '@components/LanguageToggle.astro';
 import MarkerIcon from '@icons/marker.svg';
-import { settings } from '@config/settings';
 import { Image } from 'astro:assets';
 
 export function getStaticPaths() {
@@ -32,9 +31,12 @@ const t = useTranslations(lang);
 const seo = {
 	title:
 		lang === 'eu'
-			? 'Fisioterapia Urnietan, Gipuzkoan | Laguntza Fisioterapia'
-			: 'Fisioterapia en Urnieta, Gipuzkoa | Laguntza Fisioterapia',
-	description: t(settings.description)
+			? 'Laguntza Fisioterapia | Fisioterapia Urnietan, Gipuzkoan'
+			: 'Laguntza Fisioterapia | Fisioterapia en Urnieta, Gipuzkoa',
+	description:
+		lang === 'eu'
+			? 'Laguntza Fisioterapia Urnietan, Gipuzkoan. Tratamendu pertsonalizatua, eskuzko terapia, osteopatia, errehabilitazioa eta ariketa terapeutikoa.'
+			: 'Laguntza Fisioterapia en Urnieta, Gipuzkoa. Tratamiento personalizado, terapia manual, osteopatía, rehabilitación y ejercicio terapéutico.'
 };
 ---
 

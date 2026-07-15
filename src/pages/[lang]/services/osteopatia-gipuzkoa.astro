@@ -17,6 +17,7 @@ import ServiceLocation from '@components/services/ServiceLocation.astro';
 import ServiceCTA from '@components/services/ServiceCTA.astro';
 import ServiceSchema from '@components/head/ServiceSchema.astro';
 import ClinicalCareNotice from '@components/services/ClinicalCareNotice.astro';
+import RelatedServices from '@components/services/RelatedServices.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -109,6 +110,8 @@ const osteopathyConditions = [
 				title={t('service.osteopathy.conditions-title')}
 				items={osteopathyConditions}
 			/>
+
+			<RelatedServices current="osteopatia-gipuzkoa" />
 
 			<ServiceLocation />
 

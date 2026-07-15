@@ -1,0 +1,81 @@
+---
+import ServiceGridSection from './ServiceGridSection.astro';
+import { getLangFromUrl } from '@i18n/utils';
+
+type ServiceId =
+	| 'fisioterapia-gipuzkoa'
+	| 'osteopatia-gipuzkoa'
+	| 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
+	| 'terapia-manual-gipuzkoa';
+
+interface Props {
+	current: ServiceId;
+}
+
+const { current } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+const content = {
+	eu: {
+		title: 'Beste fisioterapia zerbitzu batzuk',
+		services: [
+			{
+				id: 'fisioterapia-gipuzkoa',
+				title: 'Fisioterapia',
+				text: 'Minaren, lesioen eta mugikortasun arazoen balorazio eta tratamendu pertsonalizatua.'
+			},
+			{
+				id: 'terapia-manual-gipuzkoa',
+				title: 'Terapia Manuala',
+				text: 'Mina arintzeko eta mugimendua berreskuratzeko eskuzko teknika espezifikoak.'
+			},
+			{
+				id: 'osteopatia-gipuzkoa',
+				title: 'Osteopatia',
+				text: 'Mugikortasuna eta gorputzaren funtzioa ikuspegi global batetik lantzeko tratamendua.'
+			},
+			{
+				id: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa',
+				title: 'Errehabilitazioa eta Ariketa Terapeutikoa',
+				text: 'Lesio, ebakuntza edo kirol-jardueraren ondoren funtzioa berreskuratzeko programa pertsonalizatuak.'
+			}
+		]
+	},
+	es: {
+		title: 'Otros servicios de fisioterapia',
+		services: [
+			{
+				id: 'fisioterapia-gipuzkoa',
+				title: 'Fisioterapia',
+				text: 'Valoración y tratamiento personalizado del dolor, las lesiones y los problemas de movilidad.'
+			},
+			{
+				id: 'terapia-manual-gipuzkoa',
+				title: 'Terapia Manual',
+				text: 'Técnicas manuales específicas para aliviar el dolor y recuperar el movimiento.'
+			},
+			{
+				id: 'osteopatia-gipuzkoa',
+				title: 'Osteopatía',
+				text: 'Tratamiento para trabajar la movilidad y la función corporal desde una perspectiva global.'
+			},
+			{
+				id: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa',
+				title: 'Rehabilitación y Ejercicio Terapéutico',
+				text: 'Programas personalizados para recuperar la función tras una lesión, cirugía o actividad deportiva.'
+			}
+		]
+	}
+} as const;
+
+const localizedContent = content[lang];
+const items = localizedContent.services
+	.filter(service => service.id !== current)
+	.map(service => ({
+		title: service.title,
+		text: service.text,
+		href: `/${lang}/services/${service.id}/`
+	}));
+---
+
+<ServiceGridSection title={localizedContent.title} {items} columns={3} />

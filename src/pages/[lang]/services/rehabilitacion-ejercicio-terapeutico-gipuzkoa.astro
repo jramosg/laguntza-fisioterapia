@@ -17,6 +17,7 @@ import ServiceCTA from '@components/services/ServiceCTA.astro';
 import ServiceStepper from '@components/services/ServiceStepper.astro';
 import ServiceSchema from '@components/head/ServiceSchema.astro';
 import ClinicalCareNotice from '@components/services/ClinicalCareNotice.astro';
+import RelatedServices from '@components/services/RelatedServices.astro';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -124,6 +125,10 @@ const rehabForWhom = [
 				title={t('service.rehab.for-whom-title')}
 				items={rehabForWhom}
 				columns={3}
+			/>
+
+			<RelatedServices
+				current="rehabilitacion-ejercicio-terapeutico-gipuzkoa"
 			/>
 
 			<ServiceLocation />
