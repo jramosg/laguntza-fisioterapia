@@ -106,7 +106,7 @@ const structuredData = {
 								<div>
 									{bullet.href ? (
 										<a
-											href={`/${lang}/services/${bullet.href}`}
+											href={`/${lang}/services/${bullet.href}/`}
 											class="bullet-link"
 										>
 											<h3>{bullet.title}</h3>
@@ -129,7 +129,10 @@ const structuredData = {
 		{
 			section.href && (
 				<div class="service-card__cta">
-					<a href={`/${lang}/services/${section.href}`} class="learn-more-link">
+					<a
+						href={`/${lang}/services/${section.href}/`}
+						class="learn-more-link"
+					>
 						{t('Ikusi gehiago')} →
 					</a>
 				</div>

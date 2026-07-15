@@ -37,10 +37,10 @@ const seo = {
 			? 'Ezagutu Laguntza Fisioterapiaren kontsulta Urnietan: espazio argitsu eta irisgarria Zubitxo Plazan. Ibili eredu 3Dan etorri aurretik.'
 			: 'Conoce la consulta de Laguntza Fisioterapia en Urnieta: un espacio luminoso y accesible en Zubitxo Plaza. Recórrela en 3D antes de venir.',
 	breadcrumb: [
-		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}/` },
 		{
 			name: lang === 'eu' ? 'Kontsulta' : 'La consulta',
-			url: `/${lang}/consulta`
+			url: `/${lang}/consulta/`
 		}
 	]
 };
@@ -250,7 +250,7 @@ const lightboxImages = await Promise.all(
 							: '¿Quieres conocerla en persona? Pide cita y acércate.'
 					}
 				</p>
-				<Button href={`/${lang}/contact`}>
+				<Button href={`/${lang}/contact/`}>
 					{t('Hitzordua hartu')}
 				</Button>
 			</div>

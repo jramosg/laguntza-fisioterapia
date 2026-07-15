@@ -29,14 +29,14 @@ const seo = {
 	title: t('service.physio.seo-title'),
 	description: t('service.physio.seo-description'),
 	breadcrumb: [
-		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}/` },
 		{
 			name: lang === 'eu' ? 'Zerbitzuak' : 'Servicios',
-			url: `/${lang}/services`
+			url: `/${lang}/services/`
 		},
 		{
 			name: t('service.physio.hero-title'),
-			url: `/${lang}/services/fisioterapia-gipuzkoa`
+			url: `/${lang}/services/fisioterapia-gipuzkoa/`
 		}
 	]
 };
@@ -45,22 +45,22 @@ const physioServices = [
 	{
 		title: t('service.physio.service-1-title'),
 		text: t('service.physio.service-1-text'),
-		href: `/${lang}/services/osteopatia-gipuzkoa`
+		href: `/${lang}/services/osteopatia-gipuzkoa/`
 	},
 	{
 		title: t('service.physio.service-2-title'),
 		text: t('service.physio.service-2-text'),
-		href: `/${lang}/services/terapia-manual-gipuzkoa`
+		href: `/${lang}/services/terapia-manual-gipuzkoa/`
 	},
 	{
 		title: t('service.physio.service-3-title'),
 		text: t('service.physio.service-3-text'),
-		href: `/${lang}/services/rehabilitacion-ejercicio-terapeutico-gipuzkoa`
+		href: `/${lang}/services/rehabilitacion-ejercicio-terapeutico-gipuzkoa/`
 	},
 	{
 		title: t('service.physio.service-4-title'),
 		text: t('service.physio.service-4-text'),
-		href: `/${lang}/services`
+		href: `/${lang}/services/`
 	}
 ];
 

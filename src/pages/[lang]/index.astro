@@ -105,7 +105,7 @@ const seo = {
 				return (
 					<section class="service-section">
 						<a
-							href={`/${lang}/services/${section.href}`}
+							href={`/${lang}/services/${section.href}/`}
 							class="service-section__link"
 						>
 							<div class="service-section__outer">
@@ -165,7 +165,7 @@ const seo = {
 						>
 						<h2 class="hc-heading">{t('home.about-title')}</h2>
 						<p class="hc-body">{t('home.about-text')}</p>
-						<a href={`/${lang}/about`} class="hc-link">
+						<a href={`/${lang}/about/`} class="hc-link">
 							{t('home.about-cta')}
 							<span class="hc-link__arrow">&rarr;</span>
 						</a>
@@ -185,7 +185,7 @@ const seo = {
 					</div>
 					<div class="hc-services__right">
 						<p class="hc-body">{t('home.services-overview-text')}</p>
-						<a href={`/${lang}/services/osteopatia-gipuzkoa`} class="hc-link">
+						<a href={`/${lang}/services/osteopatia-gipuzkoa/`} class="hc-link">
 							{
 								lang === 'eu'
 									? 'Ezagutu osteopatia zerbitzua'
@@ -245,7 +245,7 @@ const seo = {
 						{t('service.cta-title')}
 					</h2>
 					<p class="hc-body">{t('service.cta-text')}</p>
-					<a href={`/${lang}/contact`} class="hc-cta__btn">
+					<a href={`/${lang}/contact/`} class="hc-cta__btn">
 						{t('Hitzordua hartu')}
 					</a>
 				</div>

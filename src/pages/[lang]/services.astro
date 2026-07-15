@@ -29,17 +29,17 @@ const t = useTranslations(lang);
 const seo = {
 	title:
 		lang === 'eu'
-			? 'Fisioterapia zerbitzuak Urnietan | Laguntza Fisioterapia'
-			: 'Servicios de fisioterapia en Urnieta | Laguntza Fisioterapia',
+			? 'Fisioterapia, osteopatia eta eskuzko terapia Urnietan | Laguntza'
+			: 'Fisioterapia, osteopatía y terapia manual en Urnieta | Laguntza',
 	description:
 		lang === 'eu'
-			? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioa eta ariketa terapeutikoak Urnietan. Puntzio lehorra, neuromodulazioa. Guipúzcoa osoan zerbitzua. Donostia, Hernani eta Andoaindik gertu.'
-			: 'Fisioterapia, osteopatía y terapia manual en Gipuzkoa. Rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa. Punción seca, neuromodulación. Servicio personalizado cerca de Donostia, Hernani y Andoain.',
+			? 'Fisioterapia, osteopatia, eskuzko terapia eta errehabilitazioa Urnietan. Zure beharretara egokitutako arreta, Donostia, Hernani eta Andoaindik gertu.'
+			: 'Fisioterapia, terapia manual, osteopatía y rehabilitación en Urnieta. Atención personalizada cerca de Donostia, Hernani y Andoain.',
 	breadcrumb: [
-		{ name: 'Laguntza Fisioterapia', url: `/${lang}` },
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}/` },
 		{
 			name: lang === 'eu' ? 'Zerbitzuak' : 'Servicios',
-			url: `/${lang}/services`
+			url: `/${lang}/services/`
 		}
 	]
 };
@@ -88,7 +88,7 @@ const seo = {
 			})
 		}
 	</Container>
-	<Button class="services-cta" href={`/${lang}/contact`}>
+	<Button class="services-cta" href={`/${lang}/contact/`}>
 		{t('nav.contact')}
 	</Button>
 	<FAQ />

@@ -5,19 +5,19 @@ export const nav = [
 	},
 	{
 		title: 'nav.services',
-		slug: '/services'
+		slug: '/services/'
 	},
 	{
 		title: 'nav.about',
-		slug: '/about'
+		slug: '/about/'
 	},
 	{
 		title: 'nav.consulta',
-		slug: '/consulta'
+		slug: '/consulta/'
 	},
 	{
 		title: 'nav.contact',
-		slug: '/contact'
+		slug: '/contact/'
 	}
 ];
 

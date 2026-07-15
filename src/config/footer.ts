@@ -27,13 +27,13 @@ export const footerLists = [
 	},
 	{
 		title: 'nav.services',
-		slug: '/services'
+		slug: '/services/'
 	},
 	{
 		title: 'nav.contact',
-		slug: '/contact'
+		slug: '/contact/'
 	},
-	{ title: 'nav.about', slug: '/about' }
+	{ title: 'nav.about', slug: '/about/' }
 ];
 
 const authorProps = [
