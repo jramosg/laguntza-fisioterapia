@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { execSync } from 'node:child_process';
 import icon from 'astro-icon';
 
 // https://astro.build/config
@@ -12,23 +13,25 @@ export default defineConfig({
 	sitemap: true,
 	integrations: [
 		sitemap({
-			// Without lastmod the sitemap gives Google no freshness signal, and
-			// a URL it has only discovered stays low in the crawl queue. Build
-			// time is the honest value for a fully static site.
-			lastmod: new Date(),
-			// Service pages are the commercial pages and the ones currently
-			// stuck as "discovered, not indexed", so they get the highest
-			// priority after the homepage.
+			// lastmod is the one sitemap field Google actually uses, and only
+			// while it stays trustworthy. Stamping every page with build time
+			// would claim all 18 pages changed on every deploy and get the
+			// field ignored, so each URL reports the real commit date of the
+			// files that produce it.
+			lastmod: undefined,
 			serialize(item) {
-				if (item.url.includes('/services/')) {
-					item.priority = item.url.replace(/\/$/, '').endsWith('/services')
-						? 0.8
-						: 0.9;
-					item.changefreq = 'monthly';
-				} else {
-					item.priority = 0.7;
-					item.changefreq = 'monthly';
-				}
+				const modified = lastModifiedFor(item.url);
+				if (modified) item.lastmod = modified;
+				item.changefreq = 'monthly';
+				// Google ignores priority outright; Bing and others still read
+				// it. Values describe the site's own hierarchy: the homepage
+				// first, then the services hub, then individual services.
+				const path = new URL(item.url).pathname.replace(/\/$/, '');
+				const depth = path.split('/').filter(Boolean).length;
+				if (depth <= 1) item.priority = 1;
+				else if (path.endsWith('/services')) item.priority = 0.9;
+				else if (path.includes('/services/')) item.priority = 0.8;
+				else item.priority = 0.7;
 				return item;
 			},
 			filter: page => page !== 'https://laguntzafisioterapia.com/',
@@ -51,3 +54,33 @@ export default defineConfig({
 	},
 	image: { layout: 'constrained' }
 });
+
+/**
+ * Last commit date of the files behind a URL, as an ISO string.
+ *
+ * Both halves matter: the route file and the translation file, because the
+ * prose for every page lives in src/i18n/ui.ts. Whichever changed last is
+ * when the page really changed.
+ */
+function lastModifiedFor(url) {
+	const path = new URL(url).pathname.replace(/^\/(es|eu)/, '').replace(/\/$/, '');
+	const route = path === '' ? 'index' : path.replace(/^\//, '');
+	const candidates = [
+		`src/pages/[lang]/${route}.astro`,
+		'src/i18n/ui.ts'
+	];
+	const dates = candidates
+		.map(file => {
+			try {
+				return execSync(`git log -1 --format=%cI -- "${file}"`, {
+					encoding: 'utf8',
+					stdio: ['ignore', 'pipe', 'ignore']
+				}).trim();
+			} catch {
+				return '';
+			}
+		})
+		.filter(Boolean)
+		.sort();
+	return dates.at(-1) || undefined;
+}
