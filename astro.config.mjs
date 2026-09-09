@@ -37,9 +37,15 @@ export default defineConfig({
 			filter: page => page !== 'https://laguntzafisioterapia.com/',
 			i18n: {
 				defaultLocale: 'es',
+				// These are the hreflang codes the sitemap emits, and they have
+				// to match what the pages themselves declare. The HTML says
+				// "es" and "eu"; emitting "es-ES" and "eu-ES" here made the
+				// sitemap and the markup disagree about the same URLs, which
+				// is the kind of conflicting signal Google resolves by
+				// ignoring hreflang altogether.
 				locales: {
-					es: 'es-ES',
-					eu: 'eu-ES'
+					es: 'es',
+					eu: 'eu'
 				}
 			}
 		}),
