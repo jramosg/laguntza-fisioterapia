@@ -69,12 +69,11 @@ export default defineConfig({
  * when the page really changed.
  */
 function lastModifiedFor(url) {
-	const path = new URL(url).pathname.replace(/^\/(es|eu)/, '').replace(/\/$/, '');
+	const path = new URL(url).pathname
+		.replace(/^\/(es|eu)/, '')
+		.replace(/\/$/, '');
 	const route = path === '' ? 'index' : path.replace(/^\//, '');
-	const candidates = [
-		`src/pages/[lang]/${route}.astro`,
-		'src/i18n/ui.ts'
-	];
+	const candidates = [`src/pages/[lang]/${route}.astro`, 'src/i18n/ui.ts'];
 	const dates = candidates
 		.map(file => {
 			try {
