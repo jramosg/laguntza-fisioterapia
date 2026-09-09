@@ -12,6 +12,25 @@ export default defineConfig({
 	sitemap: true,
 	integrations: [
 		sitemap({
+			// Without lastmod the sitemap gives Google no freshness signal, and
+			// a URL it has only discovered stays low in the crawl queue. Build
+			// time is the honest value for a fully static site.
+			lastmod: new Date(),
+			// Service pages are the commercial pages and the ones currently
+			// stuck as "discovered, not indexed", so they get the highest
+			// priority after the homepage.
+			serialize(item) {
+				if (item.url.includes('/services/')) {
+					item.priority = item.url.replace(/\/$/, '').endsWith('/services')
+						? 0.8
+						: 0.9;
+					item.changefreq = 'monthly';
+				} else {
+					item.priority = 0.7;
+					item.changefreq = 'monthly';
+				}
+				return item;
+			},
 			filter: page => page !== 'https://laguntzafisioterapia.com/',
 			i18n: {
 				defaultLocale: 'es',
