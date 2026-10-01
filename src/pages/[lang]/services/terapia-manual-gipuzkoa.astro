@@ -15,6 +15,9 @@ import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
 import ServiceLocation from '@components/services/ServiceLocation.astro';
 import ServiceCTA from '@components/services/ServiceCTA.astro';
+import ServiceStepper from '@components/services/ServiceStepper.astro';
+import ServiceTextSection from '@components/services/ServiceTextSection.astro';
+import FAQ from '@components/sections/FAQ.astro';
 import ServiceSchema from '@components/head/ServiceSchema.astro';
 import ClinicalCareNotice from '@components/services/ClinicalCareNotice.astro';
 import RelatedServices from '@components/services/RelatedServices.astro';
@@ -68,6 +71,16 @@ const manualTherapyBenefits = [
 	t('service.manual-therapy.benefit-4'),
 	t('service.manual-therapy.benefit-5')
 ];
+
+const manualTherapySession = [1, 2, 3, 4].map(step => ({
+	title: t(`service.manual-therapy.session-${step}-title`),
+	text: t(`service.manual-therapy.session-${step}-text`)
+}));
+
+const manualTherapyFaq = [1, 2, 3, 4].map(item => ({
+	q: t(`service.manual-therapy.faq-${item}-q`),
+	a: t(`service.manual-therapy.faq-${item}-a`)
+}));
 ---
 
 <Layout {seo}>
@@ -97,11 +110,17 @@ const manualTherapyBenefits = [
 			<ServiceIntro
 				title={t('service.manual-therapy.what-is-title')}
 				text={t('service.manual-therapy.what-is-text')}
+				detailText={t('service.manual-therapy.deep-text')}
 				image={Rehab}
 				imageAlt={t('service.manual-therapy.hero-title')}
 			/>
 
 			<ClinicalCareNotice {lang} />
+
+			<ServiceStepper
+				title={t('service.manual-therapy.session-title')}
+				items={manualTherapySession}
+			/>
 
 			<ServiceGridSection
 				title={t('service.manual-therapy.techniques-title')}
@@ -111,6 +130,21 @@ const manualTherapyBenefits = [
 			<ServiceBenefits
 				title={t('service.manual-therapy.benefits-title')}
 				benefits={manualTherapyBenefits}
+			/>
+
+			<ServiceTextSection
+				title={t('service.manual-therapy.sessions-title')}
+				paragraphs={[
+					t('service.manual-therapy.sessions-text'),
+					t('service.manual-therapy.safety-text')
+				]}
+			/>
+
+			<FAQ
+				id="manual-therapy-faq-title"
+				title={t('service.manual-therapy.faq-title')}
+				items={manualTherapyFaq}
+				compact
 			/>
 
 			<RelatedServices current="terapia-manual-gipuzkoa" />

@@ -17,6 +17,7 @@ import Footer from '@components/core/Footer.astro';
 import Container from '@components/core/Container.astro';
 import LanguageToggle from '@components/LanguageToggle.astro';
 import MarkerIcon from '@icons/marker.svg';
+import ChevronRight from '@icons/chevron-right.svg';
 import { Image } from 'astro:assets';
 
 export function getStaticPaths() {
@@ -26,6 +27,16 @@ export function getStaticPaths() {
 const url = Astro.url;
 const lang = getLangFromUrl(url);
 const t = useTranslations(lang);
+
+const serviceLinks = [
+	{ slug: 'fisioterapia-gipuzkoa', title: t('home.service-card-1-title') },
+	{ slug: 'terapia-manual-gipuzkoa', title: t('home.service-card-3-title') },
+	{ slug: 'osteopatia-gipuzkoa', title: t('home.service-card-2-title') },
+	{
+		slug: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa',
+		title: t('service.rehab.hero-title')
+	}
+];
 
 // SEO data for the home page - optimized for Gipuzkoa/Guipúzcoa keywords
 const seo = {
@@ -176,7 +187,7 @@ const seo = {
 			</Container>
 		</section>
 
-		<section class="hc-services" data-reveal>
+		<section class="hc-services">
 			<Container narrow>
 				<div class="hc-services__rule" aria-hidden="true"></div>
 				<div class="hc-services__split">
@@ -187,14 +198,18 @@ const seo = {
 					</div>
 					<div class="hc-services__right">
 						<p class="hc-body">{t('home.services-overview-text')}</p>
-						<a href={`/${lang}/services/osteopatia-gipuzkoa/`} class="hc-link">
+						<ul class="hc-services__links">
 							{
-								lang === 'eu'
-									? 'Ezagutu osteopatia zerbitzua'
-									: 'Conoce el servicio de osteopatía'
+								serviceLinks.map(({ slug, title }) => (
+									<li>
+										<a href={`/${lang}/services/${slug}/`}>
+											<span>{title}</span>
+											<ChevronRight fill="currentColor" aria-hidden="true" />
+										</a>
+									</li>
+								))
 							}
-							<span class="hc-link__arrow">&rarr;</span>
-						</a>
+						</ul>
 					</div>
 				</div>
 			</Container>
@@ -671,6 +686,35 @@ const seo = {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--s5);
+	}
+	.hc-services__links {
+		list-style: none;
+		padding: 0;
+		margin: var(--s5) 0 0;
+	}
+	.hc-services__links a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--s4);
+		min-height: 44px;
+		padding: var(--s3) 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+		color: var(--theme-primary-200);
+		font-size: var(--font-size-base);
+		font-weight: 600;
+		line-height: 1.5;
+		text-decoration: none;
+	}
+	.hc-services__links a:hover {
+		color: var(--theme-secondary);
+	}
+	.hc-services__links a:focus-visible {
+		outline: 2px solid var(--theme-secondary);
+		outline-offset: 4px;
+	}
+	.hc-services__links :global(svg) {
+		flex-shrink: 0;
 	}
 	@media (min-width: 768px) {
 		.hc-services__split {

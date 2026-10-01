@@ -157,32 +157,36 @@ export const ui = {
 			'Técnicas especializadas de fisioterapia manual para tu recuperación',
 		'service.manual-therapy.what-is-title': '¿Qué es la Terapia Manual?',
 		'service.manual-therapy.what-is-text':
-			'La terapia manual es el conjunto de técnicas realizadas con las manos del fisioterapeuta para evaluar, diagnosticar y tratar disfunciones del sistema neuromusculoesquelético. Es una de las herramientas más efectivas en fisioterapia.',
-		'service.manual-therapy.techniques-title': 'Técnicas que utilizamos',
+			'La terapia manual reúne técnicas realizadas con las manos para valorar y tratar problemas de movimiento y molestias musculoesqueléticas. Puede incluir movilizaciones articulares y trabajo sobre los tejidos, siempre dentro de un tratamiento adaptado a ti.',
+		'service.manual-therapy.techniques-title': 'Técnicas que puedo utilizar',
 		'service.manual-therapy.technique-1-title': 'Movilizaciones',
 		'service.manual-therapy.technique-1-text':
-			'Movilizaciones articulares para mejorar el rango de movimiento.',
+			'Movimientos guiados de una articulación, adaptando el recorrido y la intensidad a tu respuesta.',
 		'service.manual-therapy.technique-2-title': 'Manipulaciones',
 		'service.manual-therapy.technique-2-text':
-			'Manipulaciones vertebrales y articulares específicas.',
+			'Técnicas articulares específicas que valoro contigo cuando encajan en el plan; no son imprescindibles en todos los casos.',
 		'service.manual-therapy.technique-3-title': 'Tejido blando',
 		'service.manual-therapy.technique-3-text':
-			'Técnicas dirigidas a músculos, fascias y ligamentos.',
+			'Trabajo manual sobre músculos y otros tejidos, ajustando la presión para que puedas tolerarla.',
 		'service.manual-therapy.technique-4-title': 'Neurodinamia',
 		'service.manual-therapy.technique-4-text':
-			'Técnicas para mejorar la movilidad del sistema nervioso.',
+			'Movimientos guiados relacionados con la movilidad y sensibilidad de los nervios, cuando la valoración lo aconseja.',
 		'service.manual-therapy.technique-1': 'Movilizaciones articulares',
 		'service.manual-therapy.technique-2': 'Manipulaciones vertebrales',
 		'service.manual-therapy.technique-3': 'Técnicas de tejido blando',
 		'service.manual-therapy.technique-4': 'Liberación miofascial',
 		'service.manual-therapy.technique-5': 'Técnicas neurodinámicas',
 		'service.manual-therapy.technique-6': 'Estiramientos específicos',
-		'service.manual-therapy.benefits-title': 'Beneficios de la Terapia Manual',
-		'service.manual-therapy.benefit-1': 'Alivio inmediato del dolor',
-		'service.manual-therapy.benefit-2': 'Mejora de la movilidad articular',
-		'service.manual-therapy.benefit-3': 'Reducción de tensión muscular',
-		'service.manual-therapy.benefit-4': 'Aceleración de la recuperación',
-		'service.manual-therapy.benefit-5': 'Mejora de la función física',
+		'service.manual-therapy.benefits-title': 'Objetivos del tratamiento manual',
+		'service.manual-therapy.benefit-1':
+			'Trabajar sobre el dolor y las molestias',
+		'service.manual-therapy.benefit-2':
+			'Facilitar movimientos que te resultan limitados',
+		'service.manual-therapy.benefit-3': 'Mejorar la tolerancia al movimiento',
+		'service.manual-therapy.benefit-4':
+			'Acompañar el trabajo activo con ejercicio',
+		'service.manual-therapy.benefit-5':
+			'Avanzar hacia tus actividades cotidianas',
 		// Rehabilitation / Exercise Therapy page
 		'service.rehab.seo-title':
 			'Rehabilitación y Ejercicio Terapéutico en Urnieta',
@@ -193,36 +197,37 @@ export const ui = {
 			'Programas personalizados para tu recuperación funcional en Gipuzkoa',
 		'service.rehab.what-is-title': '¿Qué es el Ejercicio Terapéutico?',
 		'service.rehab.what-is-text':
-			'El ejercicio terapéutico consiste en movimientos y actividades físicas prescritos específicamente para corregir deterioros, restaurar la función musculoesquelética y mantener un estado de bienestar. Es fundamental en cualquier proceso de rehabilitación.',
-		'service.rehab.process-title': 'Nuestro proceso de rehabilitación',
-		'service.rehab.step-1-title': 'Valoración',
+			'El ejercicio terapéutico utiliza movimientos y actividades elegidos según tu valoración y tus objetivos. Puede trabajar fuerza, movilidad, equilibrio o resistencia. La rehabilitación organiza ese trabajo y su seguimiento para ayudarte a recuperar actividades de tu vida diaria.',
+		'service.rehab.process-title': 'Cómo planteo tu rehabilitación',
+		'service.rehab.step-1-title': 'Valoración y objetivos',
 		'service.rehab.step-1-text':
-			'Evaluación completa de tu condición física y objetivos',
-		'service.rehab.step-2-title': 'Diseño del programa',
+			'Hablamos de tu lesión, actividad habitual y tareas que te cuestan. Valoro las capacidades relevantes para tu objetivo. Si te han operado, revisamos también las indicaciones del equipo que te atiende.',
+		'service.rehab.step-2-title': 'Un punto de partida adaptado',
 		'service.rehab.step-2-text':
-			'Plan de ejercicios personalizado según tus necesidades',
-		'service.rehab.step-3-title': 'Supervisión',
+			'Elegimos ejercicios, cantidad de trabajo y frecuencia según tu capacidad actual. Tienen que encajar en el tiempo, espacio y material que tienes disponible.',
+		'service.rehab.step-3-title': 'Aprender y resolver dudas',
 		'service.rehab.step-3-text':
-			'Acompañamiento y corrección durante las sesiones',
-		'service.rehab.step-4-title': 'Progresión',
+			'Practicamos los movimientos para que entiendas qué buscamos y cómo hacerlos. Me cuentas qué notas y acordamos qué observar entre las visitas.',
+		'service.rehab.step-4-title': 'Revisar y progresar',
 		'service.rehab.step-4-text':
-			'Ajuste continuo del programa según tu evolución',
-		'service.rehab.benefits-title': 'Beneficios del Ejercicio Terapéutico',
-		'service.rehab.benefit-1': 'Mejora de la fuerza y resistencia',
-		'service.rehab.benefit-2': 'Aumento de la movilidad y flexibilidad',
-		'service.rehab.benefit-3': 'Reducción del riesgo de lesiones',
-		'service.rehab.benefit-4': 'Mejora de la autonomía personal',
-		'service.rehab.benefit-5': 'Bienestar físico y mental',
+			'Revisamos la respuesta al ejercicio y los cambios en tus tareas habituales. Ajustamos la dificultad y la carga cuando procede, en lugar de repetir siempre el mismo programa.',
+		'service.rehab.benefits-title': 'Qué buscamos con el ejercicio',
+		'service.rehab.benefit-1': 'Trabajar fuerza y resistencia',
+		'service.rehab.benefit-2': 'Mejorar movilidad y control del movimiento',
+		'service.rehab.benefit-3': 'Preparar las demandas de tu actividad',
+		'service.rehab.benefit-4': 'Ganar autonomía en tareas cotidianas',
+		'service.rehab.benefit-5': 'Recuperar confianza para moverte',
 		'service.rehab.conditions-title': '¿Para quién está indicado?',
 		'service.rehab.for-whom-title': '¿Para quién está indicado?',
-		'service.rehab.for-whom-1-title': 'Postquirúrgicos',
+		'service.rehab.for-whom-1-title': 'Después de una cirugía',
 		'service.rehab.for-whom-1-text':
-			'Recuperación tras intervenciones quirúrgicas.',
-		'service.rehab.for-whom-2-title': 'Deportistas',
-		'service.rehab.for-whom-2-text': 'Readaptación tras lesiones deportivas.',
-		'service.rehab.for-whom-3-title': 'Mayores',
+			'Trabajo adaptado a las indicaciones recibidas y a la evolución de tu recuperación.',
+		'service.rehab.for-whom-2-title': 'Actividad física y deporte',
+		'service.rehab.for-whom-2-text':
+			'Preparación gradual para las demandas de la actividad que quieres retomar.',
+		'service.rehab.for-whom-3-title': 'Autonomía cotidiana',
 		'service.rehab.for-whom-3-text':
-			'Mejora de la fragilidad y prevención de caídas.',
+			'Trabajo de capacidades para caminar, subir escaleras o levantarte de una silla.',
 		'service.rehab.condition-1': 'Recuperación postquirúrgica',
 		'service.rehab.condition-2': 'Lesiones deportivas',
 		'service.rehab.condition-3': 'Dolor crónico de espalda',
@@ -322,7 +327,65 @@ export const ui = {
 		'nav.main': 'Navegación principal',
 		'footer.call': 'Llamar a',
 		'footer.go-to': 'Ir a',
-		'footer.scroll-down': 'Desplazarse hacia abajo'
+		'footer.scroll-down': 'Desplazarse hacia abajo',
+
+		// Service-specific explanations and questions
+		'service.manual-therapy.deep-text':
+			'En Laguntza Fisioterapia, en Urnieta, parto de lo que te cuesta hacer: girar el cuello, levantar el brazo o moverte en el trabajo. No elijo una técnica solo porque una zona esté dolorida. La valoración, tus preferencias y tu respuesta al tratamiento orientan qué herramienta puede encajar en tu caso.',
+		'service.manual-therapy.session-title':
+			'Cómo es una sesión de terapia manual',
+		'service.manual-therapy.session-1-title': 'Escucho y valoro',
+		'service.manual-therapy.session-1-text':
+			'Hablamos de cómo empezaron las molestias, qué las cambia y qué necesitas recuperar. Exploro los movimientos relevantes y reviso los antecedentes que puedan influir en el tratamiento.',
+		'service.manual-therapy.session-2-title': 'Acordamos el tratamiento',
+		'service.manual-therapy.session-2-text':
+			'Te explico las opciones y para qué propongo cada técnica. Ajusto la intensidad a lo que toleras; puedes preguntar, pedir una pausa o preferir otra opción.',
+		'service.manual-therapy.session-3-title': 'Comprobamos la respuesta',
+		'service.manual-therapy.session-3-text':
+			'Volvemos a valorar un movimiento o una tarea del principio. Lo que notes ayuda a decidir si mantener el enfoque, modificarlo o completar la valoración.',
+		'service.manual-therapy.session-4-title': 'Lo llevamos a tu día a día',
+		'service.manual-therapy.session-4-text':
+			'Si encaja en tu situación, añadimos ejercicio y pautas de actividad. Te explico cómo practicarlos y qué observar para revisar juntos el plan en la siguiente visita.',
+		'service.manual-therapy.sessions-text':
+			'El número y la frecuencia de las sesiones dependen de la valoración, de tus objetivos y de cómo evoluciones. No hay una cifra válida para todo el mundo. Revisamos si el tratamiento te ayuda a moverte y a hacer las tareas que te importan, y ajustamos el plan con esa información.',
+		'service.manual-therapy.safety-text':
+			'Cuéntame tus antecedentes, medicación, intervenciones recientes y tratamientos previos. Esa información puede cambiar las técnicas que propongo. Si tu situación necesita la valoración de otro profesional, te lo explicaré.',
+		'service.manual-therapy.faq-1-q': '¿Cuál es la diferencia con un masaje?',
+		'service.manual-therapy.faq-1-a':
+			'Un masaje puede formar parte del tratamiento. En terapia manual, la elección parte de una valoración y de un objetivo concreto de movimiento o función; después revisamos cómo respondes.',
+		'service.manual-therapy.faq-2-q':
+			'¿Es necesario que crujan las articulaciones?',
+		'service.manual-therapy.faq-2-a':
+			'No es un objetivo del tratamiento. Hay diferentes técnicas y podemos valorar alternativas a las manipulaciones. La elección se explica y se acuerda contigo.',
+		'service.manual-therapy.faq-3-q': '¿Se puede combinar con ejercicio?',
+		'service.manual-therapy.faq-3-a':
+			'Sí. Son herramientas que pueden complementarse dentro del mismo plan. El ejercicio se adapta a tu capacidad y a tus objetivos, sin una rutina idéntica para todas las personas.',
+		'service.rehab.deep-text':
+			'En mi consulta de Urnieta, Gipuzkoa, el objetivo se concreta contigo: volver a caminar, retomar tu deporte o manejar mejor las tareas cotidianas. El punto de partida puede ser una lesión, una cirugía o una dificultad para moverte. No necesitas experiencia deportiva para plantear un programa adaptado.',
+		'service.rehab.sessions-text':
+			'La duración del proceso y la frecuencia de las visitas varían según tu situación, las indicaciones clínicas y tu respuesta al trabajo. Acordamos objetivos que podamos revisar. El seguimiento sirve para resolver dudas, comprobar la evolución y adaptar el programa; no para fijar un calendario igual para todas las personas.',
+		'service.rehab.safety-text':
+			'El trabajo entre visitas también se acuerda contigo: qué hacer, cuánto y qué observar. Si un ejercicio te genera dudas o molestias, coméntamelo para revisar la carga o buscar otra opción.',
+		'service.rehab.faq-1-q': '¿Tengo que ir a un gimnasio?',
+		'service.rehab.faq-1-a':
+			'Depende del objetivo y de los recursos que necesitemos. Podemos adaptar el programa al espacio y al material disponible en casa, o tener en cuenta lo que utilizas si ya entrenas.',
+		'service.rehab.faq-2-q': '¿Qué hago si un ejercicio me molesta?',
+		'service.rehab.faq-2-a':
+			'Cuéntame qué notas durante y después. No hay un umbral de dolor válido para todo el mundo. Revisamos la respuesta y acordamos si modificar el movimiento, la carga o el plan.',
+		'service.rehab.faq-3-q': '¿Sirve también si no hago deporte?',
+		'service.rehab.faq-3-a':
+			'Sí. Los objetivos también pueden ser caminar, levantarte o realizar tareas de casa. La elección de ejercicios parte de tus capacidades y necesidades, aunque nunca hayas entrenado.',
+		'service.manual-therapy.sessions-title':
+			'Cómo acordamos el plan de tratamiento',
+		'service.manual-therapy.faq-title': 'Preguntas sobre terapia manual',
+		'service.manual-therapy.faq-4-q': '¿Qué llevo a la primera visita?',
+		'service.manual-therapy.faq-4-a':
+			'Ropa cómoda que permita explorar la zona y moverte. Si tienes informes o indicaciones de otros profesionales, tráelos: ayudan a conocer tu situación y a preparar la valoración.',
+		'service.rehab.sessions-title': 'Un plan que se revisa contigo',
+		'service.rehab.faq-title': 'Preguntas sobre rehabilitación y ejercicio',
+		'service.rehab.faq-4-q': '¿Cómo valoramos si estoy avanzando?',
+		'service.rehab.faq-4-a':
+			'Comparando con el punto de partida: cómo haces una tarea, cuánto movimiento o fuerza tienes y cómo toleras la actividad. Tus sensaciones y dificultades también cuentan al revisar los objetivos.'
 	},
 	eu: {
 		'nav.home': 'Hasiera',
@@ -456,74 +519,81 @@ export const ui = {
 			'Terapia manuala Urnietan. Mina, mugikortasuna eta lesio muskuloeskeletikoak lantzeko. Fisioterapia manuala Gipuzkoan.',
 		'service.manual-therapy.hero-title': 'Terapia Manuala Gipuzkoan',
 		'service.manual-therapy.hero-subtitle':
-			'Zure berreskuraperako fisioterapia manual teknika espezializatuak',
+			'Zure berreskurapenerako fisioterapia manualeko teknika espezializatuak',
 		'service.manual-therapy.what-is-title': 'Zer da Terapia Manuala?',
 		'service.manual-therapy.what-is-text':
-			'Terapia manuala fisioterapeutaren eskuekin egindako teknika multzoa da sistema neuromuskuloeskeletikoaren disfuntzioak diagnostikatu eta tratatzeko. Fisioterapiako tresnarik eraginkorrenetako bat da.',
-		'service.manual-therapy.techniques-title': 'Erabiltzen ditugun teknikak',
+			'Terapia manualak eskuekin egindako teknikak biltzen ditu mugimendu-arazoak eta gihar eta eskeletuko minak baloratu eta tratatzeko. Artikulazioen mobilizazioak eta ehunen gaineko lana har ditzake, betiere zuri egokitutako tratamendu baten barruan.',
+		'service.manual-therapy.techniques-title': 'Erabil ditzakedan teknikak',
 		'service.manual-therapy.technique-1-title': 'Mobilizazioak',
 		'service.manual-therapy.technique-1-text':
-			'Artikulazio mobilizazioak mugimendu-eremua hobetzeko.',
+			'Artikulazio baten mugimendu gidatuak, mugimendu-tartea eta intentsitatea zure erantzunera egokituz.',
 		'service.manual-therapy.technique-2-title': 'Manipulazioak',
 		'service.manual-therapy.technique-2-text':
-			'Bizkarrezur eta artikulazio manipulazio espezifikoak.',
-		'service.manual-therapy.technique-3-title': 'Ehun biguna',
+			'Planean egokiak direnean zurekin baloratzen ditudan artikulazio-teknika espezifikoak; ez dira kasu guztietan ezinbestekoak.',
+		'service.manual-therapy.technique-3-title': 'Ehun bigunak',
 		'service.manual-therapy.technique-3-text':
-			'Gihar, faszia eta lotailuetara zuzendutako teknikak.',
+			'Giharren eta beste ehunen gaineko eskuzko lana, presioa jasan dezakezunera egokituz.',
 		'service.manual-therapy.technique-4-title': 'Neurodinamia',
 		'service.manual-therapy.technique-4-text':
-			'Nerbio-sistemaren mugikortasuna hobetzeko teknikak.',
+			'Nerbioen mugikortasunarekin eta sentikortasunarekin lotutako mugimendu gidatuak, balorazioak hala gomendatzen duenean.',
 		'service.manual-therapy.technique-1': 'Artikulazio mobilizazioak',
 		'service.manual-therapy.technique-2': 'Bizkarrezur manipulazioak',
 		'service.manual-therapy.technique-3': 'Ehun bigunaren teknikak',
 		'service.manual-therapy.technique-4': 'Askapen miofasziala',
 		'service.manual-therapy.technique-5': 'Teknika neurodinamikoak',
 		'service.manual-therapy.technique-6': 'Luzaketa espezifikoak',
-		'service.manual-therapy.benefits-title': 'Terapia Manualaren Onurak',
-		'service.manual-therapy.benefit-1': 'Minaren berehalako arintze',
+		'service.manual-therapy.benefits-title': 'Eskuzko tratamenduaren helburuak',
+		'service.manual-therapy.benefit-1': 'Mina eta ondoeza lantzea',
 		'service.manual-therapy.benefit-2':
-			'Artikulazio mugikortasunaren hobekuntza',
-		'service.manual-therapy.benefit-3': 'Gihar-tentsioaren murrizketa',
-		'service.manual-therapy.benefit-4': 'Berreskurapenaren azeleratzea',
-		'service.manual-therapy.benefit-5': 'Funtzio fisikoaren hobekuntza',
+			'Zail egiten zaizkizun mugimenduak erraztea',
+		'service.manual-therapy.benefit-3': 'Mugimenduarekiko tolerantzia hobetzea',
+		'service.manual-therapy.benefit-4':
+			'Ariketa bidezko lan aktiboari laguntzea',
+		'service.manual-therapy.benefit-5':
+			'Zure eguneroko jardueretara itzultzeko bidean aurrera egitea',
 		// Rehabilitation / Exercise Therapy page
 		'service.rehab.seo-title':
 			'Errehabilitazioa eta Ariketa Terapeutikoa Urnietan',
 		'service.rehab.seo-description':
 			'Errehabilitazioa eta ariketa terapeutikoa Urnietan, Gipuzkoan. Lesio, ebakuntza, kirol eta adinekoentzako programa pertsonalizatuak.',
-		'service.rehab.hero-title': 'Errehabilitazioa eta Ariketa Terapeutikoak',
+		'service.rehab.hero-title': 'Errehabilitazioa eta Ariketa Terapeutikoa',
 		'service.rehab.hero-subtitle':
 			'Gipuzkoan zure berreskuratze funtzionalerako programa pertsonalizatuak',
 		'service.rehab.what-is-title': 'Zer da Ariketa Terapeutikoa?',
 		'service.rehab.what-is-text':
-			'Ariketa terapeutikoa narriadura zuzentzeko, funtzio muskuloeskeletikoa berreskuratzeko eta ongizate egoera mantentzeko bereziki agindutako mugimendu eta jarduera fisikoetan datza. Funtsezkoa da edozein errehabilitazio prozesutan.',
-		'service.rehab.process-title': 'Gure errehabilitazio prozesua',
-		'service.rehab.step-1-title': 'Balorazioa',
+			'Ariketa terapeutikoak zure balorazioaren eta helburuen arabera aukeratutako mugimenduak eta jarduerak erabiltzen ditu. Indarra, mugikortasuna, oreka edo erresistentzia landu ditzake. Errehabilitazioak lan hori eta jarraipena antolatzen ditu, eguneroko jarduerak berreskuratzen laguntzeko.',
+		'service.rehab.process-title':
+			'Nola planteatzen dut zure errehabilitazioa?',
+		'service.rehab.step-1-title': 'Balorazioa eta helburuak',
 		'service.rehab.step-1-text':
-			'Zure egoera fisikoaren eta helburuen ebaluazio osoa',
-		'service.rehab.step-2-title': 'Programaren diseinua',
+			'Zure lesioaz, ohiko jardueraz eta zail egiten zaizkizun zereginez hitz egiten dugu. Helbururako garrantzitsuak diren gaitasunak baloratzen ditut. Ebakuntza egin badizute, artatzen zaituen taldearen jarraibideak ere berrikusten ditugu.',
+		'service.rehab.step-2-title': 'Abiapuntu egokitua',
 		'service.rehab.step-2-text':
-			'Zure beharren araberako ariketa plan pertsonalizatua',
-		'service.rehab.step-3-title': 'Gainbegiratzea',
-		'service.rehab.step-3-text': 'Laguntza eta zuzenketa saioetan zehar',
-		'service.rehab.step-4-title': 'Progresioa',
+			'Ariketak, lan-kantitatea eta maiztasuna zure egungo gaitasunaren arabera aukeratzen ditugu. Eskuragarri dituzun denbora, espazio eta materialera egokitu behar dira.',
+		'service.rehab.step-3-title': 'Ikasi eta zalantzak argitu',
+		'service.rehab.step-3-text':
+			'Mugimenduak praktikatzen ditugu, zer bilatzen dugun eta nola egin ulertzeko. Sentitzen duzuna azaltzen didazu, eta bisiten artean zer behatu adosten dugu.',
+		'service.rehab.step-4-title': 'Berrikusi eta aurrera egin',
 		'service.rehab.step-4-text':
-			'Programaren doiketa etengabea zure eboluzioarekin',
-		'service.rehab.benefits-title': 'Ariketa Terapeutikoaren Onurak',
-		'service.rehab.benefit-1': 'Indarra eta erresistentzia hobetzea',
-		'service.rehab.benefit-2': 'Mugikortasuna eta malgutasuna handitzea',
-		'service.rehab.benefit-3': 'Lesio arriskua murriztea',
-		'service.rehab.benefit-4': 'Autonomia pertsonala hobetzea',
-		'service.rehab.benefit-5': 'Ongizate fisiko eta mentala',
+			'Ariketarekiko erantzuna eta ohiko zereginetako aldaketak berrikusten ditugu. Dagokionean zailtasuna eta karga egokitzen ditugu, programa bera beti errepikatu beharrean.',
+		'service.rehab.benefits-title': 'Zer bilatzen dugu ariketarekin?',
+		'service.rehab.benefit-1': 'Indarra eta erresistentzia lantzea',
+		'service.rehab.benefit-2':
+			'Mugikortasuna eta mugimenduaren kontrola hobetzea',
+		'service.rehab.benefit-3': 'Zure jardueraren eskakizunetarako prestatzea',
+		'service.rehab.benefit-4': 'Eguneroko zereginetan autonomia irabaztea',
+		'service.rehab.benefit-5': 'Mugitzeko konfiantza berreskuratzea',
 		'service.rehab.conditions-title': 'Norentzat dago indikatuta?',
 		'service.rehab.for-whom-title': 'Norentzat dago indikatuta?',
-		'service.rehab.for-whom-1-title': 'Postkirurgikoak',
-		'service.rehab.for-whom-1-text': 'Ebakuntza osteko berreskurapena.',
-		'service.rehab.for-whom-2-title': 'Kirolariak',
-		'service.rehab.for-whom-2-text': 'Kirol lesioen ondorengo erreadaptazioa.',
-		'service.rehab.for-whom-3-title': 'Adinekoak',
+		'service.rehab.for-whom-1-title': 'Ebakuntza baten ondoren',
+		'service.rehab.for-whom-1-text':
+			'Jasotako jarraibideetara eta zure berreskurapenaren bilakaerara egokitutako lana.',
+		'service.rehab.for-whom-2-title': 'Jarduera fisikoa eta kirola',
+		'service.rehab.for-whom-2-text':
+			'Berriro egin nahi duzun jardueraren eskakizunetarako pixkanakako prestaketa.',
+		'service.rehab.for-whom-3-title': 'Eguneroko autonomia',
 		'service.rehab.for-whom-3-text':
-			'Hauskortasuna hobetzea eta erorketen prebentzioa.',
+			'Oinez ibiltzeko, eskailerak igotzeko edo aulki batetik altxatzeko gaitasunak lantzea.',
 		'service.rehab.condition-1': 'Ebakuntza osteko berreskurapena',
 		'service.rehab.condition-2': 'Kirol lesioak',
 		'service.rehab.condition-3': 'Bizkar-min kronikoa',
@@ -624,7 +694,66 @@ export const ui = {
 		'nav.main': 'Nabigazio nagusia',
 		'footer.call': 'Deitu honi:',
 		'footer.go-to': 'Joan hona:',
-		'footer.scroll-down': 'Behera jaitsi'
+		'footer.scroll-down': 'Behera jaitsi',
+
+		// Service-specific explanations and questions
+		'service.manual-therapy.deep-text':
+			'Laguntza Fisioterapian, Urnietan, zail egiten zaizun horretatik abiatzen naiz: lepoa biratzea, besoa altxatzea edo lanean mugitzea. Ez dut teknika bat aukeratzen soilik eremu bat mingarria delako. Balorazioak, zure lehentasunek eta tratamenduarekiko erantzunak gidatzen dute zure kasuan egokia izan daitekeen tresnaren aukeraketa.',
+		'service.manual-therapy.session-title':
+			'Nolakoa da terapia manualeko saio bat?',
+		'service.manual-therapy.session-1-title': 'Entzuten eta baloratzen dut',
+		'service.manual-therapy.session-1-text':
+			'Mina nola hasi zen, zerk aldatzen duen eta zer berreskuratu nahi duzun aztertzen dugu. Mugimendu garrantzitsuak baloratu eta tratamenduan eragina izan dezaketen aurrekariak berrikusten ditut.',
+		'service.manual-therapy.session-2-title': 'Tratamendua adosten dugu',
+		'service.manual-therapy.session-2-text':
+			'Aukerak eta teknika bakoitza zertarako proposatzen dudan azaltzen dizut. Intentsitatea jasan dezakezunera egokitzen dut; galderak egin, atseden bat eskatu edo beste aukera bat nahiago duzula esan dezakezu.',
+		'service.manual-therapy.session-3-title': 'Erantzuna aztertzen dugu',
+		'service.manual-therapy.session-3-text':
+			'Hasierako mugimendu edo zeregin bat berriro baloratzen dugu. Sentitzen duzunak ikuspegia mantendu, aldatu edo balorazioa osatu behar den erabakitzen laguntzen du.',
+		'service.manual-therapy.session-4-title': 'Zure egunerokora eramaten dugu',
+		'service.manual-therapy.session-4-text':
+			'Zure egoerarako egokia bada, ariketa eta jarduera-jarraibideak gehitzen ditugu. Nola praktikatu eta zer behatu azaltzen dizut, hurrengo bisitan plana elkarrekin berrikusteko.',
+		'service.manual-therapy.sessions-title':
+			'Nola adosten dugu tratamendu-plana?',
+		'service.manual-therapy.sessions-text':
+			'Saioen kopurua eta maiztasuna balorazioaren, zure helburuen eta bilakaeraren araberakoak dira. Ez dago guztientzat balio duen kopururik. Tratamenduak mugitzen eta zuretzat garrantzitsuak diren zereginak egiten laguntzen dizun berrikusten dugu, eta informazio horrekin plana egokitzen dugu.',
+		'service.manual-therapy.safety-text':
+			'Azaldu zure aurrekariak, medikazioa, azken ebakuntzak eta aurretik jasotako tratamenduak. Informazio horrek proposatzen ditudan teknikak alda ditzake. Zure egoerak beste profesional baten balorazioa behar badu, azalduko dizut.',
+		'service.manual-therapy.faq-title': 'Terapia manualari buruzko galderak',
+		'service.manual-therapy.faq-1-q': 'Zer desberdintasun dago masaje batekin?',
+		'service.manual-therapy.faq-1-a':
+			'Masajea tratamenduaren parte izan daiteke. Terapia manualean, aukeraketa balorazio batetik eta mugimenduaren edo funtzioaren helburu zehatz batetik abiatzen da; ondoren, zure erantzuna berrikusten dugu.',
+		'service.manual-therapy.faq-2-q':
+			'Artikulazioek krak egitea beharrezkoa da?',
+		'service.manual-therapy.faq-2-a':
+			'Ez da tratamenduaren helburua. Hainbat teknika daude, eta manipulazioen ordezko aukerak balora ditzakegu. Aukeraketa azaldu eta zurekin adosten da.',
+		'service.manual-therapy.faq-3-q': 'Ariketarekin konbina daiteke?',
+		'service.manual-therapy.faq-3-a':
+			'Bai. Plan beraren barruan elkar osa dezaketen tresnak dira. Ariketa zure gaitasunera eta helburuetara egokitzen da, pertsona guztientzat errutina bera ezarri gabe.',
+		'service.manual-therapy.faq-4-q': 'Zer eraman behar dut lehen bisitara?',
+		'service.manual-therapy.faq-4-a':
+			'Arropa erosoa, eremua baloratu eta mugitu ahal izateko. Beste profesionalen txostenak edo jarraibideak badituzu, ekarri: zure egoera ezagutzen eta balorazioa prestatzen laguntzen dute.',
+		'service.rehab.deep-text':
+			'Urnietako nire kontsultan, Gipuzkoan, zurekin zehazten dut helburua: berriro oinez ibiltzea, kirolera itzultzea edo eguneroko zereginak hobeto egitea. Abiapuntua lesio bat, ebakuntza bat edo mugitzeko zailtasun bat izan daiteke. Ez duzu kirol-esperientziarik behar programa egokitu bat planteatzeko.',
+		'service.rehab.sessions-title': 'Zurekin berrikusten den plana',
+		'service.rehab.sessions-text':
+			'Prozesuaren iraupena eta bisiten maiztasuna zure egoeraren, jarraibide klinikoen eta lanarekiko erantzunaren arabera aldatzen dira. Berrikusi ditzakegun helburuak adosten ditugu. Jarraipenak zalantzak argitzeko, bilakaera aztertzeko eta programa egokitzeko balio du; ez pertsona guztientzat egutegi bera ezartzeko.',
+		'service.rehab.safety-text':
+			'Bisiten arteko lana ere zurekin adosten da: zer egin, zenbat eta zer behatu. Ariketa batek zalantzak edo mina sortzen badizkizu, esan, karga berrikusteko edo beste aukera bat bilatzeko.',
+		'service.rehab.faq-title':
+			'Errehabilitazioari eta ariketari buruzko galderak',
+		'service.rehab.faq-1-q': 'Gimnasio batera joan behar dut?',
+		'service.rehab.faq-1-a':
+			'Helburuaren eta behar ditugun baliabideen araberakoa da. Programa etxean eskuragarri dituzun espaziora eta materialera egokitu dezakegu, edo dagoeneko entrenatzen baduzu erabiltzen duzuna kontuan hartu.',
+		'service.rehab.faq-2-q': 'Zer egin ariketa batek mina sortzen badit?',
+		'service.rehab.faq-2-a':
+			'Azaldu zer sentitzen duzun ariketan zehar eta ondoren. Ez dago guztientzat balio duen min-mailarik. Erantzuna berrikusi eta mugimendua, karga edo plana aldatu behar den adosten dugu.',
+		'service.rehab.faq-3-q': 'Kirolik egiten ez badut ere balio du?',
+		'service.rehab.faq-3-a':
+			'Bai. Helburuak oinez ibiltzea, altxatzea edo etxeko zereginak egitea ere izan daitezke. Ariketen aukeraketa zure gaitasunetatik eta beharretatik abiatzen da, inoiz entrenatu ez baduzu ere.',
+		'service.rehab.faq-4-q': 'Nola baloratzen dugu aurrera egiten ari naizen?',
+		'service.rehab.faq-4-a':
+			'Abiapuntuarekin alderatuz: zeregin bat nola egiten duzun, zenbateko mugimendua edo indarra duzun eta jarduera nola jasaten duzun. Zure sentsazioak eta zailtasunak ere kontuan hartzen ditugu helburuak berrikustean.'
 	}
 };
 

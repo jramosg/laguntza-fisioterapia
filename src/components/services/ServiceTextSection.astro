@@ -1,0 +1,29 @@
+---
+interface Props {
+	title: string;
+	paragraphs: string[];
+}
+
+const { title, paragraphs } = Astro.props;
+---
+
+<section class="service-text">
+	<h2>{title}</h2>
+	{paragraphs.map(text => <p>{text}</p>)}
+</section>
+
+<style>
+	.service-text {
+		margin-bottom: var(--s8);
+	}
+
+	.service-text h2 {
+		color: var(--theme-primary);
+		margin-bottom: var(--s4);
+	}
+
+	.service-text p {
+		line-height: 1.8;
+		color: var(--theme-on-bg);
+	}
+</style>

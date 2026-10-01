@@ -3,14 +3,25 @@ import Container from '@components/core/Container.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import { getFaq } from '@config/faq';
 
+interface Props {
+	title?: string;
+	items?: { q: string; a: string }[];
+	id?: string;
+	compact?: boolean;
+}
+
 const lang = getLangFromUrl(Astro.url);
-const items = getFaq(lang);
-const title = lang === 'eu' ? 'Ohiko galderak' : 'Preguntas frecuentes';
+const {
+	items = getFaq(lang),
+	title = lang === 'eu' ? 'Ohiko galderak' : 'Preguntas frecuentes',
+	id = 'faq-title',
+	compact = false
+} = Astro.props;
 ---
 
-<section class="faq" aria-labelledby="faq-title">
-	<Container narrow>
-		<h2 id="faq-title" class="faq__title">{title}</h2>
+<section class:list={['faq', { 'faq--compact': compact }]} aria-labelledby={id}>
+	<Container narrow class={compact ? 'faq__container--compact' : undefined}>
+		<h2 {id} class="faq__title">{title}</h2>
 		<div class="faq__list">
 			{
 				items.map(({ q, a }) => (
@@ -43,6 +54,16 @@ const title = lang === 'eu' ? 'Ohiko galderak' : 'Preguntas frecuentes';
 <style>
 	.faq {
 		padding: var(--s9) 0;
+	}
+	.faq--compact {
+		padding: 0;
+		margin-bottom: var(--s8);
+	}
+	.faq--compact :global(.faq__container--compact) {
+		padding: 0;
+	}
+	.faq--compact .faq__title {
+		color: var(--theme-primary);
 	}
 	.faq__title {
 		font-size: var(--font-size-xl);

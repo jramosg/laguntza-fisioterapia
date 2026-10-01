@@ -4,17 +4,19 @@ import { Image } from 'astro:assets';
 interface Props {
 	title: string;
 	text: string;
+	detailText?: string;
 	image: any;
 	imageAlt: string;
 }
 
-const { title, text, image, imageAlt } = Astro.props;
+const { title, text, detailText, image, imageAlt } = Astro.props;
 ---
 
 <section class="service-intro">
 	<div class="service-intro__text">
 		<h2>{title}</h2>
 		<p>{text}</p>
+		{detailText && <p>{detailText}</p>}
 	</div>
 	<div class="service-intro__image">
 		<Image
