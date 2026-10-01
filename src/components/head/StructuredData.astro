@@ -1,5 +1,6 @@
 ---
 import { Address, Phone, Email } from '@config/company';
+import { Practitioner } from '@config/practitioner';
 import { getLangFromUrl } from '@i18n/utils';
 
 interface Props {
@@ -240,8 +241,10 @@ const professionalData = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
 	'@id': personId,
-	name: 'Jokin Ramos',
-	jobTitle: 'Fisioterapeuta Colegiado',
+	name: Practitioner.name,
+	jobTitle:
+		lang === 'eu' ? 'Fisioterapeuta kolegiatua' : 'Fisioterapeuta colegiado',
+	description: Practitioner.sportsRole[lang],
 	worksFor: {
 		'@id': businessId
 	},
@@ -260,13 +263,18 @@ const professionalData = {
 	hasCredential: [
 		{
 			'@type': 'EducationalOccupationalCredential',
-			credentialCategory: 'degree',
-			name: 'Grado en Fisioterapia',
+			credentialCategory: 'Professional registration',
+			name: `${Practitioner.collegeNameLocalized[lang]} (COFPV)`,
+			identifier: Practitioner.registrationNumber,
 			recognizedBy: {
 				'@type': 'Organization',
-				name: 'Colegio Profesional de Fisioterapeutas del País Vasco'
+				name: Practitioner.collegeName
 			}
-		}
+		},
+		...Practitioner.qualifications.map(qualification => ({
+			'@type': 'EducationalOccupationalCredential',
+			name: qualification[lang]
+		}))
 	],
 	email: Email.name.replace('mailto:', ''),
 	telephone: Phone.name

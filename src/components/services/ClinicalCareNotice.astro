@@ -1,4 +1,6 @@
 ---
+import { Practitioner } from '@config/practitioner';
+
 interface Props {
 	lang: 'es' | 'eu';
 }
@@ -19,8 +21,8 @@ const aboutUrl = `/${lang}/about/`;
 	<p>
 		{
 			isBasque
-				? 'Jokin Ramos Fisioterapiako Graduatua da Nafarroako Unibertsitate Publikoan, eta Euskal Herriko Fisioterapeuten Elkargo Profesionaleko fisioterapeuta kolegiatua.'
-				: 'Jokin Ramos es Graduado en Fisioterapia por la Universidad Pública de Navarra y fisioterapeuta colegiado en el Colegio Profesional de Fisioterapeutas del País Vasco.'
+				? `${Practitioner.name} COFPVko ${Practitioner.registrationNumber} zenbakiko fisioterapeuta kolegiatua da (${Practitioner.collegeNameLocalized.eu}). ${Practitioner.qualifications[0].eu}.`
+				: `${Practitioner.name} es fisioterapeuta colegiado n.º ${Practitioner.registrationNumber} en el ${Practitioner.collegeName}. ${Practitioner.qualifications[0].es}.`
 		}
 		<a href={aboutUrl}>
 			{isBasque ? 'Ezagutu bere prestakuntza.' : 'Conoce su formación.'}

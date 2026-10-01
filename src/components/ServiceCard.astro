@@ -16,23 +16,22 @@ const lang = getLangFromUrl(url);
 const t = useTranslations(lang);
 
 const image = sectionImages[section.id as keyof typeof sectionImages];
+const hasVideo = section.id === 'specialized-techniques';
 
-const structuredData = {
-	'@context': 'https://schema.org',
-	'@type': 'VideoObject',
-	name: section.title,
-	description: section.desc,
-	thumbnailUrl: image.src,
-	uploadDate: '2025-11-28',
-	duration: 'PT1S', // Update this to match actual video duration
-	contentUrl: punctureMp4,
-	embedUrl: punctureMp4,
-	interactionStatistic: {
-		'@type': 'InteractionCounter',
-		interactionType: 'https://schema.org/WatchAction',
-		userInteractionCount: 0
-	}
-};
+const structuredData = hasVideo
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'VideoObject',
+			name: t('video.puncture-aria-label'),
+			description: t('video.puncture-transcript'),
+			thumbnailUrl: new URL(image.src, Astro.site).toString(),
+			uploadDate: '2025-11-28',
+			// Duration of src/videos/puncture.mp4, measured with ffprobe.
+			duration: 'PT1.34901S',
+			contentUrl: new URL(punctureMp4, Astro.site).toString(),
+			inLanguage: lang
+		}
+	: null;
 ---
 
 <section
@@ -46,7 +45,7 @@ const structuredData = {
 	id={hash}
 >
 	{
-		section.id === 'specialized-techniques' ? (
+		hasVideo ? (
 			<figure>
 				<video
 					autoplay
@@ -60,8 +59,9 @@ const structuredData = {
 				>
 					<source src={punctureWebm} type="video/webm" />
 					<source src={punctureMp4} type="video/mp4" />
-					Your browser does not support the video tag.{' '}
-					<a href="/media/video.mp4">Download</a>
+					<a href={punctureMp4}>
+						{lang === 'eu' ? 'Bideoa deskargatu' : 'Descargar el vídeo'}
+					</a>
 				</video>
 				<video
 					autoplay
@@ -75,8 +75,9 @@ const structuredData = {
 				>
 					<source src={punctureWebm} type="video/webm" />
 					<source src={punctureMp4} type="video/mp4" />
-					Your browser does not support the video tag.{' '}
-					<a href="/media/video.mp4">Download</a>
+					<a href={punctureMp4}>
+						{lang === 'eu' ? 'Bideoa deskargatu' : 'Descargar el vídeo'}
+					</a>
 				</video>
 				<figcaption class="sr-only">
 					{t('video.puncture-transcript')}
@@ -141,7 +142,14 @@ const structuredData = {
 	</div>
 </section>
 
-<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+{
+	structuredData && (
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify(structuredData)}
+		/>
+	)
+}
 
 <style>
 	.service-card {

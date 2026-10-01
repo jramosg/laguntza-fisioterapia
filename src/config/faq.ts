@@ -1,4 +1,5 @@
 import type { Langs } from '@i18n/ui';
+import { Practitioner } from '@config/practitioner';
 
 export type FaqItem = { q: string; a: string };
 
@@ -51,12 +52,12 @@ const faq: FaqSource[] = [
 	},
 	{
 		q: {
-			eu: 'Fisioterapeutak titulazio profesionala al du?',
+			eu: 'Fisioterapeuta kolegiatua al da?',
 			es: '¿El fisioterapeuta está colegiado?'
 		},
 		a: {
-			eu: 'Bai. Jokin Ramos fisioterapeuta kolegiatua da, Euskal Herriko Fisioterapeuten Elkargo Profesionalean, eta osteopatian espezializatua.',
-			es: 'Sí. Jokin Ramos es fisioterapeuta colegiado en el Colegio Profesional de Fisioterapeutas del País Vasco y está especializado en osteopatía.'
+			eu: `Bai. ${Practitioner.name} COFPVko ${Practitioner.registrationNumber} zenbakiko fisioterapeuta kolegiatua da (${Practitioner.collegeNameLocalized.eu}). ${Practitioner.qualifications[0].eu}.`,
+			es: `Sí. ${Practitioner.name} es fisioterapeuta colegiado n.º ${Practitioner.registrationNumber} en el ${Practitioner.collegeName}. ${Practitioner.qualifications[0].es}.`
 		}
 	},
 	{

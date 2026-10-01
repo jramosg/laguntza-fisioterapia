@@ -1,3 +1,5 @@
+import { Practitioner } from '@config/practitioner';
+
 export const defaultLang = 'es';
 
 export const ui = {
@@ -67,12 +69,11 @@ export const ui = {
 		'gallery.next': 'Siguiente',
 		'gallery.view-fullscreen': 'Ver en pantalla completa',
 		'about.title': 'Sobre mí',
-		'about.subtitle': 'Jokin Ramos, Fisioterapeuta y Osteópata',
-		'about.intro':
-			'Soy Jokin Ramos, fisioterapeuta de Urnieta. Después de llevar mucho tiempo con esta idea en la cabeza, me animé a dar el paso y abrir Laguntza Fisioterapia en mi pueblo.',
+		'about.subtitle': `${Practitioner.name}, Fisioterapeuta y Osteópata`,
+		'about.intro': `Soy ${Practitioner.name}, fisioterapeuta de Urnieta. Después de llevar mucho tiempo con esta idea en la cabeza, me animé a dar el paso y abrir Laguntza Fisioterapia en mi pueblo.`,
 		'about.journey-title': 'Mi trayectoria',
 		'about.journey-text':
-			'Mi camino como fisioterapeuta me ha llevado a trabajar en tres áreas principales que han definido mi forma de entender y practicar la fisioterapia. En el ámbito clínico, he dedicado años al tratamiento de dolores y lesiones traumatológicas: desde cervicalgias y lumbalgias hasta hernias discales, tendinopatías y lesiones articulares. Esta experiencia me ha enseñado la importancia de buscar siempre el origen del problema y no limitarme a tratar solo el síntoma. Cada paciente presenta una historia única que requiere una exploración detallada y un razonamiento clínico riguroso. En el campo de la fisioterapia deportiva, he acompañado a deportistas de diferentes disciplinas en sus procesos de recuperación y readaptación. Trabajar con atletas exige precisión en el diagnóstico, planificación rigurosa del tratamiento y una comunicación constante para adaptar el plan a las exigencias de cada deporte. La atención domiciliaria con personas mayores ha sido una de las experiencias más enriquecedoras de mi carrera. Diseñar y supervisar programas de ejercicio terapéutico para combatir el síndrome de fragilidad me ha enseñado el valor del trato humano, la escucha activa y la importancia de adaptar los objetivos a la realidad de cada persona. Actualmente estoy cursando estudios de Osteopatía, una formación que me está abriendo nuevas perspectivas sobre la biomecánica y la fisiología del cuerpo humano. La osteopatía me permite abordar las disfunciones desde un enfoque más global, entendiendo las conexiones entre los diferentes sistemas y cómo una alteración en una zona puede repercutir en otra. Me mantengo en formación continua en técnicas avanzadas como la punción seca, la neuromodulación percutánea y la ecografía musculoesquelética, herramientas que complementan el tratamiento manual y me permiten ofrecer una atención cada vez más precisa y completa a mis pacientes.',
+			'Mi camino como fisioterapeuta me ha llevado a trabajar en tres áreas principales que han definido mi forma de entender y practicar la fisioterapia. En el ámbito clínico, he dedicado años al tratamiento de dolores y lesiones traumatológicas: desde cervicalgias y lumbalgias hasta hernias discales, tendinopatías y lesiones articulares. Esta experiencia me ha enseñado la importancia de buscar siempre el origen del problema y no limitarme a tratar solo el síntoma. Cada paciente presenta una historia única que requiere una exploración detallada y un razonamiento clínico riguroso. En el campo de la fisioterapia deportiva, he acompañado a deportistas de diferentes disciplinas en sus procesos de recuperación y readaptación. Trabajar con atletas exige precisión en el diagnóstico, planificación rigurosa del tratamiento y una comunicación constante para adaptar el plan a las exigencias de cada deporte. La atención domiciliaria con personas mayores ha sido una de las experiencias más enriquecedoras de mi carrera. Diseñar y supervisar programas de ejercicio terapéutico para combatir el síndrome de fragilidad me ha enseñado el valor del trato humano, la escucha activa y la importancia de adaptar los objetivos a la realidad de cada persona. Mi formación incluye un Máster en Osteopatía Estructural, un Máster en Fisioterapia Invasiva y un Máster en Readaptación Deportiva.',
 		'about.philosophy-title': 'Mi filosofía de trabajo',
 		'about.philosophy-text':
 			'Mi forma de trabajar se basa en un principio fundamental: cada paciente es diferente y merece un tratamiento diseñado exclusivamente para su situación. No creo en las recetas genéricas ni en los protocolos rígidos. Cada caso requiere escuchar al paciente, entender su historia y realizar una exploración exhaustiva. El proceso comienza siempre con una valoración completa. Utilizo el razonamiento clínico combinado con herramientas diagnósticas como la ecografía musculoesquelética para identificar con precisión el origen del problema. A partir de ahí, diseño un plan de tratamiento que puede integrar diferentes técnicas según las necesidades: terapia manual para restaurar la movilidad, ejercicio terapéutico para recuperar la fuerza y la función, o técnicas invasivas como la punción seca y la neuromodulación cuando el caso lo requiere. Creo firmemente en la fisioterapia basada en la evidencia científica. Las técnicas que utilizo están respaldadas por la investigación actual, y me esfuerzo por mantenerme actualizado en los últimos avances del campo. Sin embargo, también valoro la experiencia clínica y la intuición que se desarrolla tras años de práctica. Para mí, el éxito del tratamiento no es solo eliminar el dolor: es que el paciente comprenda qué le ha pasado, participe activamente en su recuperación y adquiera las herramientas necesarias para prevenir futuras recaídas. Educar al paciente es tan importante como tratarle. Por eso, cada sesión incluye una explicación clara del plan y recomendaciones prácticas que puedes aplicar en tu día a día.',
@@ -81,11 +82,11 @@ export const ui = {
 			'Abrir Laguntza Fisioterapia en Urnieta es la materialización de un sueño personal: poder trabajar para el bienestar de mi comunidad en el pueblo donde he crecido. Conozco las necesidades de la gente de aquí, y quería ofrecerles un servicio de fisioterapia de proximidad y calidad, sin necesidad de desplazarse a centros más lejanos. Mi objetivo es que los vecinos de Urnieta y de las localidades cercanas como Donostia-San Sebastián, Hernani, Andoain, Astigarraga y Villabona puedan acceder a tratamientos de fisioterapia profesionales y personalizados. Estamos ubicados en la Plaza Zubitxo, en pleno centro de Urnieta, con fácil acceso y aparcamiento cercano. Atiendo a todo tipo de pacientes y perfiles. Deportistas que necesitan recuperarse de una lesión o que buscan prevención y readaptación. Personas mayores que quieren mantener su autonomía, mejorar su equilibrio y ganar calidad de vida. Trabajadores con dolores derivados de su actividad laboral. Y cualquier persona que busque resolver dolores musculoesqueléticos, mejorar su movilidad o simplemente cuidar su salud. En Laguntza creemos que la fisioterapia debe ser accesible y cercana. Por eso ofrecemos horarios flexibles de lunes a viernes, atención personalizada y un trato directo y humano. Nuestro centro está equipado con las herramientas necesarias para ofrecer diagnósticos precisos y tratamientos de la más alta calidad. Estamos comprometidos con el bienestar de Gipuzkoa.',
 		'about.credentials-title': 'Formación y cualificaciones',
 		'about.credentials-text':
-			'Graduado en Fisioterapia, cuento con formación especializada en las principales áreas de intervención que ofrecemos en Laguntza Fisioterapia. Mi formación continua incluye estudios avanzados en Osteopatía, que amplían mi capacidad de diagnóstico y tratamiento con un enfoque global del cuerpo humano. Entre mis especializaciones se encuentran la terapia manual avanzada, la punción seca y la neuromodulación percutánea, técnicas que me permiten abordar el dolor y las disfunciones musculoesqueléticas con alta precisión. También me he formado en ecografía musculoesquelética como herramienta diagnóstica, lo que complementa la exploración manual con información visual en tiempo real. Me mantengo actualizado mediante cursos, congresos y formación continua. Esta inversión en formación se traduce directamente en la calidad del tratamiento que reciben mis pacientes.',
+			'Soy graduado en Fisioterapia por la Universidad Pública de Navarra (UPNA). Mi formación incluye los siguientes títulos y especializaciones:',
 		'video.puncture-aria-label':
-			'Vídeo de demostración de técnicas especializadas de punción seca para servicios de fisioterapia',
+			'Fisioterapia invasiva en Laguntza Fisioterapia',
 		'video.puncture-transcript':
-			'Transcripción: Este vídeo demuestra técnicas especializadas de punción seca utilizadas en fisioterapia, mostrando aplicación segura y efectiva para el cuidado del paciente.',
+			'Vídeo breve de fisioterapia invasiva en la consulta de Laguntza Fisioterapia, en Urnieta.',
 		// Blog translations
 		'blog.seo-title':
 			'Blog de Fisioterapia | Artículos sobre Salud y Rehabilitación',
@@ -281,8 +282,7 @@ export const ui = {
 		'home.value-proposition':
 			'En Laguntza Fisioterapia creemos que cada persona merece un tratamiento adaptado a su situación. Desde nuestro centro en Urnieta, Gipuzkoa, ofrecemos un servicio de fisioterapia integral donde cada tratamiento comienza con una valoración exhaustiva para entender tu problema y diseñar un plan específico para ti. Combinamos las técnicas más efectivas de fisioterapia, osteopatía y terapia manual con herramientas avanzadas como la punción seca, la neuromodulación y la ecografía diagnóstica. Nuestro enfoque, basado en evidencia científica, nos permite ofrecerte resultados reales y duraderos. Ya sea que necesites recuperarte de una lesión deportiva, aliviar dolor crónico, rehabilitarte después de una cirugía o mejorar tu calidad de vida mediante ejercicio terapéutico, en Laguntza encontrarás la atención profesional y cercana que buscas. Atendemos a deportistas, personas mayores, pacientes postquirúrgicos y a cualquier persona que busque mejorar su bienestar físico en Gipuzkoa. Nuestro compromiso es acompañarte en cada paso de tu recuperación, desde la primera valoración hasta que alcances tus objetivos de salud.',
 		'home.about-title': 'Conoce a tu fisioterapeuta',
-		'home.about-text':
-			'Soy Jokin Ramos, fisioterapeuta colegiado con experiencia en el ámbito clínico, deportivo y domiciliario. A lo largo de mi trayectoria profesional he trabajado con cientos de pacientes, tratando lesiones traumatológicas, acompañando a deportistas en su recuperación y ayudando a personas mayores a mantener su autonomía y calidad de vida mediante programas de ejercicio terapéutico personalizado. Actualmente continúo formándome en Osteopatía, lo que me permite entender el cuerpo como un sistema integrado y ofrecer un tratamiento más completo y efectivo. Mi filosofía se basa en escuchar al paciente, realizar una valoración rigurosa y diseñar un plan de tratamiento totalmente personalizado, utilizando las técnicas más adecuadas para cada caso: terapia manual, ejercicio terapéutico, punción seca o neuromodulación. Abrí Laguntza Fisioterapia en Urnieta con un objetivo claro: ofrecer fisioterapia de calidad y cercanía a los vecinos de Gipuzkoa.',
+		'home.about-text': `Soy ${Practitioner.name}, fisioterapeuta colegiado COFPV n.º ${Practitioner.registrationNumber}. Soy graduado en Fisioterapia por la Universidad Pública de Navarra (UPNA), con másteres en Fisioterapia Invasiva, Readaptación Deportiva y Osteopatía Estructural. ${Practitioner.sportsRole.es} En Laguntza Fisioterapia, en Urnieta, mi trabajo empieza por escucharte y valorar tu situación para acordar contigo un tratamiento adaptado a tus objetivos.`,
 		'home.about-cta': 'Conoce mi trayectoria completa',
 		'home.services-overview-title':
 			'Tratamientos personalizados para cada necesidad',
@@ -328,8 +328,84 @@ export const ui = {
 		'footer.call': 'Llamar a',
 		'footer.go-to': 'Ir a',
 		'footer.scroll-down': 'Desplazarse hacia abajo',
+		// --- Service depth: shared across the four service pages ----------
+		'service.common.sessions-title': '¿Cuántas sesiones voy a necesitar?',
+		'service.common.safety-title': 'Cuándo conviene pasar antes por el médico',
+		'service.common.local-title': 'Dónde estamos y cómo llegar',
+		'service.common.local-text':
+			'La consulta está en Urnieta, a unos quince minutos de Donostia y a cinco de Hernani y Andoain. Se llega bien en coche y hay sitio para aparcar en la calle sin complicaciones. Si vienes en autobús, la línea que une Donostia con Andoain para a pocos minutos andando. Trabajo con cita previa y sin salas de espera llenas: reservo el tiempo de cada persona para que no tengas que esperar ni ir con prisa.',
+		'service.common.faq-title': 'Preguntas frecuentes',
+		'service.common.first-visit-q': '¿Qué llevo a la primera sesión?',
+		'service.common.first-visit-a':
+			'Ropa cómoda con la que te puedas mover, y cualquier informe, radiografía o resonancia que tengas a mano. No hace falta que traigas nada más. Si te han operado o estás en tratamiento con otro profesional, cuéntamelo al principio: cambia bastante cómo planteo la sesión.',
+		'service.common.pain-q': '¿Duele el tratamiento?',
+		'service.common.pain-a':
+			'Algunas técnicas pueden resultar molestas mientras se aplican, sobre todo si la zona está muy sensible, pero el tratamiento no tiene por qué ser doloroso para funcionar. Vamos ajustando la intensidad según lo que notes. Si algo te resulta demasiado, se cambia: no hay ningún beneficio en aguantar por aguantar.',
+		'service.common.insurance-q': '¿Trabajáis con mutuas?',
+		'service.common.insurance-a':
+			'Atiendo de forma privada, con factura. Muchas pólizas de reembolso cubren parte del importe si presentas la factura, así que merece la pena preguntar en tu seguro antes de empezar.',
 
-		// Service-specific explanations and questions
+		// --- Physiotherapy page depth -------------------------------------
+		'service.physio.deep-text':
+			'En la práctica, eso significa que la primera sesión es sobre todo escuchar y explorar. Me interesa saber cuándo empezó, qué lo empeora, qué lo alivia, cómo duermes y qué es lo que no puedes hacer y te importa. A partir de ahí exploro movimiento, fuerza y sensibilidad de la zona, y te explico qué creo que está pasando con palabras normales. Salir de la consulta entendiendo tu problema forma parte del tratamiento: es lo que te permite tomar decisiones el resto de la semana, cuando no estás aquí.',
+		'service.physio.session-title': 'Cómo es una primera sesión',
+		'service.physio.session-1-title': 'Hablamos',
+		'service.physio.session-1-text':
+			'Veinte minutos largos de historia clínica: cuándo empezó, cómo ha evolucionado, qué has probado ya y qué necesitas volver a hacer.',
+		'service.physio.session-2-title': 'Valoración física',
+		'service.physio.session-2-text':
+			'Exploro movilidad, fuerza, control y sensibilidad de la zona y de las que están alrededor, porque el sitio donde duele no siempre es el origen.',
+		'service.physio.session-3-title': 'Te explico qué veo',
+		'service.physio.session-3-text':
+			'Sin tecnicismos innecesarios, con los plazos realistas y diciéndote también lo que no sé todavía.',
+		'service.physio.session-4-title': 'Empezamos a tratar',
+		'service.physio.session-4-text':
+			'Tratamiento en la misma sesión y dos o tres cosas concretas para hacer en casa. Pocas y bien hechas antes que una lista que nadie cumple.',
+		'service.physio.sessions-text':
+			'Depende mucho del problema, pero para orientarte: una molestia reciente y localizada suele responder en tres o cuatro sesiones. Un dolor que llevas meses arrastrando o una lesión con pérdida de fuerza necesita más tiempo, normalmente entre seis y diez sesiones repartidas a lo largo de unas semanas, con el trabajo activo ganando peso a medida que avanzamos. En la segunda o tercera visita ya tenemos información suficiente para decirte si vas por buen camino. Si a las tres o cuatro sesiones no hay ningún cambio, lo revisamos o te derivo: insistir con lo mismo esperando otro resultado no es un plan.',
+		'service.physio.safety-text':
+			'La fisioterapia resuelve la mayoría de los dolores musculoesqueléticos, pero no todos los dolores son musculoesqueléticos. Si el dolor apareció tras un golpe fuerte y no puedes apoyar o mover la zona, si va acompañado de fiebre, pérdida de peso sin explicación o dolor nocturno que no cede con ningún cambio de postura, si notas pérdida de fuerza que va a más, o si hay alteraciones para controlar esfínteres, lo primero es una valoración médica. Llámame igualmente y te orientaré, pero en esos casos el orden correcto es médico primero.',
+		'service.physio.faq-1-q': '¿Necesito volante o derivación médica?',
+		'service.physio.faq-1-a':
+			'No. Puedes pedir cita directamente. Si durante la valoración veo algo que necesita una prueba de imagen o la opinión de un médico, te lo digo y te ayudo a orientarte.',
+		'service.physio.faq-2-q': '¿Cuánto dura cada sesión?',
+		'service.physio.faq-2-a':
+			'La primera unos sesenta minutos, porque la valoración necesita tiempo. Las siguientes entre cuarenta y cinco y cincuenta, según lo que toque ese día.',
+		'service.physio.faq-3-q': '¿Cada cuánto tengo que venir?',
+		'service.physio.faq-3-a':
+			'Al principio suele ser una vez por semana. En cuanto la cosa se estabiliza espaciamos las citas, porque el objetivo es que dejes de necesitarlas, no que vengas indefinidamente.',
+
+		// --- Osteopathy page depth ----------------------------------------
+		'service.osteopathy.deep-text':
+			'La osteopatía no es una alternativa a la fisioterapia: es una forma de mirar y de tratar que uso dentro de ella cuando el caso lo pide. Me sirve especialmente cuando el dolor no se explica del todo por la zona donde aparece, cuando hay restricciones de movilidad que se repiten siempre en el mismo sitio, o cuando alguien lleva tiempo tratándose solo el punto que duele sin mirar lo que hay alrededor. El razonamiento sigue siendo clínico y las expectativas, realistas: trabajo sobre movilidad, dolor y función, no sobre supuestos desajustes que habría que corregir de por vida.',
+		'service.osteopathy.session-title': 'Cómo es una sesión de osteopatía',
+		'service.osteopathy.session-1-title': 'Historia y contexto',
+		'service.osteopathy.session-1-text':
+			'Antecedentes, cirugías, golpes antiguos, trabajo y descanso. En osteopatía el historial largo aporta bastante.',
+		'service.osteopathy.session-2-title': 'Valoración global',
+		'service.osteopathy.session-2-text':
+			'Exploro la zona que te molesta y también la movilidad de las regiones que se relacionan con ella.',
+		'service.osteopathy.session-3-title': 'Tratamiento manual',
+		'service.osteopathy.session-3-text':
+			'Técnicas articulares, de tejidos blandos y viscerales según lo que haya encontrado, siempre dentro de lo que toleras.',
+		'service.osteopathy.session-4-title': 'Qué esperar después',
+		'service.osteopathy.session-4-text':
+			'Te digo qué es normal notar las siguientes cuarenta y ocho horas y qué haríamos en la próxima cita.',
+		'service.osteopathy.sessions-text':
+			'Con la osteopatía suelo plantear un bloque corto y valorar. Tres o cuatro sesiones separadas por una o dos semanas dan margen suficiente para ver si el enfoque está funcionando en tu caso. Si responde bien, muchas veces se puede espaciar a mantenimiento puntual. Si a las tres sesiones no hay cambios en el dolor ni en la movilidad, cambiamos de enfoque o lo miramos desde otro lado: no tiene sentido encadenar sesiones por inercia.',
+		'service.osteopathy.safety-text':
+			'Hay situaciones en las que las técnicas manipulativas no están indicadas, y forman parte de la valoración: fracturas recientes, osteoporosis avanzada, tratamiento anticoagulante, infecciones activas, algunos problemas vasculares cervicales o sospecha de patología grave. Por eso pregunto por antecedentes y medicación antes de tocar nada. Si algo no está indicado, te lo digo y trabajamos de otra manera, que casi siempre es posible.',
+		'service.osteopathy.faq-1-q': '¿La osteopatía sirve para todo?',
+		'service.osteopathy.faq-1-a':
+			'No, y desconfía de quien te diga lo contrario. Es útil en dolores y restricciones del sistema musculoesquelético. Fuera de ahí, lo honesto es derivarte a quien corresponda.',
+		'service.osteopathy.faq-2-q': '¿Es normal notar molestias después?',
+		'service.osteopathy.faq-2-a':
+			'Es frecuente notar la zona algo cargada o sensible durante uno o dos días, parecido a después de entrenar. Si va a más o aparece algo distinto de lo que hablamos, llámame.',
+		'service.osteopathy.faq-3-q': '¿Hace falta que crujan las articulaciones?',
+		'service.osteopathy.faq-3-a':
+			'No. Ese sonido no mide si la técnica ha funcionado, y hay muchas formas de mejorar la movilidad sin manipular. Si prefieres que no lo haga, se hace de otra manera.',
+
+		// --- Manual therapy page depth ------------------------------------
 		'service.manual-therapy.deep-text':
 			'En Laguntza Fisioterapia, en Urnieta, parto de lo que te cuesta hacer: girar el cuello, levantar el brazo o moverte en el trabajo. No elijo una técnica solo porque una zona esté dolorida. La valoración, tus preferencias y tu respuesta al tratamiento orientan qué herramienta puede encajar en tu caso.',
 		'service.manual-therapy.session-title':
@@ -360,6 +436,8 @@ export const ui = {
 		'service.manual-therapy.faq-3-q': '¿Se puede combinar con ejercicio?',
 		'service.manual-therapy.faq-3-a':
 			'Sí. Son herramientas que pueden complementarse dentro del mismo plan. El ejercicio se adapta a tu capacidad y a tus objetivos, sin una rutina idéntica para todas las personas.',
+
+		// --- Rehabilitation page depth ------------------------------------
 		'service.rehab.deep-text':
 			'En mi consulta de Urnieta, Gipuzkoa, el objetivo se concreta contigo: volver a caminar, retomar tu deporte o manejar mejor las tareas cotidianas. El punto de partida puede ser una lesión, una cirugía o una dificultad para moverte. No necesitas experiencia deportiva para plantear un programa adaptado.',
 		'service.rehab.sessions-text':
@@ -375,6 +453,8 @@ export const ui = {
 		'service.rehab.faq-3-q': '¿Sirve también si no hago deporte?',
 		'service.rehab.faq-3-a':
 			'Sí. Los objetivos también pueden ser caminar, levantarte o realizar tareas de casa. La elección de ejercicios parte de tus capacidades y necesidades, aunque nunca hayas entrenado.',
+
+		// Service-specific explanations and questions
 		'service.manual-therapy.sessions-title':
 			'Cómo acordamos el plan de tratamiento',
 		'service.manual-therapy.faq-title': 'Preguntas sobre terapia manual',
@@ -433,12 +513,11 @@ export const ui = {
 		'gallery.next': 'Hurrengoa',
 		'gallery.view-fullscreen': 'Pantaila osoan ikusi',
 		'about.title': 'Niri buruz',
-		'about.subtitle': 'Jokin Ramos, Fisioterapeuta eta Osteopata',
-		'about.intro':
-			'Ni Jokin Ramos naiz, urnietako fisioterapeuta. Aspalditik ideia hau buruan nuela, pausoa ematera animatu nintzen eta Laguntza Fisioterapia nire herrian ireki nuen.',
+		'about.subtitle': `${Practitioner.name}, Fisioterapeuta eta Osteopata`,
+		'about.intro': `${Practitioner.name} naiz, Urnietako fisioterapeuta. Aspalditik ideia hau buruan nuela, pausoa ematera animatu nintzen eta Laguntza Fisioterapia nire herrian ireki nuen.`,
 		'about.journey-title': 'Nire ibilbidea',
 		'about.journey-text':
-			'Fisioterapeuta gisa nire ibilbideak hiru arlo nagusitan lan egitera eraman nau, fisioterapia ulertzeko eta praktikatzeko dudan modua definitu dutenak. Arlo klinikoan, urte asko eman ditut min eta lesio traumatologikoen tratamenduan: zerbikoalgietatik eta lunbalgitatik disko hernietara, tendinopatietara eta artikulazio lesioetara. Esperientzia honek arazoaren jatorria beti bilatzeko garrantzia irakatsi dit, ez sintoma soilik tratatzea. Paziente bakoitzak historia bakarra aurkezten du, azterketa zehatz bat eta arrazoiketa kliniko zorrotz bat eskatzen duena. Kirol fisioterapiaren esparruan, diziplina desberdinetako kirolariei lagundu diet berreskuratze eta erreadaptazio prozesuetan. Kirolariekin lan egiteak diagnostikoan zehaztasuna, tratamenduaren plangintzarik zorrotzena eta komunikazio etengabea eskatzen ditu, plana kirol bakoitzaren eskakizunetara egokitzeko. Adineko pertsonekiko etxeko arreta nire karrerako esperientziarik aberasgarrienetako bat izan da. Hauskortasun sindromearen aurkako ariketa terapeutikoko programak diseinatu eta gainbegiratzeak giza tratuaren balioa, entzute aktiboa eta helburuak pertsona bakoitzaren errealitateari egokitzearen garrantzia irakatsi dizkit. Gaur egun Osteopatia ikasketak egiten ari naiz, biomekanikari eta giza gorputzaren fisiologiari buruzko ikuspegi berriak irekitzen dizkidan formakuntza. Osteopatiak disfuntzioak ikuspegi globalago batetik abordatzeko aukera ematen dit, sistema desberdinen arteko konexioak ulertuz eta eremu bateko aldaketa batek beste batean nola eragin dezakeen jakinez. Teknika aurreratuetan formakuntza etengabean mantentzen naiz, hala nola puntzio lehorra, neuromodulazio perkutaneoa eta ekografia muskuloeskeletikoa, eskuzko tratamendua osatzen duten tresnak eta Gipuzkoan nire pazienteei gero eta arreta zehatzagoa eta osoagoa eskaintzeko aukera ematen didate.',
+			'Fisioterapeuta gisa nire ibilbideak hiru arlo nagusitan lan egitera eraman nau, fisioterapia ulertzeko eta praktikatzeko dudan modua definitu dutenak. Arlo klinikoan, urte asko eman ditut min eta lesio traumatologikoen tratamenduan: zerbikoalgietatik eta lunbalgitatik disko hernietara, tendinopatietara eta artikulazio lesioetara. Esperientzia honek arazoaren jatorria beti bilatzeko garrantzia irakatsi dit, ez sintoma soilik tratatzea. Paziente bakoitzak historia bakarra aurkezten du, azterketa zehatz bat eta arrazoiketa kliniko zorrotz bat eskatzen duena. Kirol fisioterapiaren esparruan, diziplina desberdinetako kirolariei lagundu diet berreskuratze eta erreadaptazio prozesuetan. Kirolariekin lan egiteak diagnostikoan zehaztasuna, tratamenduaren plangintzarik zorrotzena eta komunikazio etengabea eskatzen ditu, plana kirol bakoitzaren eskakizunetara egokitzeko. Adineko pertsonekiko etxeko arreta nire karrerako esperientziarik aberasgarrienetako bat izan da. Hauskortasun sindromearen aurkako ariketa terapeutikoko programak diseinatu eta gainbegiratzeak giza tratuaren balioa, entzute aktiboa eta helburuak pertsona bakoitzaren errealitateari egokitzearen garrantzia irakatsi dizkit. Egiturazko Osteopatiako Masterra, Fisioterapia Inbaditzaileko Masterra eta Kirol Erreadaptazioko Masterra ditut.',
 		'about.philosophy-title': 'Nire lan-filosofia',
 		'about.philosophy-text':
 			'Nire lan egiteko modua printzipio funtsezko batean oinarritzen da: paziente bakoitza desberdina da eta bere egoerararako soilik diseinatutako tratamendua merezi du. Ez dut errezeta generiko edo protokolo zurrunetan sinesten. Kasu bakoitzak pazientea entzutea, bere historia ulertzea eta azterketa sakon bat egitea eskatzen du. Prozesua beti balorazio oso batekin hasten da. Arrazoiketa klinikoa ekografia muskuloeskeletikoa bezalako tresna diagnostikoekin konbinatzen dut, arazoaren jatorria zehaztasunez identifikatzeko. Hortik aurrera, beharren arabera teknika desberdinak integratu ditzakeen tratamendu plana diseinatzen dut: terapia manuala mugikortasuna berreskuratzeko, ariketa terapeutikoa indarra eta funtzioa berreskuratzeko, edo puntzio lehorra eta neuromodulazioa bezalako teknika inbaditzaileak kasuak hala eskatzen duenean. Ebidentzia zientifikoan oinarritutako fisioterapian sinesten dut. Erabiltzen ditudan teknikak gaur egungo ikerketak babestuta daude, eta arloko azken aurrerapenetan eguneratuta mantentzen saiatzen naiz. Hala ere, urte askotako praktikaren ondoren garatzen den esperientzia klinikoa eta intuizioa ere baloratzen ditut. Niretzat, tratamenduaren arrakasta ez da soilik mina ezabatzea: pazienteak zer gertatu zaion ulertzea, bere berreskurapenean aktiboki parte hartzea eta etorkizuneko erorketa berriak prebenitzeko beharrezko tresnak eskuratzea da. Pazientea heztea tratatzea bezain garrantzitsua da. Horregatik, saio bakoitzak planaren azalpen argi bat eta zure egunerokoan aplika ditzakezun gomendio praktikoak biltzen ditu.',
@@ -447,11 +526,11 @@ export const ui = {
 			'Laguntza Fisioterapia Urnietan irekitzea amets pertsonal baten gauzatzea da: hazi naizen herrian nire komunitatearen ongizaterako lan egiteko aukera. Hemengo jendearen beharrak ezagutzen ditut, eta hurbileko eta kalitate handiko fisioterapia zerbitzu bat eskaini nahi nien, zentro urrunagoetara mugitu beharrik gabe. Nire helburua Urnietako eta Donostia, Hernani, Andoain, Astigarraga eta Villabona bezalako inguruko herrietako bizilagunei fisioterapia tratamendu profesional eta pertsonalizatuak eskaintzea da. Zubitxo Plazan gaude, Urnietaren erdian, sarbide erraza eta inguruko aparkalekuekin. Paziente eta profil mota guztiei arreta ematen diet. Lesio batetik berreskuratu behar duten edo prebentzioa eta erreadaptazioa bilatzen duten kirolariei. Beren autonomia mantendu, oreka hobetu eta bizi-kalitatea irabazi nahi duten adineko pertsonei. Lan-jarduera dela-eta minekin bizi diren langileei. Eta min muskuloeskeletikoak konpondu, mugikortasuna hobetu edo besterik gabe bere osasuna zaindu nahi duen edonori. Laguntzan fisioterapiak eskuragarria eta gertukoa izan behar duela sinesten dugu. Horregatik, astelehenetik ostiralera ordutegia malgua, arreta pertsonalizatua eta tratu zuzen eta gizatiarra eskaintzen ditugu. Gure zentroa diagnostiko zehatzak eta kalitatezko tratamenduak eskaintzeko beharrezko tresnekin hornituta dago. Gipuzkoaren ongizatearekin konprometituta gaude.',
 		'about.credentials-title': 'Formakuntza eta kualifikazioak',
 		'about.credentials-text':
-			'Fisioterapian graduatua, Laguntza Fisioterapian eskaintzen ditugun esku-hartze arlo nagusietan formakuntza espezializatua dut. Nire etengabeko formakuntzak Osteopatiako ikasketa aurreratuak biltzen ditu, giza gorputzaren ikuspegi global batekin nire diagnostiko eta tratamendu gaitasuna zabaltzen dutenak. Nire espezializazioen artean terapia manual aurreratua, puntzio lehorra eta neuromodulazio perkutaneoa daude, mina eta disfuntzio muskuloeskeletikoak zehaztasun handiz abordatzeko aukera ematen didaten teknikak. Ekografia muskuloeskeletikoan ere formatu naiz tresna diagnostiko gisa, azterketa manuala denbora errealeko informazio bisualarekin osatzen duena. Ikastaro, kongresuen eta etengabeko formakuntzaren bidez eguneratuta mantentzen naiz. Formakuntzan egiten den inbertsio hau zuzenean islatzen da nire pazienteek jasotzen duten tratamenduaren kalitatean.',
+			'Fisioterapiako Gradua dut Nafarroako Unibertsitate Publikoan (UPNA). Nire prestakuntzak honako titulu eta espezializazio hauek biltzen ditu:',
 		'video.puncture-aria-label':
-			'Fisioterapia zerbitzuetarako puntzio lehor teknika espezializatuen demo bideoa',
+			'Fisioterapia inbaditzailea Laguntza Fisioterapian',
 		'video.puncture-transcript':
-			'Transkripzioa: Bideo honek fisioterapian erabilitako puntzio lehor teknika espezializatuak erakusten ditu, pazienteen arreta seguru eta eraginkorra erakutsiz.',
+			'Fisioterapia inbaditzailearen bideo laburra, Urnietako Laguntza Fisioterapia kontsultan.',
 		// Blog translations
 		'blog.seo-title':
 			'Fisioterapia Bloga | Osasun eta Errehabilitazio Artikuluak',
@@ -649,8 +728,7 @@ export const ui = {
 		'home.value-proposition':
 			'Laguntza Fisioterapian pertsona bakoitzak bere egoerara egokitutako tratamendua merezi duela sinesten dugu. Urnietako gure zentrotik, Gipuzkoan, fisioterapia zerbitzu integrala eskaintzen dugu, non tratamendu bakoitza balorazio sakon batekin hasten den zure arazoa ulertzeko eta zuretzako plan espezifiko bat diseinatzeko. Fisioterapia, osteopatia eta terapia manualeko teknika eraginkorrenak konbinatzen ditugu puntzio lehorra, neuromodulazioa eta ekografia diagnostikoa bezalako tresna aurreratuekin. Gure ikuspegia, ebidentzia zientifikoan oinarritua, emaitza erreal eta iraunkorrak eskaintzeko aukera ematen digu. Kirol lesio batetik berreskuratu, min kronikoa arindu, ebakuntza baten ondoren errehabilitatu edo ariketa terapeutikoaren bidez zure bizi-kalitatea hobetu behar duzun, Laguntzan zure bila zabiltzan arreta profesional eta gertukoa aurkituko duzu. Kirolariei, adineko pertsonei, paziente postkirurgikoei eta bere ongizate fisikoa hobetu nahi duen edonori arreta ematen diegu Gipuzkoan. Gure konpromisoa zure berreskurapeneko pauso guztietan laguntzea da, lehen baloraziotik zure osasun helburuak lortu arte.',
 		'home.about-title': 'Ezagutu zure fisioterapeuta',
-		'home.about-text':
-			'Jokin Ramos naiz, fisioterapeuta kolegiatua, kirolean, etxeko arretaan eta arlo klinikoan esperientziarekin. Nire ibilbide profesionalean zehar ehunka pazienterekin lan egin dut, lesio traumatologikoak tratatuz, kirolariei berreskurapenean lagunduz eta adineko pertsonei beren autonomia eta bizi-kalitatea mantentzen lagunduz ariketa terapeutiko pertsonalizatuko programen bidez. Gaur egun Osteopatia ikasketetan jarraitzen dut, gorputza sistema integratu gisa ulertzeko eta tratamendu osoago eta eraginkorragoa eskaintzeko aukera ematen didana. Nire filosofia pazientea entzutean, balorazio zorrotz bat egitean eta tratamendu plan guztiz pertsonalizatua diseinatzean oinarritzen da, kasu bakoitzerako teknika egokienak erabiliz: terapia manuala, ariketa terapeutikoa, puntzio lehorra edo neuromodulazioa. Laguntza Fisioterapia Urnietan ireki nuen helburu argi batekin: Gipuzkoako bizilagunei kalitate handiko eta gertuko fisioterapia eskaintzea, Donostiatik eta Hernanitik Andoainera eta haratago.',
+		'home.about-text': `${Practitioner.name} naiz, COFPVko ${Practitioner.registrationNumber} zenbakiko fisioterapeuta kolegiatua. Fisioterapiako Gradua dut Nafarroako Unibertsitate Publikoan (UPNA), eta Fisioterapia Inbaditzaileko, Kirol Erreadaptazioko eta Egiturazko Osteopatiako masterrak ditut. ${Practitioner.sportsRole.eu} Laguntza Fisioterapian, Urnietan, nire lana zu entzunez eta zure egoera baloratuz hasten da, zure helburuetara egokitutako tratamendua zurekin adosteko.`,
 		'home.about-cta': 'Ezagutu nire ibilbide osoa',
 		'home.services-overview-title': 'Behar bakoitzera egokitutako tratamenduak',
 		'home.services-overview-text':

@@ -3,6 +3,7 @@ import Container from '../core/Container.astro';
 import { Image } from 'astro:assets';
 import JokinImage from '@images/jokin.webp';
 import { useTranslations } from '@i18n/utils';
+import { Practitioner } from '@config/practitioner';
 
 interface Props {
 	lang: 'es' | 'eu';
@@ -18,7 +19,7 @@ const t = useTranslations(lang);
 			<div class="about-section__image-container">
 				<Image
 					src={JokinImage}
-					alt="Jokin Ramos González"
+					alt={Practitioner.name}
 					sizes="(max-width: 1024px) 100vw, 400px"
 					class="about-section__image"
 					width={2343}
@@ -40,6 +41,9 @@ const t = useTranslations(lang);
 				</h2>
 				<p class="about-section__paragraph">
 					{t('about.journey-text')}
+				</p>
+				<p class="about-section__paragraph about-section__sports-role">
+					{Practitioner.sportsRole[lang]}
 				</p>
 			</section>
 
@@ -68,6 +72,22 @@ const t = useTranslations(lang);
 				<p class="about-section__paragraph">
 					{t('about.credentials-text')}
 				</p>
+				<p class="about-section__registration">
+					{
+						lang === 'eu'
+							? `COFPVko kolegiatua, ${Practitioner.registrationNumber} zk.`
+							: `Colegiado COFPV n.º ${Practitioner.registrationNumber}`
+					}
+					<br />
+					{Practitioner.collegeNameLocalized[lang]}
+				</p>
+				<ul class="about-section__qualifications">
+					{
+						Practitioner.qualifications.map(qualification => (
+							<li>{qualification[lang]}</li>
+						))
+					}
+				</ul>
 			</section>
 		</div>
 	</div>
@@ -227,6 +247,33 @@ const t = useTranslations(lang);
 	.about-section__card--highlight .about-section__paragraph {
 		padding-left: 0;
 		opacity: 0.9;
+	}
+
+	.about-section__sports-role {
+		margin-top: var(--s4);
+	}
+
+	.about-section__registration {
+		margin: var(--s4) 0;
+		color: var(--theme-primary-dark);
+		font-size: var(--font-size-base);
+		font-weight: 600;
+		line-height: 1.6;
+	}
+
+	.about-section__qualifications {
+		margin: 0;
+		padding-left: var(--s5);
+		font-size: var(--font-size-base);
+		line-height: 1.6;
+	}
+
+	.about-section__qualifications li + li {
+		margin-top: var(--s3);
+	}
+
+	.about-section__qualifications li::marker {
+		color: var(--theme-primary);
 	}
 
 	@media (max-width: 767px) {

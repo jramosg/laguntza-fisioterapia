@@ -9,6 +9,7 @@ import { Langs } from '@i18n/ui';
 import SectionHero from '@components/SectionHero.astro';
 import AboutSection from '@components/sections/AboutSection.astro';
 import JokinImage from '@images/jokin.webp';
+import { Practitioner } from '@config/practitioner';
 
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -21,12 +22,12 @@ const t = useTranslations(lang);
 const seo = {
 	title:
 		lang === 'eu'
-			? 'Jokin Ramos | Fisioterapeuta eta Osteopata Gipuzkoan | Urnieta'
-			: 'Jokin Ramos | Fisioterapeuta y Osteópata en Gipuzkoa | Urnieta',
+			? `${Practitioner.name} | Fisioterapeuta Urnietan, Gipuzkoan`
+			: `${Practitioner.name} | Fisioterapeuta en Urnieta, Gipuzkoa`,
 	description:
 		lang === 'eu'
-			? 'Ezagutu Jokin Ramos, Gipuzkoako fisioterapeuta eta osteopata Urnietan. Esperientzia klinika lanetan, kirol fisioterapian, terapia manualean eta osteopatian. Errehabilitazioa eta ariketa terapeutikoak Guipuzcoan.'
-			: 'Conoce a Jokin Ramos, fisioterapeuta y osteópata en Gipuzkoa. Experiencia en trabajo clínico, fisioterapia deportiva, terapia manual y osteopatía. Rehabilitación y ejercicio terapéutico en Urnieta, Guipúzcoa.',
+			? `Ezagutu ${Practitioner.name}, COFPVko ${Practitioner.registrationNumber} zenbakiko Urnietako fisioterapeuta kolegiatua. UPNAko gradua, fisioterapia inbaditzaileko, kirol erreadaptazioko eta egiturazko osteopatiako masterrak.`
+			: `Conoce a ${Practitioner.name}, fisioterapeuta en Urnieta, colegiado COFPV n.º ${Practitioner.registrationNumber}. Graduado en la UPNA, con másteres en Fisioterapia Invasiva, Readaptación Deportiva y Osteopatía Estructural.`,
 	breadcrumb: [
 		{ name: 'Laguntza Fisioterapia', url: `/${lang}/` },
 		{
@@ -41,7 +42,7 @@ const seo = {
 	<SectionHero
 		id="about-hero"
 		image={JokinImage}
-		imageAlt="Jokin Ramos González"
+		imageAlt={Practitioner.name}
 		imagePosition="center 34%"
 		imageMobilePosition="center 24%"
 	>
