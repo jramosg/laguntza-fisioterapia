@@ -2,13 +2,50 @@ name: Deploy to Server
 on:
   # Manual trigger for deploying
   workflow_dispatch:
+    inputs:
+      server_task:
+        description: Test server operation
+        type: choice
+        default: deploy
+        options:
+          - deploy
+          - inspect-routing
+          - repair-routing
   # Trigger when the Format Check workflow completes
   workflow_run:
     workflows: ['Format Check']
     types:
       - completed
 
+concurrency:
+  group: laguntza-test-server
+  cancel-in-progress: false
+
 jobs:
+  test-routing:
+    name: Check or repair test routing
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.server_task == 'inspect-routing' || inputs.server_task == 'repair-routing')
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare routing tool
+        id: routing
+        run: echo "payload=$(base64 -w0 scripts/repair_test_routing.py)" >> "$GITHUB_OUTPUT"
+      - name: Configure test routing
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script_stop: true
+          script: |
+            printf '%s' '${{ steps.routing.outputs.payload }}' | base64 -d > /tmp/laguntza-routing-${{ github.run_id }}.py
+            sudo python3 /tmp/laguntza-routing-${{ github.run_id }}.py '${{ inputs.server_task }}'
+            rm -f /tmp/laguntza-routing-${{ github.run_id }}.py
+
   build-and-deploy:
     name: Build and Deploy to Server
     runs-on: ubuntu-latest
@@ -16,7 +53,8 @@ jobs:
     # - manual dispatch (always deploy when manually triggered)
     # - or when Format Check workflow completed successfully on master and commit message contains '[deploy]'
     if: >
-      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_dispatch' &&
+       (inputs.server_task == 'deploy' || inputs.server_task == '')) ||
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.head_branch == 'master' &&
