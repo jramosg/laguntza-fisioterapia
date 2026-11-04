@@ -45,7 +45,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 </section>
 <style>
 	.next-step {
-		background: #dce7e6;
+		background: var(--lf-surface-accent, #dce7e6);
 		padding: 78px 0;
 	}
 	.next-inner {
@@ -70,7 +70,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		line-height: 1.07;
 		max-width: 600px;
 		margin: 0;
-		color: #263432;
+		color: var(--lf-text-primary, #263432);
 	}
 	.next-inner > div:last-child > p {
 		font-size: 19px;
@@ -96,7 +96,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	small {
 		display: block;
 		font-size: 10px;
-		color: #63726b;
+		color: var(--lf-text-muted, #63726b);
 		margin-top: 16px;
 	}
 	@media (max-width: 1100px) {

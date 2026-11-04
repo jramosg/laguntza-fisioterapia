@@ -13,6 +13,7 @@
 		"preview": "astro preview",
 		"format": "npx prettier -w .",
 		"format:check": "prettier . --check",
+		"test": "node --test tests/*.test.mjs && python3 -m unittest discover -s tests -p 'test_*.py'",
 		"check-updates": "npm-check-updates -u --dep dev"
 	},
 	"devDependencies": {

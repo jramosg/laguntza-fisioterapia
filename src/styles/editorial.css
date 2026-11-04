@@ -1,4 +1,4 @@
-/* One visual language for the clinic, independent of the OS colour scheme. */
+/* Shared editorial palette; both themes keep the same layout and photography. */
 body.laguntza-home,
 body.laguntza-interior {
 	--lf-paper: #fbfbf8;
@@ -33,6 +33,37 @@ body.laguntza-interior {
 	color: var(--lf-ink);
 	max-width: none;
 	font-size: 16px;
+}
+html[data-theme='dark'] :is(body.laguntza-home, body.laguntza-interior) {
+	--lf-paper: #111d22;
+	--lf-ink: #e6eeea;
+	--lf-muted: #b6c4bd;
+	--lf-line: #a3c6d33b;
+	--lf-teal: #a3c6d3;
+	--lf-text-primary: #e6eeea;
+	--lf-text-muted: #b6c4bd;
+	--lf-text-accent: #a3c6d3;
+	--lf-surface-paper: #111d22;
+	--lf-surface-soft: #18282e;
+	--lf-surface-accent: #20383f;
+	--lf-surface-header: #111d22f2;
+	--lf-surface-caption: #14242bed;
+	--lf-border: #a3c6d33b;
+	--lf-border-strong: #6d8b90;
+	--lf-hover-fill: #b6d3da12;
+	--lf-field-surface: #18282e;
+	--lf-warm-text: #f2b177;
+	--lf-success-surface: #1c352d;
+	--lf-error-surface: #3e2824;
+	--lf-error-text: #ffb49f;
+	--theme-primary: #a3c6d3;
+	--theme-surface-1: #18282e;
+	--theme-primary-container: #20383f;
+	--theme-primary-container-alt: #18282e;
+	--theme-outline: #6d8b90;
+	--theme-link-on-surface: #a3c6d3;
+	--theme-link-on-surface-hover: #cbe0e8;
+	color-scheme: dark;
 }
 .laguntza-interior .main-content {
 	padding-top: 100px;
@@ -155,7 +186,7 @@ body.laguntza-interior {
 	color: #f5f6f0;
 }
 .ed-sage {
-	background: #eef1eb;
+	background: var(--lf-surface-soft, #eef1eb);
 }
 .ed-caption {
 	margin-top: 14px;
@@ -302,7 +333,7 @@ body.laguntza-interior {
 .laguntza-interior #page .service-benefits {
 	padding: 48px;
 	border-radius: 22px 80px 22px 22px;
-	background: #eef1eb;
+	background: var(--lf-surface-soft, #eef1eb);
 	margin-bottom: 0;
 }
 .laguntza-interior #page .benefits-list {
@@ -332,13 +363,13 @@ body.laguntza-interior {
 .laguntza-interior #page .step__number {
 	color: var(--lf-teal);
 	background: transparent;
-	border: 1px solid #a4b6b0;
+	border: 1px solid var(--lf-border-strong, #a4b6b0);
 	font-size: 14px;
 	box-shadow: none;
 }
 .laguntza-interior #page .step__line {
 	width: 1px;
-	background: #a4b6b0;
+	background: var(--lf-border-strong, #a4b6b0);
 }
 .laguntza-interior #page .step__content h3 {
 	font-size: 22px;
@@ -494,6 +525,6 @@ body.laguntza-interior {
 }
 
 .laguntza-interior .wa-fab:focus-visible {
-	outline: 2px solid #37697a;
+	outline: 2px solid var(--lf-teal);
 	outline-offset: 3px;
 }

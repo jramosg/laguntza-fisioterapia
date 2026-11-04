@@ -9,7 +9,7 @@ on:
 jobs:
   format-check:
     name: Run Prettier format check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
@@ -42,3 +42,6 @@ jobs:
 
       - name: Run format:check
         run: pnpm run format:check
+
+      - name: Run regression tests
+        run: pnpm test

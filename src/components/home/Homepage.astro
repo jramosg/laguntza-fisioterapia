@@ -374,19 +374,19 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 
 <style>
 	:global(body.laguntza-home) {
-		background: #fbfbf8;
-		color: #263432;
+		background: var(--lf-surface-paper, #fbfbf8);
+		color: var(--lf-text-primary, #263432);
 		max-width: none;
 	}
 	:global(.laguntza-home .main-content) {
 		padding-top: 100px;
 	}
 	.home {
-		--ink: #263432;
-		--muted: #6e7d77;
-		--teal: #37697a;
-		--paper: #fbfbf8;
-		--line: #263b342b;
+		--ink: var(--lf-text-primary, #263432);
+		--muted: var(--lf-text-muted, #6e7d77);
+		--teal: var(--lf-text-accent, #37697a);
+		--paper: var(--lf-surface-paper, #fbfbf8);
+		--line: var(--lf-border, #263b342b);
 		--ease: cubic-bezier(0.16, 1, 0.3, 1);
 		background: var(--paper);
 		color: var(--ink);
@@ -476,7 +476,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.hero-description {
 		max-width: 380px;
 		margin-top: 32px;
-		color: #65726d;
+		color: var(--lf-text-muted, #65726d);
 		font-size: 16px;
 		line-height: 1.85;
 	}
@@ -512,11 +512,11 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		transform: translateY(-3px);
 	}
 	.pill-outline {
-		border: 1px solid #263b3440;
+		border: 1px solid var(--lf-border-strong, #263b3440);
 		color: var(--ink);
 	}
 	.pill-outline:hover {
-		background: #263b3408;
+		background: var(--lf-hover-fill, #263b3408);
 		transform: translateY(-3px);
 	}
 	.text-link {
@@ -548,7 +548,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		align-items: center;
 		gap: 14px;
 		margin-top: 58px;
-		color: #62716b;
+		color: var(--lf-text-muted, #62716b);
 		font-size: 10px;
 		letter-spacing: 0.02em;
 		width: fit-content;
@@ -557,7 +557,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.discover-circle {
 		display: grid;
 		place-items: center;
-		border: 1px solid #c8d1c9;
+		border: 1px solid var(--lf-border, #c8d1c9);
 		border-radius: 50%;
 		width: 34px;
 		height: 34px;
@@ -578,7 +578,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		height: 570px;
 		border-radius: 160px 20px 20px 20px;
 		overflow: hidden;
-		background: #e6e8df;
+		background: var(--lf-surface-soft, #e6e8df);
 	}
 	.hero-portrait {
 		width: 100%;
@@ -595,7 +595,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		align-items: center;
 		gap: 12px;
 		padding: 16px 20px;
-		background: #fbfbf8ed;
+		background: var(--lf-surface-caption, #fbfbf8ed);
 		backdrop-filter: blur(12px);
 		border-radius: 12px;
 		color: var(--ink);
@@ -617,13 +617,13 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.portrait-caption div > span {
 		margin-top: 2px;
 		font-size: 10px;
-		color: #5c6b64;
+		color: var(--lf-text-muted, #5c6b64);
 	}
 	.image-footnote {
 		display: flex;
 		justify-content: flex-end;
 		margin-top: 14px;
-		color: #687670;
+		color: var(--lf-text-muted, #687670);
 		font-size: 8px;
 		letter-spacing: 0.08em;
 	}
@@ -639,7 +639,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.principles-caption {
 		font-size: 10px;
 		line-height: 1.9;
-		color: #66756e;
+		color: var(--lf-text-muted, #66756e);
 		position: relative;
 		padding-left: 26px;
 	}
@@ -667,7 +667,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		font-size: 8px;
 		font-weight: 400;
 		letter-spacing: 0.02em;
-		color: #5c6b64;
+		color: var(--lf-text-muted, #5c6b64);
 	}
 	h2 {
 		font-size: clamp(38px, 4vw, 58px);
@@ -696,7 +696,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.section-heading-aside > p {
 		font-size: 14px;
 		line-height: 1.85;
-		color: #5c6b64;
+		color: var(--lf-text-muted, #5c6b64);
 		margin-bottom: 16px;
 	}
 	.services-layout {
@@ -709,7 +709,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		overflow: hidden;
 		border-radius: 20px 20px 100px 20px;
 		height: 450px;
-		background: #e3e8e2;
+		background: var(--lf-surface-soft, #e3e8e2);
 	}
 	.services-image {
 		width: 100%;
@@ -727,7 +727,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		justify-content: space-between;
 		font-size: 10px;
 		padding-top: 17px;
-		color: #687670;
+		color: var(--lf-text-muted, #687670);
 	}
 	figcaption > span:last-child {
 		font-size: 9px;
@@ -746,7 +746,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	}
 	.service-number {
 		font-size: 9px;
-		color: #5c6b64;
+		color: var(--lf-text-muted, #5c6b64);
 		padding-top: 7px;
 	}
 	.service-row h3 {
@@ -757,7 +757,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		transition: color 200ms;
 	}
 	.service-row p {
-		color: #68756e;
+		color: var(--lf-text-muted, #68756e);
 		font-size: 14px;
 		line-height: 1.8;
 		margin-top: 10px;
@@ -766,7 +766,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.service-arrow {
 		width: 36px;
 		height: 36px;
-		border: 1px solid #cbd3cd;
+		border: 1px solid var(--lf-border, #cbd3cd);
 		border-radius: 50%;
 		display: grid;
 		place-items: center;
@@ -899,7 +899,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	}
 	.approach-note {
 		font-size: 12px;
-		color: #68756e;
+		color: var(--lf-text-muted, #68756e);
 		padding-bottom: 6px;
 	}
 	.steps {
@@ -931,13 +931,13 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		margin-bottom: 16px;
 	}
 	.steps p {
-		color: #68756e;
+		color: var(--lf-text-muted, #68756e);
 		font-size: 14px;
 		line-height: 1.9;
 		max-width: 310px;
 	}
 	.space-section {
-		background: #eef1eb;
+		background: var(--lf-surface-soft, #eef1eb);
 	}
 	.space-layout {
 		display: grid;
@@ -951,7 +951,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.space-copy > p:not(.eyebrow) {
 		margin-top: 28px;
 		max-width: 320px;
-		color: #5c6b64;
+		color: var(--lf-text-muted, #5c6b64);
 		font-size: 15px;
 		line-height: 1.85;
 	}
@@ -965,7 +965,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		width: fit-content;
 		min-height: 44px;
 		font-size: 10px;
-		color: #65756c;
+		color: var(--lf-text-muted, #65756c);
 		margin-top: 50px;
 	}
 	.space-location :global(svg) {
@@ -994,7 +994,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		bottom: 34px;
 		width: 66%;
 		height: 245px;
-		border: 8px solid #eef1eb;
+		border: 8px solid var(--lf-surface-soft, #eef1eb);
 		border-radius: 20px;
 		overflow: hidden;
 	}
@@ -1008,7 +1008,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		position: absolute;
 		bottom: 0;
 		right: 4px;
-		color: #68756e;
+		color: var(--lf-text-muted, #68756e);
 		font-size: 8px;
 		letter-spacing: 0.12em;
 	}
@@ -1061,10 +1061,10 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		font-size: 14px;
 		line-height: 1.9;
 		max-width: 460px;
-		color: #68756e;
+		color: var(--lf-text-muted, #68756e);
 	}
 	.contact-section {
-		background: #dce7e6;
+		background: var(--lf-surface-accent, #dce7e6);
 		position: relative;
 		overflow: hidden;
 		padding-block: 96px 180px;
@@ -1107,7 +1107,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	}
 	.contact-call-label {
 		font-size: 12px;
-		color: #56665f;
+		color: var(--lf-text-muted, #56665f);
 		margin: 0 0 8px;
 	}
 	.contact-phone {
@@ -1122,7 +1122,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	}
 	.contact-aside small {
 		font-size: 9px;
-		color: #56665f;
+		color: var(--lf-text-muted, #56665f);
 		display: block;
 		margin-top: 18px;
 	}
@@ -1456,9 +1456,9 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			gap: 16px;
 			justify-content: space-between;
 			align-items: center;
-			background: #fbfbf8f5;
+			background: var(--lf-surface-header, #fbfbf8f5);
 			backdrop-filter: blur(12px);
-			border-top: 1px solid #263b342b;
+			border-top: 1px solid var(--lf-border, #263b342b);
 		}
 		.mobile-call {
 			display: flex;

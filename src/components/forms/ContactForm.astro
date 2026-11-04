@@ -153,7 +153,7 @@ const endpoint =
 		margin-bottom: 10px;
 	}
 	label span {
-		color: #85501f;
+		color: var(--lf-warm-text, #85501f);
 	}
 	label small,
 	summary small {
@@ -167,8 +167,8 @@ const endpoint =
 		display: block;
 		width: 100%;
 		border: 0;
-		border-bottom: 1px solid #a6b5ac;
-		background: #eef1eb80;
+		border-bottom: 1px solid var(--lf-border-strong, #a6b5ac);
+		background: var(--lf-field-surface, #eef1eb80);
 		color: var(--lf-ink);
 		padding: 16px;
 		min-height: 54px;
@@ -186,14 +186,14 @@ const endpoint =
 	}
 	input::placeholder,
 	textarea::placeholder {
-		color: #5c6b64;
+		color: var(--lf-text-muted, #5c6b64);
 		font-size: 14px;
 	}
 	input:focus,
 	textarea:focus {
-		background: #eef1eb;
-		border-color: #37697a;
-		outline: 2px solid #37697a;
+		background: var(--lf-surface-soft, #eef1eb);
+		border-color: var(--lf-text-accent, #37697a);
+		outline: 2px solid var(--lf-text-accent, #37697a);
 		outline-offset: 2px;
 	}
 	.attachment-options {
@@ -242,14 +242,14 @@ const endpoint =
 	.form-status {
 		font-size: 15px;
 		padding: 24px;
-		background: #e3ece7;
+		background: var(--lf-success-surface, #e3ece7);
 		border-radius: 12px;
 		margin-top: 24px;
 		line-height: 1.8;
 	}
 	.form-status[data-error] {
-		background: #f8e9df;
-		color: #733a24;
+		background: var(--lf-error-surface, #f8e9df);
+		color: var(--lf-error-text, #733a24);
 	}
 	.form-status[hidden] {
 		display: none;

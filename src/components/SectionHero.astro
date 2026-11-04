@@ -140,7 +140,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		align-items: center;
 		flex-wrap: wrap;
 		font-size: 11px;
-		color: #66756e;
+		color: var(--lf-text-muted, #66756e);
 		margin-bottom: 60px;
 	}
 	.hero-breadcrumb a {
@@ -150,10 +150,10 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		text-decoration: none;
 	}
 	.hero-breadcrumb a:hover {
-		color: #37697a;
+		color: var(--lf-text-accent, #37697a);
 	}
 	.hero-breadcrumb > span:last-child {
-		color: #263432;
+		color: var(--lf-text-primary, #263432);
 	}
 	.hero-type {
 		display: grid;
@@ -169,16 +169,16 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		font-size: clamp(48px, 5.8vw, 84px);
 		line-height: 1.04;
 		letter-spacing: -0.065em;
-		color: #263432;
+		color: var(--lf-text-primary, #263432);
 		max-width: 900px;
 		margin: 0;
 	}
 	.hero-type :global(h1 span) {
-		color: #37697a;
+		color: var(--lf-text-accent, #37697a);
 	}
 	.hero-aside > p {
 		margin: 0 0 26px;
-		color: #5c6b64;
+		color: var(--lf-text-muted, #5c6b64);
 		font-size: 16px;
 		line-height: 1.85;
 	}
@@ -191,7 +191,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		height: 390px;
 		border-radius: 22px 22px 100px 22px;
 		margin: 0;
-		background: #e3e8e2;
+		background: var(--lf-surface-soft, #e3e8e2);
 	}
 	.hero-photo picture {
 		display: contents;

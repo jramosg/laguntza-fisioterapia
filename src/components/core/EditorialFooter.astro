@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import { getLangFromUrl } from '@i18n/utils';
 import { home } from '@config/home';
 import { Address, Phone, WhatsApp, Email } from '@config/company';
+import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const c = home[lang];
@@ -66,6 +67,7 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 	<div class="footer-bottom">
 		<span>© {new Date().getFullYear()} Laguntza Fisioterapia</span>
 		<span>{c.languages}</span>
+		<ThemeSwitcher />
 		<span>{c.footerCredits} · Nerea Dorronsoro & Jon Ramos</span>
 	</div>
 </footer>
@@ -147,6 +149,7 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 		border-top: 1px solid #ffffff24;
 		padding-top: 24px;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 		gap: 20px;
 		flex-wrap: wrap;
@@ -171,6 +174,7 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 		}
 		.footer-bottom {
 			justify-content: flex-start;
+			align-items: flex-start;
 			flex-direction: column;
 			gap: 10px;
 		}
