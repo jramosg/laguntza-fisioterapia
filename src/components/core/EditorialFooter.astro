@@ -72,7 +72,7 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 
 <style>
 	.editorial-footer {
-		background: #0a0e10;
+		background: var(--theme-primary-800, #234652);
 		color: #f5f6f3;
 		padding: 80px max(24px, calc((100% - 1312px) / 2)) 24px;
 	}
@@ -91,7 +91,7 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 	}
 	.footer-brand p {
 		margin-top: 24px;
-		color: #a6b1ae;
+		color: #c9d9dc;
 		font-size: 15px;
 		letter-spacing: -0.02em;
 	}
@@ -108,30 +108,33 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 		transition: color 200ms;
 	}
 	a:hover {
-		color: #e8944a;
+		color: #f2b177;
 	}
 	.label {
 		margin-bottom: 20px;
 		font-size: 10px;
 		text-transform: uppercase;
 		letter-spacing: 0.14em;
-		color: #9ba7a5;
+		color: #bdd0d5;
 	}
 	.map-link {
 		margin-top: 16px;
 		line-height: 1.4;
 	}
 	.map-link span {
+		line-height: 1;
 		text-decoration: underline;
 		text-underline-offset: 5px;
-	}
-	.map-link :global(svg) {
-		transform: translateY(-1px);
 	}
 	:global(.editorial-footer svg[data-icon]) {
 		width: 15px;
 		height: 15px;
 		flex-shrink: 0;
+	}
+	.map-link :global(svg) {
+		/* The marker fills 20 of its 24 viewBox units: match the cap height. */
+		width: 1.2cap;
+		height: 1.2cap;
 	}
 	.footer-email {
 		max-width: 100%;
@@ -148,7 +151,7 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 		gap: 20px;
 		flex-wrap: wrap;
 		font-size: 10px;
-		color: #9ba7a5;
+		color: #bdd0d5;
 	}
 	@media (max-width: 1100px) {
 		.editorial-footer {
