@@ -30,17 +30,25 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 				href={Address.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				>{c.maps}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
+				><Icon name="mdi:map-marker-outline" aria-hidden="true" />{c.maps}</a
 			>
 		</div>
 		<div>
 			<p class="label">{c.footerContact}</p>
-			<a href={WhatsApp.urlCall}>{WhatsApp.name}</a>
-			<a href={Phone.url}>{Phone.name}</a>
+			<a href={WhatsApp.urlCall}
+				><Icon name="mdi:phone-outline" aria-hidden="true" />{WhatsApp.name}</a
+			>
+			<a href={Phone.url}
+				><Icon name="mdi:phone-outline" aria-hidden="true" />{Phone.name}</a
+			>
 			<a href={bookingUrl} target="_blank" rel="noopener noreferrer"
 				><Icon name="mdi:whatsapp" aria-hidden="true" />WhatsApp</a
 			>
-			<a href={Email.url}>{Email.name}</a>
+			<a class="footer-email" href={Email.url}
+				><Icon name="mdi:email-outline" aria-hidden="true" /><span
+					>{Email.name}</span
+				></a
+			>
 		</div>
 		<nav aria-label={c.footerExplore}>
 			<p class="label">{c.footerExplore}</p>
@@ -49,7 +57,7 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 				href="https://www.instagram.com/laguntzafisioterapia"
 				target="_blank"
 				rel="noopener noreferrer"
-				>Instagram <Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
+				><Icon name="mdi:instagram" aria-hidden="true" />Instagram</a
 			>
 		</nav>
 	</div>
@@ -115,6 +123,14 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 	:global(.editorial-footer svg[data-icon]) {
 		width: 15px;
 		height: 15px;
+		flex-shrink: 0;
+	}
+	.footer-email {
+		max-width: 100%;
+	}
+	.footer-email span {
+		min-width: 0;
+		overflow-wrap: anywhere;
 	}
 	.footer-bottom {
 		border-top: 1px solid #ffffff24;
