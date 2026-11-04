@@ -37,7 +37,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					rel="noopener noreferrer"
 					>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
 				>
-				<a class="text-link" href={Phone.url}
+				<a class="pill pill-outline" href={Phone.url}
 					>{c.call}<Icon name="mdi:phone-outline" aria-hidden="true" /></a
 				>
 			</div>
@@ -463,8 +463,9 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	}
 	.hero-actions {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		gap: 32px;
+		gap: 16px;
 		margin-top: 32px;
 	}
 	.pill {
@@ -489,6 +490,14 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	}
 	.pill-orange:hover {
 		background: #f2a35e;
+		transform: translateY(-3px);
+	}
+	.pill-outline {
+		border: 1px solid #263b3440;
+		color: var(--ink);
+	}
+	.pill-outline:hover {
+		background: #263b3408;
 		transform: translateY(-3px);
 	}
 	.text-link {
@@ -1455,6 +1464,11 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	@media (max-width: 360px) {
 		.shell {
 			width: calc(100% - 36px);
+		}
+		.hero-actions {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 12px;
 		}
 		h1 {
 			font-size: 41px;
