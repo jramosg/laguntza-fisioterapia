@@ -1,5 +1,6 @@
 ---
 import { defaultLang } from '@i18n/ui';
+import { languagePreferenceKey } from '@i18n/preference';
 
 const title = 'Fisioterapia y Osteopatía en Urnieta, Gipuzkoa | Laguntza';
 const description =
@@ -13,7 +14,27 @@ const ogImage = new URL('/og-image-teal.jpeg', Astro.site).toString();
 <html lang={defaultLang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
+		<script is:inline define:vars={{ languagePreferenceKey, defaultLang }}>
+			if (window.location.pathname === '/') {
+				let language = defaultLang;
+				try {
+					const savedLanguage = window.localStorage.getItem(
+						languagePreferenceKey
+					);
+					if (savedLanguage === 'es' || savedLanguage === 'eu') {
+						language = savedLanguage;
+					}
+				} catch {
+					// Fall back to Spanish when browser storage is unavailable.
+				}
+				window.location.replace(
+					`/${language}/${window.location.search}${window.location.hash}`
+				);
+			}
+		</script>
+		<noscript>
+			<meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
+		</noscript>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="robots" content="noindex, follow" />
 		<title>{title}</title>

@@ -318,6 +318,14 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 </style>
 
 <script>
+	import { rememberLanguage } from '@i18n/preference';
+
+	document.addEventListener('click', event => {
+		if (!(event.target instanceof Element)) return;
+		const link = event.target.closest('.languages a[lang]');
+		if (link instanceof HTMLAnchorElement) rememberLanguage(link.lang);
+	});
+
 	class LaguntzaNavigation extends HTMLElement {
 		private controller?: AbortController;
 		connectedCallback() {
