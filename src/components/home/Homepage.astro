@@ -323,15 +323,20 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					href={bookingUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
-				><a class="contact-phone" href={Phone.url}
-					>{Phone.name}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
-				><a class="contact-phone" href={WhatsApp.urlCall}
-					>{WhatsApp.name}<Icon
-						name="mdi:arrow-top-right"
-						aria-hidden="true"
-					/></a
-				><small>{c.contactNote}</small>
+					>{c.contactWhatsapp}<Icon name="mdi:whatsapp" aria-hidden="true" /></a
+				>
+				<div class="contact-calls">
+					<p class="contact-call-label">{c.contactCall}</p>
+					<a class="contact-phone" href={Phone.url}
+						><Icon name="mdi:phone-outline" aria-hidden="true" />{Phone.name}</a
+					>
+					<a class="contact-phone" href={WhatsApp.urlCall}
+						><Icon name="mdi:phone-outline" aria-hidden="true" />{
+							WhatsApp.name
+						}</a
+					>
+				</div>
+				<small>{c.contactNote}</small>
 			</div>
 		</div><div class="contact-word" aria-hidden="true">laguntza.</div>
 	</section>
@@ -1069,15 +1074,23 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.contact-aside .pill {
 		min-width: 210px;
 	}
+	.contact-calls {
+		margin-top: 28px;
+	}
+	.contact-call-label {
+		font-size: 12px;
+		color: #56665f;
+		margin: 0 0 8px;
+	}
 	.contact-phone {
 		display: flex;
 		align-items: center;
-		gap: 48px;
+		gap: 14px;
+		width: fit-content;
 		min-height: 44px;
 		font-size: 23px;
 		font-weight: 500;
 		letter-spacing: -0.04em;
-		margin-top: 22px;
 	}
 	.contact-aside small {
 		font-size: 9px;

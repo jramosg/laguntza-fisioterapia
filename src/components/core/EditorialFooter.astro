@@ -7,6 +7,7 @@ import { Address, Phone, WhatsApp, Email } from '@config/company';
 
 const lang = getLangFromUrl(Astro.url);
 const c = home[lang];
+const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
 const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 ---
 
@@ -36,6 +37,9 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 			<p class="label">{c.footerContact}</p>
 			<a href={WhatsApp.urlCall}>{WhatsApp.name}</a>
 			<a href={Phone.url}>{Phone.name}</a>
+			<a href={bookingUrl} target="_blank" rel="noopener noreferrer"
+				><Icon name="mdi:whatsapp" aria-hidden="true" />WhatsApp</a
+			>
 			<a href={Email.url}>{Email.name}</a>
 		</div>
 		<nav aria-label={c.footerExplore}>
