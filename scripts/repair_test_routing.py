@@ -23,8 +23,6 @@ def active_configs():
 
 def main():
     configs = dict(active_configs())
-    if len(configs) != 1:
-        raise SystemExit(f"Expected one active configuration for {HOST}; found {len(configs)}")
     for path, content in configs.items():
         print(f"Test configuration: {path}")
         for line in content.splitlines():
@@ -32,6 +30,8 @@ def main():
                 print(line)
     if sys.argv[1] != "inspect-routing":
         raise SystemExit("Repair must be implemented after inspecting the active configuration")
+    if not configs:
+        raise SystemExit(f"No active configuration found for {HOST}")
 
 
 if __name__ == "__main__":
