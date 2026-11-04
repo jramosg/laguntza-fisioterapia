@@ -64,12 +64,25 @@ const schedule = [
 			><span class="ed-kicker">01 / WHATSAPP</span><span class="channel-title"
 				>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></span
 			><span class="channel-detail">{WhatsApp.name}</span></a
-		><a href={Phone.url} class="channel"
-			><span class="ed-kicker">02 / {eu ? 'TELEFONOA' : 'TELÉFONO'}</span><span
+		><div class="channel channel--calls">
+			<span class="ed-kicker">02 / {eu ? 'TELEFONOA' : 'TELÉFONO'}</span><span
 				class="channel-title"
-				>{c.call}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></span
-			><span class="channel-detail">{Phone.name}</span></a
-		><a href={Email.url} class="channel"
+				>{c.call}<Icon name="mdi:phone-outline" aria-hidden="true" /></span
+			><div class="channel-numbers">
+				<a
+					href={Phone.url}
+					aria-label={`${eu ? 'Deitu telefono finkora' : 'Llamar al fijo'} ${Phone.name}`}
+				>
+					<span>{eu ? 'Finkoa' : 'Fijo'}</span>{Phone.name}
+				</a>
+				<a
+					href={WhatsApp.urlCall}
+					aria-label={`${eu ? 'Deitu mugikorrera' : 'Llamar al móvil'} ${WhatsApp.name}`}
+				>
+					<span>{eu ? 'Mugikorra' : 'Móvil'}</span>{WhatsApp.name}
+				</a>
+			</div>
+		</div><a href={Email.url} class="channel"
 			><span class="ed-kicker">03 / EMAIL</span><span class="channel-title"
 				>{eu ? 'Idatzi' : 'Escríbeme'}<Icon
 					name="mdi:arrow-top-right"
@@ -200,6 +213,28 @@ const schedule = [
 		margin-top: 16px;
 		font-size: 13px;
 		overflow-wrap: anywhere;
+		color: var(--lf-muted);
+	}
+	.channel-numbers {
+		margin-top: 12px;
+	}
+	.channel-numbers a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		min-height: 44px;
+		font-size: 14px;
+		text-decoration: none;
+	}
+	.channel-numbers a + a {
+		border-top: 1px solid var(--lf-line);
+	}
+	.channel-numbers a:hover {
+		color: var(--lf-teal);
+	}
+	.channel-numbers span {
+		font-size: 11px;
 		color: var(--lf-muted);
 	}
 	.contact-layout {
