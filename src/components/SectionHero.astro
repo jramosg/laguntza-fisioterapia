@@ -11,6 +11,8 @@ const {
 	imagePosition = 'center',
 	imageMobile,
 	imageMobilePosition,
+	imageLayout = 'wide',
+	showImageCaption = true,
 	eyebrow,
 	book = true,
 	compact = false
@@ -32,13 +34,24 @@ const pageLabel =
 	)[section] ||
 	c.nav[0];
 const mobile = imageMobile
-	? await getImage({ src: imageMobile, width: 800, format: 'webp' })
+	? await getImage({
+			src: imageMobile,
+			width: Math.min(800, imageMobile.width),
+			format: 'webp'
+		})
 	: null;
+const maxImageWidth = image
+	? Math.min(image.width, imageLayout === 'portrait' ? 1600 : 2880)
+	: 0;
+const imageWidths = [640, 960, 1280, 1600, 1920, 2560].filter(
+	width => width < maxImageWidth
+);
+if (maxImageWidth) imageWidths.push(maxImageWidth);
 const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
 ---
 
 <section {id} class:list={['ed-hero', { 'ed-hero--compact': compact }]}>
-	<div class="ed-shell">
+	<div class:list={['ed-shell', { 'hero-split': imageLayout === 'portrait' }]}>
 		<nav
 			class="hero-breadcrumb"
 			aria-label={lang === 'eu' ? 'Nabigazio bidea' : 'Ruta de navegación'}
@@ -81,7 +94,10 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		</div>
 		{
 			image && (
-				<figure class="hero-photo" data-parallax>
+				<figure
+					class="hero-photo"
+					data-parallax={imageLayout === 'portrait' ? undefined : ''}
+				>
 					<>
 						<picture>
 							{mobile && (
@@ -91,15 +107,22 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 								src={image}
 								alt={imageAlt}
 								priority
-								width={1600}
-								widths={[640, 960, 1280, 1600]}
-								sizes="(max-width:760px) calc(100vw - 48px), (max-width:1440px) calc(100vw - 128px), 1312px"
+								width={Math.min(1600, image.width)}
+								widths={imageWidths}
+								quality={85}
+								sizes={
+									imageLayout === 'portrait'
+										? '(max-width:760px) calc(100vw - 48px), (max-width:1100px) 42vw, 480px'
+										: '(max-width:760px) calc(100vw - 48px), (max-width:1440px) calc(100vw - 128px), 1312px'
+								}
 								style={`--hero-pos:${imagePosition};--hero-pos-m:${imageMobilePosition || imagePosition}`}
 							/>
 						</picture>
-						<figcaption>
-							Laguntza Fisioterapia <span>Urnieta · 20130</span>
-						</figcaption>
+						{showImageCaption && (
+							<figcaption>
+								Laguntza Fisioterapia <span>Urnieta · 20130</span>
+							</figcaption>
+						)}
 					</>
 				</figure>
 			)
@@ -194,18 +217,67 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.ed-hero--compact .hero-breadcrumb {
 		margin-bottom: 38px;
 	}
+	.hero-split {
+		display: grid;
+		grid-template-columns: 1.1fr 1fr;
+		column-gap: 80px;
+		align-items: start;
+	}
+	.hero-split .hero-breadcrumb {
+		grid-column: 1 / -1;
+		margin-bottom: 40px;
+	}
+	.hero-split .hero-type {
+		display: block;
+		margin-bottom: 0;
+		padding-top: 56px;
+	}
+	.hero-split .hero-type :global(h1) {
+		font-size: clamp(44px, 4.3vw, 66px);
+	}
+	.hero-split .hero-aside {
+		max-width: 460px;
+		margin-top: 28px;
+	}
+	.hero-split .hero-photo {
+		width: 100%;
+		max-width: 480px;
+		height: auto;
+		aspect-ratio: 2 / 3;
+		justify-self: end;
+		border-radius: 100px 22px 22px 22px;
+	}
 	@media (min-width: 1600px) {
 		.hero-photo {
 			height: 440px;
 		}
 	}
 	@media (max-width: 1100px) {
+		.hero-split {
+			column-gap: 40px;
+		}
 		.hero-type {
 			gap: 40px;
 			grid-template-columns: 1.3fr 1fr;
 		}
 	}
 	@media (max-width: 760px) {
+		.hero-split {
+			grid-template-columns: 1fr;
+			gap: 0;
+		}
+		.hero-split .hero-type :global(h1) {
+			font-size: clamp(34px, 8.5vw, 60px);
+		}
+		.hero-split .hero-type {
+			padding-top: 0;
+		}
+		.hero-split .hero-photo {
+			height: auto;
+			aspect-ratio: 2 / 3;
+			margin-top: 32px;
+			border-top-left-radius: 70px;
+		}
 		.ed-hero {
 			padding-top: 16px;
 		}

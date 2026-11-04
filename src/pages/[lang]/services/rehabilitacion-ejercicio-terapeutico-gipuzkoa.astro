@@ -8,7 +8,8 @@ import {
 	useTranslations
 } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
-import Prevention from '@images/prevention.webp';
+import Prevention from '@images/therapeutic-exercise.webp';
+import Planning from '@images/interview.webp';
 import ServiceIntro from '@components/services/ServiceIntro.astro';
 import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
@@ -102,8 +103,11 @@ const rehabFaq = [1, 2, 3, 4].map(item => ({
 		id="rehab-hero"
 		image={Prevention}
 		imageAlt={lang === 'eu'
-			? 'Ariketa terapeutikoa Laguntza Fisioterapian'
-			: 'Ejercicio terapéutico en Laguntza Fisioterapia'}
+			? 'Hanketako ariketa erresistentzia-bandarekin'
+			: 'Ejercicio de piernas con banda de resistencia'}
+		imageLayout="portrait"
+		imagePosition="center 25%"
+		showImageCaption={false}
 	>
 		<h1 slot="title">
 			{t('service.rehab.hero-title')}
@@ -119,8 +123,10 @@ const rehabFaq = [1, 2, 3, 4].map(item => ({
 				title={t('service.rehab.what-is-title')}
 				text={t('service.rehab.what-is-text')}
 				detailText={t('service.rehab.deep-text')}
-				image={Prevention}
-				imageAlt={t('service.rehab.hero-title')}
+				image={Planning}
+				imageAlt={lang === 'eu'
+					? 'Jokin ariketa terapeutikoko programa bat planifikatzen'
+					: 'Jokin planificando un programa de ejercicio terapéutico'}
 			/>
 
 			<ClinicalCareNotice {lang} />

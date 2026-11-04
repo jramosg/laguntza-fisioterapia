@@ -1,7 +1,7 @@
 // Homepage copy is kept together so both languages share the same structure.
 export const home = {
 	eu: {
-		eyebrow: 'Fisioterapia eta osteopatia · Urnieta',
+		eyebrow: 'Fisioterapia eta osteopatia · Gipuzkoa',
 		title: ['Mugitu berriro.', 'Izan zu berriro.'],
 		intro:
 			'Zure gorputzak badu zer kontatu. Entzun diezaiogun. Fisioterapia pertsonala eta hurbila, gustuko duzun horretara itzul zaitezen.',
@@ -11,7 +11,7 @@ export const home = {
 		portraitAlt: 'Jokin Ramos fisioterapeuta, Urnietako Laguntza kontsultan',
 		portraitLabel: 'Jokin Ramos',
 		portraitDetail: 'Zure fisioterapeuta · COFPV 3618',
-		location: 'Urnietan, zugandik gertu.',
+		location: 'Gipuzkoan, zugandik gertu.',
 		languages: 'Euskaraz eta gaztelaniaz',
 		principles: ['Entzun.', 'Ulertu.', 'Lagundu.'],
 		servicesLabel: '01 / ZURETZAKO ARRETA',
@@ -78,7 +78,7 @@ export const home = {
 		spaceLabel: '04 / ZURE TOKIA URNIETAN',
 		spaceTitle: ['Hurbil.', 'Patxadaz. Zuretzat.'],
 		spaceText:
-			'Entzuteko eta zurekin lan egiteko espazio bat. Zubitxo Plazan, Hernani, Andoain eta Donostiatik gertu.',
+			'Entzuteko eta zurekin lan egiteko espazio bat. Urnietan, Hernani, Andoain, Lasarte-Oria eta Donostiatik gertu.',
 		spaceLink: 'Ezagutu kontsulta',
 		spaceAlt: 'Laguntza Fisioterapiako itxarongela, argi naturalarekin',
 		roomAlt: 'Laguntza Fisioterapiako tratamendu gela Urnietan',
@@ -125,7 +125,7 @@ export const home = {
 		homeLabel: 'Laguntza · Hasiera'
 	},
 	es: {
-		eyebrow: 'Fisioterapia y osteopatía · Urnieta',
+		eyebrow: 'Fisioterapia y osteopatía · Gipuzkoa',
 		title: ['Vuelve a moverte.', 'Vuelve a ti.'],
 		intro:
 			'Tu cuerpo tiene algo que contarte. Vamos a escucharlo. Fisioterapia personal y cercana para volver a lo que te gusta.',
@@ -136,7 +136,7 @@ export const home = {
 			'Jokin Ramos, fisioterapeuta, en su consulta de Laguntza en Urnieta',
 		portraitLabel: 'Jokin Ramos',
 		portraitDetail: 'Tu fisioterapeuta · COFPV 3618',
-		location: 'En Urnieta, cerca de ti.',
+		location: 'En Gipuzkoa, cerca de ti.',
 		languages: 'Euskaraz y en castellano',
 		principles: ['Escuchar.', 'Entender.', 'Acompañar.'],
 		servicesLabel: '01 / CUIDARTE A TU MANERA',
@@ -204,7 +204,7 @@ export const home = {
 		spaceLabel: '04 / TU ESPACIO EN URNIETA',
 		spaceTitle: ['Cerca.', 'Sin prisa. Para ti.'],
 		spaceText:
-			'Un espacio para escucharte y trabajar contigo. En Zubitxo Plaza, cerca de Hernani, Andoain y Donostia.',
+			'Un espacio para escucharte y trabajar contigo. En Urnieta, cerca de Hernani, Andoain, Lasarte-Oria y Donostia.',
 		spaceLink: 'Conoce la consulta',
 		spaceAlt: 'Sala de espera de Laguntza Fisioterapia con luz natural',
 		roomAlt: 'Sala de tratamiento de Laguntza Fisioterapia en Urnieta',
