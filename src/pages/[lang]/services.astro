@@ -12,7 +12,7 @@ import { home } from '@config/home';
 import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
 import Interview from '@images/interview.webp';
 import Rehab from '@images/rehab.webp';
-import Room from '@images/consulta-sala.jpg';
+import Osteopathy from '@images/osteopathy-manual-care.webp';
 import Prevention from '@images/therapeutic-exercise.webp';
 export function getStaticPaths() {
 	return getStaticLangPaths();
@@ -22,7 +22,7 @@ const c = home[lang];
 const specialized = SERVICES[lang].sections.find(
 	service => service.id === 'specialized-techniques'
 )!;
-const images = [Interview, Rehab, Room, Prevention];
+const images = [Interview, Rehab, Osteopathy, Prevention];
 const seo = {
 	title:
 		lang === 'eu'
@@ -89,11 +89,21 @@ const seo = {
 										? lang === 'eu'
 											? 'Hanketako ariketa erresistentzia-bandarekin'
 											: 'Ejercicio de piernas con banda de resistencia'
-										: lang === 'eu'
-											? `${service.title} Laguntza Fisioterapian, Urnietan`
-											: `${service.title} en Laguntza Fisioterapia, Urnieta`
+										: i === 2
+											? lang === 'eu'
+												? 'Burua eskuekin eutsita eskuzko tratamendu batean'
+												: 'Apoyo manual de la cabeza durante un tratamiento'
+											: lang === 'eu'
+												? `${service.title} Laguntza Fisioterapian, Urnietan`
+												: `${service.title} en Laguntza Fisioterapia, Urnieta`
 								}
-								style={i === 3 ? 'object-position:center 20%' : undefined}
+								style={
+									i === 3
+										? 'object-position:center 20%'
+										: i === 2
+											? 'object-position:55% center'
+											: undefined
+								}
 								width={1000}
 								widths={[400, 640, 1000, 1280]}
 								sizes="(max-width:760px) calc(100vw - 48px), 45vw"
