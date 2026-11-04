@@ -357,7 +357,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				</div>
 				<small>{c.contactNote}</small>
 			</div>
-		</div><div class="contact-word" aria-hidden="true">laguntza.</div>
+		</div>
 	</section>
 	<div class="mobile-booking">
 		<a class="mobile-call" href={Phone.url}
@@ -1126,18 +1126,6 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		display: block;
 		margin-top: 18px;
 	}
-	.contact-word {
-		position: absolute;
-		bottom: -0.32em;
-		left: -0.035em;
-		font-size: 27vw;
-		font-weight: 700;
-		line-height: 1;
-		letter-spacing: -0.085em;
-		color: #37697a0d;
-		white-space: nowrap;
-		pointer-events: none;
-	}
 	.mobile-booking {
 		display: none;
 	}
@@ -1441,9 +1429,6 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		}
 		.contact-aside small {
 			font-size: 10px;
-		}
-		.contact-word {
-			font-size: 31vw;
 		}
 		.mobile-booking {
 			display: flex;

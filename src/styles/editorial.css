@@ -3,7 +3,8 @@ body.laguntza-home,
 body.laguntza-interior {
 	--lf-paper: #fbfbf8;
 	--lf-ink: #263432;
-	--lf-muted: #5c6b64;
+	--lf-muted: #56665f;
+	--lf-text-muted: var(--lf-muted);
 	--lf-line: #263b342b;
 	--lf-teal: #37697a;
 	--lf-orange: #e8944a;

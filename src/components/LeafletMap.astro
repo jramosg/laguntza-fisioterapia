@@ -125,14 +125,14 @@ const { latitude, longitude, zoom, tileLayer } = Astro.props;
 	a.leaflet-control-zoom-in,
 	a.leaflet-control-zoom-out {
 		background-color: var(--theme-primary-100);
-		color: var(--theme-primary);
-		border-color: var(--theme-primary);
+		color: var(--theme-primary-800, #234652);
+		border-color: var(--theme-primary-800, #234652);
 	}
 
 	a.leaflet-control-zoom-in:hover,
 	a.leaflet-control-zoom-out:hover {
-		background-color: var(--theme-primary);
-		color: var(--theme-on-primary);
+		background-color: var(--theme-primary-800, #234652);
+		color: #fff;
 		border-color: var(--theme-primary-100);
 	}
 </style>
