@@ -113,7 +113,7 @@ export const home = {
 		maps: 'Nola iritsi',
 		whatsappMessage: 'Kaixo Jokin, hitzordua hartu nahiko nuke.',
 		footerLine: 'Mugitzea bizitzea da.',
-		footerContact: 'Harremanetan',
+		footerContact: 'Harremanetarako',
 		footerExplore: 'Ezagutu',
 		footerCredits: 'Diseinua eta garapena',
 		menu: 'Menua ireki',
