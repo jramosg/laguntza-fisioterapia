@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import { home } from '@config/home';
-import { Address, Phone, WhatsApp } from '@config/company';
+import { Address, Phone, WhatsApp, SERVICES } from '@config/company';
 import Jokin from '@images/jokin.webp';
 import Treatment from '@images/rehab.webp';
 import Interview from '@images/interview.webp';
@@ -16,6 +16,9 @@ interface Props {
 }
 const { lang } = Astro.props;
 const c = home[lang];
+const specialized = SERVICES[lang].sections.find(
+	service => service.id === 'specialized-techniques'
+)!;
 const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
 ---
 
@@ -123,7 +126,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					/>
 				</div>
 				<figcaption>
-					<span>{c.serviceImageCaption}</span><span>01—04</span>
+					<span>{c.serviceImageCaption}</span><span>01—05</span>
 				</figcaption>
 			</figure>
 			<div class="service-list">
@@ -145,6 +148,22 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 						</a>
 					))
 				}
+				<a class="service-row" href={`/${lang}/services/#${specialized.id}`}>
+					<span class="service-number">05</span>
+					<div>
+						<h3>{specialized.title}</h3>
+						<p>
+							{
+								specialized.bullets
+									?.map(technique => technique.title)
+									.join(' · ')
+							}
+						</p>
+					</div>
+					<span class="service-arrow">
+						<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+					</span>
+				</a>
 			</div>
 		</div>
 	</section>

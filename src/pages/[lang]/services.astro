@@ -4,6 +4,8 @@ import SectionHero from '@components/SectionHero.astro';
 import FAQ from '@components/sections/FAQ.astro';
 import FAQSchema from '@components/head/FAQSchema.astro';
 import NextStep from '@components/editorial/NextStep.astro';
+import SpecializedTechniques from '@components/services/SpecializedTechniques.astro';
+import { SERVICES } from '@config/company';
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import { home } from '@config/home';
@@ -17,6 +19,9 @@ export function getStaticPaths() {
 }
 const lang = getLangFromUrl(Astro.url);
 const c = home[lang];
+const specialized = SERVICES[lang].sections.find(
+	service => service.id === 'specialized-techniques'
+)!;
 const images = [Interview, Rehab, Room, Prevention];
 const seo = {
 	title:
@@ -54,6 +59,11 @@ const seo = {
 				</a>
 			))
 		}
+		<a href={`#${specialized.id}`}>
+			<span>05</span>
+			{specialized.title}
+			<Icon name="mdi:arrow-down" aria-hidden="true" />
+		</a>
 	</nav>
 	<div class="ed-shell treatments">
 		{
@@ -107,6 +117,7 @@ const seo = {
 			))
 		}
 	</div>
+	<SpecializedTechniques />
 	<section class="ed-section ed-sage">
 		<div class="ed-shell ed-intro ed-reveal">
 			<div>
@@ -145,7 +156,7 @@ const seo = {
 <style>
 	.service-index {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(5, minmax(0, 1fr));
 		gap: 26px;
 		margin-top: 10px;
 		padding-block: 24px 40px;
@@ -241,6 +252,9 @@ const seo = {
 		}
 		.service-index a {
 			font-size: 11px;
+		}
+		.service-index a:last-child {
+			grid-column: 1 / -1;
 		}
 		.treatments {
 			padding-block: 32px 60px;
