@@ -1,592 +1,337 @@
 ---
 import Layout from '@layouts/Page.astro';
-
-import {
-	getLangFromUrl,
-	getStaticLangPaths,
-	useTranslations
-} from '@i18n/utils';
-import Chip from '@components/Chip.astro';
-import { Langs } from '@i18n/ui';
 import SectionHero from '@components/SectionHero.astro';
-import { Icon } from 'astro-icon/components';
-import LeafletMap from '@components/LeafletMap.astro';
-import Container from '@components/core/Container.astro';
-import { Address, Email, Phone, WhatsApp } from '@config/company';
-import PhoneIcon from '@icons/phone.svg';
-import EmailIcon from '@icons/email.svg';
-import Button from '@components/buttons/Button.astro';
-import MarkerIcon from '@icons/marker.svg';
 import ContactForm from '@components/forms/ContactForm.astro';
-import OpeningHours from '@components/OpeningHours.astro';
+import LeafletMap from '@components/LeafletMap.astro';
 import { Image } from 'astro:assets';
-import KristalaFrentez from '@images/kristala-frentez.jpg';
-import KristalaLateralez from '@images/kristala-lateralez.jpg';
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
+import { home } from '@config/home';
+import { Address, Email, Phone, WhatsApp } from '@config/company';
+import Entrance from '@images/consulta-entrada.webp';
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
-const lang: Langs = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
-const whatsappUrl = `${WhatsApp.url}?text=${encodeURIComponent(
-	t('whatsapp-msg')
-)}`;
-
-// SEO data for contact page
+const lang = getLangFromUrl(Astro.url);
+const c = home[lang];
+const eu = lang === 'eu';
+const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
 const seo = {
-	title:
-		lang === 'eu'
-			? 'Kontaktua - Laguntza Fisioterapia Urnieta | Tel: 943 036 070 - Gipuzkoa'
-			: 'Contacto - Laguntza Fisioterapia Urnieta | Tel: 943 036 070 - Gipuzkoa',
-	description:
-		lang === 'eu'
-			? 'Kontaktuan jarri Laguntza Fisioterapia zentroarekin Urnietan, Gipuzkoan. Zubitxo Plaza 3, 2. etxabea, 20130. Tel: 943 036 070. WhatsApp: 688 734 113. Donostia, Hernani eta Andoaindik gertu. Astelehenetik ostiralera.'
-			: 'Contacta con Laguntza Fisioterapia en Urnieta, Gipuzkoa. Zubitxo Plaza 3, bajo 2, 20130. Tel: 943 036 070. WhatsApp: 688 734 113. Cerca de Donostia, Hernani y Andoain. Lunes a viernes.',
+	title: eu
+		? 'Kontaktua eta hitzorduak Urnietan | Laguntza Fisioterapia'
+		: 'Contacto y citas en Urnieta | Laguntza Fisioterapia',
+	description: eu
+		? 'Hartu hitzordua Jokin Ramosekin: WhatsApp 688 734 113 edo 943 036 070. Zubitxo Plaza 3, Urnieta. Ordutegia eta nola iritsi.'
+		: 'Pide cita con Jokin Ramos por WhatsApp en el 688 734 113 o por teléfono en el 943 036 070. Zubitxo Plaza 3, Urnieta. Horario y cómo llegar.',
 	breadcrumb: [
 		{ name: 'Laguntza Fisioterapia', url: `/${lang}/` },
-		{
-			name: lang === 'eu' ? 'Kontaktua' : 'Contacto',
-			url: `/${lang}/contact/`
-		}
+		{ name: c.nav[3], url: `/${lang}/contact/` }
 	]
 };
-
-const contacts = [
+const schedule = [
 	{
-		title: t('Telefonoz'),
-		desc: t('Deitu'),
-		id: 'phone',
-		ctas: [
-			{ label: WhatsApp.name, href: WhatsApp.urlCall },
-			{ label: Phone.name, href: Phone.url }
-		]
+		days: eu ? 'Astelehena eta asteazkena' : 'Lunes y miércoles',
+		times: '08:00–13:30 / 19:30–21:30'
 	},
 	{
-		title: t('Emailez'),
-		desc: Email.name,
-		subdesc: t('we-respond-soon'),
-		id: 'email',
-		ctas: [{ label: t('Idatzi'), href: Email.url }]
+		days: eu ? 'Asteartea eta osteguna' : 'Martes y jueves',
+		times: '08:00–13:30'
 	},
-	{
-		title: t('WhatsAppez'),
-		id: 'whatsapp',
-		desc: WhatsApp.name,
-		subdesc: t('we-respond-inmediately'),
-		ctas: [{ label: t('Bidali WhatsAppa'), href: whatsappUrl }]
-	},
-	{
-		title: t('Bisitatu'),
-		id: 'address',
-		desc: Address.name,
-		ctas: [{ label: t('Ireki mapan'), href: Address.url }]
-	}
+	{ days: eu ? 'Ostirala' : 'Viernes', times: '15:00–21:30' }
 ];
 ---
 
 <Layout {seo}>
-	<Fragment slot="head">
-		<link rel="preconnect" href="https://a.tile.openstreetmap.org" />
-		<link rel="preconnect" href="https://b.tile.openstreetmap.org" />
-		<link rel="preconnect" href="https://c.tile.openstreetmap.org" />
-		<link rel="dns-prefetch" href="https://unpkg.com" />
-	</Fragment>
-	<SectionHero
-		id="contact-hero"
-		class="hero-section__contact"
-		image={KristalaFrentez}
-		imageAlt={lang === 'eu'
-			? 'Laguntza Fisioterapiaren sarrera Zubitxo plazan, Urnietan'
-			: 'Entrada de Laguntza Fisioterapia en Zubitxo Plaza, Urnieta'}
+	<SectionHero compact book={false} eyebrow={c.nav[3]}
+		><h1 slot="title">
+			{eu ? 'Hitz egingo' : '¿Hablamos'}<br /><span
+				>{eu ? 'dugu?' : 'de ti?'}</span
+			>
+		</h1><Fragment slot="desc"
+			>{
+				eu
+					? 'Hitzordua hartzeko, zalantza bat argitzeko edo zure egoera kontatzeko. Nahiago duzun moduan.'
+					: 'Para pedir cita, resolver una duda o contarme qué te pasa. Por el medio que te resulte más cómodo.'
+			}</Fragment
+		></SectionHero
 	>
-		<h1 slot="title">
-			{t('contact-jarri')}
-			{' '}
-			<span class="hero-section__remark">{t('contact-kontaktuan')}</span>
-		</h1>
-		<Fragment slot="desc">
-			{
-				t(
-					'Kontaktuan jarri telefono, WhastaApp edo email bidez. Zuri laguntzeko prest gaude.'
-				)
-			}
-		</Fragment>
-		<Fragment slot="chips">
-			<Chip text="Telefonoa" href={WhatsApp.urlCall}>
-				<PhoneIcon slot="icon" />
-			</Chip>
-			<Chip
-				text="Email"
-				href={Email.url}
+	<section class="contact-channels ed-shell" aria-label={c.footerContact}>
+		<a
+			href={bookingUrl}
+			target="_blank"
+			rel="noopener noreferrer"
+			class="channel channel--primary"
+			><span class="ed-kicker">01 / WHATSAPP</span><span class="channel-title"
+				>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></span
+			><span class="channel-detail">{WhatsApp.name}</span></a
+		><a href={Phone.url} class="channel"
+			><span class="ed-kicker">02 / {eu ? 'TELEFONOA' : 'TELÉFONO'}</span><span
+				class="channel-title"
+				>{c.call}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></span
+			><span class="channel-detail">{Phone.name}</span></a
+		><a href={Email.url} class="channel"
+			><span class="ed-kicker">03 / EMAIL</span><span class="channel-title"
+				>{eu ? 'Idatzi' : 'Escríbeme'}<Icon
+					name="mdi:arrow-top-right"
+					aria-hidden="true"
+				/></span
+			><span class="channel-detail">{Email.name}</span></a
+		>
+	</section>
+	<section class="ed-shell ed-section contact-layout">
+		<div class="contact-info ed-sticky">
+			<p class="ed-kicker">{eu ? 'ZUBITXO PLAZAN' : 'EN ZUBITXO PLAZA'}</p><h2>
+				{eu ? 'Hemen aurkituko nauzu.' : 'Aquí me encontrarás.'}
+			</h2><address>
+				Zubitxo Plaza, 3 · {eu ? '2. etxabea' : 'Bajo 2'}<br />20130 Urnieta,
+				Gipuzkoa
+			</address><a
+				class="ed-link"
+				href={Address.url}
 				target="_blank"
 				rel="noopener noreferrer"
-			>
-				<EmailIcon slot="icon" />
-			</Chip>
-			<Chip
-				text="WhatsApp"
-				href={whatsappUrl}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<Icon slot="icon" name="ic:baseline-whatsapp" />
-			</Chip>
-		</Fragment>
-	</SectionHero>
-	<ContactForm />
-
-	<div class="map-contact-data-grid">
-		<Container tag="section" class="contact-data-section">
-			<h2 class="contact-data-section__text">{t('Kontaktuan jarri')}</h2>
-			<p class="contact-data-section__text">
-				{t('Hurrengo moduetan jarri zaitezke harremanetan:')}
-			</p>
-			<OpeningHours {lang} />
-			{
-				contacts.map(item => {
-					const icons = {
-						phone: <PhoneIcon fill="currentColor" />,
-						email: <EmailIcon fill="currentColor" />,
-						whatsapp: <Icon name="ic:baseline-whatsapp" />,
-						address: <MarkerIcon fill="currentColor" />
-					} as const;
-					const ariaLabels = {
-						phone: item.ctas[0].label,
-						email: item.ctas[0].label,
-						whatsapp: item.ctas[0].label,
-						address: item.ctas[0].label
-					} as const;
-					const icon = icons[item.id as keyof typeof icons];
-					const ariaLabel = ariaLabels[item.id as keyof typeof ariaLabels];
-					return (
-						<div
-							class:list={[
-								'contact-card',
-								'card',
-								'card--elevated',
-								`contact-card--${item.id}`
-							]}
-							data-main-href={item.ctas[0].href}
-							role="button"
-							tabindex="0"
-							aria-label={item.title}
-						>
-							<a
-								class:list={[
-									'contact-card__icon-container',
-									`contact-card__icon-container-${item.id}`
-								]}
-								href={item.ctas[0].href}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={ariaLabel}
-							>
-								{icon}
-							</a>
-							<h3 class="contact-card__title">{item.title}</h3>
-							{item.desc && (
-								<p
-									class:list={[
-										'contact-card__desc',
-										item.id === 'email' ? 'contact-card__desc__email' : ''
-									]}
-								>
-									{item.desc}
-								</p>
-							)}
-							{item.subdesc && (
-								<p class="contact-card__subdesc">{item.subdesc}</p>
-							)}
-							{item.ctas.map((cta, index) => (
-								<Button
-									outlined
-									newTab
-									href={cta.href}
-									class:list={[
-										`contact-card__icon-container-${item.id}`,
-										'contact-card_cta',
-										index !== 0 && 'contact-card_cta--secondary'
-									]}
-								>
-									{icon} {cta.label}
-								</Button>
-							))}
-						</div>
-					);
-				})
-			}
-		</Container>
-		<Container tag="section" class="ubication-section">
-			<h2>{t('Gure kokalekua')}</h2>
-			<a href={Address.url} target="_blank" rel="noopener noreferrer">
-				{Address.name}</a
-			>
-			<section class="leaflet-map-container">
-				<LeafletMap
-					latitude={43.24656113552193}
-					longitude={-1.9932571315890595}
-					zoom={17}
-				/>
-			</section>
-			<Container
-				class="service-section-card service-section-card--gallery gallery-img--desktop"
-			>
+				>{c.maps}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
+			><div class="schedule">
+				<h3>{eu ? 'Ordutegia' : 'Horario'}</h3><dl>
+					{
+						schedule.map(row => (
+							<div>
+								<>
+									<dt>{row.days}</dt>
+									<dd>{row.times}</dd>
+								</>
+							</div>
+						))
+					}
+				</dl><p>
+					{eu ? 'Aldez aurreko hitzorduarekin' : 'Atención con cita previa'}
+				</p>
+			</div>
+		</div><div class="ed-reveal"><ContactForm /></div>
+	</section>
+	<section class="ed-sage ed-section">
+		<div class="ed-shell location-layout">
+			<div class="entrance-photo">
 				<Image
-					src={KristalaLateralez}
-					alt="Laguntza Fisioterapia Window"
-					sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 70vw"
-					class="gallery-img gallery-img--desktop"
-				/>
-			</Container>
-		</Container>
-	</div>
-
-	<Container
-		class="service-section-card service-section-card--gallery gallery-img--mobile"
-	>
-		<Image
-			src={KristalaFrentez}
-			height={KristalaFrentez.height}
-			alt="Laguntza Fisioterapia Exterior"
-			class="gallery-img"
-			sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 100vw"
-		/>
-	</Container>
+					src={Entrance}
+					alt={eu
+						? 'Laguntza Fisioterapiako sarrera Zubitxo Plazan'
+						: 'Entrada de Laguntza Fisioterapia en Zubitxo Plaza'}
+					width={600}
+					widths={[320, 600]}
+					sizes="(max-width:760px) 100vw, 30vw"
+				/><span>{eu ? 'Ongi etorri.' : 'Bienvenido. Ongi etorri.'}</span>
+			</div><div>
+				<p class="ed-kicker">URNIETA · GIPUZKOA</p><h2>
+					{eu ? 'Zugandik gertu.' : 'Cerca de ti.'}
+				</h2><p class="location-description">
+					{
+						eu
+							? 'Hernani, Andoain eta Donostiatik gertu, Urnietako erdigunean.'
+							: 'En el centro de Urnieta, cerca de Hernani, Andoain y Donostia.'
+					}
+				</p><div class="contact-map">
+					<LeafletMap
+						latitude={43.24656113552193}
+						longitude={-1.9932571315890595}
+						zoom={17}
+					/>
+				</div><a
+					class="ed-link"
+					href={Address.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					>{c.maps}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
+				>
+			</div>
+		</div>
+	</section>
 </Layout>
-
 <style>
-	@keyframes chip-bounce {
-		0% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(var(--s2));
-		}
-		100% {
-			transform: translateY(0);
-		}
+	.contact-channels {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+		padding-top: 12px;
 	}
-
-	.hero-section__contact :global(.chip) {
-		animation: chip-bounce 2s ease-in-out infinite;
-		&:nth-child(2) {
-			animation-delay: 0.3s;
-		}
-		&:nth-child(3) {
-			animation-delay: 0.6s;
-		}
+	.channel {
+		display: block;
+		padding: 32px;
+		border: 1px solid var(--lf-line);
+		border-radius: 18px;
+		text-decoration: none;
+		transition:
+			background 0.3s,
+			border-color 0.3s;
 	}
-	.ubication-section {
-		width: 100%;
-		a {
-			opacity: 0.72;
-			transition: opacity linear 150ms;
-			border-radius: var(--theme-shape-radius);
-		}
-		a:hover {
-			opacity: 1;
-		}
+	.channel:hover {
+		background: #eef1eb;
+		border-color: #a5b9b0;
 	}
-	.leaflet-map-container {
-		height: 630px;
-		width: 100%;
-		overflow: hidden;
-		border-radius: var(--theme-shape-radius);
-		margin-top: var(--s4);
+	.channel--primary {
+		background: #dce7e6;
+		border-color: #dce7e6;
 	}
-
-	/* Gallery Section Styles */
-	.service-section-card.service-section-card--gallery {
-		aspect-ratio: 16 / 9;
-		overflow: hidden;
-		margin-top: var(--s8);
-		margin-bottom: var(--s8);
+	.channel .ed-kicker {
+		display: block;
+		margin-bottom: 28px;
+		color: var(--lf-muted);
+		font-size: 9px;
 	}
-
-	.service-section-card--gallery .gallery-img {
-		flex: 1;
-		object-fit: cover;
-		height: 100%;
-		width: 100%;
-	}
-
-	.service-section-card--gallery .service-section-card__desc {
-		width: 100%;
-		height: auto;
-		background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-		padding: var(--s4);
-		padding-top: var(--s8);
+	.channel-title {
 		display: flex;
-		align-items: flex-end;
-		justify-content: flex-start;
-		pointer-events: none;
-	}
-
-	.service-section-card--gallery .service-section-card__desc h2 {
-		margin: 0;
-		color: white;
-		font-size: var(--font-size-xl);
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		font-size: 27px;
+		letter-spacing: -0.045em;
 		font-weight: 500;
 	}
-
-	.gallery-img {
-		border-radius: var(--theme-shape-radius);
+	.channel-title svg {
+		width: 22px;
+		height: 22px;
+		transition: transform 0.35s;
 	}
-	.gallery-img--mobile {
-		display: none;
+	.channel:hover svg {
+		transform: translate(3px, -3px);
 	}
-
-	@media (max-width: 768px) {
-		.service-section-card.service-section-card--gallery {
-			aspect-ratio: 1 / 1.4;
-		}
-
-		.service-section-card--gallery .gallery-img {
-			width: 100%;
-		}
-
-		.gallery-img--desktop {
-			display: none;
-		}
-
-		.gallery-img--mobile {
-			display: block;
-		}
+	.channel-detail {
+		display: block;
+		margin-top: 16px;
+		font-size: 13px;
+		overflow-wrap: anywhere;
+		color: var(--lf-muted);
 	}
-
-	.map-contact-data-grid {
+	.contact-layout {
 		display: grid;
-		gap: var(--s4);
-		grid-template-columns: auto minmax(640px, 1fr);
-		margin: var(--s5) 0;
+		grid-template-columns: 0.8fr 1.2fr;
+		gap: 120px;
 	}
-
-	.contact-data-section {
-		width: 100%;
-		justify-content: flex-start;
-		gap: var(--s4);
+	.contact-info h2 {
+		font-size: 35px;
+		max-width: 300px;
+		margin-bottom: 26px;
 	}
-
-	.contact-card {
-		padding: var(--s6) var(--s4);
-		display: flex;
-		flex-direction: column;
+	.contact-info address {
+		font-size: 16px;
+		font-style: normal;
+		line-height: 1.8;
+		color: var(--lf-muted);
+		margin-bottom: 12px;
+	}
+	.schedule {
+		margin-top: 44px;
+	}
+	.schedule h3 {
+		font-size: 20px;
+		margin-bottom: 20px;
+	}
+	.schedule dl {
+		max-width: 350px;
+	}
+	.schedule dl > div {
+		padding-block: 15px;
+		border-top: 1px solid var(--lf-line);
+	}
+	.schedule dt {
+		font-size: 13px;
+	}
+	.schedule dd {
+		font-size: 12px;
+		color: var(--lf-muted);
+		margin: 4px 0 0;
+	}
+	.schedule > p {
+		font-size: 11px;
+		color: var(--lf-muted);
+	}
+	.location-layout {
+		display: grid;
+		grid-template-columns: 0.7fr 1.3fr;
+		gap: 90px;
 		align-items: center;
-		--size: 1.5rem;
-		cursor: pointer;
+	}
+	.entrance-photo {
+		height: 520px;
+		overflow: hidden;
+		border-radius: 100px 18px 18px 18px;
+		position: relative;
+	}
+	.entrance-photo img {
 		width: 100%;
-		justify-self: center;
-		p {
-			margin: 0;
+		height: 100%;
+		object-fit: cover;
+	}
+	.entrance-photo > span {
+		position: absolute;
+		bottom: 24px;
+		left: 24px;
+		background: #fbfbf8ed;
+		padding: 16px 20px;
+		border-radius: 10px;
+		font-size: 13px;
+	}
+	.location-description {
+		font-size: 15px;
+		color: var(--lf-muted);
+		margin-bottom: 24px;
+	}
+	.contact-map {
+		height: 300px;
+		border-radius: 18px;
+		overflow: hidden;
+		margin-block: 20px;
+	}
+	.contact-map :global(.leaflet-map) {
+		height: 100%;
+	}
+	@media (max-width: 1100px) {
+		.contact-layout {
+			gap: 64px;
 		}
-
-		[data-icon] {
-			font-size: var(--size);
+		.location-layout {
+			gap: 48px;
 		}
-
-		svg {
-			width: 1.5rem;
-			height: 1.5rem;
+		.channel {
+			padding: 26px;
 		}
-	}
-
-	.contact-card--phone {
-		align-items: stretch;
-		padding: var(--s6);
-	}
-
-	.contact-card--phone .contact-card__icon-container,
-	.contact-card--phone .contact-card__title,
-	.contact-card--phone .contact-card__desc {
-		align-self: center;
-	}
-
-	.contact-card:not(:last-child) {
-		margin-bottom: var(--s4);
-	}
-
-	.contact-card:hover {
-		.contact-card__title {
-			color: var(--theme-primary);
-		}
-	}
-
-	.contact-card.fade-in {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	/* Consolidated icon-container styles using --rgb variable */
-	.contact-card__icon-container {
-		border-radius: 9999px;
-		display: flex;
-		padding: var(--s4);
-		align-items: center;
-		justify-content: center;
-		/* default rgb fallback */
-		--rgb: 0, 0, 0;
-		background-color: rgb(var(--rgb));
-		color: white;
-		transition:
-			background-color 160ms linear,
-			opacity 160ms linear;
-	}
-
-	.contact-card__icon-container-phone {
-		--rgb: 59, 130, 246;
-	}
-	.contact-card__icon-container-email {
-		--rgb: 234, 67, 53;
-	}
-	.contact-card__icon-container-whatsapp {
-		--rgb: 37, 211, 102;
-	}
-	.contact-card__icon-container-address {
-		--rgb: 249, 115, 22;
-	}
-
-	.contact-card__icon-container:hover {
-		background-color: rgba(var(--rgb), 0.85);
-	}
-
-	.contact-card__title {
-		font-size: var(--font-size-base);
-		font-weight: 700;
-		transition: color 0.3s ease;
-		margin-bottom: var(--s);
-		margin: 0;
-		margin-top: var(--s2);
-	}
-
-	p.contact-card__desc {
-		font-size: var(--font-size-sm);
-		text-align: center;
-	}
-	.contact-card__desc__email {
-		word-break: break-all;
-	}
-	p.contact-card__subdesc {
-		color: var(--theme-text-secondary);
-		font-size: var(--font-size-sm);
-		margin-top: var(--s2);
-		margin-bottom: var(--s4);
-		text-align: center;
-	}
-
-	.contact-card_cta {
-		border-color: inherit;
-		width: 100%;
-		display: flex;
-		gap: var(--s2);
-		&:not(:first-of-type) {
-			margin-top: var(--s2);
-		}
-		background-color: rgb(var(--rgb));
-		border-color: rgb(var(--rgb));
-		color: white;
-		transition:
-			background-color 160ms linear,
-			opacity 160ms linear;
-		&:hover {
-			background-color: rgba(var(--rgb), 0.5);
+		.channel-title {
+			font-size: 24px;
 		}
 	}
-	.contact-card_cta--secondary {
-		background-color: transparent;
-		border-color: rgb(var(--rgb));
-		color: rgb(var(--rgb));
-		&:hover {
-			background-color: rgba(var(--rgb), 0.1);
+	@media (max-width: 760px) {
+		.contact-channels {
+			grid-template-columns: 1fr;
+			gap: 12px;
 		}
-	}
-
-	.contact-card__link {
-		text-decoration: none;
-	}
-
-	@media (max-width: 1024px) {
-		.map-contact-data-grid {
-			display: flex;
-			flex-direction: column;
-			gap: var(--s8);
+		.channel {
+			padding: 24px;
 		}
-	}
-
-	@media (max-width: 1024px) and (min-width: 640px) {
-		.contact-data-section {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 0;
-			column-gap: var(--s4);
+		.channel .ed-kicker {
+			margin-bottom: 14px;
 		}
-		.contact-data-section__text {
-			grid-column: 1 / 3;
+		.channel-title {
+			font-size: 25px;
 		}
-		.contact-card {
-			height: calc(100% - var(--s4));
+		.channel-detail {
+			margin-top: 10px;
 		}
-
-		p.contact-card__subdesc,
-		p.contact-card__desc {
-			min-height: var(--s6);
+		.contact-layout,
+		.location-layout {
+			grid-template-columns: 1fr;
+			gap: 48px;
+		}
+		.contact-info h2 {
+			font-size: 33px;
+		}
+		.schedule {
+			margin-top: 30px;
+		}
+		.entrance-photo {
+			height: 350px;
+		}
+		.contact-map {
+			height: 280px;
 		}
 	}
 </style>
-
-<script>
-	import { gsap } from 'gsap';
-	import { ScrollTrigger } from 'gsap/ScrollTrigger';
-	gsap.registerPlugin(ScrollTrigger);
-
-	document.addEventListener('astro:page-load', () => {
-		const cards: NodeListOf<HTMLElement> =
-			document.querySelectorAll('.contact-card');
-		if (cards.length) {
-			cards.forEach(card => {
-				gsap.fromTo(
-					card,
-					{ opacity: 0, y: 40 },
-					{
-						opacity: 1,
-						y: 0,
-						duration: 0.3,
-						ease: 'power2.out',
-						scrollTrigger: {
-							trigger: card,
-							start: 'top 85%',
-							toggleActions: 'play none none none'
-						}
-					}
-				);
-
-				card.addEventListener('click', ev => {
-					const target = ev.target;
-					if (target instanceof Element) {
-						if (target.tagName === 'A') return;
-					}
-
-					const href = card.dataset.mainHref;
-					if (!href) return;
-
-					const a = document.createElement('a');
-					a.href = href;
-					a.target = '_blank';
-					a.rel = 'noopener noreferrer';
-					// keep it visually hidden / non-disruptive
-					a.style.display = 'none';
-					document.body.appendChild(a);
-					a.click();
-					a.remove();
-				});
-
-				card.addEventListener('keydown', ev => {
-					const key = (ev as KeyboardEvent).key;
-					if (key === 'Enter') {
-						ev.preventDefault();
-						card.click();
-					}
-				});
-			});
-		}
-	});
-</script>

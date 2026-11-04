@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Page.astro';
+import NextStep from '@components/editorial/NextStep.astro';
 import {
 	getLangFromUrl,
 	getStaticLangPaths,
@@ -142,8 +143,7 @@ const lightboxImages = await Promise.all(
 <Layout {seo}>
 	<SectionHero
 		id="consulta-hero"
-		image={KristalaLateralez}
-		imageMobile={KristalaFrentez}
+		image={ConsultaSala}
 		imageAlt={lang === 'eu'
 			? 'Laguntza Fisioterapiaren tratamendu gela, Urnietan'
 			: 'Sala de tratamiento de Laguntza Fisioterapia, Urnieta'}
@@ -163,7 +163,21 @@ const lightboxImages = await Promise.all(
 	</SectionHero>
 	<Container>
 		<section class="consulta">
-			<Consulta3D lang={lang} />
+			<div class="ed-heading-row ed-reveal">
+				<div>
+					<p class="ed-kicker">
+						{lang === 'eu' ? 'ZURE TOKIA URNIETAN' : 'TU ESPACIO EN URNIETA'}
+					</p><h2>
+						{lang === 'eu' ? 'Sartu. Eroso zaude.' : 'Pasa. Estás en tu sitio.'}
+					</h2>
+				</div><p>
+					{
+						lang === 'eu'
+							? 'Ezagutu espazioa etorri aurretik. Argazki bakoitza ireki dezakezu xehetasunak ikusteko.'
+							: 'Conoce el espacio antes de venir. Abre cada fotografía para ver los detalles.'
+					}
+				</p>
+			</div>
 
 			<div class="consulta__photos">
 				{
@@ -198,12 +212,14 @@ const lightboxImages = await Promise.all(
 				}
 			</div>
 
-			<div
+			<dialog
 				class="consulta-lightbox"
 				id="consulta-lightbox"
 				aria-hidden="true"
 				aria-modal="true"
-				role="dialog"
+				aria-label={lang === 'eu'
+					? 'Kontsultaren argazkiak'
+					: 'Fotografías de la consulta'}
 			>
 				<button
 					class="consulta-lightbox__control consulta-lightbox__close"
@@ -240,28 +256,75 @@ const lightboxImages = await Promise.all(
 				>
 					<Icon name="mdi:chevron-right" />
 				</button>
-			</div>
+			</dialog>
 
-			<div class="consulta__cta">
-				<p class="consulta__cta-text">
-					{
-						lang === 'eu'
-							? 'Ezagutu nahi duzu pertsonalki? Hartu hitzordua eta hurbildu.'
-							: '¿Quieres conocerla en persona? Pide cita y acércate.'
-					}
-				</p>
-				<Button href={`/${lang}/contact/`}>
-					{t('Hitzordua hartu')}
-				</Button>
-			</div>
+			<details class="consulta-tour">
+				<summary
+					><span
+						><small
+							>{
+								lang === 'eu' ? 'BISITA INTERAKTIBOA' : 'VISITA INTERACTIVA'
+							}</small
+						>{
+							lang === 'eu'
+								? 'Ibil zaitez kontsultan 3Dn'
+								: 'Recorre la consulta en 3D'
+						}</span
+					><Icon name="mdi:plus" aria-hidden="true" /></summary
+				><Consulta3D {lang} />
+			</details>
 		</section>
 	</Container>
+	<NextStep />
 </Layout>
 
 <style>
 	.consulta {
-		padding-top: var(--s5, 3rem);
-		margin-bottom: calc(var(--section-margin, 4rem) * 1.5);
+		padding-block: 80px;
+	}
+	.consulta-tour {
+		margin-top: 56px;
+		padding-block: 24px;
+		border-block: 1px solid var(--lf-line);
+	}
+	.consulta-tour > summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		cursor: pointer;
+		list-style: none;
+		font-size: clamp(22px, 2.3vw, 32px);
+		line-height: 1.3;
+		letter-spacing: -0.04em;
+		padding-block: 12px;
+	}
+	.consulta-tour > summary::-webkit-details-marker {
+		display: none;
+	}
+	.consulta-tour small {
+		display: block;
+		font-size: 9px;
+		letter-spacing: 0.12em;
+		color: var(--lf-muted);
+		margin-bottom: 12px;
+	}
+	.consulta-tour summary :global(svg) {
+		width: 28px;
+		height: 28px;
+		flex-shrink: 0;
+		transition: transform 0.3s;
+	}
+	.consulta-tour[open] summary :global(svg) {
+		transform: rotate(45deg);
+	}
+	.consulta-tour :global(.consulta3d) {
+		margin-top: 30px;
+	}
+
+	.consulta {
+		padding-block: 80px;
+		margin-bottom: 0;
 	}
 
 	.consulta__photos {
@@ -374,6 +437,13 @@ const lightboxImages = await Promise.all(
 	}
 
 	.consulta-lightbox {
+		margin: 0;
+		border: 0;
+		max-width: none;
+		max-height: none;
+		width: 100%;
+		height: 100dvh;
+		color: #fff;
 		position: fixed;
 		inset: 0;
 		z-index: 1000;
@@ -617,10 +687,21 @@ const lightboxImages = await Promise.all(
 
 <script>
 	document.addEventListener('astro:page-load', () => {
+		const lifecycle = new AbortController();
+		document.addEventListener(
+			'astro:before-swap',
+			() => {
+				lifecycle.abort();
+				document.body.style.overflow = '';
+			},
+			{ once: true }
+		);
 		const galleryButtons = Array.from(
 			document.querySelectorAll<HTMLButtonElement>('[data-gallery-item]')
 		);
-		const lightbox = document.getElementById('consulta-lightbox');
+		const lightbox = document.getElementById(
+			'consulta-lightbox'
+		) as HTMLDialogElement | null;
 		const lightboxImage = document.getElementById(
 			'consulta-lightbox-image'
 		) as HTMLImageElement | null;
@@ -690,12 +771,14 @@ const lightboxImages = await Promise.all(
 			activeButton = button;
 			updateLightboxImage();
 			lightbox.setAttribute('aria-hidden', 'false');
+			if (!lightbox.open) lightbox.showModal();
 			document.body.style.overflow = 'hidden';
-			closeButton?.focus();
+			requestAnimationFrame(() => closeButton?.focus());
 		}
 
 		function closeLightbox() {
 			lightbox.setAttribute('aria-hidden', 'true');
+			lightbox.close();
 			document.body.style.overflow = '';
 			activeButton?.focus();
 		}
@@ -714,6 +797,10 @@ const lightboxImages = await Promise.all(
 			button.addEventListener('click', () => openLightbox(index, button));
 		});
 
+		lightbox.addEventListener('cancel', event => {
+			event.preventDefault();
+			closeLightbox();
+		});
 		closeButton?.addEventListener('click', closeLightbox);
 		prevButton?.addEventListener('click', showPrev);
 		nextButton?.addEventListener('click', showNext);
@@ -721,13 +808,31 @@ const lightboxImages = await Promise.all(
 			if (event.target === lightbox) closeLightbox();
 		});
 
-		document.addEventListener('keydown', event => {
-			if (lightbox.getAttribute('aria-hidden') === 'true') return;
+		document.addEventListener(
+			'keydown',
+			event => {
+				if (lightbox.getAttribute('aria-hidden') === 'true') return;
 
-			if (event.key === 'Escape') closeLightbox();
-			if (event.key === 'ArrowRight') showNext();
-			if (event.key === 'ArrowLeft') showPrev();
-		});
+				if (event.key === 'Tab') {
+					const controls = Array.from(
+						lightbox.querySelectorAll<HTMLButtonElement>('button')
+					);
+					const first = controls[0];
+					const last = controls.at(-1);
+					if (event.shiftKey && document.activeElement === first) {
+						event.preventDefault();
+						last?.focus();
+					} else if (!event.shiftKey && document.activeElement === last) {
+						event.preventDefault();
+						first?.focus();
+					}
+				}
+				if (event.key === 'Escape') closeLightbox();
+				if (event.key === 'ArrowRight') showNext();
+				if (event.key === 'ArrowLeft') showPrev();
+			},
+			{ signal: lifecycle.signal }
+		);
 
 		// Swipe between photos on touch devices.
 		let touchStartX = 0;

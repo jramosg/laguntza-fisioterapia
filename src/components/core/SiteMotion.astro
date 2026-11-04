@@ -1,0 +1,79 @@
+<div class="ed-page-progress" aria-hidden="true"></div>
+<script>
+	import type { gsap } from 'gsap';
+	let generation = 0;
+	let media: gsap.MatchMedia | undefined;
+	async function setupMotion() {
+		const run = ++generation;
+		media?.revert();
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+			import('gsap'),
+			import('gsap/ScrollTrigger')
+		]);
+		if (run !== generation) return;
+		gsap.registerPlugin(ScrollTrigger);
+		media = gsap.matchMedia();
+		media.add('(prefers-reduced-motion: no-preference)', () => {
+			gsap.to('.ed-page-progress', {
+				scaleX: 1,
+				ease: 'none',
+				scrollTrigger: { start: 0, end: 'max', scrub: 0.25 }
+			});
+			const targets = document.querySelectorAll<HTMLElement>(
+				'.ed-reveal, .home .section-heading, .home .service-row, .home .about-copy, .home .steps > li'
+			);
+			targets.forEach(el => {
+				// Never hide content the visitor is already reading or keyboard focusing.
+				if (el.getBoundingClientRect().top < innerHeight * 0.94) return;
+				gsap.fromTo(
+					el,
+					{ y: 26, opacity: 0 },
+					{
+						y: 0,
+						opacity: 1,
+						duration: 0.8,
+						ease: 'power3.out',
+						scrollTrigger: { trigger: el, start: 'top 94%', once: true },
+						clearProps: 'transform,opacity'
+					}
+				);
+			});
+		});
+		media.add(
+			'(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+			() => {
+				document
+					.querySelectorAll<HTMLElement>('[data-parallax]')
+					.forEach(frame => {
+						const image = frame.querySelector('img');
+						if (!image) return;
+						gsap.fromTo(
+							image,
+							{ yPercent: -4, scale: 1.1 },
+							{
+								yPercent: 4,
+								scale: 1.1,
+								ease: 'none',
+								scrollTrigger: {
+									trigger: frame,
+									start: 'top bottom',
+									end: 'bottom top',
+									scrub: 0.8
+								}
+							}
+						);
+					});
+			}
+		);
+	}
+	document.addEventListener('astro:page-load', () => void setupMotion());
+	window
+		.matchMedia('(prefers-reduced-motion: reduce)')
+		.addEventListener('change', () => void setupMotion());
+	document.addEventListener('astro:before-swap', () => {
+		generation++;
+		media?.revert();
+		media = undefined;
+	});
+</script>

@@ -7,7 +7,7 @@ interface Props {
 const { title, paragraphs } = Astro.props;
 ---
 
-<section class="service-text">
+<section class="service-text ed-reveal">
 	<h2>{title}</h2>
 	{paragraphs.map(text => <p>{text}</p>)}
 </section>

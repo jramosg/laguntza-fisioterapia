@@ -1,0 +1,499 @@
+/* One visual language for the clinic, independent of the OS colour scheme. */
+body.laguntza-home,
+body.laguntza-interior {
+	--lf-paper: #fbfbf8;
+	--lf-ink: #263432;
+	--lf-muted: #5c6b64;
+	--lf-line: #263b342b;
+	--lf-teal: #37697a;
+	--lf-orange: #e8944a;
+	--lf-ease: cubic-bezier(0.16, 1, 0.3, 1);
+	--theme-bg: var(--lf-paper);
+	--theme-on-bg: var(--lf-ink);
+	--theme-surface-1: #eef1eb;
+	--theme-on-surface-1: var(--lf-ink);
+	--theme-primary-container: #dce7e6;
+	--theme-primary-container-alt: #eef1eb;
+	--theme-on-primary-container: var(--lf-ink);
+	--theme-text-secondary: var(--lf-muted);
+	--theme-outline: #cfd7d0;
+	--theme-link-on-surface: #2d5a66;
+	--theme-link-on-surface-hover: #18313a;
+	--container-max-width: 1312px;
+	--container-max-width-narrow: 1000px;
+	--container-padding: 0;
+	--font-size-base: 16px;
+	--font-size-sm: 14px;
+	--font-size-md: 20px;
+	--font-size-lg: 28px;
+	--font-size-xl: clamp(32px, 3.5vw, 48px);
+	--font-size-xxl: clamp(44px, 5vw, 72px);
+	color-scheme: light;
+	background: var(--lf-paper);
+	color: var(--lf-ink);
+	max-width: none;
+	font-size: 16px;
+}
+.laguntza-interior .main-content {
+	padding-top: 100px;
+}
+.laguntza-interior .content__container {
+	width: min(100% - 128px, 1312px);
+}
+.laguntza-interior :is(h1, h2, h3) {
+	letter-spacing: -0.045em;
+	text-wrap: balance;
+}
+.laguntza-interior h2 {
+	font-size: clamp(30px, 3vw, 44px);
+}
+.laguntza-interior p {
+	line-height: 1.85;
+}
+.ed-shell {
+	width: min(100% - 128px, 1312px);
+	margin-inline: auto;
+}
+.ed-section {
+	padding-block: 100px;
+}
+.ed-kicker {
+	font-size: 10px;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	font-weight: 600;
+	margin: 0 0 24px;
+}
+.ed-muted {
+	color: var(--lf-muted);
+}
+.ed-heading {
+	font-size: clamp(38px, 4.2vw, 60px);
+	line-height: 1.08;
+	letter-spacing: -0.055em;
+	margin: 0;
+}
+.ed-lead {
+	font-size: clamp(21px, 2.4vw, 32px);
+	line-height: 1.55;
+	letter-spacing: -0.035em;
+}
+.ed-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	min-height: 44px;
+	width: fit-content;
+	text-decoration: none;
+	border-bottom: 1px solid currentColor;
+	font-size: 13px;
+	font-weight: 500;
+	padding-block: 9px;
+}
+.ed-link svg {
+	width: 19px;
+	height: 19px;
+	transition: transform 0.35s var(--lf-ease);
+}
+.ed-link:hover svg {
+	transform: translate(3px, -3px);
+}
+.ed-pill {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 30px;
+	min-height: 54px;
+	padding: 15px 25px;
+	border: 0;
+	border-radius: 50px;
+	background: var(--lf-orange);
+	color: #202e30;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+	transition:
+		background 0.2s,
+		transform 0.3s var(--lf-ease);
+}
+.ed-pill svg {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+}
+.ed-pill:hover {
+	background: #f2a35e;
+	transform: translateY(-2px);
+}
+.ed-pill:disabled {
+	cursor: wait;
+	opacity: 0.65;
+	transform: none;
+}
+.ed-heading-row {
+	display: flex;
+	align-items: end;
+	justify-content: space-between;
+	gap: 40px;
+	margin-bottom: 56px;
+}
+.ed-heading-row > p {
+	max-width: 330px;
+	font-size: 15px;
+	color: var(--lf-muted);
+}
+.ed-rule {
+	height: 1px;
+	background: var(--lf-line);
+	border: 0;
+	margin: 0;
+}
+.ed-dark {
+	background: #0a0e10;
+	color: #f5f6f0;
+}
+.ed-sage {
+	background: #eef1eb;
+}
+.ed-caption {
+	margin-top: 14px;
+	font-size: 11px;
+	color: var(--lf-muted);
+}
+.ed-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.ed-intro {
+	display: grid;
+	grid-template-columns: 0.8fr 1.2fr;
+	gap: 100px;
+}
+.ed-intro p {
+	margin: 0 0 24px;
+}
+.ed-intro > div:last-child {
+	max-width: 680px;
+}
+.ed-intro .ed-lead {
+	color: var(--lf-ink);
+}
+.ed-intro .ed-prose {
+	font-size: 16px;
+	color: var(--lf-muted);
+}
+.ed-sticky {
+	position: sticky;
+	top: 138px;
+	align-self: start;
+}
+.ed-photo {
+	overflow: hidden;
+	border-radius: 22px;
+}
+.ed-page-progress {
+	height: 2px;
+	position: fixed;
+	top: 99px;
+	left: 0;
+	right: 0;
+	background: #458295;
+	transform: scaleX(0);
+	transform-origin: left;
+	z-index: 1101;
+	pointer-events: none;
+}
+.laguntza-interior section[id],
+.laguntza-home section[id] {
+	scroll-margin-top: 124px;
+}
+.laguntza-interior .wa-fab {
+	background: #263432;
+	box-shadow: 0 4px 18px #0a0e1020;
+	font-size: 13px;
+}
+/* Detailed treatment pages share the same typographic and spacing rhythm. */
+.laguntza-interior #page .service-page {
+	padding-block: 90px;
+}
+.laguntza-interior #page .service-content {
+	max-width: 1120px;
+}
+.laguntza-interior #page .service-content > * + * {
+	margin-top: 72px;
+}
+.laguntza-interior #page .service-content :is(h2, h3) {
+	color: var(--lf-ink);
+}
+.laguntza-interior #page .service-intro {
+	gap: 64px;
+	grid-template-columns: 1.15fr 1fr;
+	margin: 0;
+}
+.laguntza-interior #page .service-intro__text h2 {
+	margin-bottom: 28px;
+}
+.laguntza-interior #page .service-intro__text p {
+	color: var(--lf-muted);
+	font-size: 16px;
+	margin: 0 0 20px;
+}
+.laguntza-interior #page .service-intro__image {
+	border-radius: 80px 20px 20px 20px;
+	overflow: hidden;
+}
+.laguntza-interior #page .service-intro__image img {
+	border-radius: 0;
+	aspect-ratio: 4/5;
+	height: 100%;
+	object-fit: cover;
+}
+.laguntza-interior #page .clinical-care-notice {
+	background: none;
+	border: 0;
+	border-block: 1px solid var(--lf-line);
+	border-radius: 0;
+	padding: 30px 0;
+	margin-bottom: 0;
+}
+.laguntza-interior #page .clinical-care-notice h2 {
+	font-size: 18px;
+	letter-spacing: -0.02em;
+}
+.laguntza-interior #page .clinical-care-notice p {
+	font-size: 13px;
+	color: var(--lf-muted);
+}
+.laguntza-interior #page .service-grid-section {
+	margin-bottom: 0;
+}
+.laguntza-interior #page .service-grid-section h2 {
+	text-align: left;
+	margin-bottom: 36px;
+}
+.laguntza-interior #page .service-grid-section .grid {
+	gap: 0 40px;
+}
+.laguntza-interior #page .item-card {
+	background: none;
+	border: 0;
+	border-top: 1px solid var(--lf-line);
+	border-radius: 0;
+	padding: 28px 0;
+	box-shadow: none;
+}
+.laguntza-interior #page .item-card h3 {
+	font-size: 24px;
+	letter-spacing: -0.04em;
+}
+.laguntza-interior #page .item-card p {
+	font-size: 15px;
+	color: var(--lf-muted);
+	line-height: 1.8;
+}
+.laguntza-interior #page .item-card--link:hover {
+	color: var(--lf-teal);
+	box-shadow: none;
+	transform: translateX(4px);
+}
+.laguntza-interior #page .service-benefits {
+	padding: 48px;
+	border-radius: 22px 80px 22px 22px;
+	background: #eef1eb;
+	margin-bottom: 0;
+}
+.laguntza-interior #page .benefits-list {
+	grid-template-columns: 1fr 1fr;
+	gap: 20px 40px;
+	margin-top: 30px;
+}
+.laguntza-interior #page .benefits-list li {
+	font-size: 15px;
+}
+.laguntza-interior #page .service-stepper {
+	margin: 0;
+}
+.laguntza-interior #page .service-stepper h2 {
+	text-align: left;
+	margin-bottom: 40px;
+}
+.laguntza-interior #page .stepper {
+	max-width: none;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 36px 64px;
+}
+.laguntza-interior #page .step {
+	gap: 22px;
+}
+.laguntza-interior #page .step__number {
+	color: var(--lf-teal);
+	background: transparent;
+	border: 1px solid #a4b6b0;
+	font-size: 14px;
+	box-shadow: none;
+}
+.laguntza-interior #page .step__line {
+	width: 1px;
+	background: #a4b6b0;
+}
+.laguntza-interior #page .step__content h3 {
+	font-size: 22px;
+}
+.laguntza-interior #page .step__content p {
+	font-size: 15px;
+	line-height: 1.8;
+	color: var(--lf-muted);
+}
+.laguntza-interior #page .service-text {
+	max-width: 800px;
+	margin-bottom: 0;
+}
+.laguntza-interior #page .service-text p {
+	color: var(--lf-muted);
+	font-size: 16px;
+	margin-block: 20px;
+}
+.laguntza-interior #page .service-location {
+	padding: 36px 0;
+	text-align: left;
+	border-block: 1px solid var(--lf-line);
+	border-radius: 0;
+	background: none;
+	margin-bottom: 0;
+}
+.laguntza-interior #page .service-location h2 {
+	font-size: 25px;
+}
+.laguntza-interior #page .service-location p {
+	margin: 0;
+	font-size: 15px;
+	color: var(--lf-muted);
+	max-width: 720px;
+}
+.laguntza-interior #page .faq {
+	padding-block: 80px;
+}
+.laguntza-interior #page .faq--compact {
+	padding: 0;
+	margin-bottom: 0;
+}
+.laguntza-interior #page .faq .content__container {
+	width: 100%;
+}
+.laguntza-interior #page .faq__item {
+	border: 0;
+	border-top: 1px solid var(--lf-line);
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+}
+.laguntza-interior #page .faq__item:last-child {
+	border-bottom: 1px solid var(--lf-line);
+}
+.laguntza-interior #page .faq__item[open] {
+	background: none;
+}
+.laguntza-interior #page .faq__q {
+	font-size: 16px;
+	padding: 24px 0;
+}
+.laguntza-interior #page .faq__a {
+	padding: 0 0 28px;
+	font-size: 15px;
+	color: var(--lf-muted);
+}
+@media (max-width: 1100px) {
+	.ed-shell,
+	.laguntza-interior #page .content__container {
+		width: calc(100% - 72px);
+	}
+	.ed-intro {
+		gap: 56px;
+	}
+	.laguntza-interior #page .service-content {
+		max-width: none;
+	}
+}
+@media (max-width: 960px) {
+	.laguntza-interior .main-content,
+	body.laguntza-home .main-content {
+		padding-top: 80px;
+	}
+	.ed-page-progress {
+		top: 79px;
+	}
+}
+@media (max-width: 760px) {
+	.ed-shell,
+	.laguntza-interior #page .content__container {
+		width: calc(100% - 48px);
+	}
+	.ed-section {
+		padding-block: 68px;
+	}
+	.ed-kicker {
+		font-size: 9px;
+		margin-bottom: 20px;
+	}
+	.ed-heading-row {
+		display: block;
+		margin-bottom: 36px;
+	}
+	.ed-heading-row > p {
+		margin-top: 24px;
+	}
+	.ed-intro {
+		grid-template-columns: 1fr;
+		gap: 28px;
+	}
+	.ed-sticky {
+		position: static;
+	}
+	.ed-lead {
+		font-size: 24px;
+	}
+	.laguntza-interior #page .service-page {
+		padding-block: 64px;
+	}
+	.laguntza-interior #page .service-content > * + * {
+		margin-top: 52px;
+	}
+	.laguntza-interior #page .service-intro {
+		grid-template-columns: 1fr;
+		gap: 32px;
+	}
+	.laguntza-interior #page .service-intro__image {
+		order: 0;
+		max-height: 350px;
+	}
+	.laguntza-interior #page .service-intro__image img {
+		aspect-ratio: 4/3;
+	}
+	.laguntza-interior #page .service-benefits {
+		padding: 28px;
+	}
+	.laguntza-interior #page .benefits-list,
+	.laguntza-interior #page .stepper {
+		grid-template-columns: 1fr;
+	}
+	.laguntza-interior #page .service-grid-section .grid {
+		grid-template-columns: 1fr;
+	}
+	.laguntza-interior #page .faq .content__container {
+		width: 100%;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-group(*) {
+		animation-duration: 0.01ms !important;
+	}
+}
+
+.laguntza-interior .wa-fab:focus-visible {
+	outline: 2px solid #37697a;
+	outline-offset: 3px;
+}

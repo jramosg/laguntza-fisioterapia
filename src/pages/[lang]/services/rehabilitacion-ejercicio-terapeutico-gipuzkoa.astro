@@ -98,7 +98,13 @@ const rehabFaq = [1, 2, 3, 4].map(item => ({
 		name={t('service.rehab.hero-title')}
 		description={t('service.rehab.seo-description')}
 	/>
-	<SectionHero id="rehab-hero">
+	<SectionHero
+		id="rehab-hero"
+		image={Prevention}
+		imageAlt={lang === 'eu'
+			? 'Ariketa terapeutikoa Laguntza Fisioterapian'
+			: 'Ejercicio terapéutico en Laguntza Fisioterapia'}
+	>
 		<h1 slot="title">
 			{t('service.rehab.hero-title')}
 		</h1>
