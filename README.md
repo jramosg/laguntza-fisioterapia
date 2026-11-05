@@ -98,6 +98,8 @@ GitHub Actions are pinned to commit hashes and Dependabot checks npm,
 Actions and Docker updates weekly.
 Deployment scans the runtime image with Trivy for secrets and high/critical
 OS and library vulnerabilities with available fixes, and stops on findings.
+The runtime stage applies Debian package fixes and removes npm/corepack;
+package managers remain available only in the build stages.
 The image and static files are uploaded over SSH; the VPS does not build
 Node dependencies.
 
