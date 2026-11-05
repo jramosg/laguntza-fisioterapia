@@ -1,5 +1,9 @@
 import { actions } from 'astro:actions';
-import { isAllowedAttachment, maxAttachments } from '@lib/contact';
+import {
+	isAllowedAttachment,
+	maxAttachments,
+	maxTotalAttachmentSize
+} from '@lib/contact';
 
 class LaguntzaContact extends HTMLElement {
 	private lifecycle?: AbortController;
@@ -33,12 +37,14 @@ class LaguntzaContact extends HTMLElement {
 					);
 				if (
 					files.length > maxAttachments ||
+					files.reduce((total, file) => total + file.size, 0) >
+						maxTotalAttachmentSize ||
 					files.some(file => !isAllowedAttachment(file))
 				) {
 					showStatus(
 						eu
-							? 'Erantsi gehienez 3 JPG, PNG, PDF, DOC edo TXT fitxategi, bakoitza 5 MB gehienez.'
-							: 'Adjunta hasta 3 archivos JPG, PNG, PDF, DOC o TXT, de un máximo de 5 MB cada uno.',
+							? 'Erantsi gehienez 3 JPG, PNG, PDF, DOC edo TXT fitxategi: 10 MiB gehienez bakoitzeko eta 15 MiB guztira. Egiaztatu fitxategien formatua ere.'
+							: 'Adjunta hasta 3 archivos JPG, PNG, PDF, DOC o TXT: 10 MiB por archivo y 15 MiB en total. Comprueba también el formato de los archivos.',
 						true
 					);
 					return;

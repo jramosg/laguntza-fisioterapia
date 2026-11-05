@@ -4,6 +4,9 @@ dist
 .env*
 .aws
 .codex
+.git
+.github
+.pnpm-store
 booking-api
 deliverables
 design-system

@@ -62,9 +62,15 @@ sender, clinic recipients and BCC are configured on the server. The visitor
 gets a confirmation in the same email operation as the clinic; replies go to
 the visitor. The original templates are preserved, with escaped visitor data.
 
-Limits: three attachments, 5 MiB each, supported filename extensions, 16 MiB
-HTTP body, two submissions per minute and five per hour per client IP.
+Limits: three attachments, 10 MiB each and 15 MiB total, 16 MiB HTTP body,
+two submissions per minute and five per hour per client IP for delivery.
+The server checks filenames, declared MIME and binary signatures, assigns
+the MIME itself, and rejects DOCX containers with a VBA project filename.
+These checks are not antivirus scanning; a matching signature cannot prove
+that an attachment is safe. Attachments are never stored or served by the site.
 Nginx overwrites forwarding headers and Node is accessible only on loopback.
+Nginx also rate limits Actions before the request reaches Node, including
+requests with invalid input and requests in the email-disabled test environment.
 A honeypot rejects automated submissions. A stable submission identifier is
 used as a Resend idempotency key when retrying the same form.
 
@@ -87,7 +93,11 @@ SERVER_PORT
 ```
 
 The SSH host key is pinned in `deploy/known_hosts`. CI validates format,
-types, unit tests and HTTP integration before building the runtime image.
+types, dependency advisories, unit tests and HTTP integration before building the runtime image.
+GitHub Actions are pinned to commit hashes and Dependabot checks npm,
+Actions and Docker updates weekly.
+Deployment scans the runtime image with Trivy for secrets and high/critical
+OS and library vulnerabilities with available fixes, and stops on findings.
 The image and static files are uploaded over SSH; the VPS does not build
 Node dependencies.
 
@@ -96,6 +106,12 @@ checks it before switching Nginx and the static-directory symlink. Previous
 hashed assets remain available to open browser tabs. Failed checks restore
 the old files, Nginx configuration and runtime. The previous container is
 stopped only after the new release passes checks.
+
+Nginx sends a Content Security Policy with hashes of the built inline scripts,
+without `unsafe-inline` or `unsafe-eval` for JavaScript. Dynamic inline styles
+remain allowed for ClientRouter, GSAP and Leaflet. The policy restricts image
+sources to the site and OpenStreetMap tiles, blocks framing and objects, and
+restricts form submissions to the site.
 
 Each runtime has a 192 MiB memory limit, 96 MiB V8 heap limit and 0.5 CPU
 limit. The container runs as a non-root user, with a read-only filesystem,

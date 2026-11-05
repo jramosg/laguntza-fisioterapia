@@ -11,6 +11,7 @@ export default defineConfig({
 	compressHTML: true,
 	adapter: node({ mode: 'standalone', bodySizeLimit: 16 * 1024 * 1024 }),
 	security: {
+		actionBodySizeLimit: 16 * 1024 * 1024,
 		allowedDomains: [
 			{ hostname: 'laguntzafisioterapia.com', protocol: 'https' },
 			{ hostname: 'www.laguntzafisioterapia.com', protocol: 'https' },

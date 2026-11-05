@@ -79,20 +79,36 @@ test('rejects malformed requests and excessive message length', () => {
 		);
 	}
 });
-test('enforces attachment size, extension, filename and count on the server', () => {
-	const pdf = new File(['proof'], 'sample.pdf', { type: 'application/pdf' });
+test('enforces attachment size, extension, filename and count on the server', async () => {
+	const pdf = new File(['%PDF-1.7\nproof'], 'sample.pdf', {
+		type: 'application/pdf'
+	});
 	assert.equal(
-		contactSchema.safeParse({ ...fixture, attachments: [pdf] }).success,
+		(await contactSchema.safeParseAsync({ ...fixture, attachments: [pdf] }))
+			.success,
 		true
 	);
 	for (const files of [
 		[pdf, pdf, pdf, pdf],
 		[new File(['proof'], 'script.exe')],
 		[new File(['proof'], '../sample.pdf')],
-		[new File([new Uint8Array(5 * 1024 * 1024 + 1)], 'large.pdf')]
+		[new File(['MZ executable'], 'renamed.pdf', { type: 'application/pdf' })],
+		[new File(['%PDF-1.7\nproof'], 'wrong.pdf', { type: 'image/png' })],
+		[new File(['plain\u0000text'], 'sample.txt', { type: 'text/plain' })],
+		[new File(['proof'], 'sample\u202e.pdf')],
+		[new File([new Uint8Array(10 * 1024 * 1024 + 1)], 'large.pdf')],
+		[1, 2].map(
+			n =>
+				new File(
+					['%PDF-1.7\n', new Uint8Array(8 * 1024 * 1024)],
+					`large-${n}.pdf`,
+					{ type: 'application/pdf' }
+				)
+		)
 	])
 		assert.equal(
-			contactSchema.safeParse({ ...fixture, attachments: files }).success,
+			(await contactSchema.safeParseAsync({ ...fixture, attachments: files }))
+				.success,
 			false
 		);
 });
@@ -139,7 +155,7 @@ test('preserves Basque templates and attachment data', async () => {
 			...fixture,
 			lang: 'eu',
 			attachments: [
-				new File(['proof'], 'sample.pdf', { type: 'application/pdf' })
+				new File(['%PDF-1.7\nproof'], 'sample.pdf', { type: 'application/pdf' })
 			]
 		},
 		settings,
@@ -152,7 +168,7 @@ test('preserves Basque templates and attachment data', async () => {
 	assert.ok(sent.subject.startsWith('Zure mezua'));
 	assert.equal(
 		sent.attachments[0].content,
-		Buffer.from('proof').toString('base64')
+		Buffer.from('%PDF-1.7\nproof').toString('base64')
 	);
 	assert.ok(sent.html.includes('sample.pdf'));
 });

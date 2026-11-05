@@ -1,5 +1,6 @@
 import type { CreateEmailOptions } from 'resend';
 import type { ContactInput } from './contact-schema.ts';
+import { attachmentContentType } from './attachments.ts';
 
 export type EmailTemplate = { html: string; text: string };
 export type Templates = Record<'es' | 'eu', EmailTemplate>;
@@ -81,7 +82,7 @@ export async function processContact(
 			input.attachments.map(async file => ({
 				filename: file.name,
 				content: Buffer.from(await file.arrayBuffer()).toString('base64'),
-				contentType: file.type || 'application/octet-stream'
+				contentType: (await attachmentContentType(file))!
 			}))
 		)
 	};

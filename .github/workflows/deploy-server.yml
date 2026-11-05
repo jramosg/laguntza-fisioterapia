@@ -29,9 +29,10 @@ jobs:
       TARGET_ENV: ${{ inputs.environment || 'test' }}
       OPERATION: ${{ inputs.server_task || 'deploy' }}
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Require master for production
         if: env.TARGET_ENV == 'production'
         run: test "$GITHUB_REF" = refs/heads/master
@@ -39,7 +40,7 @@ jobs:
         run: |
           case "$TARGET_ENV" in test|production) ;; *) exit 1 ;; esac
           case "$OPERATION" in deploy|inspect-routing|repair-routing) ;; *) exit 1 ;; esac
-      - uses: actions/setup-node@v7.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         if: env.OPERATION == 'deploy'
         with:
           node-version-file: .nvmrc
@@ -48,6 +49,7 @@ jobs:
         run: |
           npm install --global pnpm@12.16.1
           pnpm install --frozen-lockfile
+          pnpm audit --audit-level=moderate
           pnpm run format:check
           pnpm run check
           pnpm test
@@ -66,6 +68,17 @@ jobs:
           docker save "laguntza-web:$GITHUB_SHA" | gzip > deployment/image.tar.gz
           cp deploy/release.py deployment/release.py
           tar -czf deployment.tar.gz -C deployment .
+      - name: Scan runtime image before deployment
+        if: env.OPERATION == 'deploy'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          version: v0.76.1
+          image-ref: laguntza-web:${{ github.sha }}
+          format: table
+          scanners: vuln,secret
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
       - name: Prepare SSH
         env:
           SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}

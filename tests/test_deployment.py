@@ -1,5 +1,7 @@
 import importlib.util
 import io
+import base64
+import hashlib
 import json
 import tarfile
 import tempfile
@@ -13,6 +15,21 @@ SPEC.loader.exec_module(deployment)
 
 
 class DeploymentTests(unittest.TestCase):
+    def test_csp_hashes_executable_scripts_without_allowing_inline_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            client = Path(directory)
+            script = "document.documentElement.dataset.theme='dark';"
+            (client / 'index.html').write_text(f'<script>{script}</script><script type="application/ld+json">{{}}</script>')
+            policy = deployment.content_security_policy(client)
+            digest = base64.b64encode(hashlib.sha256(script.encode()).digest()).decode()
+            script_policy = next(part for part in policy.split('; ') if part.startswith('script-src '))
+            self.assertIn("'sha256-" + digest + "'", script_policy)
+            self.assertNotIn('unsafe-inline', script_policy)
+            self.assertNotIn('unsafe-eval', policy)
+            self.assertIn("frame-ancestors 'none'", policy)
+            self.assertIn("form-action 'self'", policy)
+            self.assertIn('https://tile.openstreetmap.org', policy)
+
     def test_test_host_keeps_static_pages_and_proxies_only_runtime_routes(self):
         config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100)
         self.assertIn('location = / {', config)
@@ -22,6 +39,9 @@ class DeploymentTests(unittest.TestCase):
         self.assertIn('X-Robots-Tag "noindex, nofollow" always', config)
         self.assertIn('proxy_set_header X-Forwarded-For $remote_addr;', config)
         self.assertIn('proxy_pass http://127.0.0.1:3000;', config)
+        self.assertIn('limit_req zone=laguntza_test_actions burst=10 nodelay;', config)
+        self.assertIn('limit_req_status 429;', config)
+        self.assertIn('Content-Security-Policy', config)
 
     def test_production_is_indexable_and_canonicalizes_www(self):
         config = deployment.render_nginx('production', '/var/www/laguntza-fisioterapia-production', 32101)

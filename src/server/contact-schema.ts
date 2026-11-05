@@ -1,5 +1,10 @@
 import { z } from 'astro/zod';
-import { isAllowedAttachment, maxAttachments } from '../lib/contact.ts';
+import {
+	isAllowedAttachment,
+	maxAttachments,
+	maxTotalAttachmentSize
+} from '../lib/contact.ts';
+import { attachmentContentType } from './attachments.ts';
 
 export const contactSchema = z.object({
 	requestId: z.uuid(),
@@ -19,8 +24,22 @@ export const contactSchema = z.object({
 		.nullish()
 		.transform(value => value || ''),
 	attachments: z
-		.array(z.instanceof(File).refine(isAllowedAttachment, 'Invalid attachment'))
+		.array(
+			z
+				.instanceof(File)
+				.refine(isAllowedAttachment, 'Invalid attachment')
+				.refine(
+					async file => Boolean(await attachmentContentType(file)),
+					'Invalid attachment content'
+				)
+		)
 		.max(maxAttachments)
+		.refine(
+			files =>
+				files.reduce((total, file) => total + file.size, 0) <=
+				maxTotalAttachmentSize,
+			'Attachments exceed total size limit'
+		)
 		.default([])
 });
 

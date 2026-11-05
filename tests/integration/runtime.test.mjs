@@ -91,7 +91,7 @@ test('the action validates a form while delivery is disabled without requiring A
 	form.set('EMAIL_ENABLED', 'true');
 	form.append(
 		'attachments',
-		new File(['preview'], 'sample.pdf', { type: 'application/pdf' })
+		new File(['%PDF-1.7\npreview'], 'sample.pdf', { type: 'application/pdf' })
 	);
 	const response = await fetch(`${base}/_actions/contact/`, {
 		method: 'POST',
@@ -122,6 +122,49 @@ test('the action rejects malformed submissions, invalid attachments and the hone
 		body: form
 	});
 	assert.equal(response.status, 400);
+});
+test('accepts a 6 MiB attachment above the previous file and Astro body limits', async () => {
+	const form = makeForm();
+	form.append(
+		'attachments',
+		new File(['%PDF-1.7\n', new Uint8Array(6 * 1024 * 1024)], 'large.pdf', {
+			type: 'application/pdf'
+		})
+	);
+	const response = await fetch(`${base}/_actions/contact/`, {
+		method: 'POST',
+		headers: { Origin: base },
+		body: form
+	});
+	assert.equal(response.status, 200);
+});
+test('rejects executable content disguised as an allowed attachment', async () => {
+	const form = makeForm();
+	form.append(
+		'attachments',
+		new File(['MZ fake executable'], 'invoice.pdf', { type: 'application/pdf' })
+	);
+	const response = await fetch(`${base}/_actions/contact/`, {
+		method: 'POST',
+		headers: { Origin: base },
+		body: form
+	});
+	assert.equal(response.status, 400);
+});
+test('rejects request bodies exceeding the configured 16 MiB limit', async () => {
+	const form = makeForm();
+	form.append(
+		'attachments',
+		new File([new Uint8Array(16 * 1024 * 1024)], 'oversized.pdf', {
+			type: 'application/pdf'
+		})
+	);
+	const response = await fetch(`${base}/_actions/contact/`, {
+		method: 'POST',
+		headers: { Origin: base },
+		body: form
+	});
+	assert.equal(response.status, 413);
 });
 test('the action rejects cross-origin form submissions', async () => {
 	const response = await fetch(`${base}/_actions/contact/`, {
