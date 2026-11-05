@@ -65,9 +65,8 @@ failed confirmation does not discard a request already delivered to the clinic.
 Both messages use independent idempotency keys. The shared email frame uses
 inline styles and presentation tables, with mobile and dark-mode enhancements.
 Visitor data is escaped and appears only in the clinic email. The confirmation
-renderer accepts only the locale. These templates belong to the staged Astro
-backend. Updating them does not modify the existing production `email-sender`
-service or send emails.
+renderer accepts only the locale. These templates belong to the Astro backend;
+updating them does not send emails.
 
 Limits: three attachments, 10 MiB each and 15 MiB total, 16 MiB HTTP body,
 two submissions per minute and five per hour per client IP for delivery.
@@ -161,16 +160,11 @@ and optional `BCC_EMAIL`; the helper never infers recipients or copies old
 credentials automatically. Keep the file root-owned with mode 0600.
 
 The Astro runtime exposes the contact Action, not the old JSON email API.
-The existing `email-sender` service continues handling the Netlify form through
-its independent loopback port until the production cutover is verified.
-Test publication reads that existing upstream from `/var/lib/laguntza/mail.json`
-and preserves only its `/api/contact-form` proxy. Nginx bounds those legacy JSON
-uploads to 22 MiB and one active request; they never reach Astro. The Node adapter,
-Actions and web proxy use a 16 MiB limit. Without legacy upstream metadata, the
-test API paths return 404. Production has no legacy email proxy.
-
-No deployment target replaces or stops `email-sender`. Retire it and its old
-credentials separately after the DNS transition and rollback period.
+The standalone `email-sender` service has been retired. Contact submissions and
+email delivery use Astro Actions, with a 16 MiB limit in the Node adapter,
+Actions and web proxy. The old `/api/contact-form` endpoint returns 404; no
+deployment recreates its proxy or reads legacy mail settings. Its former
+repository is deprecated, with deployments disabled and secrets removed.
 
 Release metadata is in `/var/lib/laguntza/<environment>.json`; previous
 Nginx configuration and static files are retained under
@@ -185,8 +179,8 @@ refuses to replace a virtual host without its certificate or to overwrite a
 configuration shared with unrelated domains.
 
 Deploy and validate production before updating web DNS records. Preserve
-mail records, Resend verification and Search Console verification. Leave
-Netlify and the legacy mail service available while old DNS caches drain.
+mail records, Resend verification and Search Console verification. When changing
+hosting providers, retain the previous published site while old DNS caches drain.
 The deployment workflow never changes DNS or publishes to Netlify.
 
 After merging to `master`, start production publication with:

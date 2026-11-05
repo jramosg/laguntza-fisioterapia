@@ -59,24 +59,18 @@ class DeploymentTests(unittest.TestCase):
             self.assertIn('https://tile.openstreetmap.org', policy)
 
     def test_test_host_keeps_static_pages_and_proxies_only_runtime_routes(self):
-        config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100, legacy_mail_port=32773)
+        config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100)
         self.assertIn('location = / {', config)
         self.assertIn('location ^~ /_actions/', config)
         self.assertIn('proxy_pass http://127.0.0.1:32100;', config)
         self.assertIn('try_files $uri $uri/ =404;', config)
         self.assertIn('X-Robots-Tag "noindex, nofollow" always', config)
         self.assertIn('proxy_set_header X-Forwarded-For $remote_addr;', config)
-        self.assertIn('proxy_pass http://127.0.0.1:32773/api/contact-form/;', config)
-        self.assertIn('limit_conn laguntza_mail_connections 1;', config)
+        self.assertIn('location ^~ /api/ { return 404; }', config)
+        self.assertNotIn('/api/contact-form', config)
         self.assertIn('limit_req zone=laguntza_test_actions burst=10 nodelay;', config)
         self.assertIn('limit_req_status 429;', config)
         self.assertIn('Content-Security-Policy', config)
-
-    def test_no_mail_proxy_is_created_without_a_legacy_upstream(self):
-        config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100)
-        self.assertNotIn('location = /api/contact-form', config)
-        self.assertNotIn('laguntza_mail_connections', config)
-        self.assertIn('location ^~ /api/ { return 404; }', config)
 
     def test_production_is_indexable_and_canonicalizes_www(self):
         config = deployment.render_nginx('production', '/var/www/laguntza-fisioterapia-production', 32101)
@@ -108,7 +102,6 @@ class DeploymentTests(unittest.TestCase):
             state = base / 'state'
             state.mkdir()
             (state / 'test.json').write_text(json.dumps({'container': 'old-runtime'}))
-            (state / 'mail.json').write_text(json.dumps({'container': 'legacy-sender', 'port': 32773}))
             with (patch.object(deployment, 'TARGETS', {'test': ('test.laguntzafisioterapia.com', str(root), str(config))}),
                   patch.object(deployment, 'CERTIFICATES', base / 'certificates'),
                   patch.object(deployment, 'STATE', state),
@@ -116,7 +109,6 @@ class DeploymentTests(unittest.TestCase):
                   patch.object(deployment, 'prepare_environment', return_value=base / 'test.env'),
                   patch.object(deployment, 'run', return_value='') as run,
                   patch.object(deployment, 'wait_for_runtime'),
-                  patch.object(deployment, 'render_nginx', wraps=deployment.render_nginx) as render,
                   patch.object(deployment, 'verify_site', side_effect=RuntimeError('failed check')),
                   patch.object(deployment.subprocess, 'run') as cleanup):
                 with self.assertRaisesRegex(RuntimeError, 'failed check'):
@@ -125,9 +117,6 @@ class DeploymentTests(unittest.TestCase):
                 self.assertEqual((root / 'old.html').read_text(), 'old')
                 self.assertEqual(json.loads((state / 'test.json').read_text())['container'], 'old-runtime')
                 self.assertNotIn('old-runtime', str(cleanup.call_args_list))
-                self.assertNotIn('legacy-sender', str(cleanup.call_args_list))
-                self.assertEqual(render.call_args.args[-1], 32773)
-                self.assertEqual(json.loads((state / 'mail.json').read_text())['container'], 'legacy-sender')
                 docker_run = next(call.args for call in run.call_args_list if call.args[:2] == ('docker', 'run'))
                 self.assertIn('127.0.0.1:4410:4321', docker_run)
 
