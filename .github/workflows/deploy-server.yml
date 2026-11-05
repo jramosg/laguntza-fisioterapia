@@ -4,15 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: VPS target (mail changes production email)
+        description: VPS environment
         type: choice
         default: test
-        options: [test, production, mail]
-      server_task:
-        description: Server operation
-        type: choice
-        default: deploy
-        options: [deploy]
+        options: [test, production]
 
 permissions:
   contents: read
@@ -35,7 +30,7 @@ jobs:
           persist-credentials: false
       - name: Validate target
         run: |
-          case "$TARGET_ENV" in test|production|mail) ;; *) exit 1 ;; esac
+          case "$TARGET_ENV" in test|production) ;; *) exit 1 ;; esac
           if [ "$TARGET_ENV" != test ]; then test "$GITHUB_REF" = refs/heads/master; fi
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -113,7 +108,7 @@ jobs:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_PORT: ${{ secrets.SERVER_PORT || 22 }}
         run: |
-          case "$TARGET_ENV" in test|production|mail) ;; *) exit 1 ;; esac
+          case "$TARGET_ENV" in test|production) ;; *) exit 1 ;; esac
           ssh -T -i "$RUNNER_TEMP/laguntza-ssh/key" -p "$SERVER_PORT" -o StrictHostKeyChecking=yes -o HostKeyAlias=165.232.80.23 -o UserKnownHostsFile=deploy/known_hosts "$SERVER_USER@$SERVER_HOST" "publish $TARGET_ENV $GITHUB_SHA" < "$RUNNER_TEMP/laguntza-release/deployment.tar.gz"
       - name: Remove SSH key
         if: always()

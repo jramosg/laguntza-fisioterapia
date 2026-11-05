@@ -6,7 +6,7 @@ import re
 import shlex
 import sys
 
-roles = {'laguntza-test-deploy': {'test'}, 'laguntza-production-deploy': {'production', 'mail'}}
+roles = {'laguntza-test-deploy': {'test'}, 'laguntza-production-deploy': {'production'}}
 user = pwd.getpwuid(os.getuid()).pw_name
 try:
     arguments = shlex.split(os.environ.get('SSH_ORIGINAL_COMMAND', ''))

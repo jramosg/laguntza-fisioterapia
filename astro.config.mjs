@@ -9,7 +9,7 @@ export default defineConfig({
 	site: 'https://laguntzafisioterapia.com/',
 	trailingSlash: 'always',
 	compressHTML: true,
-	adapter: node({ mode: 'standalone', bodySizeLimit: 22 * 1024 * 1024 }),
+	adapter: node({ mode: 'standalone', bodySizeLimit: 16 * 1024 * 1024 }),
 	security: {
 		actionBodySizeLimit: 16 * 1024 * 1024,
 		allowedDomains: [
@@ -26,11 +26,6 @@ export default defineConfig({
 				context: 'server',
 				access: 'secret',
 				optional: true
-			}),
-			LEGACY_CONTACT_ENABLED: envField.boolean({
-				context: 'server',
-				access: 'secret',
-				default: false
 			}),
 			EMAIL_ENABLED: envField.boolean({
 				context: 'server',

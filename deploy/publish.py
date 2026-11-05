@@ -11,7 +11,7 @@ import tarfile
 import tempfile
 from pathlib import Path, PurePosixPath
 
-ROLES = {'laguntza-test-deploy': {'test'}, 'laguntza-production-deploy': {'production', 'mail'}}
+ROLES = {'laguntza-test-deploy': {'test'}, 'laguntza-production-deploy': {'production'}}
 MAX_UPLOAD = 512 * 1024 * 1024
 MAX_IMAGE = 1024 * 1024 * 1024
 SERVER_MODULE = Path('/usr/local/lib/laguntza/release.py')
@@ -92,10 +92,7 @@ def main():
             spec = importlib.util.spec_from_file_location('trusted_release', SERVER_MODULE)
             release = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(release)
-            if environment == 'mail':
-                release.deploy_mail(sha, directory)
-            else:
-                release.deploy(environment, sha, directory)
+            release.deploy(environment, sha, directory)
 
 
 if __name__ == '__main__':

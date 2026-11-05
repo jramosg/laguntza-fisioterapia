@@ -19,9 +19,10 @@ def archive(path, files):
 
 
 class PublicationGateTests(unittest.TestCase):
-    def test_test_identity_cannot_publish_mail_or_production_or_inject_revision(self):
+    def test_scoped_identities_cannot_cross_environments_restore_mail_or_inject_revision(self):
         gate.authorize('laguntza-test-deploy', 'test', 'a' * 40)
-        for user, environment, sha in [('laguntza-test-deploy', 'production', 'a' * 40), ('laguntza-test-deploy', 'mail', 'a' * 40), ('root', 'test', 'a' * 40), ('laguntza-test-deploy', 'test', 'a' * 40 + ';id')]:
+        gate.authorize('laguntza-production-deploy', 'production', 'a' * 40)
+        for user, environment, sha in [('laguntza-test-deploy', 'production', 'a' * 40), ('laguntza-test-deploy', 'mail', 'a' * 40), ('laguntza-production-deploy', 'test', 'a' * 40), ('laguntza-production-deploy', 'mail', 'a' * 40), ('root', 'test', 'a' * 40), ('laguntza-test-deploy', 'test', 'a' * 40 + ';id')]:
             with self.assertRaises(ValueError): gate.authorize(user, environment, sha)
 
     def test_bundle_rejects_uploaded_python_code_and_traversal(self):

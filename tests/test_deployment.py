@@ -19,41 +19,30 @@ class DeploymentTests(unittest.TestCase):
         config = 'limit_conn_zone $server_name zone=laguntza_mail_connections:1m;\nserver { server_name test.laguntzafisioterapia.com; }'
         self.assertEqual(deployment.configured_server_names(config), {'test.laguntzafisioterapia.com'})
         self.assertEqual(deployment.configured_server_names(config + '\nserver { server_name other.example; }'), {'test.laguntzafisioterapia.com', 'other.example'})
-    def test_mail_configuration_preserves_the_old_clinic_bcc_destination(self):
+    def test_production_requires_explicit_configuration_without_reading_legacy_credentials(self):
         with tempfile.TemporaryDirectory() as directory:
-            response = json.dumps([{'Config': {'Env': ['RESEND_API_KEY=mock-key', 'FROM_EMAIL=clinic@example.com', 'BCC_EMAIL=office@example.com']}}])
-            with patch.object(deployment, 'ENVIRONMENTS', Path(directory)), patch.object(deployment, 'run', return_value=response):
-                settings = deployment.prepare_environment('mail')
-                values = dict(line.split('=', 1) for line in settings.read_text().splitlines())
-                self.assertEqual(values['COMPANY_EMAIL'], 'office@example.com')
-                self.assertNotIn('BCC_EMAIL', values)
-                self.assertEqual(values['EMAIL_ENABLED'], 'true')
-                self.assertEqual(values['LEGACY_CONTACT_ENABLED'], 'true')
-                self.assertEqual(settings.stat().st_mode & 0o777, 0o600)
+            settings = Path(directory) / 'production.env'
+            with patch.object(deployment, 'ENVIRONMENTS', Path(directory)), patch.object(deployment, 'run') as command:
+                with self.assertRaisesRegex(ValueError, 'Configure'):
+                    deployment.prepare_environment('production')
+                self.assertFalse(settings.exists())
+                settings.write_text('EMAIL_ENABLED=true\nRESEND_API_KEY=mock-key\nFROM_EMAIL=clinic@example.com\nCOMPANY_EMAIL=office@example.com\n')
+                self.assertEqual(deployment.prepare_environment('production'), settings)
+                command.assert_not_called()
 
-    def test_failed_mail_deployment_restores_proxy_and_keeps_original_sender(self):
+    def test_test_configuration_cannot_enable_delivery_and_enabled_delivery_requires_settings(self):
         with tempfile.TemporaryDirectory() as directory:
-            base = Path(directory)
-            state = base / 'state'; state.mkdir()
-            client = base / 'client'; client.mkdir()
-            (client / 'index.html').write_text('<html></html>')
-            (state / 'test.json').write_text(json.dumps({'port': 32100, 'client': str(client)}))
-            config = base / 'nginx.conf'; config.write_text('old proxy configuration')
-            def command(*args):
-                if args[:2] == ('docker', 'inspect'):
-                    return json.dumps([{'NetworkSettings': {'Ports': {'4321/tcp': [{'HostPort': '32101'}]}}}])
-                if args[0] == 'curl':
-                    return json.dumps({'emailEnabled': True, 'legacyContactEnabled': True}) if '/health/' in args[-1] else '400'
-                return ''
-            with (patch.object(deployment, 'STATE', state), patch.object(deployment, 'RELEASES', base / 'releases'),
-                  patch.object(deployment, 'TARGETS', {'test': ('test.laguntzafisioterapia.com', str(client), str(config))}),
-                  patch.object(deployment, 'prepare_environment', return_value=base / 'mail.env'), patch.object(deployment, 'run', side_effect=command),
-                  patch.object(deployment, 'wait_for_runtime'), patch.object(deployment.subprocess, 'run') as cleanup):
-                with self.assertRaisesRegex(ValueError, 'CORS'):
-                    deployment.deploy_mail('b' * 40, base)
-                self.assertEqual(config.read_text(), 'old proxy configuration')
-                self.assertFalse((state / 'mail.json').exists())
-                self.assertNotIn('email-sender-api', str(cleanup.call_args_list))
+            with patch.object(deployment, 'ENVIRONMENTS', Path(directory)):
+                settings = deployment.prepare_environment('test')
+                self.assertEqual(settings.read_text(), 'EMAIL_ENABLED=false\n')
+                self.assertEqual(settings.stat().st_mode & 0o777, 0o600)
+                settings.write_text('EMAIL_ENABLED=true\n')
+                with self.assertRaisesRegex(ValueError, 'Test must'):
+                    deployment.prepare_environment('test')
+                (Path(directory) / 'production.env').write_text('EMAIL_ENABLED=true\n')
+                with self.assertRaisesRegex(ValueError, 'explicit sender'):
+                    deployment.prepare_environment('production')
+
     def test_csp_hashes_executable_scripts_without_allowing_inline_execution(self):
         with tempfile.TemporaryDirectory() as directory:
             client = Path(directory)
@@ -70,18 +59,24 @@ class DeploymentTests(unittest.TestCase):
             self.assertIn('https://tile.openstreetmap.org', policy)
 
     def test_test_host_keeps_static_pages_and_proxies_only_runtime_routes(self):
-        config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100)
+        config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100, legacy_mail_port=32773)
         self.assertIn('location = / {', config)
         self.assertIn('location ^~ /_actions/', config)
         self.assertIn('proxy_pass http://127.0.0.1:32100;', config)
         self.assertIn('try_files $uri $uri/ =404;', config)
         self.assertIn('X-Robots-Tag "noindex, nofollow" always', config)
         self.assertIn('proxy_set_header X-Forwarded-For $remote_addr;', config)
-        self.assertIn('proxy_pass http://127.0.0.1:3000/api/contact-form/;', config)
+        self.assertIn('proxy_pass http://127.0.0.1:32773/api/contact-form/;', config)
         self.assertIn('limit_conn laguntza_mail_connections 1;', config)
         self.assertIn('limit_req zone=laguntza_test_actions burst=10 nodelay;', config)
         self.assertIn('limit_req_status 429;', config)
         self.assertIn('Content-Security-Policy', config)
+
+    def test_no_mail_proxy_is_created_without_a_legacy_upstream(self):
+        config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100)
+        self.assertNotIn('location = /api/contact-form', config)
+        self.assertNotIn('laguntza_mail_connections', config)
+        self.assertIn('location ^~ /api/ { return 404; }', config)
 
     def test_production_is_indexable_and_canonicalizes_www(self):
         config = deployment.render_nginx('production', '/var/www/laguntza-fisioterapia-production', 32101)
@@ -113,6 +108,7 @@ class DeploymentTests(unittest.TestCase):
             state = base / 'state'
             state.mkdir()
             (state / 'test.json').write_text(json.dumps({'container': 'old-runtime'}))
+            (state / 'mail.json').write_text(json.dumps({'container': 'legacy-sender', 'port': 32773}))
             def command(*args):
                 if args[:2] == ('docker', 'inspect'):
                     return json.dumps([{'NetworkSettings': {'Ports': {'4321/tcp': [{'HostPort': '32100'}]}}}])
@@ -124,6 +120,7 @@ class DeploymentTests(unittest.TestCase):
                   patch.object(deployment, 'prepare_environment', return_value=base / 'test.env'),
                   patch.object(deployment, 'run', side_effect=command),
                   patch.object(deployment, 'wait_for_runtime'),
+                  patch.object(deployment, 'render_nginx', wraps=deployment.render_nginx) as render,
                   patch.object(deployment, 'verify_site', side_effect=RuntimeError('failed check')),
                   patch.object(deployment.subprocess, 'run') as cleanup):
                 with self.assertRaisesRegex(RuntimeError, 'failed check'):
@@ -132,3 +129,6 @@ class DeploymentTests(unittest.TestCase):
                 self.assertEqual((root / 'old.html').read_text(), 'old')
                 self.assertEqual(json.loads((state / 'test.json').read_text())['container'], 'old-runtime')
                 self.assertNotIn('old-runtime', str(cleanup.call_args_list))
+                self.assertNotIn('legacy-sender', str(cleanup.call_args_list))
+                self.assertEqual(render.call_args.args[-1], 32773)
+                self.assertEqual(json.loads((state / 'mail.json').read_text())['container'], 'legacy-sender')

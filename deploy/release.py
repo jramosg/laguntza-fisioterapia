@@ -4,7 +4,6 @@ import datetime
 import base64
 import hashlib
 import json
-import os
 import re
 import shutil
 import subprocess
@@ -83,15 +82,15 @@ def content_security_policy(client):
     ])
 
 
-def render_nginx(environment, root, port, policy="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'", mail_port=3000):
+def render_nginx(environment, root, port, policy="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'", legacy_mail_port=None):
     domain = TARGETS[environment][0]
     alias = " www.laguntzafisioterapia.com" if environment == "production" else ""
     robots = 'add_header X-Robots-Tag "noindex, nofollow" always;' if environment == "test" else ""
     canonical = 'if ($host = www.laguntzafisioterapia.com) { return 301 https://laguntzafisioterapia.com$request_uri; }' if environment == "production" else ""
-    # The temporary compatibility endpoint keeps the existing Netlify form working.
-    # Requests without the final slash are proxied internally without a redirect.
+    # Preserve the independent email-sender service for the existing Netlify form.
+    # It is not routed through the Astro runtime.
     legacy = ""
-    if environment == 'test':
+    if environment == 'test' and legacy_mail_port is not None:
         for path in ('/api/contact-form', '/api/contact-form/'):
             legacy += f"""
     location = {path} {{
@@ -100,7 +99,7 @@ def render_nginx(environment, root, port, policy="default-src 'self'; base-uri '
         limit_req_status 429;
         limit_conn laguntza_mail_connections 1;
         limit_conn_status 429;
-        proxy_pass http://127.0.0.1:{int(mail_port)}/api/contact-form/;
+        proxy_pass http://127.0.0.1:{int(legacy_mail_port)}/api/contact-form/;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Host $host;
@@ -109,6 +108,7 @@ def render_nginx(environment, root, port, policy="default-src 'self'; base-uri '
         proxy_read_timeout 30s;
     }}
 """
+    if environment == 'test':
         legacy += 'location ^~ /api/ { return 404; }'
     proxy = f"""
         proxy_pass http://127.0.0.1:{int(port)};
@@ -123,7 +123,7 @@ def render_nginx(environment, root, port, policy="default-src 'self'; base-uri '
     zone = f"laguntza_{environment}_actions"
     return f"""# Managed by Laguntza deployment; environment: {environment}
 limit_req_zone $binary_remote_addr zone={zone}:1m rate=10r/m;
-{'limit_conn_zone $server_name zone=laguntza_mail_connections:1m;' if environment == 'test' else ''}
+{'limit_conn_zone $server_name zone=laguntza_mail_connections:1m;' if environment == 'test' and legacy_mail_port is not None else ''}
 server {{
     listen 80;
     server_name {domain}{alias};
@@ -184,36 +184,22 @@ def extract_client(archive, destination):
 
 
 def prepare_environment(environment):
+    if environment not in TARGETS:
+        raise ValueError('Invalid environment')
     directory = ENVIRONMENTS
     directory.mkdir(mode=0o700, exist_ok=True)
     path = directory / f"{environment}.env"
     if not path.exists():
-        values = {"EMAIL_ENABLED": "false"}
-        if environment in ("production", "mail"):
-            mail_settings = directory / 'mail.env'
-            if environment == 'production' and mail_settings.exists():
-                existing = dict(line.split('=', 1) for line in mail_settings.read_text().splitlines() if '=' in line)
-            else:
-                current = json.loads(run("docker", "inspect", "email-sender-api"))[0]
-                existing = dict(item.split("=", 1) for item in current["Config"]["Env"])
-            for key in ("RESEND_API_KEY", "FROM_EMAIL", "COMPANY_EMAIL", "BCC_EMAIL"):
-                if existing.get(key):
-                    values[key] = existing[key]
-            # The old installation delivered clinic copies through BCC only.
-            # Preserve those destinations rather than inventing a new mailbox.
-            if not values.get('COMPANY_EMAIL') and values.get('BCC_EMAIL'):
-                values['COMPANY_EMAIL'] = values.pop('BCC_EMAIL')
-            if not all(values.get(key) for key in ("RESEND_API_KEY", "FROM_EMAIL", "COMPANY_EMAIL")):
-                raise ValueError("The existing mail service is missing required settings")
-            values["EMAIL_ENABLED"] = "true"
-            values["LEGACY_CONTACT_ENABLED"] = 'true' if environment == 'mail' else 'false'
-        if any("\n" in value or "\r" in value for value in values.values()):
-            raise ValueError("Invalid runtime configuration")
-        atomic_write(path, "".join(f"{key}={value}\n" for key, value in values.items()), 0o600)
-    if environment == "test" and "EMAIL_ENABLED=false" not in path.read_text().splitlines():
+        if environment == 'production':
+            raise ValueError('Configure /etc/laguntza/production.env before deployment')
+        atomic_write(path, 'EMAIL_ENABLED=false\n', 0o600)
+    values = dict(line.split('=', 1) for line in path.read_text().splitlines() if '=' in line and not line.startswith('#'))
+    if values.get('EMAIL_ENABLED') not in ('true', 'false'):
+        raise ValueError('Set EMAIL_ENABLED explicitly to true or false')
+    if environment == "test" and values['EMAIL_ENABLED'] != 'false':
         raise ValueError("Test must have EMAIL_ENABLED=false")
-    if environment == 'mail' and not {'EMAIL_ENABLED=true', 'LEGACY_CONTACT_ENABLED=true'}.issubset(path.read_text().splitlines()):
-        raise ValueError('Compatibility mail runtime requires explicit flags')
+    if values['EMAIL_ENABLED'] == 'true' and not all(values.get(key) for key in ('RESEND_API_KEY', 'FROM_EMAIL', 'COMPANY_EMAIL')):
+        raise ValueError('Email delivery requires explicit sender, recipients and API credentials')
     return path
 
 
@@ -301,8 +287,8 @@ def deploy(environment, sha, bundle):
         temporary_link.replace(root)
         switched = True
         mail_state = STATE / 'mail.json'
-        mail_port = json.loads(mail_state.read_text())['port'] if mail_state.exists() else 3000
-        atomic_write(config, render_nginx(environment, root, port, content_security_policy(client), mail_port))
+        legacy_mail_port = json.loads(mail_state.read_text())['port'] if environment == 'test' and mail_state.exists() else None
+        atomic_write(config, render_nginx(environment, root, port, content_security_policy(client), legacy_mail_port))
         run("nginx", "-t")
         run("systemctl", "reload", "nginx")
         verify_site(domain, environment)
@@ -327,64 +313,6 @@ def deploy(environment, sha, bundle):
     print(f"Deployed {sha} to {environment}; Node bound to loopback:{port}; memory limit 192 MiB")
 
 
-def deploy_mail(sha, bundle):
-    if not re.fullmatch(r'[a-f0-9]{40}', sha):
-        raise ValueError('Invalid mail revision')
-    test = json.loads((STATE / 'test.json').read_text())
-    config = Path(TARGETS['test'][2]).resolve()
-    original = config.read_text()
-    env_file = prepare_environment('mail')
-    stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M%S%f')
-    release = RELEASES / 'mail' / f'{sha[:12]}-{stamp}'
-    atomic_write(release / 'nginx.previous.conf', original)
-    previous_file = STATE / 'mail.json'
-    previous = json.loads(previous_file.read_text()) if previous_file.exists() else {}
-    atomic_write(release / 'previous.json', json.dumps(previous) + '\n', 0o600)
-    run('docker', 'load', '--input', str(bundle / 'image.tar.gz'))
-    name = f'laguntza-mail-{stamp}'
-    image = f'laguntza-web:{sha}'
-    try:
-        run('docker', 'run', '-d', '--name', name, '--restart', 'unless-stopped', '--memory', '192m', '--memory-swap', '256m', '--cpus', '0.5', '--pids-limit', '100', '--read-only', '--tmpfs', '/tmp:rw,noexec,nosuid,size=16m', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--log-opt', 'max-size=5m', '--log-opt', 'max-file=2', '--env-file', str(env_file), '-e', 'NODE_OPTIONS=--max-old-space-size=96', '-p', '127.0.0.1::4321', '--user', '1000:1000', '--entrypoint', '/usr/local/bin/node', image, './dist/server/entry.mjs')
-        inspected = json.loads(run('docker', 'inspect', name))[0]
-        port = int(inspected['NetworkSettings']['Ports']['4321/tcp'][0]['HostPort'])
-        wait_for_runtime(port, 'mail')
-        health = json.loads(run('curl', '-fsS', f'http://127.0.0.1:{port}/health/'))
-        if not (health.get('emailEnabled') is True and health.get('legacyContactEnabled') is True):
-            raise ValueError('Incorrect compatibility mail flags')
-        atomic_write(config, render_nginx('test', TARGETS['test'][1], test['port'], content_security_policy(Path(test['client'])), port))
-        run('nginx', '-t')
-        run('systemctl', 'reload', 'nginx')
-        domain = TARGETS['test'][0]
-        for attempt in range(15):
-            status = run('curl', '-sS', '-o', '/dev/null', '-w', '%{http_code}', '--resolve', f'{domain}:443:127.0.0.1', '-H', 'Origin: https://laguntzafisioterapia.com', '-H', 'Content-Type: application/json', '--data', '{}', f'https://{domain}/api/contact-form')
-            if status == '400':
-                break
-            if attempt == 14:
-                raise ValueError('Compatibility endpoint validation failed')
-            time.sleep(0.25)
-        # No valid production form is submitted; these checks never send email.
-        headers = run('curl', '-sS', '-D', '-', '-o', '/dev/null', '-X', 'OPTIONS', '--resolve', f'{domain}:443:127.0.0.1', '-H', 'Origin: https://laguntzafisioterapia.com', '-H', 'Access-Control-Request-Method: POST', '-H', 'Access-Control-Request-Headers: content-type', f'https://{domain}/api/contact-form').lower()
-        if '204' not in headers or 'access-control-allow-origin: https://laguntzafisioterapia.com' not in headers:
-            raise ValueError('Compatibility CORS failed')
-        verify_site(domain, 'test')
-        atomic_write(previous_file, json.dumps({'sha': sha, 'container': name, 'image': image, 'port': port}, indent=2) + '\n', 0o600)
-    except Exception:
-        atomic_write(config, original)
-        run('nginx', '-t')
-        run('systemctl', 'reload', 'nginx')
-        subprocess.run(['docker', 'rm', '-f', name], capture_output=True)
-        raise
-    if previous.get('container'):
-        subprocess.run(['docker', 'stop', '--timeout', '20', previous['container']], capture_output=True)
-        subprocess.run(['docker', 'rm', previous['container']], capture_output=True)
-    # Keep the old service available for rollback but remove its public listener.
-    subprocess.run(['docker', 'update', '--restart=no', 'email-sender-api'], capture_output=True)
-    subprocess.run(['docker', 'stop', '--timeout', '20', 'email-sender-api'], capture_output=True)
-    print(f'Compatibility mail runtime deployed at loopback:{port}; legacy container stopped')
-
 
 if __name__ == "__main__":
-    if sys.argv[1] == 'mail':
-        deploy_mail(sys.argv[2], Path(sys.argv[3]).resolve())
-    else:
-        deploy(sys.argv[1], sys.argv[2], Path(sys.argv[3]).resolve())
+    deploy(sys.argv[1], sys.argv[2], Path(sys.argv[3]).resolve())
