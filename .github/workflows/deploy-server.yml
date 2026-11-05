@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: VPS environment
+        description: VPS target (mail changes production email)
         type: choice
         default: test
         options: [test, production, mail]
@@ -36,7 +36,7 @@ jobs:
       - name: Validate target
         run: |
           case "$TARGET_ENV" in test|production|mail) ;; *) exit 1 ;; esac
-          if [ "$TARGET_ENV" = production ]; then test "$GITHUB_REF" = refs/heads/master; fi
+          if [ "$TARGET_ENV" != test ]; then test "$GITHUB_REF" = refs/heads/master; fi
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc

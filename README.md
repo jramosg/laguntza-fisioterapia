@@ -84,8 +84,9 @@ start the runtime with delivery disabled. Neither test suite sends real mail.
 ## VPS deployment
 
 The **Deploy to Server** workflow is manual. Choose `test`, `production` or `mail`.
-Production deployment requires the `master` branch; test can deploy the
-current feature branch. Updating test does not update production.
+Production and mail deployment require the `master` branch; test can deploy the
+current feature branch. Updating test does not update production or switch the
+existing production mail backend.
 
 Repository secrets:
 
@@ -169,6 +170,12 @@ the old container and proxy backup for rollback. Existing clinic BCC addresses
 become the fixed clinic recipients if there is no `COMPANY_EMAIL`. Neither
 addresses nor API keys are printed. The production frontend and DNS remain
 unchanged. Regular test deployments preserve the compatibility upstream.
+
+Until the production cutover is approved, the existing `email-sender` image
+continues handling the Netlify contact form through a loopback-only port. The
+mail state records that legacy upstream; test publication preserves it. The
+Astro compatibility migration is prepared for the later, reviewed cutover.
+Old GitHub credentials and the original container are retained for now.
 
 Release metadata is in `/var/lib/laguntza/<environment>.json`; previous
 Nginx configuration and static files are retained under
