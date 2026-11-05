@@ -18,6 +18,7 @@ export const contactSchema = z.object({
 		.nullish()
 		.transform(value => value || ''),
 	message: z.string().trim().min(1).max(6000),
+	privacyAcknowledged: z.literal('informed'),
 	website: z
 		.string()
 		.max(200)

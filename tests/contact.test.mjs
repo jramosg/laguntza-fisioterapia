@@ -13,6 +13,7 @@ const fixture = {
 	email: 'visitor@example.com',
 	phone: '+33 6 12 34 56 78',
 	message: 'Consulta de prueba',
+	privacyAcknowledged: 'informed',
 	website: '',
 	attachments: []
 };
@@ -56,6 +57,25 @@ test('rejects malformed requests and excessive message length', () => {
 			false
 		);
 	}
+});
+test('requires an explicit privacy acknowledgement on the server', () => {
+	for (const value of [
+		undefined,
+		false,
+		true,
+		'',
+		'false',
+		'on',
+		'accepted',
+		'read'
+	]) {
+		assert.equal(
+			contactSchema.safeParse({ ...fixture, privacyAcknowledged: value })
+				.success,
+			false
+		);
+	}
+	assert.equal(contactSchema.safeParse(fixture).success, true);
 });
 test('enforces attachment size, extension, filename and count on the server', async () => {
 	const pdf = new File(['%PDF-1.7\nproof'], 'sample.pdf', {

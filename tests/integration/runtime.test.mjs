@@ -123,6 +123,19 @@ test('the action rejects malformed submissions, invalid attachments and the hone
 	});
 	assert.equal(response.status, 400);
 });
+test('the action rejects missing or invalid privacy acknowledgement', async () => {
+	for (const value of [null, 'false', 'on']) {
+		const form = makeForm();
+		if (value === null) form.delete('privacyAcknowledged');
+		else form.set('privacyAcknowledged', value);
+		const response = await fetch(`${base}/_actions/contact/`, {
+			method: 'POST',
+			headers: { Origin: base },
+			body: form
+		});
+		assert.equal(response.status, 400);
+	}
+});
 test('accepts a 6 MiB attachment above the previous file and Astro body limits', async () => {
 	const form = makeForm();
 	form.append(
@@ -223,6 +236,7 @@ function makeForm() {
 		name: 'Runtime test',
 		email: 'visitor@example.com',
 		message: 'Prueba sin envío',
+		privacyAcknowledged: 'informed',
 		website: ''
 	}))
 		form.set(key, value);
