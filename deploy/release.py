@@ -91,34 +91,12 @@ def content_security_policy(client):
     ])
 
 
-def render_nginx(environment, root, port, policy="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'", legacy_mail_port=None):
+def render_nginx(environment, root, port, policy="default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'"):
     domain = TARGETS[environment][0]
     alias = " www.laguntzafisioterapia.com" if environment == "production" else ""
     robots = 'add_header X-Robots-Tag "noindex, nofollow" always;' if environment == "test" else ""
     canonical = 'if ($host = www.laguntzafisioterapia.com) { return 301 https://laguntzafisioterapia.com$request_uri; }' if environment == "production" else ""
-    # Preserve the independent email-sender service for the existing Netlify form.
-    # It is not routed through the Astro runtime.
-    legacy = ""
-    if environment == 'test' and legacy_mail_port is not None:
-        for path in ('/api/contact-form', '/api/contact-form/'):
-            legacy += f"""
-    location = {path} {{
-        client_max_body_size 22m;
-        limit_req zone=laguntza_test_actions burst=10 nodelay;
-        limit_req_status 429;
-        limit_conn laguntza_mail_connections 1;
-        limit_conn_status 429;
-        proxy_pass http://127.0.0.1:{int(legacy_mail_port)}/api/contact-form/;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_read_timeout 30s;
-    }}
-"""
-    if environment == 'test':
-        legacy += 'location ^~ /api/ { return 404; }'
+    api = 'location ^~ /api/ { return 404; }' if environment == 'test' else ''
     proxy = f"""
         proxy_pass http://127.0.0.1:{int(port)};
         proxy_http_version 1.1;
@@ -132,7 +110,6 @@ def render_nginx(environment, root, port, policy="default-src 'self'; base-uri '
     zone = f"laguntza_{environment}_actions"
     return f"""# Managed by Laguntza deployment; environment: {environment}
 limit_req_zone $binary_remote_addr zone={zone}:1m rate=10r/m;
-{'limit_conn_zone $server_name zone=laguntza_mail_connections:1m;' if environment == 'test' and legacy_mail_port is not None else ''}
 server {{
     listen 80;
     server_name {domain}{alias};
@@ -169,7 +146,7 @@ server {{
         limit_req_status 429;
         {proxy}
     }}
-    {legacy}
+    {api}
     location ^~ /_astro/ {{ expires 1y; try_files $uri =404; }}
     error_page 404 /404.html;
     location = /404.html {{ internal; }}
@@ -299,9 +276,7 @@ def deploy(environment, sha, bundle):
         temporary_link.symlink_to(client)
         temporary_link.replace(root)
         switched = True
-        mail_state = STATE / 'mail.json'
-        legacy_mail_port = json.loads(mail_state.read_text())['port'] if environment == 'test' and mail_state.exists() else None
-        atomic_write(config, render_nginx(environment, root, port, content_security_policy(client), legacy_mail_port))
+        atomic_write(config, render_nginx(environment, root, port, content_security_policy(client)))
         run("nginx", "-t")
         run("systemctl", "reload", "nginx")
         verify_site(domain, environment)
