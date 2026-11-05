@@ -81,6 +81,7 @@ await writeFile(
       const source=[...doc.querySelectorAll('head style:not(#preview-appearance)')].map(s=>s.textContent).join('');
       const dark=source.slice(source.indexOf('@media (prefers-color-scheme:dark){')+'@media (prefers-color-scheme:dark){'.length).trim().replace(/}\\s*$/,'');
       style.textContent=document.querySelector('#appearance').value==='dark'?dark:'';
+      frame.style.height='0px';
       frame.style.height=(doc.documentElement.scrollHeight+2)+'px';
     }
     frames.forEach(frame=>frame.addEventListener('load',()=>appearance(frame)));

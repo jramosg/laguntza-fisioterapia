@@ -160,7 +160,7 @@ function frame(
         </td></tr>
       </table>
       <!--[if mso]></td></tr></table><![endif]-->
-      <p class="muted" style="margin:20px 0 0;${font}font-size:11px;line-height:18px;color:#63746c;">© ${new Date().getFullYear()} Laguntza Fisioterapia</p>
+      <p class="muted" style="margin:20px 0 0;${font}font-size:11px;line-height:18px;color:#53655e;">© ${new Date().getFullYear()} Laguntza Fisioterapia</p>
     </td></tr>
   </table>
 </body>
