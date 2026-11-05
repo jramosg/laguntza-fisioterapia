@@ -38,6 +38,11 @@ def atomic_write(path, text, mode=0o644):
     temporary.replace(path)
 
 
+def configured_server_names(configuration):
+    configuration = re.sub(r'(?m)#.*$', '', configuration)
+    return set(re.findall(r'(?<![\w$])server_name\s+([^;{}]+);', configuration))
+
+
 def content_security_policy(client):
     class Scripts(HTMLParser):
         def __init__(self):
@@ -257,7 +262,7 @@ def deploy(environment, sha, bundle):
         raise ValueError(f"Provision a valid certificate for {domain} before deployment")
     root, config = Path(root_name), Path(config_name).resolve()
     original_config = config.read_text() if config.exists() else None
-    if original_config and set(re.findall(r"server_name\s+([^;]+);", original_config)) - {domain, f"{domain} www.{domain}"}:
+    if original_config and configured_server_names(original_config) - {domain, f"{domain} www.{domain}"}:
         raise ValueError("Refusing to replace a configuration shared with another site")
     env_file = prepare_environment(environment)
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M%S%f")

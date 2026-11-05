@@ -15,6 +15,10 @@ SPEC.loader.exec_module(deployment)
 
 
 class DeploymentTests(unittest.TestCase):
+    def test_virtual_host_guard_ignores_server_name_variables_and_still_detects_other_sites(self):
+        config = 'limit_conn_zone $server_name zone=laguntza_mail_connections:1m;\nserver { server_name test.laguntzafisioterapia.com; }'
+        self.assertEqual(deployment.configured_server_names(config), {'test.laguntzafisioterapia.com'})
+        self.assertEqual(deployment.configured_server_names(config + '\nserver { server_name other.example; }'), {'test.laguntzafisioterapia.com', 'other.example'})
     def test_mail_configuration_preserves_the_old_clinic_bcc_destination(self):
         with tempfile.TemporaryDirectory() as directory:
             response = json.dumps([{'Config': {'Env': ['RESEND_API_KEY=mock-key', 'FROM_EMAIL=clinic@example.com', 'BCC_EMAIL=office@example.com']}}])
