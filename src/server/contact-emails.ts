@@ -194,12 +194,13 @@ export function renderConfirmation(lang: Language): EmailTemplate {
       <h2 class="ink" style="margin:0 0 8px;${font}font-size:16px;line-height:24px;font-weight:700;color:#22352f;">${c.contactTitle}</h2>
       ${paragraph(c.contactBody, 'margin-bottom:22px;font-size:14px;line-height:23px;')}
       ${button('WhatsApp · 688 734 113', 'https://wa.me/34688734113')}
-      <p style="margin:18px 0 0;${font}font-size:13px;line-height:22px;"><a class="teal-link" href="tel:+34943036070" style="color:#315f6d;text-decoration:underline;">${c.call} · 943 036 070</a></p>
+      <p class="muted" style="margin:18px 0 0;${font}font-size:13px;line-height:22px;color:#63746c;">${c.call}</p>
+      <p style="margin:0;${font}font-size:13px;line-height:22px;"><a class="teal-link" href="tel:+34943036070" style="display:inline-block;padding:11px 0;color:#315f6d;text-decoration:underline;white-space:nowrap;">943 036 070</a>&nbsp;&nbsp; · &nbsp;&nbsp;<a class="teal-link" href="tel:+34688734113" style="display:inline-block;padding:11px 0;color:#315f6d;text-decoration:underline;white-space:nowrap;">688 734 113</a></p>
     </td></tr>
     <tr><td class="content-pad" style="padding:0 48px 32px;">${paragraph(c.appointment, 'font-size:12px;line-height:20px;')}</td></tr>`;
 	return {
 		html: frame(lang, c.preheader, c.confirmationSubject, content),
-		text: `${c.title.replace('<br />', ' ')}\n\n${c.intro}\n\nJokin Ramos\n${c.profession}\n\n${c.contactTitle}\n${c.contactBody}\nWhatsApp: https://wa.me/34688734113\n${c.call}: 943 036 070\n\n${c.appointment}\n\n${plainFooter(lang)}`
+		text: `${c.title.replace('<br />', ' ')}\n\n${c.intro}\n\nJokin Ramos\n${c.profession}\n\n${c.contactTitle}\n${c.contactBody}\nWhatsApp: https://wa.me/34688734113\n${c.call}: 943 036 070 · 688 734 113\n\n${c.appointment}\n\n${plainFooter(lang)}`
 	};
 }
 
