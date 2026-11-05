@@ -1,0 +1,51 @@
+https://laguntzafisioterapia.com
+
+
+HEMOS RECIBIDO TU MENSAJE
+
+Hola {{name}},
+
+Gracias por ponerte en contacto con nosotros.
+
+Hemos recibido exitosamente tu formulario de contacto y nuestro equipo ya está
+revisando tu caso.
+
+Te responderemos lo antes posible, normalmente en un plazo de 24 horas como
+máximo.
+
+Mensaje recibido:
+
+"{{message}}"
+
+Tus datos de contacto:
+
+Email: {{email}}
+
+Teléfonos {{phone}}
+
+Documentos adjuntos: {{attachmentNames}}
+
+--------------------------------------------------------------------------------
+
+Para casos de urgencia, llama directamente a nuestro centro:
+
+688 734 113 tel:+34688734113
+
+Laguntza Fisioterapia
+
+Teléfonos: 943 036 070 tel:+34943036070 | 688 734 113 tel:+34688734113
+
+WhatsApp: 688 734 113 https://wa.me/34688734113
+
+Dirección: Zubitxo Plaza, 3, 20130 Urnieta, Gipuzkoa
+https://maps.app.goo.gl/ct7ZQvDpocAY3V5ZA
+
+Visitar nuestra web https://laguntzafisioterapia.com
+
+Síguenos en redes sociales
+
+https://instagram.com/laguntzafisioterapia
+
+@laguntzafisioterapia https://instagram.com/laguntzafisioterapia
+
+© {{year}} Laguntza Fisioterapia

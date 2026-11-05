@@ -15,20 +15,18 @@ const { title, items } = Astro.props;
 <section class="service-stepper ed-reveal">
 	<h2>{title}</h2>
 	<div class="stepper">
-		{
-			items.map((item, index) => (
-				<div class="step">
-					<div class="step__number-container">
-						<div class="step__number">{index + 1}</div>
-						{index < items.length - 1 && <div class="step__line" />}
-					</div>
-					<div class="step__content">
-						<h3>{item.title}</h3>
-						<p>{item.text}</p>
-					</div>
+		{items.map((item, index) => (
+			<div class="step">
+				<div class="step__number-container">
+					<div class="step__number">{index + 1}</div>
+					{index < items.length - 1 && <div class="step__line" />}
 				</div>
-			))
-		}
+				<div class="step__content">
+					<h3>{item.title}</h3>
+					<p>{item.text}</p>
+				</div>
+			</div>
+		))}
 	</div>
 </section>
 

@@ -1,26 +1,22 @@
 {
+	"extends": "astro/tsconfigs/strict",
+	"include": [".astro/types.d.ts", "src/**/*", "astro.config.mjs"],
+	"exclude": ["dist"],
 	"compilerOptions": {
-		"experimentalDecorators": true,
-		"useDefineForClassFields": false,
-		"baseUrl": "src",
-		"strict": true,
-		"noImplicitAny": true,
-		"strictNullChecks": true,
-		// Add type definitions for our Vite runtime.
 		"types": ["astro/client"],
 		"paths": {
-			"@config/*": ["config/*"],
-			"@lib/*": ["lib/*"],
-			"@utils/*": ["utils/*"],
-			"@components/*": ["components/*"],
-			"@layouts/*": ["layouts/*"],
-			"@pages/*": ["pages/*"],
-			"@styles/*": ["styles/*"],
-			"@i18n/*": ["i18n/*"],
-			"@images/*": ["images/*"],
-			"@icons/*": ["icons/*"],
-			"@types": ["types"],
-			"@videos/*": ["videos/*"]
+			"@config/*": ["./src/config/*"],
+			"@lib/*": ["./src/lib/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@components/*": ["./src/components/*"],
+			"@layouts/*": ["./src/layouts/*"],
+			"@pages/*": ["./src/pages/*"],
+			"@styles/*": ["./src/styles/*"],
+			"@i18n/*": ["./src/i18n/*"],
+			"@images/*": ["./src/images/*"],
+			"@icons/*": ["./src/icons/*"],
+			"@videos/*": ["./src/videos/*"],
+			"@types": ["./src/types"]
 		}
 	}
 }

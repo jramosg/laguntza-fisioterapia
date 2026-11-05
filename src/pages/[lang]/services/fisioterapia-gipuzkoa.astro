@@ -82,16 +82,14 @@ const physioBenefits = [
 	<SectionHero
 		id="physio-hero"
 		image={Interview}
-		imageAlt={lang === 'eu'
-			? 'Fisioterapia balorazioa Laguntza Fisioterapian, Urnietan'
-			: 'Valoración de fisioterapia en Laguntza Fisioterapia, Urnieta'}
+		imageAlt={
+			lang === 'eu'
+				? 'Fisioterapia balorazioa Laguntza Fisioterapian, Urnietan'
+				: 'Valoración de fisioterapia en Laguntza Fisioterapia, Urnieta'
+		}
 	>
-		<h1 slot="title">
-			{t('service.physio.hero-title')}
-		</h1>
-		<Fragment slot="desc">
-			{t('service.physio.hero-subtitle')}
-		</Fragment>
+		<h1 slot="title">{t('service.physio.hero-title')}</h1>
+		<Fragment slot="desc">{t('service.physio.hero-subtitle')}</Fragment>
 	</SectionHero>
 
 	<Container class="service-page">

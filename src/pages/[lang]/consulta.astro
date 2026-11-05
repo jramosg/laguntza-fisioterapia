@@ -144,21 +144,19 @@ const lightboxImages = await Promise.all(
 	<SectionHero
 		id="consulta-hero"
 		image={ConsultaSala}
-		imageAlt={lang === 'eu'
-			? 'Laguntza Fisioterapiaren tratamendu gela, Urnietan'
-			: 'Sala de tratamiento de Laguntza Fisioterapia, Urnieta'}
+		imageAlt={
+			lang === 'eu'
+				? 'Laguntza Fisioterapiaren tratamendu gela, Urnietan'
+				: 'Sala de tratamiento de Laguntza Fisioterapia, Urnieta'
+		}
 		imagePosition="center 58%"
 		imageMobilePosition="center"
 	>
-		<h1 slot="title">
-			{lang === 'eu' ? 'Kontsulta' : 'La consulta'}
-		</h1>
+		<h1 slot="title">{lang === 'eu' ? 'Kontsulta' : 'La consulta'}</h1>
 		<Fragment slot="desc">
-			{
-				lang === 'eu'
-					? 'Espazio argitsu eta irisgarria Zubitxo Plazan, Urnietan (Gipuzkoa): sarrera, bi gela, komuna eta korridorea, kristalez betetako fatxada batekin soportaletara. Ibili eredu 3Dan etorri aurretik.'
-					: 'Un espacio luminoso y accesible en Zubitxo Plaza, Urnieta (Gipuzkoa): entrada, dos salas, baño y pasillo, con una fachada acristalada a los soportales. Recórrelo en 3D antes de venir.'
-			}
+			{lang === 'eu'
+				? 'Espazio argitsu eta irisgarria Zubitxo Plazan, Urnietan (Gipuzkoa): sarrera, bi gela, komuna eta korridorea, kristalez betetako fatxada batekin soportaletara. Ibili eredu 3Dan etorri aurretik.'
+				: 'Un espacio luminoso y accesible en Zubitxo Plaza, Urnieta (Gipuzkoa): entrada, dos salas, baño y pasillo, con una fachada acristalada a los soportales. Recórrelo en 3D antes de venir.'}
 		</Fragment>
 	</SectionHero>
 	<Container>
@@ -167,49 +165,47 @@ const lightboxImages = await Promise.all(
 				<div>
 					<p class="ed-kicker">
 						{lang === 'eu' ? 'ZURE TOKIA URNIETAN' : 'TU ESPACIO EN URNIETA'}
-					</p><h2>
+					</p>
+					<h2>
 						{lang === 'eu' ? 'Sartu. Eroso zaude.' : 'Pasa. Estás en tu sitio.'}
 					</h2>
-				</div><p>
-					{
-						lang === 'eu'
-							? 'Ezagutu espazioa etorri aurretik. Argazki bakoitza ireki dezakezu xehetasunak ikusteko.'
-							: 'Conoce el espacio antes de venir. Abre cada fotografía para ver los detalles.'
-					}
+				</div>
+				<p>
+					{lang === 'eu'
+						? 'Ezagutu espazioa etorri aurretik. Argazki bakoitza ireki dezakezu xehetasunak ikusteko.'
+						: 'Conoce el espacio antes de venir. Abre cada fotografía para ver los detalles.'}
 				</p>
 			</div>
 
 			<div class="consulta__photos">
-				{
-					galleryImages.map((image, index) => (
-						<button
-							class={`consulta__photo ${image.class}`}
-							type="button"
-							data-gallery-item
-							data-index={index}
-							data-full-src={lightboxImages[index].src}
-							data-full-width={image.src.width}
-							data-full-height={image.src.height}
-							aria-label={
-								lang === 'eu'
-									? `Ireki argazkia ${index + 1}/${galleryImages.length}`
-									: `Abrir foto ${index + 1}/${galleryImages.length}`
-							}
-						>
-							<Image
-								src={image.src}
-								class="consulta__photo-image"
-								alt={image.alt}
-								widths={image.widths}
-								sizes={image.sizes}
-								loading="lazy"
-							/>
-							<span class="consulta__photo-overlay" aria-hidden="true">
-								<Icon name="mdi:magnify-plus-outline" />
-							</span>
-						</button>
-					))
-				}
+				{galleryImages.map((image, index) => (
+					<button
+						class={`consulta__photo ${image.class}`}
+						type="button"
+						data-gallery-item
+						data-index={index}
+						data-full-src={lightboxImages[index].src}
+						data-full-width={image.src.width}
+						data-full-height={image.src.height}
+						aria-label={
+							lang === 'eu'
+								? `Ireki argazkia ${index + 1}/${galleryImages.length}`
+								: `Abrir foto ${index + 1}/${galleryImages.length}`
+						}
+					>
+						<Image
+							src={image.src}
+							class="consulta__photo-image"
+							alt={image.alt}
+							widths={image.widths}
+							sizes={image.sizes}
+							loading="lazy"
+						/>
+						<span class="consulta__photo-overlay" aria-hidden="true">
+							<Icon name="mdi:magnify-plus-outline" />
+						</span>
+					</button>
+				))}
 			</div>
 
 			<dialog
@@ -217,9 +213,11 @@ const lightboxImages = await Promise.all(
 				id="consulta-lightbox"
 				aria-hidden="true"
 				aria-modal="true"
-				aria-label={lang === 'eu'
-					? 'Kontsultaren argazkiak'
-					: 'Fotografías de la consulta'}
+				aria-label={
+					lang === 'eu'
+						? 'Kontsultaren argazkiak'
+						: 'Fotografías de la consulta'
+				}
 			>
 				<button
 					class="consulta-lightbox__control consulta-lightbox__close"
@@ -259,19 +257,18 @@ const lightboxImages = await Promise.all(
 			</dialog>
 
 			<details class="consulta-tour">
-				<summary
-					><span
-						><small
-							>{
-								lang === 'eu' ? 'BISITA INTERAKTIBOA' : 'VISITA INTERACTIVA'
-							}</small
-						>{
-							lang === 'eu'
-								? 'Ibil zaitez kontsultan 3Dn'
-								: 'Recorre la consulta en 3D'
-						}</span
-					><Icon name="mdi:plus" aria-hidden="true" /></summary
-				><Consulta3D {lang} />
+				<summary>
+					<span>
+						<small>
+							{lang === 'eu' ? 'BISITA INTERAKTIBOA' : 'VISITA INTERACTIVA'}
+						</small>
+						{lang === 'eu'
+							? 'Ibil zaitez kontsultan 3Dn'
+							: 'Recorre la consulta en 3D'}
+					</span>
+					<Icon name="mdi:plus" aria-hidden="true" />
+				</summary>
+				<Consulta3D {lang} />
 			</details>
 		</section>
 	</Container>

@@ -16,35 +16,34 @@ const section = SERVICES[lang].sections.find(
 	aria-labelledby={generateSlug(section.title)}
 >
 	<div class="specialized-heading ed-reveal">
-		<span class="ed-kicker">05 / {lang === 'eu' ? 'TEKNIKAK' : 'TÉCNICAS'}</span
-		>
-		<h2 id={generateSlug(section.title)} class="ed-heading">{section.title}</h2>
+		<span class="ed-kicker">
+			05 / {lang === 'eu' ? 'TEKNIKAK' : 'TÉCNICAS'}
+		</span>
+		<h2 id={generateSlug(section.title)} class="ed-heading">
+			{section.title}
+		</h2>
 		<p>
-			{
-				lang === 'eu'
-					? 'Balorazioaren ondoren, zure egoerari eta helburuei egokitutako teknikak proposatuko dizkizut.'
-					: 'Tras la valoración, te propondré las técnicas que se adapten a tu situación y a tus objetivos.'
-			}
+			{lang === 'eu'
+				? 'Balorazioaren ondoren, zure egoerari eta helburuei egokitutako teknikak proposatuko dizkizut.'
+				: 'Tras la valoración, te propondré las técnicas que se adapten a tu situación y a tus objetivos.'}
 		</p>
 	</div>
 	<div class="techniques">
-		{
-			section.bullets?.map(technique => (
-				<article class="technique ed-reveal">
-					<h3>
-						{technique.href ? (
-							<a href={`/${lang}/services/${technique.href}/`}>
-								{technique.title}
-								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-							</a>
-						) : (
-							technique.title
-						)}
-					</h3>
-					<p>{technique.desc}</p>
-				</article>
-			))
-		}
+		{section.bullets?.map(technique => (
+			<article class="technique ed-reveal">
+				<h3>
+					{technique.href ? (
+						<a href={`/${lang}/services/${technique.href}/`}>
+							{technique.title}
+							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+						</a>
+					) : (
+						technique.title
+					)}
+				</h3>
+				<p>{technique.desc}</p>
+			</article>
+		))}
 	</div>
 </section>
 

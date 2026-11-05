@@ -15,53 +15,60 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 <footer class="editorial-footer">
 	<div class="footer-main">
 		<div class="footer-brand">
-			<a href={`/${lang}/`} aria-label={c.homeLabel}
-				><BrandLogo aria-hidden="true" /></a
-			>
+			<a href={`/${lang}/`} aria-label={c.homeLabel}>
+				<BrandLogo aria-hidden="true" />
+			</a>
 			<p>{c.footerLine}</p>
 		</div>
 		<div class="footer-address">
 			<p class="label">URNIETA, GIPUZKOA</p>
-			<a href={Address.url} target="_blank" rel="noopener noreferrer"
-				>Zubitxo Plaza, 3 · {lang === 'eu' ? '2. etxabea' : 'Bajo 2'}<br />20130
-				Urnieta</a
-			>
+			<a href={Address.url} target="_blank" rel="noopener noreferrer">
+				Zubitxo Plaza, 3 · {lang === 'eu' ? '2. etxabea' : 'Bajo 2'}
+				<br />
+				20130 Urnieta
+			</a>
 			<a
 				class="map-link"
 				href={Address.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				><Icon name="mdi:map-marker-outline" aria-hidden="true" /><span
-					>{c.maps}</span
-				></a
 			>
+				<Icon name="mdi:map-marker-outline" aria-hidden="true" />
+				<span>{c.maps}</span>
+			</a>
 		</div>
 		<div>
 			<p class="label">{c.footerContact}</p>
-			<a href={WhatsApp.urlCall}
-				><Icon name="mdi:phone-outline" aria-hidden="true" />{WhatsApp.name}</a
-			>
-			<a href={Phone.url}
-				><Icon name="mdi:phone-outline" aria-hidden="true" />{Phone.name}</a
-			>
-			<a href={bookingUrl} target="_blank" rel="noopener noreferrer"
-				><Icon name="mdi:whatsapp" aria-hidden="true" />WhatsApp</a
-			>
-			<a class="footer-email" href={Email.url}
-				><Icon name="mdi:email-outline" aria-hidden="true" /><span
-					>{Email.name}</span
-				></a
-			>
+			<a href={WhatsApp.urlCall}>
+				<Icon name="mdi:phone-outline" aria-hidden="true" />
+				{WhatsApp.name}
+			</a>
+			<a href={Phone.url}>
+				<Icon name="mdi:phone-outline" aria-hidden="true" />
+				{Phone.name}
+			</a>
+			<a href={bookingUrl} target="_blank" rel="noopener noreferrer">
+				<Icon name="mdi:whatsapp" aria-hidden="true" />
+				WhatsApp
+			</a>
+			<a class="footer-email" href={Email.url}>
+				<Icon name="mdi:email-outline" aria-hidden="true" />
+				<span>{Email.name}</span>
+			</a>
 		</div>
 		<nav aria-label={c.footerExplore}>
 			<p class="label">{c.footerExplore}</p>
-			{paths.map((path, i) => <a href={`/${lang}/${path}`}>{c.nav[i]}</a>)}
+			{paths.map((path, i) => (
+				<a href={`/${lang}/${path}`}>{c.nav[i]}</a>
+			))}
 			<a
 				href="https://www.instagram.com/laguntzafisioterapia"
 				target="_blank"
 				rel="noopener noreferrer"
-				><Icon name="mdi:instagram" aria-hidden="true" />Instagram</a
 			>
+				<Icon name="mdi:instagram" aria-hidden="true" />
+				Instagram
+			</a>
 		</nav>
 	</div>
 	<div class="footer-bottom">

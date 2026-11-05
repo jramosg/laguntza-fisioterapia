@@ -43,22 +43,20 @@ const seo = {
 	<FAQSchema slot="head" />
 	<SectionHero compact eyebrow={c.nav[0]}>
 		<h1 slot="title">
-			{lang === 'eu' ? 'Zure gorputza.' : 'Tu cuerpo.'}<br /><span
-				>{lang === 'eu' ? 'Zure tratamendua.' : 'Tu tratamiento.'}</span
-			>
+			{lang === 'eu' ? 'Zure gorputza.' : 'Tu cuerpo.'}
+			<br />
+			<span>{lang === 'eu' ? 'Zure tratamendua.' : 'Tu tratamiento.'}</span>
 		</h1>
 		<Fragment slot="desc">{c.servicesIntro}</Fragment>
 	</SectionHero>
 	<nav class="service-index ed-shell" aria-label={c.nav[0]}>
-		{
-			c.services.map((service, i) => (
-				<a href={`#service-${i}`}>
-					<span>0{i + 1}</span>
-					{service.title}
-					<Icon name="mdi:arrow-down" aria-hidden="true" />
-				</a>
-			))
-		}
+		{c.services.map((service, i) => (
+			<a href={`#service-${i}`}>
+				<span>0{i + 1}</span>
+				{service.title}
+				<Icon name="mdi:arrow-down" aria-hidden="true" />
+			</a>
+		))}
 		<a href={`#${specialized.id}`}>
 			<span>05</span>
 			{specialized.title}
@@ -66,101 +64,97 @@ const seo = {
 		</a>
 	</nav>
 	<div class="ed-shell treatments">
-		{
-			c.services.map((service, i) => (
-				<section
-					class:list={[
-						'treatment ed-reveal',
-						{ 'treatment--reverse': i % 2 === 1 }
-					]}
-					id={`service-${i}`}
-				>
-					<>
-						<a
-							class="treatment-image"
-							href={`/${lang}/services/${service.slug}/`}
-							aria-label={service.title}
-							data-parallax
-						>
-							<Image
-								src={images[i]}
-								alt={
-									i === 3
+		{c.services.map((service, i) => (
+			<section
+				class:list={[
+					'treatment ed-reveal',
+					{ 'treatment--reverse': i % 2 === 1 }
+				]}
+				id={`service-${i}`}
+			>
+				<>
+					<a
+						class="treatment-image"
+						href={`/${lang}/services/${service.slug}/`}
+						aria-label={service.title}
+						data-parallax
+					>
+						<Image
+							src={images[i]}
+							alt={
+								i === 3
+									? lang === 'eu'
+										? 'Hanketako ariketa erresistentzia-bandarekin'
+										: 'Ejercicio de piernas con banda de resistencia'
+									: i === 2
 										? lang === 'eu'
-											? 'Hanketako ariketa erresistentzia-bandarekin'
-											: 'Ejercicio de piernas con banda de resistencia'
-										: i === 2
-											? lang === 'eu'
-												? 'Burua eskuekin eutsita eskuzko tratamendu batean'
-												: 'Apoyo manual de la cabeza durante un tratamiento'
-											: lang === 'eu'
-												? `${service.title} Laguntza Fisioterapian, Urnietan`
-												: `${service.title} en Laguntza Fisioterapia, Urnieta`
-								}
-								style={
-									i === 3
-										? 'object-position:center 20%'
-										: i === 2
-											? 'object-position:55% center'
-											: undefined
-								}
-								width={1000}
-								widths={[400, 640, 1000, 1280]}
-								sizes="(max-width:760px) calc(100vw - 48px), 45vw"
-							/>
-						</a>
-						<div class="treatment-copy">
-							<>
-								<span class="treatment-number">0{i + 1}</span>
-								<h2>{service.title}</h2>
-								<p>{service.description}</p>
-								<a class="ed-link" href={`/${lang}/services/${service.slug}/`}>
-									{lang === 'eu'
-										? 'Tratamendua ezagutu'
-										: 'Conoce el tratamiento'}
-									<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-								</a>
-							</>
-						</div>
-					</>
-				</section>
-			))
-		}
+											? 'Burua eskuekin eutsita eskuzko tratamendu batean'
+											: 'Apoyo manual de la cabeza durante un tratamiento'
+										: lang === 'eu'
+											? `${service.title} Laguntza Fisioterapian, Urnietan`
+											: `${service.title} en Laguntza Fisioterapia, Urnieta`
+							}
+							style={
+								i === 3
+									? 'object-position:center 20%'
+									: i === 2
+										? 'object-position:55% center'
+										: undefined
+							}
+							width={1000}
+							widths={[400, 640, 1000, 1280]}
+							sizes="(max-width:760px) calc(100vw - 48px), 45vw"
+						/>
+					</a>
+					<div class="treatment-copy">
+						<>
+							<span class="treatment-number">0{i + 1}</span>
+							<h2>{service.title}</h2>
+							<p>{service.description}</p>
+							<a class="ed-link" href={`/${lang}/services/${service.slug}/`}>
+								{lang === 'eu'
+									? 'Tratamendua ezagutu'
+									: 'Conoce el tratamiento'}
+								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+							</a>
+						</>
+					</div>
+				</>
+			</section>
+		))}
 	</div>
 	<SpecializedTechniques />
 	<section class="ed-section ed-sage">
 		<div class="ed-shell ed-intro ed-reveal">
 			<div>
-				<p class="ed-kicker">{c.approachLabel}</p><h2 class="ed-heading">
-					{
-						lang === 'eu'
-							? 'Zurekin adostutako bidea.'
-							: 'Un plan que acordamos contigo.'
-					}
+				<p class="ed-kicker">{c.approachLabel}</p>
+				<h2 class="ed-heading">
+					{lang === 'eu'
+						? 'Zurekin adostutako bidea.'
+						: 'Un plan que acordamos contigo.'}
 				</h2>
-			</div><div>
+			</div>
+			<div>
 				<p class="ed-lead">
-					{
-						lang === 'eu'
-							? 'Ez duzu jakin behar zein teknika behar duzun. Horretarako dago balorazioa.'
-							: 'No necesitas saber qué técnica necesitas. Para eso está la valoración.'
-					}
-				</p><p class="ed-prose">
-					{
-						lang === 'eu'
-							? 'Zer gertatzen zaizun eta zure helburuak ezagutu ondoren, aukerak azalduko dizkizut. Tratamendua zure egoerara, lehentasunetara eta bilakaerara egokituko dugu.'
-							: 'Después de conocer tu situación y tus objetivos, te explicaré las opciones. Adaptaremos el tratamiento a tus necesidades, tus preferencias y tu evolución.'
-					}
-				</p><a class="ed-link" href={`/${lang}/about/`}
-					>{c.aboutLink}<Icon
-						name="mdi:arrow-top-right"
-						aria-hidden="true"
-					/></a
-				>
+					{lang === 'eu'
+						? 'Ez duzu jakin behar zein teknika behar duzun. Horretarako dago balorazioa.'
+						: 'No necesitas saber qué técnica necesitas. Para eso está la valoración.'}
+				</p>
+				<p class="ed-prose">
+					{lang === 'eu'
+						? 'Zer gertatzen zaizun eta zure helburuak ezagutu ondoren, aukerak azalduko dizkizut. Tratamendua zure egoerara, lehentasunetara eta bilakaerara egokituko dugu.'
+						: 'Después de conocer tu situación y tus objetivos, te explicaré las opciones. Adaptaremos el tratamiento a tus necesidades, tus preferencias y tu evolución.'}
+				</p>
+				<a class="ed-link" href={`/${lang}/about/`}>
+					{c.aboutLink}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
 			</div>
 		</div>
 	</section>
-	<div class="ed-shell"><FAQ /></div>
+	<div class="ed-shell">
+		<FAQ />
+	</div>
 	<NextStep />
 </Layout>
 <style>

@@ -26,10 +26,12 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	<section class="hero shell" aria-labelledby="hero-title">
 		<div class="hero-copy">
 			<p class="eyebrow hero-eyebrow">
-				<span class="location-dot"></span>{c.eyebrow}
+				<span class="location-dot"></span>
+				{c.eyebrow}
 			</p>
 			<h1 id="hero-title">
-				<span>{c.title[0]}</span><span class="teal">{c.title[1]}</span>
+				<span>{c.title[0]}</span>
+				<span class="teal">{c.title[1]}</span>
 			</h1>
 			<p class="hero-description">{c.intro}</p>
 			<div class="hero-actions">
@@ -38,17 +40,21 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					href={bookingUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
 				>
-				<a class="pill pill-outline" href={Phone.url}
-					>{c.call}<Icon name="mdi:phone-outline" aria-hidden="true" /></a
-				>
+					{c.book}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
+				<a class="pill pill-outline" href={Phone.url}>
+					{c.call}
+					<Icon name="mdi:phone-outline" aria-hidden="true" />
+				</a>
 			</div>
-			<a class="hero-discover" href="#cuidarte"
-				><span class="discover-circle"
-					><Icon name="mdi:arrow-down" aria-hidden="true" /></span
-				>{c.discover}</a
-			>
+			<a class="hero-discover" href="#cuidarte">
+				<span class="discover-circle">
+					<Icon name="mdi:arrow-down" aria-hidden="true" />
+				</span>
+				{c.discover}
+			</a>
 		</div>
 		<div class="hero-visual">
 			<div class="portrait-frame">
@@ -62,8 +68,10 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					class="hero-portrait"
 				/>
 				<div class="portrait-caption">
-					<span class="portrait-caption-mark"></span><div>
-						<strong>{c.portraitLabel}</strong><span>{c.portraitDetail}</span>
+					<span class="portrait-caption-mark"></span>
+					<div>
+						<strong>{c.portraitLabel}</strong>
+						<span>{c.portraitDetail}</span>
 					</div>
 				</div>
 			</div>
@@ -75,17 +83,18 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 
 	<div class="principles shell">
 		<div class="principles-caption">
-			<span class="little-line"></span>{c.location}<br />{c.languages}
+			<span class="little-line"></span>
+			{c.location}
+			<br />
+			{c.languages}
 		</div>
 		<div class="principles-words">
-			{
-				c.principles.map((word, i) => (
-					<span>
-						<small>0{i + 1}</small>
-						{word}
-					</span>
-				))
-			}
+			{c.principles.map((word, i) => (
+				<span>
+					<small>0{i + 1}</small>
+					{word}
+				</span>
+			))}
 		</div>
 	</div>
 
@@ -96,21 +105,19 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	>
 		<div class="section-heading">
 			<div>
-				<p class="eyebrow">{c.servicesLabel}</p><h2 id="services-title">
-					{c.servicesTitle[0]}<br /><span class="muted"
-						>{c.servicesTitle[1]}</span
-					>
+				<p class="eyebrow">{c.servicesLabel}</p>
+				<h2 id="services-title">
+					{c.servicesTitle[0]}
+					<br />
+					<span class="muted">{c.servicesTitle[1]}</span>
 				</h2>
 			</div>
 			<div class="section-heading-aside">
-				<p>{c.servicesIntro}</p><a
-					class="text-link underlined"
-					href={`/${lang}/services/`}
-					>{c.allServices}<Icon
-						name="mdi:arrow-top-right"
-						aria-hidden="true"
-					/></a
-				>
+				<p>{c.servicesIntro}</p>
+				<a class="text-link underlined" href={`/${lang}/services/`}>
+					{c.allServices}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
 			</div>
 		</div>
 		<div class="services-layout">
@@ -126,38 +133,35 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					/>
 				</div>
 				<figcaption>
-					<span>{c.serviceImageCaption}</span><span>01—05</span>
+					<span>{c.serviceImageCaption}</span>
+					<span>01—05</span>
 				</figcaption>
 			</figure>
 			<div class="service-list">
-				{
-					c.services.map((service, i) => (
-						<a class="service-row" href={`/${lang}/services/${service.slug}/`}>
-							<>
-								<span class="service-number">0{i + 1}</span>
-								<div>
-									<>
-										<h3>{service.title}</h3>
-										<p>{service.description}</p>
-									</>
-								</div>
-								<span class="service-arrow">
-									<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-								</span>
-							</>
-						</a>
-					))
-				}
+				{c.services.map((service, i) => (
+					<a class="service-row" href={`/${lang}/services/${service.slug}/`}>
+						<>
+							<span class="service-number">0{i + 1}</span>
+							<div>
+								<>
+									<h3>{service.title}</h3>
+									<p>{service.description}</p>
+								</>
+							</div>
+							<span class="service-arrow">
+								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+							</span>
+						</>
+					</a>
+				))}
 				<a class="service-row" href={`/${lang}/services/#${specialized.id}`}>
 					<span class="service-number">05</span>
 					<div>
 						<h3>{specialized.title}</h3>
 						<p>
-							{
-								specialized.bullets
-									?.map(technique => technique.title)
-									.join(' · ')
-							}
+							{specialized.bullets
+								?.map(technique => technique.title)
+								.join(' · ')}
 						</p>
 					</div>
 					<span class="service-arrow">
@@ -174,9 +178,11 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				<div class="about-main-image" data-parallax>
 					<Image
 						src={Interview}
-						alt={lang === 'eu'
-							? 'Jokin, paziente baten balorazioa prestatzen'
-							: 'Jokin preparando la valoración de un paciente'}
+						alt={
+							lang === 'eu'
+								? 'Jokin, paziente baten balorazioa prestatzen'
+								: 'Jokin preparando la valoración de un paciente'
+						}
 						width={900}
 						widths={[400, 640, 900]}
 						sizes="(max-width: 760px) 85vw, 38vw"
@@ -194,27 +200,26 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				<span class="photo-index">LAGUNTZA / JOKIN RAMOS</span>
 			</div>
 			<div class="about-copy">
-				<p class="eyebrow">{c.aboutLabel}</p><h2 id="about-title">
-					{c.aboutTitle[0]}<br /><span>{c.aboutTitle[1]}</span>
-				</h2><p class="about-lead">{c.aboutLead}</p><p
-					class="about-description"
-				>
-					{c.aboutBody}
-				</p><ul class="credentials" role="list">
-					{
-						c.credentials.map(credential => (
-							<li>
-								<span />
-								{credential}
-							</li>
-						))
-					}
-				</ul><a class="text-link underlined light-link" href={`/${lang}/about/`}
-					>{c.aboutLink}<Icon
-						name="mdi:arrow-top-right"
-						aria-hidden="true"
-					/></a
-				>
+				<p class="eyebrow">{c.aboutLabel}</p>
+				<h2 id="about-title">
+					{c.aboutTitle[0]}
+					<br />
+					<span>{c.aboutTitle[1]}</span>
+				</h2>
+				<p class="about-lead">{c.aboutLead}</p>
+				<p class="about-description">{c.aboutBody}</p>
+				<ul class="credentials" role="list">
+					{c.credentials.map(credential => (
+						<li>
+							<span />
+							{credential}
+						</li>
+					))}
+				</ul>
+				<a class="text-link underlined light-link" href={`/${lang}/about/`}>
+					{c.aboutLink}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
 			</div>
 		</div>
 		<Mark class="about-mark" aria-hidden="true" />
@@ -226,58 +231,58 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	>
 		<div class="section-heading">
 			<div>
-				<p class="eyebrow">{c.approachLabel}</p><h2 id="approach-title">
-					{c.approachTitle[0]}<br /><span class="muted"
-						>{c.approachTitle[1]}</span
-					>
+				<p class="eyebrow">{c.approachLabel}</p>
+				<h2 id="approach-title">
+					{c.approachTitle[0]}
+					<br />
+					<span class="muted">{c.approachTitle[1]}</span>
 				</h2>
-			</div><p class="approach-note">
-				{
-					lang === 'eu'
-						? 'Zure helburuak. Zure erritmoa. Zure bidea.'
-						: 'Tus objetivos. Tu ritmo. Tu camino.'
-				}
+			</div>
+			<p class="approach-note">
+				{lang === 'eu'
+					? 'Zure helburuak. Zure erritmoa. Zure bidea.'
+					: 'Tus objetivos. Tu ritmo. Tu camino.'}
 			</p>
 		</div>
 		<ol class="steps" role="list">
-			{
-				c.steps.map((step, i) => (
-					<li>
-						<>
-							<span class="step-number">
-								0{i + 1}
-								<span />
-							</span>
-							<h3>{step.title}</h3>
-							<p>{step.description}</p>
-						</>
-					</li>
-				))
-			}
+			{c.steps.map((step, i) => (
+				<li>
+					<>
+						<span class="step-number">
+							0{i + 1}
+							<span />
+						</span>
+						<h3>{step.title}</h3>
+						<p>{step.description}</p>
+					</>
+				</li>
+			))}
 		</ol>
 	</section>
 
 	<section class="space-section section-space" aria-labelledby="space-title">
 		<div class="shell space-layout">
 			<div class="space-copy">
-				<p class="eyebrow">{c.spaceLabel}</p><h2 id="space-title">
-					{c.spaceTitle[0]}<br /><span class="muted">{c.spaceTitle[1]}</span>
-				</h2><p>{c.spaceText}</p><a
-					class="text-link underlined"
-					href={`/${lang}/consulta/`}
-					>{c.spaceLink}<Icon
-						name="mdi:arrow-top-right"
-						aria-hidden="true"
-					/></a
-				><a
+				<p class="eyebrow">{c.spaceLabel}</p>
+				<h2 id="space-title">
+					{c.spaceTitle[0]}
+					<br />
+					<span class="muted">{c.spaceTitle[1]}</span>
+				</h2>
+				<p>{c.spaceText}</p>
+				<a class="text-link underlined" href={`/${lang}/consulta/`}>
+					{c.spaceLink}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
+				<a
 					class="space-location"
 					href={Address.url}
 					target="_blank"
 					rel="noopener noreferrer"
-					><Icon name="mdi:map-marker-outline" aria-hidden="true" /><span
-						>Zubitxo Plaza, 3 · Urnieta</span
-					></a
 				>
+					<Icon name="mdi:map-marker-outline" aria-hidden="true" />
+					<span>Zubitxo Plaza, 3 · Urnieta</span>
+				</a>
 			</div>
 			<div class="space-images">
 				<figure class="waiting-image" data-parallax>
@@ -288,7 +293,8 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 						widths={[400, 640, 760]}
 						sizes="(max-width: 760px) 70vw, 32vw"
 					/>
-				</figure><figure class="room-image">
+				</figure>
+				<figure class="room-image">
 					<Image
 						src={Room}
 						alt={c.roomAlt}
@@ -296,79 +302,88 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 						widths={[320, 640]}
 						sizes="(max-width: 760px) 55vw, 25vw"
 					/>
-				</figure><span class="space-image-label">ZUBITXO PLAZA · 20130</span>
+				</figure>
+				<span class="space-image-label">ZUBITXO PLAZA · 20130</span>
 			</div>
 		</div>
 	</section>
 
 	<section class="faq section-space shell" aria-labelledby="faq-title">
 		<div>
-			<p class="eyebrow">{c.faqLabel}</p><h2 id="faq-title">{c.faqTitle}</h2><a
-				class="text-link underlined"
-				href={`/${lang}/contact/`}
-				>{c.footerContact}<Icon
-					name="mdi:arrow-top-right"
-					aria-hidden="true"
-				/></a
-			>
-		</div><div class="faq-list">
-			{
-				c.faqs.map(faq => (
-					<details>
-						<>
-							<summary>
-								{faq.question}
-								<Icon name="mdi:plus" aria-hidden="true" />
-							</summary>
-							<div class="faq-answer">
-								<p>{faq.answer}</p>
-							</div>
-						</>
-					</details>
-				))
-			}
+			<p class="eyebrow">{c.faqLabel}</p>
+			<h2 id="faq-title">{c.faqTitle}</h2>
+			<a class="text-link underlined" href={`/${lang}/contact/`}>
+				{c.footerContact}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+		</div>
+		<div class="faq-list">
+			{c.faqs.map(faq => (
+				<details>
+					<>
+						<summary>
+							{faq.question}
+							<Icon name="mdi:plus" aria-hidden="true" />
+						</summary>
+						<div class="faq-answer">
+							<p>{faq.answer}</p>
+						</div>
+					</>
+				</details>
+			))}
 		</div>
 	</section>
 
 	<section class="contact-section" aria-labelledby="contact-title">
 		<div class="shell contact-inner">
 			<div>
-				<p class="eyebrow">{c.contactLabel}</p><h2 id="contact-title">
-					{c.contactTitle[0]}<br /><span>{c.contactTitle[1]}</span>
+				<p class="eyebrow">{c.contactLabel}</p>
+				<h2 id="contact-title">
+					{c.contactTitle[0]}
+					<br />
+					<span>{c.contactTitle[1]}</span>
 				</h2>
-			</div><div class="contact-aside">
-				<p>{c.contactText}</p><a
+			</div>
+			<div class="contact-aside">
+				<p>{c.contactText}</p>
+				<a
 					class="pill pill-orange"
 					href={bookingUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					>{c.contactWhatsapp}<Icon name="mdi:whatsapp" aria-hidden="true" /></a
 				>
+					{c.contactWhatsapp}
+					<Icon name="mdi:whatsapp" aria-hidden="true" />
+				</a>
 				<div class="contact-calls">
 					<p class="contact-call-label">{c.contactCall}</p>
-					<a class="contact-phone" href={Phone.url}
-						><Icon name="mdi:phone-outline" aria-hidden="true" />{Phone.name}</a
-					>
-					<a class="contact-phone" href={WhatsApp.urlCall}
-						><Icon name="mdi:phone-outline" aria-hidden="true" />{
-							WhatsApp.name
-						}</a
-					>
+					<a class="contact-phone" href={Phone.url}>
+						<Icon name="mdi:phone-outline" aria-hidden="true" />
+						{Phone.name}
+					</a>
+					<a class="contact-phone" href={WhatsApp.urlCall}>
+						<Icon name="mdi:phone-outline" aria-hidden="true" />
+						{WhatsApp.name}
+					</a>
 				</div>
 				<small>{c.contactNote}</small>
 			</div>
 		</div>
 	</section>
 	<div class="mobile-booking">
-		<a class="mobile-call" href={Phone.url}
-			><Icon name="mdi:phone-outline" aria-hidden="true" />{c.call}</a
-		><a
+		<a class="mobile-call" href={Phone.url}>
+			<Icon name="mdi:phone-outline" aria-hidden="true" />
+			{c.call}
+		</a>
+		<a
 			class="pill pill-orange"
 			href={bookingUrl}
 			target="_blank"
 			rel="noopener noreferrer"
-			>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
 		>
+			{c.book}
+			<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+		</a>
 	</div>
 </div>
 

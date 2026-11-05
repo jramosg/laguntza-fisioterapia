@@ -91,17 +91,15 @@ const manualTherapyFaq = [1, 2, 3, 4].map(item => ({
 	<SectionHero
 		id="manual-therapy-hero"
 		image={Rehab}
-		imageAlt={lang === 'eu'
-			? 'Eskuzko tratamendua Laguntza Fisioterapian, Urnietan'
-			: 'Tratamiento manual en Laguntza Fisioterapia, Urnieta'}
+		imageAlt={
+			lang === 'eu'
+				? 'Eskuzko tratamendua Laguntza Fisioterapian, Urnietan'
+				: 'Tratamiento manual en Laguntza Fisioterapia, Urnieta'
+		}
 		imagePosition="center 62%"
 	>
-		<h1 slot="title">
-			{t('service.manual-therapy.hero-title')}
-		</h1>
-		<Fragment slot="desc">
-			{t('service.manual-therapy.hero-subtitle')}
-		</Fragment>
+		<h1 slot="title">{t('service.manual-therapy.hero-title')}</h1>
+		<Fragment slot="desc">{t('service.manual-therapy.hero-subtitle')}</Fragment>
 	</SectionHero>
 
 	<Container class="service-page">

@@ -81,16 +81,14 @@ const osteopathyConditions = [
 		imageLayout="portrait"
 		imagePosition="55% center"
 		showImageCaption={false}
-		imageAlt={lang === 'eu'
-			? 'Burua eskuekin eutsita eskuzko tratamendu batean'
-			: 'Apoyo manual de la cabeza durante un tratamiento'}
+		imageAlt={
+			lang === 'eu'
+				? 'Burua eskuekin eutsita eskuzko tratamendu batean'
+				: 'Apoyo manual de la cabeza durante un tratamiento'
+		}
 	>
-		<h1 slot="title">
-			{t('service.osteopathy.hero-title')}
-		</h1>
-		<Fragment slot="desc">
-			{t('service.osteopathy.hero-subtitle')}
-		</Fragment>
+		<h1 slot="title">{t('service.osteopathy.hero-title')}</h1>
+		<Fragment slot="desc">{t('service.osteopathy.hero-subtitle')}</Fragment>
 	</SectionHero>
 
 	<Container class="service-page">

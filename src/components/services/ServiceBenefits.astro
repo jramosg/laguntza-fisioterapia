@@ -10,7 +10,9 @@ const { title, benefits } = Astro.props;
 <section class="service-benefits ed-reveal">
 	<h2>{title}</h2>
 	<ul class="benefits-list">
-		{benefits.map(benefit => <li>{benefit}</li>)}
+		{benefits.map(benefit => (
+			<li>{benefit}</li>
+		))}
 	</ul>
 </section>
 

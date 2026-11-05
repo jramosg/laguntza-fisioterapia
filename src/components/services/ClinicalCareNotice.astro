@@ -12,28 +12,22 @@ const aboutUrl = `/${lang}/about/`;
 
 <aside class="clinical-care-notice" aria-labelledby="clinical-care-title">
 	<h2 id="clinical-care-title">
-		{
-			isBasque
-				? 'Arreta informatua eta pertsonalizatua'
-				: 'Atención informada y personalizada'
-		}
+		{isBasque
+			? 'Arreta informatua eta pertsonalizatua'
+			: 'Atención informada y personalizada'}
 	</h2>
 	<p>
-		{
-			isBasque
-				? `${Practitioner.name} COFPVko ${Practitioner.registrationNumber} zenbakiko fisioterapeuta kolegiatua da (${Practitioner.collegeNameLocalized.eu}). ${Practitioner.qualifications[0].eu}.`
-				: `${Practitioner.name} es fisioterapeuta colegiado n.º ${Practitioner.registrationNumber} en el ${Practitioner.collegeName}. ${Practitioner.qualifications[0].es}.`
-		}
+		{isBasque
+			? `${Practitioner.name} COFPVko ${Practitioner.registrationNumber} zenbakiko fisioterapeuta kolegiatua da (${Practitioner.collegeNameLocalized.eu}). ${Practitioner.qualifications[0].eu}.`
+			: `${Practitioner.name} es fisioterapeuta colegiado n.º ${Practitioner.registrationNumber} en el ${Practitioner.collegeName}. ${Practitioner.qualifications[0].es}.`}
 		<a href={aboutUrl}>
 			{isBasque ? 'Ezagutu bere prestakuntza.' : 'Conoce su formación.'}
 		</a>
 	</p>
 	<p>
-		{
-			isBasque
-				? 'Tratamenduaren helburuak eta teknikak banakako balorazioaren ondoren adosten dira. Orrialde honetako informazioa orokorra da eta ez du ordezkatzen balorazio kliniko pertsonalizatua.'
-				: 'Los objetivos y las técnicas se acuerdan tras una valoración individual. La información de esta página es general y no sustituye una valoración clínica personalizada.'
-		}
+		{isBasque
+			? 'Tratamenduaren helburuak eta teknikak banakako balorazioaren ondoren adosten dira. Orrialde honetako informazioa orokorra da eta ez du ordezkatzen balorazio kliniko pertsonalizatua.'
+			: 'Los objetivos y las técnicas se acuerdan tras una valoración individual. La información de esta página es general y no sustituye una valoración clínica personalizada.'}
 	</p>
 </aside>
 

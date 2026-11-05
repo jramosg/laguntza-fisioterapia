@@ -15,21 +15,24 @@ const chapters = ['journey', 'philosophy', 'community'];
 
 <article class="ed-shell ed-section about-story">
 	<div class="story-rail ed-sticky">
-		<p class="ed-kicker">JOKIN RAMOS GONZÁLEZ</p><p class="registration">
-			{
-				lang === 'eu' ? 'Fisioterapeuta kolegiatua' : 'Fisioterapeuta colegiado'
-			}<br /><span>COFPV · {Practitioner.registrationNumber}</span>
-		</p><a class="ed-link" href="#formacion"
-			>{lang === 'eu' ? 'Nire prestakuntza' : 'Mi formación'}<Icon
-				name="mdi:arrow-down"
-				aria-hidden="true"
-			/></a
-		><figure class="story-photo" data-parallax>
+		<p class="ed-kicker">JOKIN RAMOS GONZÁLEZ</p>
+		<p class="registration">
+			{lang === 'eu' ? 'Fisioterapeuta kolegiatua' : 'Fisioterapeuta colegiado'}
+			<br />
+			<span>COFPV · {Practitioner.registrationNumber}</span>
+		</p>
+		<a class="ed-link" href="#formacion">
+			{lang === 'eu' ? 'Nire prestakuntza' : 'Mi formación'}
+			<Icon name="mdi:arrow-down" aria-hidden="true" />
+		</a>
+		<figure class="story-photo" data-parallax>
 			<Image
 				src={Interview}
-				alt={lang === 'eu'
-					? 'Jokin paziente baten balorazioa prestatzen'
-					: 'Jokin preparando la valoración de un paciente'}
+				alt={
+					lang === 'eu'
+						? 'Jokin paziente baten balorazioa prestatzen'
+						: 'Jokin preparando la valoración de un paciente'
+				}
 				width={700}
 				widths={[400, 700]}
 				sizes="(max-width:760px) 80vw, 30vw"
@@ -37,14 +40,13 @@ const chapters = ['journey', 'philosophy', 'community'];
 		</figure>
 	</div>
 	<div>
-		<p class="ed-lead ed-reveal story-lead">{t('about.intro')}</p>{
-			chapters.map((chapter, i) => (
-				<section class="story-chapter ed-reveal">
-					<p>{t(`about.${chapter}-text`)}</p>
-					{i === 0 && <p>{Practitioner.sportsRole[lang]}</p>}
-				</section>
-			))
-		}
+		<p class="ed-lead ed-reveal story-lead">{t('about.intro')}</p>
+		{chapters.map((chapter, i) => (
+			<section class="story-chapter ed-reveal">
+				<p>{t(`about.${chapter}-text`)}</p>
+				{i === 0 && <p>{Practitioner.sportsRole[lang]}</p>}
+			</section>
+		))}
 	</div>
 </article>
 <section class="ed-dark ed-section" id="formacion">
@@ -52,26 +54,27 @@ const chapters = ['journey', 'philosophy', 'community'];
 		<div class="ed-reveal">
 			<p class="ed-kicker">
 				{lang === 'eu' ? 'ETENGABE IKASTEN' : 'SEGUIR APRENDIENDO'}
-			</p><h2 class="ed-heading">
-				{lang === 'eu' ? 'Zaintzeko,' : 'Formarme para'}<br /><span
-					>{lang === 'eu' ? 'prestatzen.' : 'cuidarte mejor.'}</span
-				>
-			</h2><p class="qualification-note">
-				{Practitioner.collegeNameLocalized[lang]}<br />COFPV · {
-					Practitioner.registrationNumber
-				}
 			</p>
-		</div><ol class="qualifications" role="list">
-			{
-				Practitioner.qualifications.map((qualification, i) => (
-					<li class="ed-reveal">
-						<>
-							<span>0{i + 1}</span>
-							<p>{qualification[lang]}</p>
-						</>
-					</li>
-				))
-			}
+			<h2 class="ed-heading">
+				{lang === 'eu' ? 'Zaintzeko,' : 'Formarme para'}
+				<br />
+				<span>{lang === 'eu' ? 'prestatzen.' : 'cuidarte mejor.'}</span>
+			</h2>
+			<p class="qualification-note">
+				{Practitioner.collegeNameLocalized[lang]}
+				<br />
+				COFPV · {Practitioner.registrationNumber}
+			</p>
+		</div>
+		<ol class="qualifications" role="list">
+			{Practitioner.qualifications.map((qualification, i) => (
+				<li class="ed-reveal">
+					<>
+						<span>0{i + 1}</span>
+						<p>{qualification[lang]}</p>
+					</>
+				</li>
+			))}
 		</ol>
 	</div>
 </section>
@@ -79,22 +82,24 @@ const chapters = ['journey', 'philosophy', 'community'];
 	<figure class="personal-photo" data-parallax>
 		<Image
 			src={Rehab}
-			alt={lang === 'eu'
-				? 'Jokin paziente batekin eskuzko tratamendu batean'
-				: 'Jokin trabajando con una paciente durante un tratamiento manual'}
+			alt={
+				lang === 'eu'
+					? 'Jokin paziente batekin eskuzko tratamendu batean'
+					: 'Jokin trabajando con una paciente durante un tratamiento manual'
+			}
 			width={1000}
 			widths={[400, 700, 1000]}
 			sizes="(max-width:760px) 100vw, 50vw"
 		/>
-	</figure><div>
+	</figure>
+	<div>
 		<p class="ed-kicker">
 			{lang === 'eu' ? 'LAGUNTZA, URNIETAN' : 'LAGUNTZA, EN URNIETA'}
-		</p><p class="ed-lead">
-			{
-				lang === 'eu'
-					? 'Tratamenduaren atzean, beti pertsona bat. Eta aurrean, zu.'
-					: 'Detrás del tratamiento, siempre una persona. Y delante, tú.'
-			}
+		</p>
+		<p class="ed-lead">
+			{lang === 'eu'
+				? 'Tratamenduaren atzean, beti pertsona bat. Eta aurrean, zu.'
+				: 'Detrás del tratamiento, siempre una persona. Y delante, tú.'}
 		</p>
 	</div>
 </section>

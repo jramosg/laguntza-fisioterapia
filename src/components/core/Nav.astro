@@ -2,19 +2,17 @@
 const { navData } = Astro.props;
 ---
 
-{
-	navData && (
-		<nav>
-			<ul>
-				{navData.map(navItem => (
-					<li>
-						<a href={navItem.slug}>{navItem.title}</a>
-					</li>
-				))}
-			</ul>
-		</nav>
-	)
-}
+{navData && (
+	<nav>
+		<ul>
+			{navData.map(navItem => (
+				<li>
+					<a href={navItem.slug}>{navItem.title}</a>
+				</li>
+			))}
+		</ul>
+	</nav>
+)}
 
 <style>
 	nav {

@@ -1,0 +1,49 @@
+https://laguntzafisioterapia.com
+
+
+ZURE MEZUA JASO DUGU
+
+Kaixo {{name}},
+
+Eskerrik asko gurekin harremanetan jartzeagatik.
+
+Zure eskaera arrakastaz jaso dugu.
+
+Ahalik eta azkarren erantzungo dizugu, normalean 24 ordutan gehienez.
+
+Jasotako mezua:
+
+"{{message}}"
+
+Zure kontaktu-datuak:
+
+Email: {{email}}
+
+Telefonoak {{phone}}
+
+Atxikitutako dokumentuak: {{attachmentNames}}
+
+--------------------------------------------------------------------------------
+
+Larrialdi kasuetan, deitu iezaguzu:
+
+688 734 113 tel:+34688734113
+
+Laguntza Fisioterapia
+
+Telefonoak: 943 036 070 tel:+34943036070 | 688 734 113 tel:+34688734113
+
+WhatsApp: 688 734 113 https://wa.me/34688734113
+
+Helbidea: Zubitxo Plaza, 3, 20130 Urnieta, Gipuzkoa
+https://maps.app.goo.gl/ct7ZQvDpocAY3V5ZA
+
+Bisitatu gure webgunea https://laguntzafisioterapia.com
+
+Jarrai iezaguzu sare sozialetan
+
+https://instagram.com/laguntzafisioterapia
+
+@laguntzafisioterapia https://instagram.com/laguntzafisioterapia
+
+© {{year}} Laguntza Fisioterapia

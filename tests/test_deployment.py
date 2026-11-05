@@ -1,0 +1,74 @@
+import importlib.util
+import io
+import json
+import tarfile
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+
+SPEC = importlib.util.spec_from_file_location('deployment', Path(__file__).parents[1] / 'deploy/release.py')
+deployment = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(deployment)
+
+
+class DeploymentTests(unittest.TestCase):
+    def test_test_host_keeps_static_pages_and_proxies_only_runtime_routes(self):
+        config = deployment.render_nginx('test', '/var/www/laguntza-fisioterapia', 32100)
+        self.assertIn('location = / {', config)
+        self.assertIn('location ^~ /_actions/', config)
+        self.assertIn('proxy_pass http://127.0.0.1:32100;', config)
+        self.assertIn('try_files $uri $uri/ =404;', config)
+        self.assertIn('X-Robots-Tag "noindex, nofollow" always', config)
+        self.assertIn('proxy_set_header X-Forwarded-For $remote_addr;', config)
+        self.assertIn('proxy_pass http://127.0.0.1:3000;', config)
+
+    def test_production_is_indexable_and_canonicalizes_www(self):
+        config = deployment.render_nginx('production', '/var/www/laguntza-fisioterapia-production', 32101)
+        self.assertNotIn('noindex', config)
+        self.assertNotIn('127.0.0.1:3000', config)
+        self.assertIn('www.laguntzafisioterapia.com', config)
+        self.assertIn('return 301 https://laguntzafisioterapia.com$request_uri;', config)
+
+    def test_failed_verification_restores_config_static_root_and_old_container(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / 'site'
+            root.mkdir()
+            (root / 'old.html').write_text('old')
+            config = base / 'nginx.conf'
+            original = 'server { server_name test.laguntzafisioterapia.com; }'
+            config.write_text(original)
+            certificates = base / 'certificates/test.laguntzafisioterapia.com'
+            certificates.mkdir(parents=True)
+            (certificates / 'fullchain.pem').write_text('public certificate')
+            bundle = base / 'bundle'
+            bundle.mkdir()
+            with tarfile.open(bundle / 'client.tar.gz', 'w:gz') as archive:
+                for name in ('es/index.html', 'eu/index.html', '404.html'):
+                    content = b'new static page'
+                    item = tarfile.TarInfo(name)
+                    item.size = len(content)
+                    archive.addfile(item, io.BytesIO(content))
+            state = base / 'state'
+            state.mkdir()
+            (state / 'test.json').write_text(json.dumps({'container': 'old-runtime'}))
+            def command(*args):
+                if args[:2] == ('docker', 'inspect'):
+                    return json.dumps([{'NetworkSettings': {'Ports': {'4321/tcp': [{'HostPort': '32100'}]}}}])
+                return ''
+            with (patch.object(deployment, 'TARGETS', {'test': ('test.laguntzafisioterapia.com', str(root), str(config))}),
+                  patch.object(deployment, 'CERTIFICATES', base / 'certificates'),
+                  patch.object(deployment, 'STATE', state),
+                  patch.object(deployment, 'RELEASES', base / 'releases'),
+                  patch.object(deployment, 'prepare_environment', return_value=base / 'test.env'),
+                  patch.object(deployment, 'run', side_effect=command),
+                  patch.object(deployment, 'wait_for_runtime'),
+                  patch.object(deployment, 'verify_site', side_effect=RuntimeError('failed check')),
+                  patch.object(deployment.subprocess, 'run') as cleanup):
+                with self.assertRaisesRegex(RuntimeError, 'failed check'):
+                    deployment.deploy('test', 'a' * 40, bundle)
+                self.assertEqual(config.read_text(), original)
+                self.assertEqual((root / 'old.html').read_text(), 'old')
+                self.assertEqual(json.loads((state / 'test.json').read_text())['container'], 'old-runtime')
+                self.assertNotIn('old-runtime', str(cleanup.call_args_list))

@@ -23,9 +23,9 @@ const lang = getLangFromUrl(Astro.url);
 	</head>
 
 	<body class={bodyClass} itemscope itemtype="https://schema.org/WebPage">
-		<a href="#content" class="skip-to-content"
-			>{lang === 'eu' ? 'Edukira joan' : 'Saltar al contenido'}</a
-		>
+		<a href="#content" class="skip-to-content">
+			{lang === 'eu' ? 'Edukira joan' : 'Saltar al contenido'}
+		</a>
 		<slot name="header" />
 		<main id="content" class="main-content">
 			<slot />

@@ -48,13 +48,11 @@ const seo = {
 		imageMobilePosition="center 24%"
 	>
 		<h1 slot="title">
-			{lang === 'eu' ? 'Jokin naiz.' : 'Soy Jokin.'}<br /><span
-				>{lang === 'eu' ? 'Zuri laguntzeko.' : 'Aquí para ayudarte.'}</span
-			>
+			{lang === 'eu' ? 'Jokin naiz.' : 'Soy Jokin.'}
+			<br />
+			<span>{lang === 'eu' ? 'Zuri laguntzeko.' : 'Aquí para ayudarte.'}</span>
 		</h1>
-		<Fragment slot="desc">
-			{t('about.subtitle')}
-		</Fragment>
+		<Fragment slot="desc">{t('about.subtitle')}</Fragment>
 	</SectionHero>
 	<AboutSection lang={lang} />
 	<NextStep />

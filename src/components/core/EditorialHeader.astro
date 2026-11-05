@@ -22,36 +22,32 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			class="desktop-nav"
 			aria-label={lang === 'eu' ? 'Nabigazio nagusia' : 'Navegación principal'}
 		>
-			{
-				paths.map((path, i) => (
-					<a
-						href={`/${lang}/${path}`}
-						aria-current={
-							Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
-						}
-					>
-						{c.nav[i]}
-					</a>
-				))
-			}
+			{paths.map((path, i) => (
+				<a
+					href={`/${lang}/${path}`}
+					aria-current={
+						Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
+					}
+				>
+					{c.nav[i]}
+				</a>
+			))}
 		</nav>
 		<div class="header-actions">
 			<nav class="languages" aria-label={c.languageLabel}>
-				{
-					(['eu', 'es'] as const).map(code => (
-						<a
-							href={
-								code === lang ? Astro.url.pathname : switchLanguage(Astro.url)
-							}
-							lang={code}
-							hreflang={code}
-							aria-current={code === lang ? 'page' : undefined}
-							aria-label={code === 'eu' ? 'Euskara' : 'Castellano'}
-						>
-							{code.toUpperCase()}
-						</a>
-					))
-				}
+				{(['eu', 'es'] as const).map(code => (
+					<a
+						href={
+							code === lang ? Astro.url.pathname : switchLanguage(Astro.url)
+						}
+						lang={code}
+						hreflang={code}
+						aria-current={code === lang ? 'page' : undefined}
+						aria-label={code === 'eu' ? 'Euskara' : 'Castellano'}
+					>
+						{code.toUpperCase()}
+					</a>
+				))}
 			</nav>
 			<a
 				class="header-book"
@@ -59,7 +55,8 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				{c.book}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
 			</a>
 			<laguntza-navigation>
 				<details class="mobile-menu">
@@ -73,33 +70,31 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					</summary>
 					<nav
 						class="mobile-nav"
-						aria-label={lang === 'eu'
-							? 'Nabigazio nagusia'
-							: 'Navegación principal'}
-					>
-						{
-							paths.map((path, i) => (
-								<a
-									href={`/${lang}/${path}`}
-									aria-current={
-										Astro.url.pathname === `/${lang}/${path}`
-											? 'page'
-											: undefined
-									}
-								>
-									<span>0{i + 1}</span>
-									{c.nav[i]}
-									<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-								</a>
-							))
+						aria-label={
+							lang === 'eu' ? 'Nabigazio nagusia' : 'Navegación principal'
 						}
+					>
+						{paths.map((path, i) => (
+							<a
+								href={`/${lang}/${path}`}
+								aria-current={
+									Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
+								}
+							>
+								<span>0{i + 1}</span>
+								{c.nav[i]}
+								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+							</a>
+						))}
 						<a
 							class="mobile-book"
 							href={bookingUrl}
 							target="_blank"
 							rel="noopener noreferrer"
-							>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
 						>
+							{c.book}
+							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+						</a>
 					</nav>
 				</details>
 			</laguntza-navigation>

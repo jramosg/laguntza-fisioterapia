@@ -42,120 +42,143 @@ const schedule = [
 ---
 
 <Layout {seo}>
-	<SectionHero compact book={false} eyebrow={c.nav[3]}
-		><h1 slot="title">
-			{eu ? 'Hitz egingo' : '¿Hablamos'}<br /><span
-				>{eu ? 'dugu?' : 'de ti?'}</span
-			>
-		</h1><Fragment slot="desc"
-			>{
-				eu
-					? 'Hitzordua hartzeko, zalantza bat argitzeko edo zure egoera kontatzeko. Nahiago duzun moduan.'
-					: 'Para pedir cita, resolver una duda o contarme qué te pasa. Por el medio que te resulte más cómodo.'
-			}</Fragment
-		></SectionHero
-	>
+	<SectionHero compact book={false} eyebrow={c.nav[3]}>
+		<h1 slot="title">
+			{eu ? 'Hitz egingo' : '¿Hablamos'}
+			<br />
+			<span>{eu ? 'dugu?' : 'de ti?'}</span>
+		</h1>
+		<Fragment slot="desc">
+			{eu
+				? 'Hitzordua hartzeko, zalantza bat argitzeko edo zure egoera kontatzeko. Nahiago duzun moduan.'
+				: 'Para pedir cita, resolver una duda o contarme qué te pasa. Por el medio que te resulte más cómodo.'}
+		</Fragment>
+	</SectionHero>
 	<section class="contact-channels ed-shell" aria-label={c.footerContact}>
 		<a
 			href={bookingUrl}
 			target="_blank"
 			rel="noopener noreferrer"
 			class="channel channel--primary"
-			><span class="ed-kicker">01 / WHATSAPP</span><span class="channel-title"
-				>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></span
-			><span class="channel-detail">{WhatsApp.name}</span></a
-		><div class="channel channel--calls">
-			<span class="ed-kicker">02 / {eu ? 'TELEFONOA' : 'TELÉFONO'}</span><span
-				class="channel-title"
-				>{c.call}<Icon name="mdi:phone-outline" aria-hidden="true" /></span
-			><div class="channel-numbers">
+		>
+			<span class="ed-kicker">01 / WHATSAPP</span>
+			<span class="channel-title">
+				{c.book}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</span>
+			<span class="channel-detail">{WhatsApp.name}</span>
+		</a>
+		<div class="channel channel--calls">
+			<span class="ed-kicker">02 / {eu ? 'TELEFONOA' : 'TELÉFONO'}</span>
+			<span class="channel-title">
+				{c.call}
+				<Icon name="mdi:phone-outline" aria-hidden="true" />
+			</span>
+			<div class="channel-numbers">
 				<a
 					href={Phone.url}
 					aria-label={`${eu ? 'Deitu telefono finkora' : 'Llamar al fijo'} ${Phone.name}`}
 				>
-					<span>{eu ? 'Finkoa' : 'Fijo'}</span>{Phone.name}
+					<span>{eu ? 'Finkoa' : 'Fijo'}</span>
+					{Phone.name}
 				</a>
 				<a
 					href={WhatsApp.urlCall}
 					aria-label={`${eu ? 'Deitu mugikorrera' : 'Llamar al móvil'} ${WhatsApp.name}`}
 				>
-					<span>{eu ? 'Mugikorra' : 'Móvil'}</span>{WhatsApp.name}
+					<span>{eu ? 'Mugikorra' : 'Móvil'}</span>
+					{WhatsApp.name}
 				</a>
 			</div>
-		</div><a href={Email.url} class="channel"
-			><span class="ed-kicker">03 / EMAIL</span><span class="channel-title"
-				>{eu ? 'Idatzi' : 'Escríbeme'}<Icon
-					name="mdi:arrow-top-right"
-					aria-hidden="true"
-				/></span
-			><span class="channel-detail">{Email.name}</span></a
-		>
+		</div>
+		<a href={Email.url} class="channel">
+			<span class="ed-kicker">03 / EMAIL</span>
+			<span class="channel-title">
+				{eu ? 'Idatzi' : 'Escríbeme'}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</span>
+			<span class="channel-detail">{Email.name}</span>
+		</a>
 	</section>
 	<section class="ed-shell ed-section contact-layout">
 		<div class="contact-info ed-sticky">
-			<p class="ed-kicker">{eu ? 'ZUBITXO PLAZAN' : 'EN ZUBITXO PLAZA'}</p><h2>
-				{eu ? 'Hemen aurkituko nauzu.' : 'Aquí me encontrarás.'}
-			</h2><address>
-				Zubitxo Plaza, 3 · {eu ? '2. etxabea' : 'Bajo 2'}<br />20130 Urnieta,
-				Gipuzkoa
-			</address><a
+			<p class="ed-kicker">{eu ? 'ZUBITXO PLAZAN' : 'EN ZUBITXO PLAZA'}</p>
+			<h2>{eu ? 'Hemen aurkituko nauzu.' : 'Aquí me encontrarás.'}</h2>
+			<address>
+				Zubitxo Plaza, 3 · {eu ? '2. etxabea' : 'Bajo 2'}
+				<br />
+				20130 Urnieta, Gipuzkoa
+			</address>
+			<a
 				class="ed-link"
 				href={Address.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				>{c.maps}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
-			><div class="schedule">
-				<h3>{eu ? 'Ordutegia' : 'Horario'}</h3><dl>
-					{
-						schedule.map(row => (
-							<div>
-								<>
-									<dt>{row.days}</dt>
-									<dd>{row.times}</dd>
-								</>
-							</div>
-						))
-					}
-				</dl><p>
+			>
+				{c.maps}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<div class="schedule">
+				<h3>{eu ? 'Ordutegia' : 'Horario'}</h3>
+				<dl>
+					{schedule.map(row => (
+						<div>
+							<>
+								<dt>{row.days}</dt>
+								<dd>{row.times}</dd>
+							</>
+						</div>
+					))}
+				</dl>
+				<p>
 					{eu ? 'Aldez aurreko hitzorduarekin' : 'Atención con cita previa'}
 				</p>
 			</div>
-		</div><div class="ed-reveal"><ContactForm /></div>
+		</div>
+		<div class="ed-reveal">
+			<ContactForm />
+		</div>
 	</section>
 	<section class="ed-sage ed-section">
 		<div class="ed-shell location-layout">
 			<div class="entrance-photo">
 				<Image
 					src={Entrance}
-					alt={eu
-						? 'Laguntza Fisioterapiako sarrera Zubitxo Plazan'
-						: 'Entrada de Laguntza Fisioterapia en Zubitxo Plaza'}
+					alt={
+						eu
+							? 'Laguntza Fisioterapiako sarrera Zubitxo Plazan'
+							: 'Entrada de Laguntza Fisioterapia en Zubitxo Plaza'
+					}
 					width={600}
 					widths={[320, 600]}
 					sizes="(max-width:760px) 100vw, 30vw"
-				/><span>{eu ? 'Ongi etorri.' : 'Bienvenido. Ongi etorri.'}</span>
-			</div><div>
-				<p class="ed-kicker">URNIETA · GIPUZKOA</p><h2>
-					{eu ? 'Zugandik gertu.' : 'Cerca de ti.'}
-				</h2><p class="location-description">
-					{
-						eu
-							? 'Hernani, Andoain eta Donostiatik gertu, Urnietako erdigunean.'
-							: 'En el centro de Urnieta, cerca de Hernani, Andoain y Donostia.'
-					}
-				</p><div class="contact-map">
+				/>
+				<span>{eu ? 'Ongi etorri.' : 'Bienvenido. Ongi etorri.'}</span>
+			</div>
+			<div>
+				<p class="ed-kicker">URNIETA · GIPUZKOA</p>
+				<h2>{eu ? 'Zugandik gertu.' : 'Cerca de ti.'}</h2>
+				<p class="location-description">
+					{eu
+						? 'Hernani, Andoain eta Donostiatik gertu, Urnietako erdigunean.'
+						: 'En el centro de Urnieta, cerca de Hernani, Andoain y Donostia.'}
+				</p>
+				<div class="contact-map">
 					<LeafletMap
 						latitude={43.24656113552193}
 						longitude={-1.9932571315890595}
 						zoom={17}
 					/>
-				</div><a
+				</div>
+				<a
 					class="ed-link"
 					href={Address.url}
 					target="_blank"
 					rel="noopener noreferrer"
-					>{c.maps}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
 				>
+					{c.maps}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
 			</div>
 		</div>
 	</section>

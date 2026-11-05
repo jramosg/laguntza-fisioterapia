@@ -57,27 +57,23 @@ const alternateLanguages = Astro.props.alternateLanguages || [
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Alternate Languages -->
-{
-	alternateLanguages.map(({ hreflang, href }) => (
-		<link rel="alternate" hreflang={hreflang} href={href} />
-	))
-}
+{alternateLanguages.map(({ hreflang, href }) => (
+	<link rel="alternate" hreflang={hreflang} href={href} />
+))}
 
 <!-- Author and Business Info -->
 <meta name="author" content="Jon Ramos" />
 <meta name="publisher" content="Laguntza Fisioterapia" />
 
 <!-- Robots and indexing directives -->
-{
-	Astro.props.noindex ? (
-		<meta name="robots" content="noindex, nofollow" />
-	) : (
-		<meta
-			name="robots"
-			content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-		/>
-	)
-}
+{Astro.props.noindex ? (
+	<meta name="robots" content="noindex, nofollow" />
+) : (
+	<meta
+		name="robots"
+		content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+	/>
+)}
 
 <!-- Security headers -->
 <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -90,41 +86,36 @@ const alternateLanguages = Astro.props.alternateLanguages || [
 />
 
 <!-- Breadcrumb structured data -->
-{
-	Astro.props.breadcrumb && Astro.props.breadcrumb.length > 0 && (
-		<script
-			type="application/ld+json"
-			set:html={JSON.stringify({
-				'@context': 'https://schema.org',
-				'@type': 'BreadcrumbList',
-				itemListElement: Astro.props.breadcrumb.map((item, i) => ({
-					'@type': 'ListItem',
-					position: i + 1,
-					name: item.name,
-					item: new URL(item.url, Astro.site).toString()
-				}))
-			})}
-		/>
-	)
-}
+{Astro.props.breadcrumb && Astro.props.breadcrumb.length > 0 && (
+	<script
+		type="application/ld+json"
+		set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: Astro.props.breadcrumb.map((item, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				name: item.name,
+				item: new URL(item.url, Astro.site).toString()
+			}))
+		})}
+	/>
+)}
 
-{
-	Astro.props.articleDates && (
-		<>
-			<meta
-				property="article:published_time"
-				content={Astro.props.articleDates.published}
-			/>
-			<meta
-				property="article:modified_time"
-				content={
-					Astro.props.articleDates.modified ||
-					Astro.props.articleDates.published
-				}
-			/>
-		</>
-	)
-}
+{Astro.props.articleDates && (
+	<>
+		<meta
+			property="article:published_time"
+			content={Astro.props.articleDates.published}
+		/>
+		<meta
+			property="article:modified_time"
+			content={
+				Astro.props.articleDates.modified || Astro.props.articleDates.published
+			}
+		/>
+	</>
+)}
 
 <ThemeProvider />
 

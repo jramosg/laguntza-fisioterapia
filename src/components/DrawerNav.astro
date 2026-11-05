@@ -16,16 +16,14 @@ const t = useTranslations(lang);
 <aside id="menu-overlay" class="menu-overlay">
 	<nav class="drawer-menu-nav">
 		<ul>
-			{
-				navData?.map((navItem, i) => (
-					<li
-						class="drawer-menu-item"
-						style={`transition-delay: ${(i + 1) * 100 + 200}ms`}
-					>
-						<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
-					</li>
-				))
-			}
+			{navData?.map((navItem, i) => (
+				<li
+					class="drawer-menu-item"
+					style={`transition-delay: ${(i + 1) * 100 + 200}ms`}
+				>
+					<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
+				</li>
+			))}
 		</ul>
 	</nav>
 	<div class="drawer-menu-item logo-menu-item">

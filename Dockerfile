@@ -1,12 +1,24 @@
-FROM node:lts AS build
+FROM node:26.13.0-bookworm-slim AS build
 WORKDIR /app
-RUN npm install -g pnpm@11.5.2
+RUN npm install -g pnpm@12.16.1
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm run build
 
-FROM nginx:alpine AS runtime
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 8080
+FROM node:26.13.0-bookworm-slim AS production-deps
+WORKDIR /app
+RUN npm install -g pnpm@12.16.1
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --prod --frozen-lockfile
+
+FROM node:26.13.0-bookworm-slim AS runtime
+WORKDIR /app
+ENV NODE_ENV=production HOST=0.0.0.0 PORT=4321 EMAIL_ENABLED=false
+COPY --from=production-deps --chown=node:node /app/node_modules ./node_modules
+COPY --from=build --chown=node:node /app/dist ./dist
+COPY --from=build --chown=node:node /app/package.json ./package.json
+USER node
+EXPOSE 4321
+HEALTHCHECK --interval=15s --timeout=4s --start-period=10s --retries=3 CMD node -e "fetch('http://127.0.0.1:4321/health/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+CMD ["node", "./dist/server/entry.mjs"]

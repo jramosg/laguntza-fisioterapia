@@ -13,19 +13,17 @@ const { lang = 'es' }: Props = Astro.props;
 
 <consulta-3d data-lang={lang} class="consulta3d">
 	<div class="consulta3d__views">
-		<button data-view="orbit" class="is-active" type="button"
-			>{lang === 'eu' ? 'Perspektiba' : 'Perspectiva'}</button
-		>
-		<button data-view="top" type="button"
-			>{lang === 'eu' ? 'Planoa' : 'Plano'}</button
-		>
+		<button data-view="orbit" class="is-active" type="button">
+			{lang === 'eu' ? 'Perspektiba' : 'Perspectiva'}
+		</button>
+		<button data-view="top" type="button">
+			{lang === 'eu' ? 'Planoa' : 'Plano'}
+		</button>
 	</div>
 	<p class="consulta3d__hint">
-		{
-			lang === 'eu'
-				? 'Arrastatu birarazteko · scroll zoom'
-				: 'Arrastra para girar · scroll para zoom'
-		}
+		{lang === 'eu'
+			? 'Arrastatu birarazteko · scroll zoom'
+			: 'Arrastra para girar · scroll para zoom'}
 	</p>
 	<div class="consulta3d__loading">
 		{lang === 'eu' ? 'Kargatzen…' : 'Cargando…'}

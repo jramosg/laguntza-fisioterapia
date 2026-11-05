@@ -5,11 +5,9 @@ const { posts } = Astro.props;
 ---
 
 <ul class="blog-posts-list__list">
-	{
-		posts?.map(post => {
-			return <BlogPostPreview post={post} />;
-		})
-	}
+	{posts?.map(post => {
+		return <BlogPostPreview post={post} />;
+	})}
 </ul>
 
 <style>

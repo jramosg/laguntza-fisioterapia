@@ -17,29 +17,34 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 <section class:list={['next-step', { 'next-step--contained': contained }]}>
 	<div class="next-inner">
 		<div>
-			<p class="ed-kicker">{c.contactLabel}</p><h2>
-				{
-					title ||
-						(lang === 'eu'
-							? 'Zure hurrengo pausoa, elkarrekin.'
-							: 'Tu siguiente paso, juntos.')
-				}
+			<p class="ed-kicker">{c.contactLabel}</p>
+			<h2>
+				{title ||
+					(lang === 'eu'
+						? 'Zure hurrengo pausoa, elkarrekin.'
+						: 'Tu siguiente paso, juntos.')}
 			</h2>
-		</div><div>
-			<p>{text || c.contactText}</p><a
+		</div>
+		<div>
+			<p>{text || c.contactText}</p>
+			<a
 				class="ed-pill"
 				href={bookingUrl}
 				target="_blank"
 				rel="noopener noreferrer"
-				>{c.book}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
-			><a class="next-phone" href={Phone.url}
-				>{Phone.name}<Icon name="mdi:arrow-top-right" aria-hidden="true" /></a
-			><a class="next-phone" href={WhatsApp.urlCall}
-				>{WhatsApp.name}<Icon
-					name="mdi:arrow-top-right"
-					aria-hidden="true"
-				/></a
-			><small>{c.contactNote}</small>
+			>
+				{c.book}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<a class="next-phone" href={Phone.url}>
+				{Phone.name}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<a class="next-phone" href={WhatsApp.urlCall}>
+				{WhatsApp.name}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<small>{c.contactNote}</small>
 		</div>
 	</div>
 </section>

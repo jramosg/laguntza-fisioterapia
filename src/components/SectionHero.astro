@@ -56,77 +56,76 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			class="hero-breadcrumb"
 			aria-label={lang === 'eu' ? 'Nabigazio bidea' : 'Ruta de navegación'}
 		>
-			<a href={`/${lang}/`}>Laguntza</a><span>/</span>{
-				isService && (
+			<a href={`/${lang}/`}>Laguntza</a>
+			<span>/</span>
+			{isService && (
+				<>
 					<>
-						<>
-							<a href={`/${lang}/services/`}>{c.nav[0]}</a>
-							<span>/</span>
-						</>
+						<a href={`/${lang}/services/`}>{c.nav[0]}</a>
+						<span>/</span>
 					</>
-				)
-			}<span>{eyebrow || pageLabel}</span>
+				</>
+			)}
+			<span>{eyebrow || pageLabel}</span>
 		</nav>
 		<div class="hero-type">
 			<div>
 				<p class="ed-kicker">
-					{
-						lang === 'eu'
-							? 'FISIOTERAPIA · URNIETA, GIPUZKOA'
-							: 'FISIOTERAPIA · URNIETA, GIPUZKOA'
-					}
-				</p><slot name="title" />
-			</div><div class="hero-aside">
-				<p><slot name="desc" /></p>{
-					book && (
-						<a
-							class="ed-pill"
-							href={bookingUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{c.book}
-							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-						</a>
-					)
-				}<slot name="chips" />
+					{lang === 'eu'
+						? 'FISIOTERAPIA · URNIETA, GIPUZKOA'
+						: 'FISIOTERAPIA · URNIETA, GIPUZKOA'}
+				</p>
+				<slot name="title" />
+			</div>
+			<div class="hero-aside">
+				<p>
+					<slot name="desc" />
+				</p>
+				{book && (
+					<a
+						class="ed-pill"
+						href={bookingUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{c.book}
+						<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+					</a>
+				)}
+				<slot name="chips" />
 			</div>
 		</div>
-		{
-			image && (
-				<figure
-					class="hero-photo"
-					data-parallax={imageLayout === 'portrait' ? undefined : ''}
-				>
-					<>
-						<picture>
-							{mobile && (
-								<source media="(max-width:760px)" srcset={mobile.src} />
-							)}
-							<Image
-								src={image}
-								alt={imageAlt}
-								priority
-								width={Math.min(1600, image.width)}
-								widths={imageWidths}
-								quality={85}
-								sizes={
-									imageLayout === 'portrait'
-										? '(max-width:760px) calc(100vw - 48px), (max-width:1100px) 42vw, 480px'
-										: '(max-width:760px) calc(100vw - 48px), (max-width:1440px) calc(100vw - 128px), 1312px'
-								}
-								style={`--hero-pos:${imagePosition};--hero-pos-m:${imageMobilePosition || imagePosition}`}
-							/>
-						</picture>
-						{showImageCaption && (
-							<figcaption>
-								Laguntza Fisioterapia <span>Urnieta · 20130</span>
-							</figcaption>
-						)}
-					</>
-				</figure>
-			)
-		}
+		{image && (
+			<figure
+				class="hero-photo"
+				data-parallax={imageLayout === 'portrait' ? undefined : ''}
+			>
+				<>
+					<picture>
+						{mobile && <source media="(max-width:760px)" srcset={mobile.src} />}
+						<Image
+							src={image}
+							alt={imageAlt}
+							priority
+							width={Math.min(1600, image.width)}
+							widths={imageWidths}
+							quality={85}
+							sizes={
+								imageLayout === 'portrait'
+									? '(max-width:760px) calc(100vw - 48px), (max-width:1100px) 42vw, 480px'
+									: '(max-width:760px) calc(100vw - 48px), (max-width:1440px) calc(100vw - 128px), 1312px'
+							}
+							style={`--hero-pos:${imagePosition};--hero-pos-m:${imageMobilePosition || imagePosition}`}
+						/>
+					</picture>
+					{showImageCaption && (
+						<figcaption>
+							Laguntza Fisioterapia <span>Urnieta · 20130</span>
+						</figcaption>
+					)}
+				</>
+			</figure>
+		)}
 	</div>
 </section>
 <style>

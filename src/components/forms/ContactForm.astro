@@ -3,29 +3,40 @@ import { Icon } from 'astro-icon/components';
 import { getLangFromUrl } from '@i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const eu = lang === 'eu';
-const endpoint =
-	import.meta.env.PUBLIC_CONTACT_API_URL ||
-	'https://test.laguntzafisioterapia.com/api/contact-form';
 ---
 
-<laguntza-contact data-lang={lang} data-endpoint={endpoint}>
+<laguntza-contact data-lang={lang}>
 	<div class="form-heading">
 		<p class="ed-kicker">
 			{eu ? 'NAHIAGO BADUZU, IDATZI' : 'SI PREFIERES, ESCRÍBEME'}
-		</p><h2>
+		</p>
+		<h2>
 			{eu ? 'Mezu batekin has gaitezke.' : 'Podemos empezar con un mensaje.'}
-		</h2><p>
-			{
-				eu
-					? 'Utzi zure datuak eta zurekin harremanetan jarriko naiz.'
-					: 'Déjame tus datos y me pondré en contacto contigo.'
-			}
+		</h2>
+		<p>
+			{eu
+				? 'Utzi zure datuak eta zurekin harremanetan jarriko naiz.'
+				: 'Déjame tus datos y me pondré en contacto contigo.'}
 		</p>
 	</div>
 	<form id="contactForm">
+		<input type="hidden" name="lang" value={lang} />
+		<div class="contact-trap" aria-hidden="true">
+			<label for="contact-website">Website</label>
+			<input
+				id="contact-website"
+				name="website"
+				type="text"
+				tabindex="-1"
+				autocomplete="off"
+			/>
+		</div>
 		<div class="form-row">
 			<div class="field">
-				<label for="name">{eu ? 'Izena' : 'Nombre'} <span>*</span></label><input
+				<label for="name">
+					{eu ? 'Izena' : 'Nombre'} <span>*</span>
+				</label>
+				<input
 					id="name"
 					name="name"
 					autocomplete="name"
@@ -33,8 +44,12 @@ const endpoint =
 					maxlength="120"
 					placeholder={eu ? 'Zure izena' : 'Tu nombre'}
 				/>
-			</div><div class="field">
-				<label for="email">Email <span>*</span></label><input
+			</div>
+			<div class="field">
+				<label for="email">
+					Email <span>*</span>
+				</label>
+				<input
 					id="email"
 					name="email"
 					type="email"
@@ -47,10 +62,11 @@ const endpoint =
 			</div>
 		</div>
 		<div class="field">
-			<label for="phone"
-				>{eu ? 'Telefonoa' : 'Teléfono'}
-				<small>{eu ? 'aukerakoa' : 'opcional'}</small></label
-			><input
+			<label for="phone">
+				{eu ? 'Telefonoa' : 'Teléfono'}
+				<small>{eu ? 'aukerakoa' : 'opcional'}</small>
+			</label>
+			<input
 				id="phone"
 				name="phone"
 				type="tel"
@@ -61,31 +77,35 @@ const endpoint =
 			/>
 		</div>
 		<div class="field">
-			<label for="message"
-				>{eu ? 'Nola lagun zaitzaket?' : '¿En qué puedo ayudarte?'}
-				<span>*</span></label
-			><textarea
+			<label for="message">
+				{eu ? 'Nola lagun zaitzaket?' : '¿En qué puedo ayudarte?'}
+				<span>*</span>
+			</label>
+			<textarea
 				id="message"
 				name="message"
 				required
 				maxlength="6000"
 				rows="4"
-				placeholder={eu
-					? 'Lehen hitzordua hartu nahiko nuke…'
-					: 'Me gustaría pedir una primera cita…'}></textarea>
+				placeholder={
+					eu
+						? 'Lehen hitzordua hartu nahiko nuke…'
+						: 'Me gustaría pedir una primera cita…'
+				}
+			></textarea>
 		</div>
 		<details class="attachment-options">
-			<summary
-				><Icon name="mdi:paperclip" aria-hidden="true" />{
-					eu ? 'Fitxategi bat erantsi' : 'Adjuntar un archivo'
-				}<small>{eu ? 'aukerakoa' : 'opcional'}</small></summary
-			><label for="attachments" class="file-help"
-				>{
-					eu
-						? 'JPG, PNG, PDF edo DOC · 5 MB gehienez fitxategiko · 3 fitxategi gehienez'
-						: 'JPG, PNG, PDF o DOC · Máx. 5 MB por archivo · Hasta 3 archivos'
-				}</label
-			><input
+			<summary>
+				<Icon name="mdi:paperclip" aria-hidden="true" />
+				{eu ? 'Fitxategi bat erantsi' : 'Adjuntar un archivo'}
+				<small>{eu ? 'aukerakoa' : 'opcional'}</small>
+			</summary>
+			<label for="attachments" class="file-help">
+				{eu
+					? 'JPG, PNG, PDF edo DOC · 5 MB gehienez fitxategiko · 3 fitxategi gehienez'
+					: 'JPG, PNG, PDF o DOC · Máx. 5 MB por archivo · Hasta 3 archivos'}
+			</label>
+			<input
 				type="file"
 				id="attachments"
 				name="attachments"
@@ -94,11 +114,11 @@ const endpoint =
 			/>
 		</details>
 		<div class="form-bottom">
-			<small>{eu ? '* Derrigorrezko eremuak' : '* Campos obligatorios'}</small
-			><button type="submit" class="ed-pill"
-				><span data-submit-label>{eu ? 'Mezua bidali' : 'Enviar mensaje'}</span
-				><Icon name="mdi:arrow-top-right" aria-hidden="true" /></button
-			>
+			<small>{eu ? '* Derrigorrezko eremuak' : '* Campos obligatorios'}</small>
+			<button type="submit" class="ed-pill">
+				<span data-submit-label>{eu ? 'Mezua bidali' : 'Enviar mensaje'}</span>
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</button>
 		</div>
 	</form>
 	<div
@@ -107,21 +127,21 @@ const endpoint =
 		aria-live="polite"
 		tabindex="-1"
 		hidden
-	>
-	</div>
-	<noscript
-		><p>
-			{
-				eu
-					? 'Formularioak JavaScript behar du. Telefonoz edo WhatsApp bidez harremanetan jar zaitezke.'
-					: 'El formulario necesita JavaScript. Puedes contactar por teléfono o WhatsApp.'
-			}
-		</p></noscript
-	>
+	></div>
+	<noscript>
+		<p>
+			{eu
+				? 'Formularioak JavaScript behar du. Telefonoz edo WhatsApp bidez harremanetan jar zaitezke.'
+				: 'El formulario necesita JavaScript. Puedes contactar por teléfono o WhatsApp.'}
+		</p>
+	</noscript>
 </laguntza-contact>
 <style>
 	laguntza-contact {
 		display: block;
+	}
+	.contact-trap {
+		display: none;
 	}
 	.form-heading {
 		margin-bottom: 38px;
@@ -280,146 +300,5 @@ const endpoint =
 	}
 </style>
 <script>
-	class LaguntzaContact extends HTMLElement {
-		private lifecycle?: AbortController;
-		private request?: AbortController;
-		connectedCallback() {
-			this.lifecycle = new AbortController();
-			const form = this.querySelector('form');
-			const button = this.querySelector<HTMLButtonElement>(
-				'button[type=submit]'
-			);
-			const label = this.querySelector<HTMLElement>('[data-submit-label]');
-			const status = this.querySelector<HTMLElement>('.form-status');
-			if (!form || !button || !label || !status) return;
-			const eu = this.dataset.lang === 'eu';
-			const originalLabel = label.textContent;
-			const showStatus = (message: string, error = false) => {
-				status.textContent = message;
-				status.hidden = false;
-				status.toggleAttribute('data-error', error);
-				status.focus();
-			};
-			form.addEventListener(
-				'submit',
-				async event => {
-					event.preventDefault();
-					if (button.disabled || !form.reportValidity()) return;
-					const data = new FormData(form);
-					const files = data
-						.getAll('attachments')
-						.filter(
-							(value): value is File => value instanceof File && value.size > 0
-						);
-					if (
-						files.length > 3 ||
-						files.some(file => file.size > 5 * 1024 * 1024)
-					) {
-						showStatus(
-							eu
-								? 'Gehienez 3 fitxategi erantsi ditzakezu, bakoitza 5 MB baino txikiagoa.'
-								: 'Puedes adjuntar hasta 3 archivos, de un máximo de 5 MB cada uno.',
-							true
-						);
-						return;
-					}
-					if (
-						files.some(file => !/\.(jpe?g|png|pdf|docx?|txt)$/i.test(file.name))
-					) {
-						showStatus(
-							eu
-								? 'Erabili JPG, PNG, PDF, DOC edo TXT fitxategiak.'
-								: 'Utiliza archivos JPG, PNG, PDF, DOC o TXT.',
-							true
-						);
-						return;
-					}
-					status.hidden = true;
-					button.disabled = true;
-					button.setAttribute('aria-busy', 'true');
-					label.textContent = eu ? 'Bidaltzen…' : 'Enviando…';
-					this.request = new AbortController();
-					const request = this.request;
-					const timeout = window.setTimeout(() => request.abort(), 20000);
-					try {
-						const attachments = await Promise.all(
-							files.map(
-								file =>
-									new Promise<{
-										filename: string;
-										content: string;
-										contentType: string;
-										size: number;
-									}>((resolve, reject) => {
-										const reader = new FileReader();
-										reader.onerror = () =>
-											reject(new Error('File read failed'));
-										reader.onload = () =>
-											resolve({
-												filename: file.name,
-												content: String(reader.result).split(',')[1],
-												contentType: file.type || 'application/octet-stream',
-												size: file.size
-											});
-										reader.readAsDataURL(file);
-									})
-							)
-						);
-						const values = {
-							name: String(data.get('name') || '').trim(),
-							email: String(data.get('email') || '').trim(),
-							phone: String(data.get('phone') || '').trim(),
-							message: String(data.get('message') || '').trim(),
-							attachments
-						};
-						const response = await fetch(this.dataset.endpoint!, {
-							method: 'POST',
-							headers: { 'Content-Type': 'application/json' },
-							signal: request.signal,
-							body: JSON.stringify({
-								templateName: 'laguntza-fisioterapia',
-								to: values.email,
-								lang: eu ? 'eu' : 'es',
-								data: values
-							})
-						});
-						if (!response.ok)
-							throw new Error(
-								response.status === 429 ? 'rate-limit' : 'server'
-							);
-						form.reset();
-						showStatus(
-							eu
-								? 'Eskerrik asko. Zure mezua jaso da; lehenbailehen jarriko naiz zurekin harremanetan.'
-								: 'Gracias. Tu mensaje se ha enviado; me pondré en contacto contigo lo antes posible.'
-						);
-					} catch (error) {
-						if (!this.isConnected) return;
-						showStatus(
-							error instanceof Error && error.message === 'rate-limit'
-								? eu
-									? 'Eskaera gehiegi. Saiatu berriro minutu batzuk barru.'
-									: 'Has enviado varias solicitudes. Inténtalo de nuevo en unos minutos.'
-								: eu
-									? 'Ezin izan da mezua bidali. Zure testua mantendu dugu; saiatu berriro edo idatzi WhatsApp bidez.'
-									: 'No se ha podido enviar el mensaje. Tu texto sigue aquí; vuelve a intentarlo o escríbeme por WhatsApp.',
-							true
-						);
-					} finally {
-						clearTimeout(timeout);
-						button.disabled = false;
-						button.removeAttribute('aria-busy');
-						label.textContent = originalLabel;
-					}
-				},
-				{ signal: this.lifecycle.signal }
-			);
-		}
-		disconnectedCallback() {
-			this.lifecycle?.abort();
-			this.request?.abort();
-		}
-	}
-	if (!customElements.get('laguntza-contact'))
-		customElements.define('laguntza-contact', LaguntzaContact);
+	import './contact-form';
 </script>

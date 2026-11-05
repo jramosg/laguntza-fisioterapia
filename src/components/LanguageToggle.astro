@@ -34,22 +34,20 @@ const t = useTranslations(lang);
 		role="listbox"
 		aria-label="Language selection"
 	>
-		{
-			languages.map(language => (
-				<a href={switchLanguage(url)}>
-					<button
-						type="button"
-						class={`lang-option-btn lang-option${language.code === lang ? ' selected' : ''}`}
-						role="option"
-						aria-selected={language.code === lang}
-						data-lang={language.code}
-					>
-						<span>{language.nativeName}</span>
-						{language.code === lang && <CheckIcon fill="currentColor" />}
-					</button>
-				</a>
-			))
-		}
+		{languages.map(language => (
+			<a href={switchLanguage(url)}>
+				<button
+					type="button"
+					class={`lang-option-btn lang-option${language.code === lang ? ' selected' : ''}`}
+					role="option"
+					aria-selected={language.code === lang}
+					data-lang={language.code}
+				>
+					<span>{language.nativeName}</span>
+					{language.code === lang && <CheckIcon fill="currentColor" />}
+				</button>
+			</a>
+		))}
 	</div>
 </div>
 
