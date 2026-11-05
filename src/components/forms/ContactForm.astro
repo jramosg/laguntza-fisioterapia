@@ -94,25 +94,68 @@ const eu = lang === 'eu';
 				}
 			></textarea>
 		</div>
-		<details class="attachment-options">
-			<summary>
-				<Icon name="mdi:paperclip" aria-hidden="true" />
-				{eu ? 'Fitxategi bat erantsi' : 'Adjuntar un archivo'}
-				<small>{eu ? 'aukerakoa' : 'opcional'}</small>
-			</summary>
-			<label for="attachments" class="file-help">
-				{eu
-					? 'JPG, PNG, PDF, DOC edo TXT · 10 MiB fitxategiko · 15 MiB guztira · 3 fitxategi gehienez'
-					: 'JPG, PNG, PDF, DOC o TXT · 10 MiB por archivo · 15 MiB en total · Hasta 3 archivos'}
-			</label>
+		<div class="attachment-options">
+			<div class="attachment-heading">
+				<span>{eu ? 'Dokumentuak' : 'Documentos'}</span>
+				<small>{eu ? 'Aukerakoa' : 'Opcional'}</small>
+			</div>
+			<button
+				type="button"
+				class="attachment-picker"
+				data-attachment-picker
+				aria-controls="attachment-list"
+				aria-describedby="attachment-help attachment-error"
+			>
+				<span class="attachment-upload-icon">
+					<Icon name="mdi:tray-arrow-up" aria-hidden="true" />
+				</span>
+				<span class="attachment-picker-copy">
+					<strong>{eu ? 'Fitxategiak erantsi' : 'Adjuntar archivos'}</strong>
+					<span class="attachment-drop-hint">
+						{eu ? 'edo arrastatu hona' : 'o arrástralos aquí'}
+					</span>
+				</span>
+				<Icon name="mdi:plus" class="attachment-plus" aria-hidden="true" />
+			</button>
 			<input
 				type="file"
 				id="attachments"
 				name="attachments"
 				accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt"
 				multiple
+				hidden
 			/>
-		</details>
+			<div id="attachment-help" class="file-help">
+				<span>JPG, PNG, PDF, DOC, DOCX, TXT</span>
+				<span>
+					{eu
+						? '3 fitxategi gehienez · 10 MiB bakoitzeko · 15 MiB guztira'
+						: 'Hasta 3 archivos · 10 MiB por archivo · 15 MiB en total'}
+				</span>
+			</div>
+			<ul
+				id="attachment-list"
+				class="attachment-list"
+				aria-label={eu ? 'Erantsitako fitxategiak' : 'Archivos adjuntos'}
+				hidden
+			></ul>
+			<p class="attachment-count" data-attachment-count role="status"></p>
+			<p id="attachment-error" class="attachment-error" role="alert" hidden></p>
+			<template data-attachment-template>
+				<li class="attachment-file">
+					<span class="attachment-file-icon">
+						<Icon name="mdi:file-document-outline" aria-hidden="true" />
+					</span>
+					<span class="attachment-file-copy">
+						<span class="attachment-file-name" data-file-name></span>
+						<span class="attachment-file-size" data-file-size></span>
+					</span>
+					<button type="button" class="attachment-remove" data-file-remove>
+						<Icon name="mdi:close" aria-hidden="true" />
+					</button>
+				</li>
+			</template>
+		</div>
 		<div class="form-privacy">
 			<p id="privacy-summary" class="privacy-summary">
 				{eu
@@ -246,8 +289,7 @@ const eu = lang === 'eu';
 	label span {
 		color: var(--lf-warm-text, #85501f);
 	}
-	label small,
-	summary small {
+	label small {
 		font-size: 11px;
 		font-weight: 400;
 		color: var(--lf-muted);
@@ -290,33 +332,175 @@ const eu = lang === 'eu';
 	.attachment-options {
 		margin-block: 4px 30px;
 	}
-	.attachment-options summary {
-		list-style: none;
-		cursor: pointer;
-		min-height: 44px;
+	.attachment-heading {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		font-size: 12px;
+		justify-content: space-between;
+		margin-bottom: 12px;
+		font-size: 13px;
+		font-weight: 500;
 	}
-	.attachment-options summary::-webkit-details-marker {
+	.attachment-heading small {
+		font-size: 10px;
+		font-weight: 400;
+		color: var(--lf-muted);
+		border: 1px solid var(--lf-line);
+		border-radius: 30px;
+		padding: 3px 9px;
+	}
+	.attachment-picker {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		width: 100%;
+		min-height: 100px;
+		padding: 22px;
+		border: 1px dashed var(--lf-border-strong, #a6b5ac);
+		border-radius: 16px;
+		background: var(--lf-field-surface, #eef1eb80);
+		color: var(--lf-ink);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+		transition:
+			border-color 0.2s,
+			background 0.2s;
+	}
+	.attachment-picker:hover,
+	.attachment-options[data-dragging] .attachment-picker {
+		border-color: var(--lf-teal);
+		background: var(--lf-surface-accent, #dce7e6);
+	}
+	.attachment-picker:focus-visible,
+	.attachment-remove:focus-visible {
+		outline: 2px solid var(--lf-teal);
+		outline-offset: 4px;
+	}
+	.attachment-upload-icon,
+	.attachment-file-icon {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		color: var(--lf-teal);
+		background: var(--lf-surface-accent, #dce7e6);
+		border-radius: 12px;
+		width: 46px;
+		height: 46px;
+	}
+	.attachment-upload-icon svg {
+		width: 24px;
+		height: 24px;
+	}
+	.attachment-picker-copy,
+	.attachment-file-copy {
+		display: grid;
+		gap: 5px;
+		min-width: 0;
+		flex: 1;
+	}
+	.attachment-picker-copy strong {
+		font-size: 14px;
+		font-weight: 500;
+	}
+	.attachment-drop-hint {
+		font-size: 12px;
+		color: var(--lf-muted);
+	}
+	.attachment-picker .attachment-plus {
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
+		color: var(--lf-teal);
+	}
+	.file-help {
+		display: grid;
+		gap: 3px;
+		font-size: 11px;
+		color: var(--lf-muted);
+		margin-top: 12px;
+		line-height: 1.7;
+	}
+	.attachment-list {
+		list-style: none;
+		padding: 0;
+		margin: 18px 0 0;
+		display: grid;
+		gap: 8px;
+	}
+	.attachment-list[hidden],
+	.attachment-error[hidden] {
 		display: none;
 	}
-	.attachment-options summary svg {
+	.attachment-file {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 10px 8px 10px 12px;
+		border: 1px solid var(--lf-line);
+		border-radius: 12px;
+		background: var(--lf-paper);
+	}
+	.attachment-file-icon {
+		width: 36px;
+		height: 42px;
+		border-radius: 8px;
+	}
+	.attachment-file-icon svg {
+		width: 20px;
+		height: 20px;
+	}
+	.attachment-file-name {
+		font-size: 12px;
+		font-weight: 500;
+		overflow-wrap: anywhere;
+	}
+	.attachment-file-size {
+		font-size: 11px;
+		color: var(--lf-muted);
+	}
+	.attachment-remove {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--lf-muted);
+		cursor: pointer;
+	}
+	.attachment-remove:hover {
+		background: var(--lf-surface-soft, #eef1eb);
+		color: var(--lf-ink);
+	}
+	.attachment-remove svg {
 		width: 18px;
 		height: 18px;
 	}
-	.file-help {
+	.attachment-options .attachment-count,
+	.attachment-options .attachment-error {
 		font-size: 11px;
-		color: var(--lf-muted);
-		font-weight: 400;
-		margin-top: 12px;
+		line-height: 1.7;
+		margin: 10px 0 0;
 	}
-	input[type='file'] {
-		display: block;
-		width: 100%;
-		font-size: 12px;
-		padding: 14px 0;
+	.attachment-count {
+		color: var(--lf-muted);
+	}
+	.attachment-count:empty {
+		margin: 0;
+	}
+	.attachment-error {
+		color: var(--lf-error-text, #733a24);
+		background: var(--lf-error-surface, #f8e9df);
+		border-radius: 10px;
+		padding: 12px 14px;
+	}
+	@media (pointer: coarse) {
+		.attachment-drop-hint {
+			display: none;
+		}
 	}
 	.form-bottom {
 		display: flex;

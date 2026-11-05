@@ -2,12 +2,14 @@ import { actions } from 'astro:actions';
 import {
 	isAllowedAttachment,
 	maxAttachments,
+	maxAttachmentSize,
 	maxTotalAttachmentSize
 } from '@lib/contact';
 
 class LaguntzaContact extends HTMLElement {
 	private lifecycle?: AbortController;
 	private submission?: { fingerprint: string; id: string };
+	private selectedFiles: File[] = [];
 	connectedCallback() {
 		this.lifecycle?.abort();
 		this.lifecycle = new AbortController();
@@ -18,6 +20,179 @@ class LaguntzaContact extends HTMLElement {
 		if (!form || !button || !label || !status) return;
 		const eu = this.dataset.lang === 'eu';
 		const originalLabel = label.textContent;
+		const signal = this.lifecycle.signal;
+		const attachments = this.querySelector<HTMLElement>('.attachment-options');
+		const picker = this.querySelector<HTMLButtonElement>(
+			'[data-attachment-picker]'
+		);
+		const input = this.querySelector<HTMLInputElement>('input[type=file]');
+		const list = this.querySelector<HTMLUListElement>('.attachment-list');
+		const template = this.querySelector<HTMLTemplateElement>(
+			'[data-attachment-template]'
+		);
+		const count = this.querySelector<HTMLElement>('[data-attachment-count]');
+		const fileError = this.querySelector<HTMLElement>('.attachment-error');
+		const formatSize = (size: number) => {
+			const mib = size >= 1024 ** 2;
+			const value = mib ? size / 1024 ** 2 : Math.max(1, size / 1024);
+			return `${new Intl.NumberFormat(eu ? 'eu' : 'es', {
+				maximumFractionDigits: mib ? 1 : 0
+			}).format(value)} ${mib ? 'MiB' : 'KiB'}`;
+		};
+		const showFileError = (message = '') => {
+			if (!fileError || !picker) return;
+			fileError.textContent = message;
+			fileError.hidden = !message;
+			picker.toggleAttribute('data-error', Boolean(message));
+		};
+		const renderFiles = () => {
+			if (!list || !template || !count) return;
+			list.replaceChildren();
+			list.hidden = this.selectedFiles.length === 0;
+			this.selectedFiles.forEach((file, index) => {
+				const row = template.content.cloneNode(true) as DocumentFragment;
+				row.querySelector('[data-file-name]')!.textContent = file.name;
+				row.querySelector('[data-file-size]')!.textContent = formatSize(
+					file.size
+				);
+				const remove =
+					row.querySelector<HTMLButtonElement>('[data-file-remove]')!;
+				remove.setAttribute(
+					'aria-label',
+					`${eu ? 'Kendu' : 'Quitar'} ${file.name}`
+				);
+				remove.addEventListener('click', () => {
+					this.selectedFiles.splice(index, 1);
+					showFileError();
+					renderFiles();
+					const remaining =
+						list.querySelectorAll<HTMLButtonElement>('[data-file-remove]');
+					(remaining[Math.min(index, remaining.length - 1)] ?? picker)?.focus();
+				});
+				list.append(row);
+			});
+			const total = this.selectedFiles.reduce(
+				(size, file) => size + file.size,
+				0
+			);
+			count.textContent = this.selectedFiles.length
+				? eu
+					? `${this.selectedFiles.length} / ${maxAttachments} fitxategi · ${formatSize(total)} guztira`
+					: `${this.selectedFiles.length} de ${maxAttachments} archivos · ${formatSize(total)} en total`
+				: '';
+		};
+		const addFiles = (incoming: File[]) => {
+			if (!incoming.length) return;
+			const next = [...this.selectedFiles];
+			for (const file of incoming) {
+				if (file.size > maxAttachmentSize) {
+					showFileError(
+						eu
+							? `«${file.name}» fitxategiak 10 MiB baino gehiago ditu. Aukeratu txikiago bat.`
+							: `«${file.name}» supera los 10 MiB. Elige un archivo más pequeño.`
+					);
+					return;
+				}
+				if (!isAllowedAttachment(file)) {
+					showFileError(
+						eu
+							? `Ezin da «${file.name}» erantsi. Erabili hutsik ez dagoen JPG, PNG, PDF, DOC, DOCX edo TXT fitxategi bat, baliozko izenarekin.`
+							: `No se puede adjuntar «${file.name}». Elige un JPG, PNG, PDF, DOC, DOCX o TXT que no esté vacío y tenga un nombre válido.`
+					);
+					return;
+				}
+				if (
+					!next.some(
+						current =>
+							current.name === file.name &&
+							current.size === file.size &&
+							current.lastModified === file.lastModified
+					)
+				)
+					next.push(file);
+			}
+			if (next.length > maxAttachments) {
+				showFileError(
+					eu
+						? 'Gehienez 3 fitxategi erantsi ditzakezu. Kendu bat beste bat gehitzeko.'
+						: 'Puedes adjuntar hasta 3 archivos. Quita uno para añadir otro.'
+				);
+				return;
+			}
+			if (
+				next.reduce((size, file) => size + file.size, 0) >
+				maxTotalAttachmentSize
+			) {
+				showFileError(
+					eu
+						? 'Fitxategiek ezin dute 15 MiB baino gehiago izan guztira. Kendu bat edo aukeratu txikiagoak.'
+						: 'Los archivos superan los 15 MiB en total. Quita alguno o elige archivos más pequeños.'
+				);
+				return;
+			}
+			this.selectedFiles = next;
+			showFileError();
+			renderFiles();
+		};
+		picker?.addEventListener('click', () => input?.click(), { signal });
+		input?.addEventListener(
+			'change',
+			() => {
+				addFiles(Array.from(input.files ?? []));
+				input.value = '';
+			},
+			{ signal }
+		);
+		if (attachments) {
+			let dragDepth = 0;
+			attachments.addEventListener(
+				'dragenter',
+				event => {
+					if (!event.dataTransfer?.types.includes('Files')) return;
+					event.preventDefault();
+					dragDepth++;
+					attachments.setAttribute('data-dragging', '');
+				},
+				{ signal }
+			);
+			attachments.addEventListener(
+				'dragover',
+				event => {
+					if (!event.dataTransfer?.types.includes('Files')) return;
+					event.preventDefault();
+					event.dataTransfer.dropEffect = 'copy';
+				},
+				{ signal }
+			);
+			attachments.addEventListener(
+				'dragleave',
+				() => {
+					dragDepth = Math.max(0, dragDepth - 1);
+					if (!dragDepth) attachments.removeAttribute('data-dragging');
+				},
+				{ signal }
+			);
+			attachments.addEventListener(
+				'drop',
+				event => {
+					event.preventDefault();
+					dragDepth = 0;
+					attachments.removeAttribute('data-dragging');
+					addFiles(Array.from(event.dataTransfer?.files ?? []));
+				},
+				{ signal }
+			);
+		}
+		form.addEventListener(
+			'reset',
+			() => {
+				this.selectedFiles = [];
+				showFileError();
+				renderFiles();
+			},
+			{ signal }
+		);
+		renderFiles();
 		const showStatus = (message: string, error = false) => {
 			status.textContent = message;
 			status.hidden = false;
@@ -30,11 +205,7 @@ class LaguntzaContact extends HTMLElement {
 				event.preventDefault();
 				if (button.disabled || !form.reportValidity()) return;
 				const data = new FormData(form);
-				const files = data
-					.getAll('attachments')
-					.filter(
-						(value): value is File => value instanceof File && value.size > 0
-					);
+				const files = [...this.selectedFiles];
 				if (
 					files.length > maxAttachments ||
 					files.reduce((total, file) => total + file.size, 0) >
