@@ -111,8 +111,9 @@ package managers remain available only in the build stages.
 The image and static files are uploaded over SSH; the VPS does not build
 Node dependencies.
 
-`deploy/release.py` starts the new container on a private loopback port and
-checks it before switching Nginx and the static-directory symlink. Previous
+`deploy/release.py` starts the new container on a fixed loopback port,
+alternating between two per environment (test 4410/4411, production
+4420/4421) so the Nginx upstream survives reboots, and checks it before switching Nginx and the static-directory symlink. Previous
 hashed assets remain available to open browser tabs. Failed checks restore
 the old files, Nginx configuration and runtime. The previous container is
 stopped only after the new release passes checks.

@@ -22,6 +22,15 @@ RELEASES = Path('/var/www/laguntza-releases')
 STATE = Path('/var/lib/laguntza')
 CERTIFICATES = Path('/etc/letsencrypt/live')
 ENVIRONMENTS = Path('/etc/laguntza')
+# Two fixed loopback ports per environment: a release starts on the slot the
+# running one does not use. Fixed ports survive Docker and host restarts, so
+# the rendered Nginx upstream stays valid after a reboot.
+RUNTIME_PORTS = {"test": (4410, 4411), "production": (4420, 4421)}
+
+
+def runtime_port(environment, previous):
+    first, second = RUNTIME_PORTS[environment]
+    return second if previous.get("port") == first else first
 
 
 def run(*args):
@@ -266,6 +275,7 @@ def deploy(environment, sha, bundle):
     name = f"laguntza-{environment}-{stamp}"
     state_file = STATE / f"{environment}.json"
     previous = json.loads(state_file.read_text()) if state_file.exists() else {}
+    port = runtime_port(environment, previous)
     if original_config:
         atomic_write(release / 'nginx.previous.conf', original_config)
     atomic_write(release / 'previous.json', json.dumps(previous) + '\n', 0o600)
@@ -273,9 +283,7 @@ def deploy(environment, sha, bundle):
     switched = False
     try:
         legal_env = ['--env-file', str(ENVIRONMENTS / 'legal.env')] if (ENVIRONMENTS / 'legal.env').is_file() else []
-        run("docker", "run", "-d", "--name", name, "--restart", "unless-stopped", "--memory", "192m", "--memory-swap", "256m", "--cpus", "0.5", "--pids-limit", "100", "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,size=16m", "--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--log-opt", "max-size=5m", "--log-opt", "max-file=2", "--env-file", str(env_file), *legal_env, "-e", "NODE_OPTIONS=--max-old-space-size=96", "-p", "127.0.0.1::4321", '--user', '1000:1000', '--entrypoint', '/usr/local/bin/node', image, './dist/server/entry.mjs')
-        inspected = json.loads(run("docker", "inspect", name))[0]
-        port = int(inspected["NetworkSettings"]["Ports"]["4321/tcp"][0]["HostPort"])
+        run("docker", "run", "-d", "--name", name, "--restart", "unless-stopped", "--memory", "192m", "--memory-swap", "256m", "--cpus", "0.5", "--pids-limit", "100", "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,size=16m", "--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--log-opt", "max-size=5m", "--log-opt", "max-file=2", "--env-file", str(env_file), *legal_env, "-e", "NODE_OPTIONS=--max-old-space-size=96", "-p", f"127.0.0.1:{port}:4321", '--user', '1000:1000', '--entrypoint', '/usr/local/bin/node', image, './dist/server/entry.mjs')
         wait_for_runtime(port, environment)
         if root.is_symlink():
             old_root = root.resolve()

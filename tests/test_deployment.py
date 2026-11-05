@@ -109,16 +109,12 @@ class DeploymentTests(unittest.TestCase):
             state.mkdir()
             (state / 'test.json').write_text(json.dumps({'container': 'old-runtime'}))
             (state / 'mail.json').write_text(json.dumps({'container': 'legacy-sender', 'port': 32773}))
-            def command(*args):
-                if args[:2] == ('docker', 'inspect'):
-                    return json.dumps([{'NetworkSettings': {'Ports': {'4321/tcp': [{'HostPort': '32100'}]}}}])
-                return ''
             with (patch.object(deployment, 'TARGETS', {'test': ('test.laguntzafisioterapia.com', str(root), str(config))}),
                   patch.object(deployment, 'CERTIFICATES', base / 'certificates'),
                   patch.object(deployment, 'STATE', state),
                   patch.object(deployment, 'RELEASES', base / 'releases'),
                   patch.object(deployment, 'prepare_environment', return_value=base / 'test.env'),
-                  patch.object(deployment, 'run', side_effect=command),
+                  patch.object(deployment, 'run', return_value='') as run,
                   patch.object(deployment, 'wait_for_runtime'),
                   patch.object(deployment, 'render_nginx', wraps=deployment.render_nginx) as render,
                   patch.object(deployment, 'verify_site', side_effect=RuntimeError('failed check')),
@@ -132,3 +128,12 @@ class DeploymentTests(unittest.TestCase):
                 self.assertNotIn('legacy-sender', str(cleanup.call_args_list))
                 self.assertEqual(render.call_args.args[-1], 32773)
                 self.assertEqual(json.loads((state / 'mail.json').read_text())['container'], 'legacy-sender')
+                docker_run = next(call.args for call in run.call_args_list if call.args[:2] == ('docker', 'run'))
+                self.assertIn('127.0.0.1:4410:4321', docker_run)
+
+    def test_runtime_alternates_between_fixed_ports(self):
+        self.assertEqual(deployment.runtime_port('test', {}), 4410)
+        self.assertEqual(deployment.runtime_port('test', {'port': 32776}), 4410)
+        self.assertEqual(deployment.runtime_port('test', {'port': 4410}), 4411)
+        self.assertEqual(deployment.runtime_port('test', {'port': 4411}), 4410)
+        self.assertEqual(deployment.runtime_port('production', {'port': 4420}), 4421)
