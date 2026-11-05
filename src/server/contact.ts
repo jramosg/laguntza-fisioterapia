@@ -70,7 +70,7 @@ export async function processContact(
 		.filter(Boolean);
 	const message: CreateEmailOptions = {
 		from: settings.from,
-		to: [...new Set([input.email, ...company])],
+		to: [...new Set(company)],
 		replyTo: input.email,
 		subject:
 			input.lang === 'eu'
@@ -90,6 +90,32 @@ export async function processContact(
 		idempotencyKey: `laguntza-contact:${input.requestId}`
 	});
 	if (result.error || !result.data?.id) throw new Error('mail-delivery-failed');
+	// A mistyped, unverified address must never receive clinical content/files.
+	try {
+		const text =
+			input.lang === 'eu'
+				? 'Zure mezua jaso dugu. Laguntza Fisioterapia zurekin harremanetan jarriko da lehenbailehen.'
+				: 'Hemos recibido tu mensaje. Laguntza Fisioterapia se pondrá en contacto contigo lo antes posible.';
+		const confirmation = await send(
+			{
+				from: settings.from,
+				to: [input.email],
+				replyTo: 'info@laguntzafisioterapia.com',
+				subject:
+					input.lang === 'eu'
+						? 'Zure mezua jaso dugu - Laguntza Fisioterapia'
+						: 'Hemos recibido tu mensaje - Laguntza Fisioterapia',
+				text,
+				html: `<p>${text}</p>`
+			},
+			{ idempotencyKey: `laguntza-contact:${input.requestId}:confirmation` }
+		);
+		if (confirmation.error || !confirmation.data?.id)
+			console.error('Contact confirmation delivery failed');
+	} catch {
+		// The clinic already received the request; do not encourage duplicate sends.
+		console.error('Contact confirmation delivery failed');
+	}
 	return { delivered: true };
 }
 

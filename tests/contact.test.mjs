@@ -126,26 +126,33 @@ test('escapes visitor data in HTML while preserving literal content in plain tex
 	assert.ok(result.text.includes(input.message));
 });
 test('uses server-configured recipients, reply-to, BCC and an idempotency key', async () => {
-	let sent;
+	const messages = [];
 	const result = await processContact(
 		fixture,
 		{ ...settings, bcc: 'archive@example.com' },
 		templates,
 		async (message, options) => {
-			sent = { message, options };
+			messages.push({ message, options });
 			return { data: { id: 'mock' }, error: null };
 		}
 	);
 	assert.equal(result.delivered, true);
-	assert.deepEqual(sent.message.to, [
-		'visitor@example.com',
-		'clinic@example.com'
-	]);
+	const [sent, confirmation] = messages;
+	assert.deepEqual(sent.message.to, ['clinic@example.com']);
 	assert.equal(sent.message.replyTo, 'visitor@example.com');
 	assert.deepEqual(sent.message.bcc, ['archive@example.com']);
 	assert.equal(
 		sent.options.idempotencyKey,
 		`laguntza-contact:${fixture.requestId}`
+	);
+	assert.deepEqual(confirmation.message.to, ['visitor@example.com']);
+	assert.equal(confirmation.message.attachments, undefined);
+	assert.equal(confirmation.message.bcc, undefined);
+	assert.ok(!confirmation.message.text.includes(fixture.message));
+	assert.ok(!confirmation.message.text.includes(fixture.phone));
+	assert.equal(
+		confirmation.options.idempotencyKey,
+		`laguntza-contact:${fixture.requestId}:confirmation`
 	);
 });
 test('preserves Basque templates and attachment data', async () => {
@@ -161,7 +168,7 @@ test('preserves Basque templates and attachment data', async () => {
 		settings,
 		templates,
 		async message => {
-			sent = message;
+			if (!sent) sent = message;
 			return { data: { id: 'mock' }, error: null };
 		}
 	);

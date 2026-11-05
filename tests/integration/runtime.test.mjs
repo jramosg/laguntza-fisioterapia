@@ -14,6 +14,7 @@ before(async () => {
 		HOST: '127.0.0.1',
 		PORT: '4399',
 		EMAIL_ENABLED: 'false',
+		LEGACY_CONTACT_ENABLED: 'true',
 		RESEND_API_KEY: '',
 		FROM_EMAIL: '',
 		COMPANY_EMAIL: ''
@@ -192,6 +193,68 @@ test('missing pages return the bilingual custom 404', async () => {
 	const response = await fetch(`${base}/not-a-real-page/`);
 	assert.equal(response.status, 404);
 	assert.match(await response.text(), /missing-page/);
+});
+
+test('compatibility endpoint accepts the old client, supports preflight and rejects header/body injection', async () => {
+	const path = `${base}/api/contact-form/`;
+	const origin = 'https://laguntzafisioterapia.com';
+	const envelope = {
+		templateName: 'laguntza-fisioterapia',
+		to: 'visitor@example.com',
+		lang: 'es',
+		data: {
+			name: 'Test',
+			email: 'visitor@example.com',
+			phone: '',
+			message: 'Preview only',
+			attachments: []
+		}
+	};
+	const preflight = await fetch(path, {
+		method: 'OPTIONS',
+		headers: {
+			Origin: origin,
+			'Access-Control-Request-Method': 'POST',
+			'Access-Control-Request-Headers': 'Content-Type'
+		}
+	});
+	assert.equal(preflight.status, 204);
+	assert.equal(preflight.headers.get('access-control-allow-origin'), origin);
+	const response = await fetch(path, {
+		method: 'POST',
+		headers: { Origin: origin, 'Content-Type': 'application/json' },
+		body: JSON.stringify(envelope)
+	});
+	assert.equal(response.status, 200);
+	assert.deepEqual(await response.json(), { success: true, delivered: false });
+	for (const body of [
+		{ ...envelope, from: 'attacker@example.com' },
+		{ ...envelope, to: 'other@example.com' }
+	]) {
+		assert.equal(
+			(
+				await fetch(path, {
+					method: 'POST',
+					headers: { Origin: origin, 'Content-Type': 'application/json' },
+					body: JSON.stringify(body)
+				})
+			).status,
+			400
+		);
+	}
+	assert.equal(
+		(
+			await fetch(path, {
+				method: 'POST',
+				headers: {
+					Origin: 'https://other.example',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(envelope)
+			})
+		).status,
+		403
+	);
 });
 
 function makeForm() {

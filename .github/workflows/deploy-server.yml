@@ -7,7 +7,7 @@ on:
         description: VPS environment
         type: choice
         default: test
-        options: [test, production]
+        options: [test, production, mail]
       server_task:
         description: Server operation
         type: choice
@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: laguntza-${{ inputs.environment || 'test' }}-server
+  group: laguntza-server
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
         run: test "$GITHUB_REF" = refs/heads/master
       - name: Validate operation
         run: |
-          case "$TARGET_ENV" in test|production) ;; *) exit 1 ;; esac
+          case "$TARGET_ENV" in test|production|mail) ;; *) exit 1 ;; esac
           case "$OPERATION" in deploy|inspect-routing|repair-routing) ;; *) exit 1 ;; esac
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         if: env.OPERATION == 'deploy'

@@ -46,6 +46,7 @@ Set variables **at runtime**, never in `PUBLIC_*` variables or the Docker build:
 
 ```dotenv
 EMAIL_ENABLED=false
+LEGACY_CONTACT_ENABLED=false
 RESEND_API_KEY=
 FROM_EMAIL=
 COMPANY_EMAIL=
@@ -58,9 +59,12 @@ calls Resend. The UI explicitly says that no email was sent. No Resend
 credentials are needed in test.
 
 With delivery enabled, the service uses the existing ES/EU templates. The
-sender, clinic recipients and BCC are configured on the server. The visitor
-gets a confirmation in the same email operation as the clinic; replies go to
-the visitor. The original templates are preserved, with escaped visitor data.
+sender, clinic recipients and BCC are configured on the server. The clinic
+receives the message and attachments. The visitor receives a separate minimal
+confirmation without clinical content, phone number, BCC or attachments. A
+failed confirmation does not discard a request already delivered to the clinic.
+Both messages use independent idempotency keys. The original templates are
+preserved for the clinic, with escaped visitor data.
 
 Limits: three attachments, 10 MiB each and 15 MiB total, 16 MiB HTTP body,
 two submissions per minute and five per hour per client IP for delivery.
@@ -79,7 +83,7 @@ start the runtime with delivery disabled. Neither test suite sends real mail.
 
 ## VPS deployment
 
-The **Deploy to Server** workflow is manual. Choose `test` or `production`.
+The **Deploy to Server** workflow is manual. Choose `test`, `production` or `mail`.
 Production deployment requires the `master` branch; test can deploy the
 current feature branch. Updating test does not update production.
 
@@ -128,6 +132,22 @@ Test is marked `noindex` and requires `EMAIL_ENABLED=false`. Production
 settings can be initialized from the existing `email-sender-api` container,
 without printing credentials. The old `/api/` proxy on test is preserved
 while the old public Netlify site may still depend on it.
+
+The `mail` target replaces that old backend with the same Astro image in a
+separate loopback-only container, with `EMAIL_ENABLED=true` and
+`LEGACY_CONTACT_ENABLED=true`. It accepts the existing Netlify JSON contract at
+`/api/contact-form`, applying the same validation and delivery code. Client
+sender, extra recipients and arbitrary template fields are rejected. Only this
+temporary compatibility path is proxied; old diagnostic endpoints disappear.
+Nginx bounds its JSON uploads to 22 MiB and allows one active request to bound
+memory use. The modern Actions limit remains 16 MiB.
+
+The mail deployment checks the replacement before switching Nginx, then stops
+the old `email-sender-api` container and disables its restart policy. It keeps
+the old container and proxy backup for rollback. Existing clinic BCC addresses
+become the fixed clinic recipients if there is no `COMPANY_EMAIL`. Neither
+addresses nor API keys are printed. The production frontend and DNS remain
+unchanged. Regular test deployments preserve the compatibility upstream.
 
 Release metadata is in `/var/lib/laguntza/<environment>.json`; previous
 Nginx configuration and static files are retained under
