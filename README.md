@@ -58,13 +58,23 @@ input and attachments, returns `delivered: false`, and never instantiates or
 calls Resend. The UI explicitly says that no email was sent. No Resend
 credentials are needed in test.
 
-With delivery enabled, the service uses the existing ES/EU templates. The
+With delivery enabled, the service uses separate branded ES/EU email layouts. The
 sender, clinic recipients and BCC are configured on the server. The clinic
 receives the message and attachments. The visitor receives a separate minimal
 confirmation without clinical content, phone number, BCC or attachments. A
 failed confirmation does not discard a request already delivered to the clinic.
-Both messages use independent idempotency keys. The original templates are
-preserved for the clinic, with escaped visitor data.
+Both messages use independent idempotency keys. The shared email frame uses
+inline styles and presentation tables, with mobile and dark-mode enhancements.
+Visitor data is escaped and appears only in the clinic email. The confirmation
+renderer accepts only the locale. Preview all four messages with synthetic data:
+
+```sh
+node scripts/preview-emails.mjs /tmp/laguntza-email-preview
+python3 -m http.server 4323 --bind 127.0.0.1 --directory /tmp/laguntza-email-preview
+```
+
+These templates belong to the staged Astro backend. Updating or previewing them
+does not modify the existing production `email-sender` service or send emails.
 
 Limits: three attachments, 10 MiB each and 15 MiB total, 16 MiB HTTP body,
 two submissions per minute and five per hour per client IP for delivery.

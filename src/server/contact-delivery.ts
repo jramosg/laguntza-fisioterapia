@@ -2,16 +2,8 @@ import { EMAIL_ENABLED, getSecret } from 'astro:env/server';
 import { Resend } from 'resend';
 import { processContact, ContactRateLimit } from './contact.ts';
 import type { ContactInput } from './contact-schema.ts';
-import esHtml from './templates/es.html?raw';
-import esText from './templates/es.txt?raw';
-import euHtml from './templates/eu.html?raw';
-import euText from './templates/eu.txt?raw';
 
 const limiter = new ContactRateLimit();
-const templates = {
-	es: { html: esHtml, text: esText },
-	eu: { html: euHtml, text: euText }
-};
 
 export class ContactSubmissionError extends Error {
 	constructor(public status: 400 | 429 | 503 | 500) {
@@ -39,7 +31,6 @@ export async function submitContact(input: ContactInput, address: string) {
 				companyEmail: getSecret('COMPANY_EMAIL'),
 				bcc: getSecret('BCC_EMAIL')
 			},
-			templates,
 			(message, options) =>
 				new Resend(getSecret('RESEND_API_KEY')).emails.send(message, options)
 		);

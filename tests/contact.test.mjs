@@ -1,28 +1,11 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { contactSchema } from '../src/server/contact-schema.ts';
+import { processContact, ContactRateLimit } from '../src/server/contact.ts';
 import {
-	processContact,
 	renderContact,
-	ContactRateLimit
-} from '../src/server/contact.ts';
-
-const templates = Object.fromEntries(
-	['es', 'eu'].map(lang => [
-		lang,
-		{
-			html: readFileSync(
-				new URL(`../src/server/templates/${lang}.html`, import.meta.url),
-				'utf8'
-			),
-			text: readFileSync(
-				new URL(`../src/server/templates/${lang}.txt`, import.meta.url),
-				'utf8'
-			)
-		}
-	])
-);
+	renderConfirmation
+} from '../src/server/contact-emails.ts';
 const fixture = {
 	requestId: '9b324342-d56c-48d9-a01e-f96f0a089c69',
 	lang: 'es',
@@ -41,14 +24,9 @@ const settings = {
 
 test('disabled delivery never invokes the provider, including without credentials', async () => {
 	let calls = 0;
-	const result = await processContact(
-		fixture,
-		{ enabled: false },
-		templates,
-		async () => {
-			calls++;
-		}
-	);
+	const result = await processContact(fixture, { enabled: false }, async () => {
+		calls++;
+	});
 	assert.equal(result.delivered, false);
 	assert.equal(calls, 0);
 });
@@ -118,7 +96,7 @@ test('escapes visitor data in HTML while preserving literal content in plain tex
 		name: '<img onerror="alert(1)">',
 		message: '$& <script>alert(1)</script>'
 	};
-	const result = renderContact(input, templates.es);
+	const result = renderContact(input);
 	assert.ok(!result.html.includes(input.name));
 	assert.ok(!result.html.includes('<script>'));
 	assert.ok(result.html.includes('&lt;script&gt;'));
@@ -130,7 +108,6 @@ test('uses server-configured recipients, reply-to, BCC and an idempotency key', 
 	const result = await processContact(
 		fixture,
 		{ ...settings, bcc: 'archive@example.com' },
-		templates,
 		async (message, options) => {
 			messages.push({ message, options });
 			return { data: { id: 'mock' }, error: null };
@@ -150,13 +127,22 @@ test('uses server-configured recipients, reply-to, BCC and an idempotency key', 
 	assert.equal(confirmation.message.bcc, undefined);
 	assert.ok(!confirmation.message.text.includes(fixture.message));
 	assert.ok(!confirmation.message.text.includes(fixture.phone));
+	for (const content of [
+		confirmation.message.html,
+		confirmation.message.text
+	]) {
+		assert.ok(!content.includes(fixture.name));
+		assert.ok(!content.includes(fixture.email));
+		assert.ok(!content.includes(fixture.message));
+		assert.ok(!content.includes(fixture.phone));
+	}
 	assert.equal(
 		confirmation.options.idempotencyKey,
 		`laguntza-contact:${fixture.requestId}:confirmation`
 	);
 });
 test('preserves Basque templates and attachment data', async () => {
-	let sent;
+	const messages = [];
 	await processContact(
 		{
 			...fixture,
@@ -166,13 +152,17 @@ test('preserves Basque templates and attachment data', async () => {
 			]
 		},
 		settings,
-		templates,
 		async message => {
-			if (!sent) sent = message;
+			messages.push(message);
 			return { data: { id: 'mock' }, error: null };
 		}
 	);
-	assert.ok(sent.subject.startsWith('Zure mezua'));
+	const [sent, confirmation] = messages;
+	assert.ok(sent.subject.startsWith('Kontsulta berria'));
+	assert.ok(confirmation.subject.startsWith('Zure mezua'));
+	assert.ok(confirmation.html.includes('Eskerrik asko<br />idazteagatik.'));
+	assert.ok(confirmation.text.includes('Zure mezua Laguntzara iritsi da.'));
+	assert.ok(!confirmation.html.includes('sample.pdf'));
 	assert.equal(
 		sent.attachments[0].content,
 		Buffer.from('%PDF-1.7\nproof').toString('base64')
@@ -181,14 +171,38 @@ test('preserves Basque templates and attachment data', async () => {
 });
 test('does not report delivery success when configuration or provider fails', async () => {
 	await assert.rejects(
-		processContact(fixture, { enabled: true }, templates, async () => {})
+		processContact(fixture, { enabled: true }, async () => {})
 	);
 	await assert.rejects(
-		processContact(fixture, settings, templates, async () => ({
+		processContact(fixture, settings, async () => ({
 			data: null,
 			error: { message: 'rejected' }
 		}))
 	);
+});
+test('renders both locales, multiline messages and literal placeholder-like input', () => {
+	for (const lang of ['eu', 'es']) {
+		const input = {
+			...fixture,
+			lang,
+			message: 'Primera línea\n{{name}} & segunda'
+		};
+		const clinic = renderContact(input);
+		const confirmation = renderConfirmation(lang);
+		assert.ok(clinic.html.includes(`<html lang="${lang}"`));
+		assert.ok(confirmation.html.includes(`<html lang="${lang}"`));
+		assert.ok(
+			clinic.html.includes('Primera línea<br />{{name}} &amp; segunda')
+		);
+		assert.ok(clinic.text.includes(input.message));
+		assert.ok(
+			confirmation.html.includes(
+				lang === 'eu' ? 'Eskerrik asko' : 'Gracias por'
+			)
+		);
+		assert.ok(!confirmation.html.includes(input.message));
+		assert.ok(Buffer.byteLength(confirmation.html) < 30 * 1024);
+	}
 });
 test('rate limits per IP, with separate minute and hour budgets', () => {
 	const limit = new ContactRateLimit();

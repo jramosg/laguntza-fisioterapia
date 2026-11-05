@@ -7,6 +7,5 @@ pnpm-lock.yaml
 *.min.css
 
 design-system/
-src/server/templates/*.html
 booking-api/
 deliverables/
