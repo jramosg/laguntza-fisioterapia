@@ -114,6 +114,7 @@ def render_nginx(environment, root, port, policy="default-src 'self'; base-uri '
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_read_timeout 30s;
     """
+    legal = ''.join(f'location = /{language}/legal/ {{ {proxy} }}\n' for language in ('es', 'eu'))
     zone = f"laguntza_{environment}_actions"
     return f"""# Managed by Laguntza deployment; environment: {environment}
 limit_req_zone $binary_remote_addr zone={zone}:1m rate=10r/m;
@@ -148,6 +149,7 @@ server {{
     gzip_min_length 1024;
     gzip_types text/plain text/css application/javascript application/json image/svg+xml;
     location = / {{ {proxy} }}
+    {legal}
     location ^~ /_actions/ {{
         limit_req zone={zone} burst=10 nodelay;
         limit_req_status 429;
@@ -279,7 +281,8 @@ def deploy(environment, sha, bundle):
     old_root = None
     switched = False
     try:
-        run("docker", "run", "-d", "--name", name, "--restart", "unless-stopped", "--memory", "192m", "--memory-swap", "256m", "--cpus", "0.5", "--pids-limit", "100", "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,size=16m", "--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--log-opt", "max-size=5m", "--log-opt", "max-file=2", "--env-file", str(env_file), "-e", "NODE_OPTIONS=--max-old-space-size=96", "-p", "127.0.0.1::4321", image)
+        legal_env = ['--env-file', str(ENVIRONMENTS / 'legal.env')] if (ENVIRONMENTS / 'legal.env').is_file() else []
+        run("docker", "run", "-d", "--name", name, "--restart", "unless-stopped", "--memory", "192m", "--memory-swap", "256m", "--cpus", "0.5", "--pids-limit", "100", "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,size=16m", "--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--log-opt", "max-size=5m", "--log-opt", "max-file=2", "--env-file", str(env_file), *legal_env, "-e", "NODE_OPTIONS=--max-old-space-size=96", "-p", "127.0.0.1::4321", '--user', '1000:1000', '--entrypoint', '/usr/local/bin/node', image, './dist/server/entry.mjs')
         inspected = json.loads(run("docker", "inspect", name))[0]
         port = int(inspected["NetworkSettings"]["Ports"]["4321/tcp"][0]["HostPort"])
         wait_for_runtime(port, environment)
@@ -336,7 +339,7 @@ def deploy_mail(sha, bundle):
     name = f'laguntza-mail-{stamp}'
     image = f'laguntza-web:{sha}'
     try:
-        run('docker', 'run', '-d', '--name', name, '--restart', 'unless-stopped', '--memory', '192m', '--memory-swap', '256m', '--cpus', '0.5', '--pids-limit', '100', '--read-only', '--tmpfs', '/tmp:rw,noexec,nosuid,size=16m', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--log-opt', 'max-size=5m', '--log-opt', 'max-file=2', '--env-file', str(env_file), '-e', 'NODE_OPTIONS=--max-old-space-size=96', '-p', '127.0.0.1::4321', image)
+        run('docker', 'run', '-d', '--name', name, '--restart', 'unless-stopped', '--memory', '192m', '--memory-swap', '256m', '--cpus', '0.5', '--pids-limit', '100', '--read-only', '--tmpfs', '/tmp:rw,noexec,nosuid,size=16m', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--log-opt', 'max-size=5m', '--log-opt', 'max-file=2', '--env-file', str(env_file), '-e', 'NODE_OPTIONS=--max-old-space-size=96', '-p', '127.0.0.1::4321', '--user', '1000:1000', '--entrypoint', '/usr/local/bin/node', image, './dist/server/entry.mjs')
         inspected = json.loads(run('docker', 'inspect', name))[0]
         port = int(inspected['NetworkSettings']['Ports']['4321/tcp'][0]['HostPort'])
         wait_for_runtime(port, 'mail')

@@ -22,6 +22,11 @@ export default defineConfig({
 	},
 	env: {
 		schema: {
+			LEGAL_NIF: envField.string({
+				context: 'server',
+				access: 'secret',
+				optional: true
+			}),
 			LEGACY_CONTACT_ENABLED: envField.boolean({
 				context: 'server',
 				access: 'secret',

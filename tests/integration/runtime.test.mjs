@@ -194,6 +194,16 @@ test('missing pages return the bilingual custom 404', async () => {
 	assert.equal(response.status, 404);
 	assert.match(await response.text(), /missing-page/);
 });
+test('legal identifier is resolved only at runtime and legal pages are not generated as static files', async () => {
+	const { existsSync } = await import('node:fs');
+	assert.equal(existsSync('dist/client/es/legal/index.html'), false);
+	assert.equal(existsSync('dist/client/eu/legal/index.html'), false);
+	const response = await fetch(`${base}/es/legal/`);
+	assert.equal(response.status, 503);
+	assert.match(response.headers.get('cache-control'), /private.*no-store/);
+	assert.ok(!(await response.text()).includes('<dt>NIF</dt>'));
+	assert.equal((await fetch(`${base}/es/privacy/`)).status, 200);
+});
 
 test('compatibility endpoint accepts the old client, supports preflight and rejects header/body injection', async () => {
 	const path = `${base}/api/contact-form/`;

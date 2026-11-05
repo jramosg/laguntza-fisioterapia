@@ -113,6 +113,27 @@ hashed assets remain available to open browser tabs. Failed checks restore
 the old files, Nginx configuration and runtime. The previous container is
 stopped only after the new release passes checks.
 
+### Restricted publication identities
+
+CI builds and scans before accessing deployment credentials. A separate job
+downloads the immutable artifact and checks its checksum. `Test` uses a dedicated
+SSH key that may publish only test. `Production` uses another key, may publish
+production/mail, and requires the repository owner's review after the build.
+
+Both SSH identities use a forced command with forwarding and shells disabled.
+Their only sudo permission is the fixed, root-owned `laguntza-publish` program.
+It validates the target, revision, archive members and image tag, and imports
+the release code installed by the administrator on the server. It never runs
+Python uploaded by the workflow. Updating the trusted server helper requires
+an administrative installation, separate from a normal application deployment.
+
+Server files: `/usr/local/sbin/laguntza-publish`,
+`/usr/local/libexec/laguntza-ssh-dispatch`, and
+`/usr/local/lib/laguntza/release.py`. The source counterparts are in `deploy/`.
+The gate serializes publications, rejects other project image tags and uploaded
+scripts, bounds upload/image size and refuses deployment with low disk space.
+Containers explicitly use numeric UID/GID 1000 and the Node entrypoint.
+
 Nginx sends a Content Security Policy with hashes of the built inline scripts,
 without `unsafe-inline` or `unsafe-eval` for JavaScript. Dynamic inline styles
 remain allowed for ClientRouter, GSAP and Leaflet. The policy restricts image
@@ -165,6 +186,21 @@ Deploy and validate production before updating web DNS records. Preserve
 mail records, Resend verification and Search Console verification. Leave
 Netlify and the legacy mail service available while old DNS caches drain.
 The deployment workflow never changes DNS or publishes to Netlify.
+
+### Legal identity
+
+The public professional tax identifier is configured only in
+`/etc/laguntza/legal.env`, owned by root with mode 0600. The variable name is
+`LEGAL_NIF`. Never copy its value into Git, GitHub secrets, CI logs, build
+arguments or artifacts. Test and production Node containers read that private
+file at startup; the mail compatibility container does not receive it.
+
+The legal notice at `/es/legal/` and `/eu/legal/` renders on demand with
+`Cache-Control: private, no-store`. It is not generated in the static build.
+The remaining public pages, including privacy information, remain static.
+If the runtime identifier is absent, the legal page returns 503 rather than
+publishing an invented value. Legal texts must still be checked by the clinic
+against its actual processing practices and administrative authorizations.
 
 ## Astro references
 

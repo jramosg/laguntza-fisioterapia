@@ -74,6 +74,12 @@ const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 	<div class="footer-bottom">
 		<span>© {new Date().getFullYear()} Laguntza Fisioterapia</span>
 		<span>{c.languages}</span>
+		<a href={`/${lang}/privacy/`}>
+			{lang === 'eu' ? 'Pribatutasuna' : 'Privacidad'}
+		</a>
+		<a href={`/${lang}/legal/`}>
+			{lang === 'eu' ? 'Lege-oharra' : 'Aviso legal'}
+		</a>
 		<ThemeSwitcher />
 		<span>{c.footerCredits} · Nerea Dorronsoro & Jon Ramos</span>
 	</div>

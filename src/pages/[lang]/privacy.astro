@@ -1,0 +1,142 @@
+---
+import Layout from '@layouts/Page.astro';
+import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
+import { Address, Email } from '@config/company';
+export function getStaticPaths() {
+	return getStaticLangPaths();
+}
+const lang = getLangFromUrl(Astro.url);
+const eu = lang === 'eu';
+const title = eu ? 'Pribatutasuna' : 'Privacidad';
+---
+
+<Layout seo={{ title: `${title} | Laguntza Fisioterapia`, noindex: true }}>
+	<article class="privacy-copy shell">
+		<p class="eyebrow">LAGUNTZA FISIOTERAPIA</p>
+		<h1>{title}</h1>
+		<h2>
+			{eu
+				? 'Nor da zure datuen arduraduna?'
+				: '¿Quién es responsable de tus datos?'}
+		</h2>
+		<p>
+			Jokin Ramos Gonzalez · Laguntza Fisioterapia.
+			<br />
+			{Address.name}.<br />
+			<a href={Email.url}>{Email.name}</a>.
+		</p>
+		<h2>
+			{eu
+				? 'Zertarako erabiltzen dugu formularioa?'
+				: '¿Para qué usamos el formulario?'}
+		</h2>
+		<p>
+			{eu
+				? 'Zure kontsultari erantzuteko eta hitzordu-eskaera kudeatzeko. Izena, emaila eta mezua behar ditugu; telefonoa eta eranskinak aukerakoak dira. Ez dugu informazio hori publizitatea bidaltzeko erabiltzen.'
+				: 'Para responder a tu consulta y gestionar tu solicitud de cita. Necesitamos tu nombre, email y mensaje; el teléfono y los archivos adjuntos son opcionales. No usamos esta información para enviarte publicidad.'}
+		</p>
+		<p>
+			{eu
+				? 'Txosten klinikoak partekatu behar badituzu, adostu lehenik Jokinekin biderik egokiena eta bidali beharrezkoa den informazioa soilik. Eranskinak ez dira webgunean argitaratzen.'
+				: 'Si necesitas compartir informes clínicos, acuerda primero con Jokin el medio más adecuado y envía solo la información necesaria. Los adjuntos no se publican en la web.'}
+		</p>
+		<h2>{eu ? 'Tratamenduaren oinarria' : 'Base del tratamiento'}</h2>
+		<p>
+			{eu
+				? 'Zure ekimenez Laguntzaren zerbitzuei buruz egiten dituzun eskaerei erantzuten diegu, kontratu aurreko edo kontratuko harremanaren barruan (DBEOren 6.1.b artikulua). Asistentzia-harremana dagoenean, osasun-datuak osasun-arreta emateko tratatzen dira, lanbide-sekretuaren menpe (DBEOren 9.2.h artikulua).'
+				: 'Atendemos las solicitudes que haces por iniciativa propia sobre los servicios de Laguntza, en el marco de medidas precontractuales o de la relación contractual (art. 6.1.b del RGPD). Cuando existe una relación asistencial, los datos de salud se tratan para prestar asistencia sanitaria bajo el deber de secreto profesional (art. 9.2.h del RGPD).'}
+		</p>
+		<h2>
+			{eu ? 'Nork jasotzen du informazioa?' : '¿Quién recibe la información?'}
+		</h2>
+		<p>
+			{eu
+				? 'Mezua eta eranskinak kontsultara bidaltzen dira. Zuk jasotzen duzun baieztapenak ez du zure mezua edo dokumentuak barne hartzen. Bidalketa Resend hornitzailearen bidez egiten da; hornitzaile horrek datuak Estatu Batuetan prozesa ditzake.'
+				: 'El mensaje y los adjuntos se envían a la consulta. La confirmación que recibes no incluye tu mensaje ni tus documentos. El envío se realiza mediante Resend, proveedor que puede procesar datos en Estados Unidos.'}{' '}
+			<a
+				href="https://resend.com/security"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{eu
+					? 'Resenden datu-babesari eta nazioarteko transferentziei buruzko informazioa'
+					: 'Información de Resend sobre protección de datos y transferencias internacionales'}
+			</a>
+			.
+		</p>
+		<h2>
+			{eu
+				? 'Zenbat denboraz gordetzen dira?'
+				: '¿Durante cuánto tiempo se conservan?'}
+		</h2>
+		<p>
+			{eu
+				? 'Eskaera kudeatzeko eta zurekin harremana mantentzeko beharrezkoa den denboraz. Informazioa historia klinikoaren parte bihurtzen bada, osasun-dokumentazioari dagozkion legezko epeak aplikatuko dira. Bidalketa-hornitzaileak bere zerbitzuan argitaratutako kontserbazio-epeak aplikatzen ditu.'
+				: 'Durante el tiempo necesario para gestionar la solicitud y mantener la relación contigo. Si la información pasa a formar parte de la historia clínica, se aplicarán los plazos legales de conservación de la documentación sanitaria. El proveedor de envío aplica los plazos publicados para su servicio.'}
+		</p>
+		<h2>{eu ? 'Zure eskubideak' : 'Tus derechos'}</h2>
+		<p>
+			{eu
+				? 'Datuak eskuratzeko, zuzentzeko, ezabatzeko, tratamendua mugatzeko, aurka egiteko eta eramangarritasuna eskatzeko, hala dagokionean, idatzi helbide honetara:'
+				: 'Para solicitar acceso, rectificación, supresión, limitación, oposición o portabilidad, cuando correspondan, escribe a'}{' '}
+			<a href={Email.url}>{Email.name}</a>.{' '}
+			{eu
+				? 'Ez erantsi NANaren kopiarik lehen mezuan. Zure nortasuna egiaztatu behar badugu, nola egin adieraziko dizugu.'
+				: 'No adjuntes una copia del DNI al primer mensaje. Si necesitamos comprobar tu identidad, te indicaremos cómo hacerlo.'}
+		</p>
+		<p>
+			<a href="https://www.aepd.es/" target="_blank" rel="noopener noreferrer">
+				{eu
+					? 'Datuak Babesteko Espainiako Bulegoan erreklamazioa aurkez dezakezu'
+					: 'Puedes presentar una reclamación ante la Agencia Española de Protección de Datos'}
+			</a>
+			.
+		</p>
+		<h2>{eu ? 'Hobespenak eta mapa' : 'Preferencias y mapa'}</h2>
+		<p>
+			{eu
+				? 'Eskuz aukeratutako hizkuntza urtebetez gordetzen dugu cookie batean. Argitasun- edo iluntasun-hobespena nabigatzailean gordetzen da, aldatu edo gunearen datuak ezabatu arte. Ez dugu publizitate- edo analitika-cookierik erabiltzen.'
+				: 'Guardamos la elección manual de idioma durante un año en una cookie. La preferencia de modo claro u oscuro queda en el navegador hasta que la cambies o borres los datos del sitio. No usamos cookies publicitarias ni analíticas.'}
+		</p>
+		<p>
+			{eu
+				? 'Mapa erakustean, nabigatzaileak irudiak OpenStreetMap hornitzaileari eskatzen dizkio, eta hark zure IP helbidea jasotzen du. WhatsApp, Instagram eta kanpoko mapetarako estekek zerbitzu horien pribatutasun-baldintzak dituzte.'
+				: 'Al mostrar el mapa, el navegador solicita imágenes a OpenStreetMap, que recibe tu dirección IP. Los enlaces a WhatsApp, Instagram y mapas externos quedan sujetos a las condiciones de privacidad de esos servicios.'}
+		</p>
+		<p class="updated">
+			{eu
+				? 'Azken eguneraketa: 2026ko azaroaren 5a.'
+				: 'Última actualización: 5 de noviembre de 2026.'}
+		</p>
+	</article>
+</Layout>
+<style>
+	.privacy-copy {
+		max-width: 880px;
+		padding-block: 90px 120px;
+	}
+	.privacy-copy h1 {
+		font-size: clamp(42px, 7vw, 80px);
+		letter-spacing: -0.055em;
+		line-height: 1.05;
+		margin: 24px 0 58px;
+	}
+	.privacy-copy h2 {
+		font-size: 24px;
+		letter-spacing: -0.025em;
+		margin: 42px 0 18px;
+	}
+	.privacy-copy p {
+		font-size: 17px;
+		line-height: 1.8;
+		color: var(--lf-muted);
+	}
+	.privacy-copy a {
+		color: var(--lf-ink);
+		text-underline-offset: 0.2em;
+	}
+	.updated {
+		margin-top: 48px;
+		font-size: 14px !important;
+	}
+</style>
