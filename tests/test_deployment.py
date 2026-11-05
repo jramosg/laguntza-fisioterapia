@@ -137,3 +137,28 @@ class DeploymentTests(unittest.TestCase):
         self.assertEqual(deployment.runtime_port('test', {'port': 4410}), 4411)
         self.assertEqual(deployment.runtime_port('test', {'port': 4411}), 4410)
         self.assertEqual(deployment.runtime_port('production', {'port': 4420}), 4421)
+
+    def test_verification_waits_for_the_new_https_virtual_host_after_reload(self):
+        failure = deployment.subprocess.CalledProcessError(60, ('curl',))
+        replies = [failure, 'Laguntza\n200', 'Laguntza\n200',
+                   'missing-page\n404', 'Location: /eu/\nCache-Control: private, no-store\n']
+        with patch.object(deployment, 'run', side_effect=replies) as command, patch.object(deployment.time, 'sleep') as sleep:
+            deployment.verify_site('laguntzafisioterapia.com', 'production')
+        self.assertEqual(command.call_count, 5)
+        sleep.assert_called_once_with(0.25)
+        for call in command.call_args_list:
+            self.assertNotIn('-k', call.args)
+            self.assertNotIn('--insecure', call.args)
+
+    def test_verification_rejects_a_persistently_invalid_certificate(self):
+        failure = deployment.subprocess.CalledProcessError(60, ('curl',))
+        with patch.object(deployment, 'run', side_effect=failure) as command, patch.object(deployment.time, 'sleep'):
+            with self.assertRaises(deployment.subprocess.CalledProcessError):
+                deployment.verify_site('laguntzafisioterapia.com', 'production')
+        self.assertEqual(command.call_count, 10)
+
+    def test_verification_rejects_a_persistently_incorrect_page(self):
+        with patch.object(deployment, 'run', return_value='wrong site\n200') as command, patch.object(deployment.time, 'sleep'):
+            with self.assertRaisesRegex(RuntimeError, 'Release check failed'):
+                deployment.verify_site('laguntzafisioterapia.com', 'production')
+        self.assertEqual(command.call_count, 10)

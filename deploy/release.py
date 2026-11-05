@@ -226,27 +226,32 @@ def wait_for_runtime(port, environment):
 
 
 def verify_site(domain, environment):
-    for path, expected, marker in [("/es/", "200", "Laguntza"), ("/eu/", "200", "Laguntza"), ("/__release-missing__/", "404", "missing-page")]:
-        for attempt in range(10):
+    def check():
+        for path, expected, marker in [("/es/", "200", "Laguntza"), ("/eu/", "200", "Laguntza"), ("/__release-missing__/", "404", "missing-page")]:
             result = run("curl", "-sS", "--max-time", "10", "--resolve", f"{domain}:443:127.0.0.1", "-w", "\n%{http_code}", f"https://{domain}{path}")
             body, status = result.rsplit("\n", 1)
-            if status == expected and marker in body:
-                break
-            if attempt == 9:
+            if status != expected or marker not in body:
                 raise RuntimeError(f"Release check failed for {path}: HTTP {status}")
-            time.sleep(0.25)
-    for attempt in range(10):
         headers = run("curl", "-sS", "-D", "-", "-o", "/dev/null", "--max-time", "10", "--resolve", f"{domain}:443:127.0.0.1", "-H", "Accept-Language: eu", f"https://{domain}/").lower()
         root_valid = "location: /eu/" in headers and "no-store" in headers
         indexing_valid = True
         if environment == "test":
             headers = run("curl", "-sSI", "--max-time", "10", "--resolve", f"{domain}:443:127.0.0.1", f"https://{domain}/es/").lower()
             indexing_valid = "x-robots-tag: noindex" in headers
-        if root_valid and indexing_valid:
-            return
-        if attempt == 9:
+        if not (root_valid and indexing_valid):
             raise RuntimeError("Runtime routing or test indexing protection failed")
-        time.sleep(0.25 * (attempt + 1))
+
+    # Nginx reload is asynchronous: its old workers can briefly serve the default
+    # certificate before the first virtual host for this name becomes active.
+    # Retry transport failures too, without disabling certificate validation.
+    for attempt in range(10):
+        try:
+            check()
+            return
+        except (subprocess.CalledProcessError, RuntimeError):
+            if attempt == 9:
+                raise
+            time.sleep(0.25 * (attempt + 1))
 
 
 def deploy(environment, sha, bundle):
