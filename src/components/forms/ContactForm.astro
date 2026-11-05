@@ -113,17 +113,41 @@ const eu = lang === 'eu';
 				multiple
 			/>
 		</details>
-		<p class="form-privacy">
-			{eu
-				? 'Arduraduna: Jokin Ramos Gonzalez. Zure kontsulta eta hitzordu-eskaera kudeatzeko erabiliko ditugu datuak, zuk eskatutako zerbitzua kudeatzeko oinarrian. Bidalketa Resend bidez egiten da, eta datuak EEEtik kanpo prozesa ditzake. Zure eskubideak info@laguntzafisioterapia.com helbidean erabil ditzakezu.'
-				: 'Responsable: Jokin Ramos Gonzalez. Usaremos tus datos para atender tu consulta y solicitud de cita, sobre la base de gestionar el servicio que solicitas. El envío se realiza mediante Resend, que puede procesar datos fuera del EEE. Puedes ejercer tus derechos en info@laguntzafisioterapia.com.'}
-			<a href={`/${lang}/privacy/`}>
+		<div class="form-privacy">
+			<p id="privacy-summary" class="privacy-summary">
 				{eu
-					? 'Pribatutasunari buruzko informazioa'
-					: 'Información de privacidad'}
-			</a>
-			.
-		</p>
+					? 'Jokin Ramos Gonzalez · Zure kontsulta edo hitzordua kudeatzeko, eskatutako zerbitzuaren barruan. Hartzaileak: kontsulta eta posta-hornitzailea; nazioarteko transferentziak egon daitezke. Eskubideak: info@laguntzafisioterapia.com.'
+					: 'Jokin Ramos Gonzalez · Para atender tu consulta o cita, como parte del servicio solicitado. Destinatarios: la consulta y su proveedor de correo; posibles transferencias internacionales. Derechos: info@laguntzafisioterapia.com.'}
+			</p>
+			<label class="privacy-acknowledgement" for="privacy-acknowledged">
+				<input
+					type="checkbox"
+					id="privacy-acknowledged"
+					name="privacyAcknowledged"
+					value="informed"
+					aria-describedby="privacy-summary"
+					required
+				/>
+				<span>
+					{!eu && 'Confirmo que he recibido la '}
+					<a
+						href={`/${lang}/privacy/`}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={
+							eu
+								? 'Pribatutasunari buruzko informazioa (beste fitxa batean irekitzen da)'
+								: 'Información de privacidad (se abre en otra pestaña)'
+						}
+					>
+						{eu
+							? 'Pribatutasunari buruzko informazioa'
+							: 'información de privacidad'}
+					</a>
+					{eu && ' jaso dudala berresten dut'}
+				</span>
+			</label>
+		</div>
 		<div class="form-bottom">
 			<small>{eu ? '* Derrigorrezko eremuak' : '* Campos obligatorios'}</small>
 			<button type="submit" class="ed-pill">
@@ -157,6 +181,32 @@ const eu = lang === 'eu';
 	.form-privacy a {
 		color: var(--lf-ink);
 		text-underline-offset: 0.2em;
+	}
+	.privacy-summary {
+		margin: 0 0 10px;
+	}
+	.privacy-acknowledgement {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+		min-height: 44px;
+		padding-block: 10px;
+		margin: 0;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1.6;
+		cursor: pointer;
+	}
+	.privacy-acknowledgement span {
+		color: var(--lf-ink);
+	}
+	input[type='checkbox'] {
+		flex: 0 0 20px;
+		width: 20px;
+		height: 20px;
+		margin: 1px 0 0;
+		accent-color: var(--lf-text-accent, #37697a);
+		cursor: pointer;
 	}
 	laguntza-contact {
 		display: block;
@@ -203,7 +253,7 @@ const eu = lang === 'eu';
 		color: var(--lf-muted);
 		margin-left: 8px;
 	}
-	input:not([type='file']),
+	input:not([type='file']):not([type='checkbox']),
 	textarea {
 		display: block;
 		width: 100%;
