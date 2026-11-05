@@ -13,19 +13,17 @@ const { lang = 'es' }: Props = Astro.props;
 
 <consulta-3d data-lang={lang} class="consulta3d">
 	<div class="consulta3d__views">
-		<button data-view="orbit" class="is-active" type="button"
-			>{lang === 'eu' ? 'Perspektiba' : 'Perspectiva'}</button
-		>
-		<button data-view="top" type="button"
-			>{lang === 'eu' ? 'Planoa' : 'Plano'}</button
-		>
+		<button data-view="orbit" class="is-active" type="button">
+			{lang === 'eu' ? 'Perspektiba' : 'Perspectiva'}
+		</button>
+		<button data-view="top" type="button">
+			{lang === 'eu' ? 'Planoa' : 'Plano'}
+		</button>
 	</div>
 	<p class="consulta3d__hint">
-		{
-			lang === 'eu'
-				? 'Arrastatu birarazteko · scroll zoom'
-				: 'Arrastra para girar · scroll para zoom'
-		}
+		{lang === 'eu'
+			? 'Arrastatu birarazteko · scroll zoom'
+			: 'Arrastra para girar · scroll para zoom'}
 	</p>
 	<div class="consulta3d__loading">
 		{lang === 'eu' ? 'Kargatzen…' : 'Cargando…'}
@@ -207,7 +205,11 @@ const { lang = 'es' }: Props = Astro.props;
 	};
 
 	class Consulta3D extends HTMLElement {
+		private cleanup?: () => void;
+		private observer?: IntersectionObserver;
+		private lifecycle?: AbortController;
 		connectedCallback() {
+			this.lifecycle = new AbortController();
 			// avoid double init
 			if ((this as any)._init) return;
 			(this as any)._init = true;
@@ -219,8 +221,10 @@ const { lang = 'es' }: Props = Astro.props;
 			// modelo se acerca al viewport (mejor LCP en móvil).
 			const start = async () => {
 				const THREE = await import('three');
+				if (!host.isConnected) return;
 				const { OrbitControls } =
 					await import('three/examples/jsm/controls/OrbitControls.js');
+				if (!host.isConnected) return;
 
 				const C = {
 					teal: 0x458295,
@@ -248,7 +252,7 @@ const { lang = 'es' }: Props = Astro.props;
 				const renderer = new THREE.WebGLRenderer({ antialias: true });
 				renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 				renderer.shadowMap.enabled = true;
-				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+				renderer.shadowMap.type = THREE.PCFShadowMap;
 				renderer.outputColorSpace = THREE.SRGBColorSpace;
 				renderer.toneMapping = THREE.ACESFilmicToneMapping;
 				renderer.toneMappingExposure = 1.08;
@@ -807,8 +811,37 @@ const { lang = 'es' }: Props = Astro.props;
 					el.style.opacity = String(Math.max(0, Math.min(1, (42 - dist) / 18)));
 				};
 				const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+				let frame = 0;
+				let visible = true;
+				const visibility = new IntersectionObserver(entries => {
+					visible = entries[0].isIntersecting;
+				});
+				visibility.observe(host);
+				this.cleanup = () => {
+					cancelAnimationFrame(frame);
+					visibility.disconnect();
+					ro.disconnect();
+					controls.dispose();
+					scene.traverse(object => {
+						if (object instanceof THREE.Mesh) {
+							object.geometry.dispose();
+							const materials = Array.isArray(object.material)
+								? object.material
+								: [object.material];
+							materials.forEach(material => {
+								Object.values(material).forEach(value => {
+									if (value instanceof THREE.Texture) value.dispose();
+								});
+								material.dispose();
+							});
+						}
+					});
+					renderer.dispose();
+				};
 				const animate = () => {
-					requestAnimationFrame(animate);
+					if (!host.isConnected) return;
+					frame = requestAnimationFrame(animate);
+					if (!visible || document.hidden || host.clientWidth === 0) return;
 					if (targetView) {
 						viewT = Math.min(1, viewT + (reduce ? 1 : 0.02));
 						const e = 1 - Math.pow(1 - viewT, 3);
@@ -838,19 +871,52 @@ const { lang = 'es' }: Props = Astro.props;
 						(entries, obs) => {
 							if (entries.some(e => e.isIntersecting)) {
 								obs.disconnect();
-								idle(() => void start());
+								idle(() => {
+									if (host.isConnected)
+										void start().catch(() => {
+											const loading = host.querySelector(
+												'.consulta3d__loading'
+											);
+											if (loading)
+												loading.textContent =
+													lang === 'eu'
+														? '3D ikuspegia ez dago erabilgarri gailu honetan. Argazkiak ikus ditzakezu.'
+														: 'La vista 3D no está disponible en este dispositivo. Puedes ver las fotografías.';
+										});
+								});
 							}
 						},
 						{ rootMargin: '150px 0px' }
 					);
+					this.observer = io;
 					io.observe(host);
 				} else {
-					idle(() => void start());
+					idle(() => {
+						if (host.isConnected)
+							void start().catch(() => {
+								const loading = host.querySelector('.consulta3d__loading');
+								if (loading)
+									loading.textContent =
+										lang === 'eu'
+											? '3D ikuspegia ez dago erabilgarri gailu honetan. Argazkiak ikus ditzakezu.'
+											: 'La vista 3D no está disponible en este dispositivo. Puedes ver las fotografías.';
+							});
+					});
 				}
 			};
 
 			if (document.readyState === 'complete') observe();
-			else window.addEventListener('load', observe, { once: true });
+			else
+				window.addEventListener('load', observe, {
+					once: true,
+					signal: this.lifecycle.signal
+				});
+		}
+		disconnectedCallback() {
+			this.lifecycle?.abort();
+			this.observer?.disconnect();
+			this.cleanup?.();
+			(this as any)._init = false;
 		}
 	}
 

@@ -1,3 +1,6 @@
 allowBuilds:
   esbuild: false
   sharp: false
+overrides:
+  # GHSA-g7r4-m6w7-qqqr; remove when Vite resolves a patched release itself.
+  esbuild: 0.28.2

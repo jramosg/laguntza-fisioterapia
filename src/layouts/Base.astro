@@ -4,11 +4,15 @@ import type { Props as BaseHeadProps } from '../components/head/BaseHead.astro';
 import { getLangFromUrl } from '@i18n/utils';
 import WhatsAppFab from '@components/WhatsAppFab.astro';
 import '@fontsource-variable/inter';
+import '../styles/editorial.css';
+import SiteMotion from '@components/core/SiteMotion.astro';
 export interface Props {
 	seo?: BaseHeadProps;
+	showWhatsApp?: boolean;
+	bodyClass?: string;
 }
 
-const { seo } = Astro.props;
+const { seo, showWhatsApp = true, bodyClass } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 ---
 
@@ -18,14 +22,17 @@ const lang = getLangFromUrl(Astro.url);
 		<slot name="head" />
 	</head>
 
-	<body itemscope itemtype="https://schema.org/WebPage">
-		<a href="#content" class="skip-to-content">Skip to content</a>
+	<body class={bodyClass} itemscope itemtype="https://schema.org/WebPage">
+		<a href="#content" class="skip-to-content">
+			{lang === 'eu' ? 'Edukira joan' : 'Saltar al contenido'}
+		</a>
 		<slot name="header" />
 		<main id="content" class="main-content">
 			<slot />
 		</main>
-		<WhatsAppFab />
+		{showWhatsApp && <WhatsAppFab />}
 		<slot name="footer" />
+		<SiteMotion />
 	</body>
 </html>
 
@@ -40,8 +47,8 @@ const lang = getLangFromUrl(Astro.url);
 		left: var(--s2);
 		z-index: 9999;
 		padding: var(--s2) var(--s4);
-		background: var(--theme-primary);
-		color: var(--theme-on-primary);
+		background: var(--theme-primary-800, #234652);
+		color: #fff;
 		font-weight: 600;
 		border-radius: 0 0 var(--theme-shape-radius) var(--theme-shape-radius);
 		text-decoration: none;

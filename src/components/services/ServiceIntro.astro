@@ -7,12 +7,23 @@ interface Props {
 	detailText?: string;
 	image: any;
 	imageAlt: string;
+	imagePosition?: string;
 }
 
-const { title, text, detailText, image, imageAlt } = Astro.props;
+const {
+	title,
+	text,
+	detailText,
+	image,
+	imageAlt,
+	imagePosition = 'center'
+} = Astro.props;
+const maxImageWidth = Math.min(image.width, 1280);
+const imageWidths = [400, 640, 960].filter(width => width < maxImageWidth);
+imageWidths.push(maxImageWidth);
 ---
 
-<section class="service-intro">
+<section class="service-intro ed-reveal">
 	<div class="service-intro__text">
 		<h2>{title}</h2>
 		<p>{text}</p>
@@ -23,9 +34,11 @@ const { title, text, detailText, image, imageAlt } = Astro.props;
 			src={image}
 			alt={imageAlt}
 			class="service-image"
-			width={600}
+			width={Math.min(800, image.width)}
+			widths={imageWidths}
+			quality={85}
 			sizes="(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 500px"
-			height={400}
+			style={`object-position:${imagePosition}`}
 		/>
 	</div>
 </section>

@@ -1,4 +1,4 @@
-import { Langs } from '@i18n/ui';
+import type { Langs } from '@i18n/ui';
 
 export type Slug = `/${string}`;
 

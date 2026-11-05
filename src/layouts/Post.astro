@@ -32,23 +32,21 @@ const seo = {
 <Layout seo={seo}>
 	<div class="post-header__container">
 		<ul class="post-tags__list">
-			{
-				allTagsData.map(tag => (
-					<li class="post-tags__tag">
-						<a href={`/blog/tags/${tag.slug}`}>{tag.title}</a>
-					</li>
-				))
-			}
+			{allTagsData.map(tag => (
+				<li class="post-tags__tag">
+					<a href={`/blog/tags/${tag.slug}`}>{tag.title}</a>
+				</li>
+			))}
 		</ul>
 		<h1>{title}</h1>
 		<p class="post-layout__date">
-			<time><em>{publishDate}</em></time>
+			<time>
+				<em>{publishDate}</em>
+			</time>
 		</p>
-		{
-			featuredImage && (
-				<img class="post-layout__img" src={featuredImage} alt={title} />
-			)
-		}
+		{featuredImage && (
+			<img class="post-layout__img" src={featuredImage} alt={title} />
+		)}
 	</div>
 	<Container narrow>
 		<article id="article">

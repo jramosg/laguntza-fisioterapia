@@ -1,0 +1,388 @@
+---
+import BrandLogo from '@images/logos/main-logo-horizontal.svg';
+import WhiteBrandLogo from '@images/logos/logo-white-horizontal.svg';
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, switchLanguage } from '@i18n/utils';
+import { home } from '@config/home';
+import { WhatsApp } from '@config/company';
+
+const lang = getLangFromUrl(Astro.url);
+const c = home[lang];
+const paths = ['services/', 'about/', 'consulta/', 'contact/'];
+const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
+---
+
+<header class="editorial-header">
+	<div class="header-inner">
+		<a class="brand" href={`/${lang}/`} aria-label={c.homeLabel}>
+			<BrandLogo class="logo-color" aria-hidden="true" />
+			<WhiteBrandLogo class="logo-white" aria-hidden="true" />
+		</a>
+		<nav
+			class="desktop-nav"
+			aria-label={lang === 'eu' ? 'Nabigazio nagusia' : 'Navegación principal'}
+		>
+			{paths.map((path, i) => (
+				<a
+					href={`/${lang}/${path}`}
+					aria-current={
+						Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
+					}
+				>
+					{c.nav[i]}
+				</a>
+			))}
+		</nav>
+		<div class="header-actions">
+			<nav class="languages" aria-label={c.languageLabel}>
+				{(['eu', 'es'] as const).map(code => (
+					<a
+						href={
+							code === lang ? Astro.url.pathname : switchLanguage(Astro.url)
+						}
+						lang={code}
+						hreflang={code}
+						aria-current={code === lang ? 'page' : undefined}
+						aria-label={code === 'eu' ? 'Euskara' : 'Castellano'}
+					>
+						{code.toUpperCase()}
+					</a>
+				))}
+			</nav>
+			<a
+				class="header-book"
+				href={bookingUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{c.book}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<laguntza-navigation>
+				<details class="mobile-menu">
+					<summary
+						aria-label={c.menu}
+						data-open-label={c.menu}
+						data-close-label={c.close}
+					>
+						<Icon name="mdi:menu" class="open-icon" aria-hidden="true" />
+						<Icon name="mdi:close" class="close-icon" aria-hidden="true" />
+					</summary>
+					<nav
+						class="mobile-nav"
+						aria-label={
+							lang === 'eu' ? 'Nabigazio nagusia' : 'Navegación principal'
+						}
+					>
+						{paths.map((path, i) => (
+							<a
+								href={`/${lang}/${path}`}
+								aria-current={
+									Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
+								}
+							>
+								<span>0{i + 1}</span>
+								{c.nav[i]}
+								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+							</a>
+						))}
+						<a
+							class="mobile-book"
+							href={bookingUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{c.book}
+							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+						</a>
+					</nav>
+				</details>
+			</laguntza-navigation>
+		</div>
+	</div>
+</header>
+
+<style>
+	.editorial-header {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 1100;
+		background: var(--lf-surface-header, #fbfbf8f2);
+		backdrop-filter: blur(18px);
+		color: var(--lf-text-primary, #202e30);
+		border-bottom: 1px solid var(--lf-border, #263b3417);
+	}
+	.header-inner {
+		max-width: 1440px;
+		height: 100px;
+		padding: 0 64px;
+		margin: auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 36px;
+	}
+	.brand {
+		display: flex;
+		align-items: center;
+		width: 176px;
+		min-height: 48px;
+		flex-shrink: 0;
+	}
+	.brand :global(svg) {
+		width: 100%;
+		height: auto;
+	}
+	.brand :global(.logo-white) {
+		display: none;
+	}
+	:global(html[data-theme='dark']) .brand :global(.logo-color) {
+		display: none;
+	}
+	:global(html[data-theme='dark']) .brand :global(.logo-white) {
+		display: block;
+	}
+	a {
+		text-decoration: none;
+	}
+	.desktop-nav,
+	.header-actions,
+	.languages {
+		display: flex;
+		align-items: center;
+	}
+	.desktop-nav {
+		gap: 30px;
+		margin-left: auto;
+	}
+	.desktop-nav a {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		font-size: 13px;
+		font-weight: 500;
+		transition: color 200ms;
+	}
+	.desktop-nav a[aria-current],
+	.desktop-nav a:hover {
+		color: var(--lf-text-accent, #37697a);
+	}
+	.header-actions {
+		gap: 26px;
+	}
+	.languages {
+		gap: 2px;
+	}
+	.languages a {
+		display: grid;
+		place-content: center;
+		width: 44px;
+		min-height: 44px;
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		color: var(--lf-text-muted, #687271);
+	}
+	.languages a[aria-current] {
+		color: var(--lf-text-primary, #202e30);
+		text-decoration: underline;
+		text-underline-offset: 5px;
+	}
+	.header-book {
+		display: inline-flex;
+		align-items: center;
+		gap: 20px;
+		min-height: 46px;
+		padding: 0 22px;
+		border: 1px solid var(--lf-border-strong, #a4afad);
+		border-radius: 50px;
+		font-size: 13px;
+		font-weight: 600;
+		transition:
+			background 200ms,
+			border-color 200ms;
+	}
+	.header-book:hover {
+		background: #e8944a;
+		border-color: #e8944a;
+		color: #202e30;
+	}
+	.header-book :global(svg) {
+		width: 17px;
+		height: 17px;
+	}
+	laguntza-navigation {
+		display: none;
+	}
+	@media (max-width: 1100px) {
+		.header-inner {
+			padding-inline: 36px;
+			gap: 24px;
+		}
+		.desktop-nav {
+			gap: 22px;
+		}
+		.header-actions {
+			gap: 16px;
+		}
+	}
+	@media (max-width: 960px) {
+		.header-inner {
+			height: 80px;
+			padding-inline: 24px;
+		}
+		.brand {
+			width: 142px;
+		}
+		.desktop-nav,
+		.header-book {
+			display: none;
+		}
+		.header-actions {
+			gap: 8px;
+		}
+		laguntza-navigation {
+			display: block;
+		}
+		summary {
+			list-style: none;
+			cursor: pointer;
+			display: grid;
+			place-items: center;
+			width: 44px;
+			height: 44px;
+		}
+		summary::-webkit-details-marker {
+			display: none;
+		}
+		summary :global(svg) {
+			width: 25px;
+			height: 25px;
+		}
+		.close-icon,
+		details[open] .open-icon {
+			display: none;
+		}
+		details[open] .close-icon {
+			display: block;
+		}
+		.mobile-nav {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			width: 100%;
+			max-height: calc(100dvh - 80px);
+			overflow: auto;
+			padding: 16px 24px 32px;
+			background: var(--lf-surface-paper, #fbfbf8);
+			border-bottom: 1px solid var(--lf-border, #d9dfda);
+			box-shadow: 0 30px 40px #182d3212;
+		}
+		.mobile-nav a {
+			display: flex;
+			gap: 18px;
+			align-items: center;
+			padding-block: 22px;
+			border-bottom: 1px solid var(--lf-border, #d9dfda);
+			font-size: 25px;
+			font-weight: 500;
+			letter-spacing: -0.04em;
+		}
+		.mobile-nav a span {
+			font-size: 11px;
+			color: var(--lf-text-muted, #617779);
+			letter-spacing: 0;
+		}
+		.mobile-nav a :global(svg) {
+			width: 23px;
+			height: 23px;
+			margin-left: auto;
+		}
+		.mobile-nav a.mobile-book {
+			background: #e8944a;
+			color: #202e30;
+			border-radius: 50px;
+			border: 0;
+			padding: 17px 24px;
+			margin-top: 24px;
+			font-size: 17px;
+			letter-spacing: -0.02em;
+		}
+	}
+	@media (max-width: 380px) {
+		.header-inner {
+			padding-inline: 18px;
+			gap: 10px;
+		}
+		.brand {
+			width: 112px;
+		}
+		.header-actions {
+			gap: 4px;
+		}
+		.languages a {
+			width: 44px;
+		}
+	}
+</style>
+
+<script>
+	import { rememberLanguage } from '@i18n/preference';
+
+	document.addEventListener('click', event => {
+		if (!(event.target instanceof Element)) return;
+		const link = event.target.closest('.languages a[lang]');
+		if (link instanceof HTMLAnchorElement) rememberLanguage(link.lang);
+	});
+
+	class LaguntzaNavigation extends HTMLElement {
+		private controller?: AbortController;
+		connectedCallback() {
+			this.controller = new AbortController();
+			const { signal } = this.controller;
+			const details = this.querySelector('details');
+			const summary = this.querySelector('summary');
+			if (!details || !summary) return;
+			const close = () => {
+				details.open = false;
+			};
+			details.addEventListener(
+				'toggle',
+				() => {
+					summary.setAttribute(
+						'aria-label',
+						(details.open
+							? summary.dataset.closeLabel
+							: summary.dataset.openLabel) || 'Menu'
+					);
+				},
+				{ signal }
+			);
+			document.addEventListener(
+				'keydown',
+				event => {
+					if (event.key === 'Escape' && details.open) {
+						close();
+						summary.focus();
+					}
+				},
+				{ signal }
+			);
+			document.addEventListener(
+				'click',
+				event => {
+					if (event.target instanceof Node && !this.contains(event.target))
+						close();
+				},
+				{ signal }
+			);
+			this.querySelectorAll('a').forEach(link =>
+				link.addEventListener('click', close, { signal })
+			);
+		}
+		disconnectedCallback() {
+			this.controller?.abort();
+		}
+	}
+	if (!customElements.get('laguntza-navigation'))
+		customElements.define('laguntza-navigation', LaguntzaNavigation);
+</script>

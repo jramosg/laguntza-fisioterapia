@@ -18,9 +18,12 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.env.*.local
+.env.test
 
 # macOS-specific files
 .DS_Store
 
 icon.d.ts
 *.cache
+__pycache__/

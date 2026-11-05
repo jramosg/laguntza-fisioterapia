@@ -1,1364 +1,325 @@
 ---
-import Container from '@components/core/Container.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
-import Send from '@icons/send.svg';
-import Phone from '@icons/phone.svg';
-import Email from '@icons/email.svg';
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '@i18n/utils';
 const lang = getLangFromUrl(Astro.url);
+const eu = lang === 'eu';
 ---
 
-<Container narrow>
-	<div class="form-header">
-		<h2 class="form-title">
-			{lang === 'eu' ? 'Harremanetan jarri' : 'Ponte en contacto'}
+<laguntza-contact data-lang={lang}>
+	<div class="form-heading">
+		<p class="ed-kicker">
+			{eu ? 'NAHIAGO BADUZU, IDATZI' : 'SI PREFIERES, ESCRÍBEME'}
+		</p>
+		<h2>
+			{eu ? 'Mezu batekin has gaitezke.' : 'Podemos empezar con un mensaje.'}
 		</h2>
-		<p class="form-subtitle">
-			{
-				lang === 'eu'
-					? 'Zure kontsulta lehenbailehen erantzungo dugu.'
-					: 'Te responderemos a tu consulta lo antes posible.'
-			}
+		<p>
+			{eu
+				? 'Utzi zure datuak eta zurekin harremanetan jarriko naiz.'
+				: 'Déjame tus datos y me pondré en contacto contigo.'}
 		</p>
 	</div>
-
-	<form class="laguntza-fisio-contact-form" id="contactForm" novalidate>
-		<div class="form-grid">
-			<!-- Name Field -->
-			<div class="form-group">
-				<label for="name" class="form-label">
-					<span class="label-text">
-						{lang === 'eu' ? 'Izena' : 'Nombre'}
-						<span class="required">*</span>
-					</span>
-				</label>
-				<div class="input-wrapper">
-					<div class="input-icon">
-						<svg
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-							<circle cx="12" cy="7" r="4"></circle>
-						</svg>
-					</div>
-					<input
-						type="text"
-						id="name"
-						name="name"
-						class="form-input"
-						placeholder={lang === 'eu' ? 'Zure izena' : 'Tu nombre'}
-						required
-						aria-describedby="name-error"
-					/>
-				</div>
-				<div class="error-message" id="name-error" role="alert"></div>
-			</div>
-
-			<!-- Email Field -->
-			<div class="form-group">
-				<label for="email" class="form-label">
-					<span class="label-text">
-						Email <span class="required">*</span>
-					</span>
-				</label>
-				<div class="input-wrapper">
-					<input
-						type="email"
-						id="email"
-						name="email"
-						class="form-input"
-						placeholder={lang === 'eu' ? 'zu@email.com' : 'tu@email.com'}
-						required
-						aria-describedby="email-error"
-					/>
-					<div class="input-icon">
-						<Email width={20} height={20} fill="currentColor" />
-					</div>
-				</div>
-				<div class="error-message" id="email-error" role="alert"></div>
-			</div>
-
-			<!-- Phone Field -->
-			<div class="form-group">
-				<label for="phone" class="form-label">
-					<span class="label-text">
-						{lang === 'eu' ? 'Telefonoa' : 'Teléfono'}
-					</span>
-				</label>
-				<div class="input-wrapper">
-					<input
-						type="tel"
-						id="phone"
-						name="phone"
-						class="form-input"
-						placeholder="643 123 456"
-						aria-describedby="phone-help"
-					/>
-					<div class="input-icon">
-						<Phone width={20} height={20} fill="currentColor" />
-					</div>
-				</div>
-				<small id="phone-help" class="form-help">
-					{
-						lang === 'eu'
-							? 'Aukerakoa - WhatsApp bidez erantzuteko'
-							: 'Opcional - Para responder por WhatsApp'
-					}
-				</small>
-			</div>
-
-			<!-- Attachments Field -->
-			<div class="form-group">
-				<label for="attachments" class="form-label">
-					<span class="label-text">
-						{lang === 'eu' ? 'Eranskinak' : 'Archivos adjuntos'}
-					</span>
-				</label>
-				<div class="file-input-wrapper">
-					<input
-						type="file"
-						id="attachments"
-						name="attachments"
-						class="file-input"
-						multiple
-						accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt"
-						aria-describedby="attachments-help"
-					/>
-					<label for="attachments" class="file-input-label">
-						<div class="file-input-icon">
-							<svg
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-							>
-								<path
-									d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66L9.64 16.2a2 2 0 01-2.83-2.83l8.49-8.48"
-								></path>
-							</svg>
-						</div>
-					</label>
-					<div id="fileList" class="file-list"></div>
-				</div>
-				<small id="attachments-help" class="form-help">
-					{
-						lang === 'eu'
-							? 'Aukerakoa - JPG, PNG, PDF, DOC formatuak onartzen dira (gehienez 5MB fitxategi bakoitzeko)'
-							: 'Opcional - Se aceptan formatos JPG, PNG, PDF, DOC (máx. 5MB por archivo)'
-					}
-				</small>
-			</div>
+	<form id="contactForm">
+		<input type="hidden" name="lang" value={lang} />
+		<div class="contact-trap" aria-hidden="true">
+			<label for="contact-website">Website</label>
+			<input
+				id="contact-website"
+				name="website"
+				type="text"
+				tabindex="-1"
+				autocomplete="off"
+			/>
 		</div>
-
-		<!-- Message Field -->
-		<div class="form-group full-width">
-			<label for="message" class="form-label">
-				<span class="label-text">
-					{lang === 'eu' ? 'Mezua' : 'Mensaje'}
-					<span class="required">*</span>
-				</span>
-			</label>
-			<div class="textarea-wrapper">
-				<textarea
-					id="message"
-					name="message"
-					class="form-textarea"
-					placeholder={lang === 'eu'
-						? 'Kontaiguzu zure kasua...'
-						: 'Cuéntanos tu caso...'}
+		<div class="form-row">
+			<div class="field">
+				<label for="name">
+					{eu ? 'Izena' : 'Nombre'} <span>*</span>
+				</label>
+				<input
+					id="name"
+					name="name"
+					autocomplete="name"
 					required
-					rows="5"
-					aria-describedby="message-error message-help"></textarea>
+					maxlength="120"
+					placeholder={eu ? 'Zure izena' : 'Tu nombre'}
+				/>
 			</div>
-			<small id="message-help" class="form-help">
-				{
-					lang === 'eu'
-						? 'Azaldu zein den zure arazoa eta noiz hasi zen'
-						: 'Describe cuál es tu problema y cuándo comenzó'
+			<div class="field">
+				<label for="email">
+					Email <span>*</span>
+				</label>
+				<input
+					id="email"
+					name="email"
+					type="email"
+					autocomplete="email"
+					inputmode="email"
+					required
+					maxlength="254"
+					placeholder={eu ? 'Zure emaila' : 'Tu email'}
+				/>
+			</div>
+		</div>
+		<div class="field">
+			<label for="phone">
+				{eu ? 'Telefonoa' : 'Teléfono'}
+				<small>{eu ? 'aukerakoa' : 'opcional'}</small>
+			</label>
+			<input
+				id="phone"
+				name="phone"
+				type="tel"
+				autocomplete="tel"
+				inputmode="tel"
+				maxlength="32"
+				placeholder="688 734 113"
+			/>
+		</div>
+		<div class="field">
+			<label for="message">
+				{eu ? 'Nola lagun zaitzaket?' : '¿En qué puedo ayudarte?'}
+				<span>*</span>
+			</label>
+			<textarea
+				id="message"
+				name="message"
+				required
+				maxlength="6000"
+				rows="4"
+				placeholder={
+					eu
+						? 'Lehen hitzordua hartu nahiko nuke…'
+						: 'Me gustaría pedir una primera cita…'
 				}
-			</small>
-			<div class="error-message" id="message-error" role="alert"></div>
+			></textarea>
 		</div>
-
-		<!-- Submit Button -->
-		<div class="form-actions">
-			<button type="submit" class="submit-btn" id="submitBtn">
-				<span class="btn-text">
-					{lang === 'eu' ? 'Bidali mezua' : 'Enviar mensaje'}
-				</span>
-				<div class="btn-loader">
-					<div class="spinner"></div>
-				</div>
-				<div class="btn-icon">
-					<Send stroke="currentColor" height={32} width={32} />
-				</div>
-			</button>
-		</div>
-
-		<!-- Success Message -->
-		<div class="success-message" id="successMessage">
-			<div class="success-icon">
-				<svg
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<polyline points="20,6 9,17 4,12"></polyline>
-				</svg>
-			</div>
-			<div class="success-text">
-				<h4>{lang === 'eu' ? 'Mezua bidali da!' : '¡Mensaje enviado!'}</h4>
-				<p>
-					{
-						lang === 'eu'
-							? 'Laister jarriko gara harremanetan.'
-							: 'Nos pondremos en contacto contigo pronto.'
-					}
-				</p>
-			</div>
-		</div>
-
-		<!-- Error Message -->
-		<div class="error-message-box" id="errorMessage">
-			<div class="error-icon">
-				<svg
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<circle cx="12" cy="12" r="10"></circle>
-					<line x1="15" y1="9" x2="9" y2="15"></line>
-					<line x1="9" y1="9" x2="15" y2="15"></line>
-				</svg>
-			</div>
-			<div class="error-text">
-				<h4 id="errorTitle"></h4>
-				<p id="errorDescription"></p>
-			</div>
-			<button
-				type="button"
-				class="error-close"
-				id="errorClose"
-				aria-label="Cerrar mensaje de error"
-			>
-				<svg
-					width="16"
-					height="16"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<line x1="18" y1="6" x2="6" y2="18"></line>
-					<line x1="6" y1="6" x2="18" y2="18"></line>
-				</svg>
+		<details class="attachment-options">
+			<summary>
+				<Icon name="mdi:paperclip" aria-hidden="true" />
+				{eu ? 'Fitxategi bat erantsi' : 'Adjuntar un archivo'}
+				<small>{eu ? 'aukerakoa' : 'opcional'}</small>
+			</summary>
+			<label for="attachments" class="file-help">
+				{eu
+					? 'JPG, PNG, PDF, DOC edo TXT · 10 MiB fitxategiko · 15 MiB guztira · 3 fitxategi gehienez'
+					: 'JPG, PNG, PDF, DOC o TXT · 10 MiB por archivo · 15 MiB en total · Hasta 3 archivos'}
+			</label>
+			<input
+				type="file"
+				id="attachments"
+				name="attachments"
+				accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt"
+				multiple
+			/>
+		</details>
+		<p class="form-privacy">
+			{eu
+				? 'Arduraduna: Jokin Ramos Gonzalez. Zure kontsulta eta hitzordu-eskaera kudeatzeko erabiliko ditugu datuak, zuk eskatutako zerbitzua kudeatzeko oinarrian. Bidalketa Resend bidez egiten da, eta datuak EEEtik kanpo prozesa ditzake. Zure eskubideak info@laguntzafisioterapia.com helbidean erabil ditzakezu.'
+				: 'Responsable: Jokin Ramos Gonzalez. Usaremos tus datos para atender tu consulta y solicitud de cita, sobre la base de gestionar el servicio que solicitas. El envío se realiza mediante Resend, que puede procesar datos fuera del EEE. Puedes ejercer tus derechos en info@laguntzafisioterapia.com.'}
+			<a href={`/${lang}/privacy/`}>
+				{eu
+					? 'Pribatutasunari buruzko informazioa'
+					: 'Información de privacidad'}
+			</a>
+			.
+		</p>
+		<div class="form-bottom">
+			<small>{eu ? '* Derrigorrezko eremuak' : '* Campos obligatorios'}</small>
+			<button type="submit" class="ed-pill">
+				<span data-submit-label>{eu ? 'Mezua bidali' : 'Enviar mensaje'}</span>
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
 			</button>
 		</div>
 	</form>
-</Container>
-
+	<div
+		class="form-status"
+		role="status"
+		aria-live="polite"
+		tabindex="-1"
+		hidden
+	></div>
+	<noscript>
+		<p>
+			{eu
+				? 'Formularioak JavaScript behar du. Telefonoz edo WhatsApp bidez harremanetan jar zaitezke.'
+				: 'El formulario necesita JavaScript. Puedes contactar por teléfono o WhatsApp.'}
+		</p>
+	</noscript>
+</laguntza-contact>
 <style>
-	.form-header {
-		text-align: center;
-		margin: var(--s4) 0;
+	.form-privacy {
+		font-size: 12px;
+		line-height: 1.7;
+		color: var(--lf-muted);
+		margin: 24px 0;
 	}
-
-	.form-title {
-		font-size: var(--font-size-lg);
-		font-weight: 700;
-		color: var(--theme-primary);
-		margin-bottom: 0;
+	.form-privacy a {
+		color: var(--lf-ink);
+		text-underline-offset: 0.2em;
 	}
-
-	.form-subtitle {
-		color: var(--theme-text-secondary);
-		font-size: var(--font-size-base);
+	laguntza-contact {
+		display: block;
+	}
+	.contact-trap {
+		display: none;
+	}
+	.form-heading {
+		margin-bottom: 38px;
+	}
+	.form-heading h2 {
+		font-size: clamp(30px, 3vw, 42px);
+		line-height: 1.15;
+		letter-spacing: -0.05em;
+		max-width: 480px;
+		margin: 0 0 18px;
+	}
+	.form-heading > p:last-child {
+		font-size: 15px;
+		color: var(--lf-muted);
 		margin: 0;
 	}
-
-	.laguntza-fisio-contact-form {
-		background: var(--theme-bg);
-		border-radius: var(--theme-shape-radius);
-		padding: var(--s8);
-		box-shadow: var(--shadow-xl);
-		border: 1px solid var(--theme-outline);
-		margin-bottom: var(--s8);
-	}
-
-	.form-grid {
+	.form-row {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: var(--s5);
-		margin-bottom: var(--s6);
+		grid-template-columns: 1fr 1fr;
+		gap: 30px;
 	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		gap: var(--s2);
+	.field {
+		margin-bottom: 26px;
 	}
-
-	.form-group.full-width {
-		grid-column: 1 / -1;
-	}
-
-	.form-label {
+	label {
 		display: block;
-		font-weight: 600;
-		color: var(--theme-on-bg);
-		font-size: var(--font-size-base);
+		font-size: 13px;
+		font-weight: 500;
+		margin-bottom: 10px;
 	}
-
-	.label-text {
-		display: flex;
-		align-items: center;
-		gap: var(--s2);
+	label span {
+		color: var(--lf-warm-text, #85501f);
 	}
-
-	.required {
-		color: var(--theme-error, #dc2626);
-		font-weight: 700;
+	label small,
+	summary small {
+		font-size: 11px;
+		font-weight: 400;
+		color: var(--lf-muted);
+		margin-left: 8px;
 	}
-
-	.input-wrapper,
-	.select-wrapper,
-	.textarea-wrapper {
-		position: relative;
-		display: flex;
-		align-items: center;
-	}
-
-	.form-input,
-	.form-select,
-	.form-textarea {
+	input:not([type='file']),
+	textarea {
+		display: block;
 		width: 100%;
-		padding: var(--s2) var(--s2) var(--s2) var(--s6);
-		border: 2px solid var(--theme-outline);
-		border-radius: var(--theme-button-border-radius);
-		font-size: var(--font-size-base);
-		font-family: var(--theme-font-family);
-		background: var(--theme-bg);
-		color: var(--theme-on-bg);
-		transition: all 0.3s ease;
-		min-height: 50px;
-	}
-
-	.form-select {
-		appearance: none;
-		cursor: pointer;
-	}
-
-	.form-textarea {
-		resize: vertical;
-		min-height: 120px;
-		padding-top: var(--s4);
+		border: 0;
+		border-bottom: 1px solid var(--lf-border-strong, #a6b5ac);
+		background: var(--lf-field-surface, #eef1eb80);
+		color: var(--lf-ink);
+		padding: 16px;
+		min-height: 54px;
+		font: inherit;
+		font-size: 16px;
 		line-height: 1.6;
+		border-radius: 4px 4px 0 0;
+		transition:
+			border-color 0.2s,
+			background 0.2s;
 	}
-
-	.form-input:focus,
-	.form-select:focus,
-	.form-textarea:focus {
-		outline: none;
-		border-color: var(--theme-primary);
-		box-shadow: 0 0 0 3px rgba(69, 130, 149, 0.1);
+	textarea {
+		resize: vertical;
+		min-height: 145px;
 	}
-
-	.form-input.error,
-	.form-select.error,
-	.form-textarea.error {
-		border-color: var(--theme-error, #dc2626);
-		box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+	input::placeholder,
+	textarea::placeholder {
+		color: var(--lf-text-muted, #5c6b64);
+		font-size: 14px;
 	}
-
-	.input-icon,
-	.select-icon {
-		position: absolute;
-		height: 20px;
-		left: var(--s3);
-		top: calc(50% - 10px);
-		color: var(--theme-text-secondary);
-		pointer-events: none;
-		z-index: 2;
+	input:focus,
+	textarea:focus {
+		background: var(--lf-surface-soft, #eef1eb);
+		border-color: var(--lf-text-accent, #37697a);
+		outline: 2px solid var(--lf-text-accent, #37697a);
+		outline-offset: 2px;
 	}
-
-	.select-icon {
-		left: auto;
-		right: var(--s4);
+	.attachment-options {
+		margin-block: 4px 30px;
 	}
-
-	/* File Input Styles */
-	.file-input-wrapper {
-		position: relative;
-	}
-
-	.file-input {
-		position: absolute;
-		opacity: 0;
-		pointer-events: none;
-		width: 0;
-		height: 0;
-	}
-
-	.file-input-label {
-		display: flex;
-		align-items: center;
-		gap: var(--s3);
-		padding: var(--s2) var(--s4);
-		border: 2px dashed var(--theme-outline);
-		border-radius: var(--theme-button-border-radius);
-		background: var(--theme-bg);
-		color: var(--theme-on-bg);
+	.attachment-options summary {
+		list-style: none;
 		cursor: pointer;
-		transition: all 0.3s ease;
-		min-height: 50px;
-	}
-
-	.file-input-label:hover {
-		border-color: var(--theme-primary);
-		background: rgba(69, 130, 149, 0.05);
-	}
-
-	.file-input:focus + .file-input-label {
-		border-color: var(--theme-primary);
-		box-shadow: 0 0 0 3px rgba(69, 130, 149, 0.1);
-	}
-
-	.file-input-icon {
-		color: var(--theme-primary);
+		min-height: 44px;
 		display: flex;
 		align-items: center;
+		gap: 8px;
+		font-size: 12px;
 	}
-
-	.file-list {
-		margin-top: var(--s3);
+	.attachment-options summary::-webkit-details-marker {
+		display: none;
 	}
-
-	:global(.file-item) {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: var(--s2) var(--s3);
-		background: var(--theme-surface);
-		border: 1px solid var(--theme-outline);
-		border-radius: var(--theme-button-border-radius);
-		margin-bottom: var(--s2);
-		font-size: var(--font-size-sm);
-		&:first-child {
-			margin-top: var(--s2);
-		}
+	.attachment-options summary svg {
+		width: 18px;
+		height: 18px;
 	}
-
-	:global(.file-info) {
-		display: flex;
-		align-items: center;
-		gap: var(--s2);
-		flex: 1;
+	.file-help {
+		font-size: 11px;
+		color: var(--lf-muted);
+		font-weight: 400;
+		margin-top: 12px;
 	}
-
-	:global(.file-name) {
-		font-weight: 500;
-		color: var(--theme-on-bg);
-		word-break: break-all;
-	}
-
-	:global(.file-size) {
-		color: var(--theme-text-secondary);
-		font-size: var(--font-size-xs);
-	}
-
-	:global(.file-remove) {
-		background: none;
-		border: none;
-		color: var(--theme-error, #dc2626);
-		cursor: pointer;
-		padding: var(--s1);
-		border-radius: 50%;
-		width: 24px;
-		height: 24px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.2s ease;
-		flex-shrink: 0;
-	}
-
-	:global(.file-remove:hover) {
-		background: rgba(220, 38, 38, 0.1);
-		color: #b91c1c;
-	}
-
-	.form-help {
-		font-size: var(--font-size-sm);
-		color: var(--theme-text-secondary);
-	}
-
-	.error-message {
-		color: var(--theme-error, #dc2626);
-		font-size: var(--font-size-sm);
-		font-weight: 500;
-		min-height: 20px;
-		display: flex;
-		align-items: center;
-		gap: var(--s2);
-		opacity: 0;
-		transform: translateY(-10px);
-		transition: all 0.3s ease;
-	}
-
-	.error-message.show {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	.error-message:not(:empty)::before {
-		content: '⚠️';
-	}
-
-	/* Custom Checkbox */
-	.checkbox-wrapper {
-		display: flex;
-		align-items: flex-start;
-		gap: var(--s3);
-		cursor: pointer;
-		position: relative;
-		padding-left: var(--s8);
-	}
-
-	.checkbox-wrapper input[type='checkbox'] {
-		position: absolute;
-		opacity: 0;
-		cursor: pointer;
-		left: 0;
-		top: 2px;
-	}
-
-	.checkmark {
-		position: absolute;
-		left: 0;
-		top: 2px;
-		height: 20px;
-		width: 20px;
-		background-color: var(--theme-bg);
-		border: 2px solid var(--theme-outline);
-		border-radius: 4px;
-		transition: all 0.3s ease;
-	}
-
-	.checkbox-wrapper:hover .checkmark {
-		border-color: var(--theme-primary);
-	}
-
-	.checkbox-wrapper input:checked ~ .checkmark {
-		background-color: var(--theme-primary);
-		border-color: var(--theme-primary);
-	}
-
-	.checkbox-wrapper input:checked ~ .checkmark::after {
-		content: '';
-		position: absolute;
+	input[type='file'] {
 		display: block;
-		left: 6px;
-		top: 2px;
-		width: 4px;
-		height: 8px;
-		border: solid white;
-		border-width: 0 2px 2px 0;
-		transform: rotate(45deg);
+		width: 100%;
+		font-size: 12px;
+		padding: 14px 0;
 	}
-
-	.checkbox-text {
-		flex: 1;
-		line-height: 1.5;
-	}
-
-	/* Submit Button */
-	.form-actions {
-		text-align: center;
-		margin-top: var(--s5);
-	}
-
-	.submit-btn {
-		position: relative;
-		background: linear-gradient(
-			135deg,
-			var(--theme-primary),
-			var(--theme-primary-dark)
-		);
-		margin-left: auto;
-		margin-right: auto;
-		padding: var(--s3) var(--s6);
+	.form-bottom {
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: center;
-		color: var(--theme-on-primary);
-		border: none;
-		border-radius: var(--theme-button-border-radius);
-		font-size: var(--font-size-base);
-		font-weight: 600;
-		cursor: pointer;
-		min-width: 300px;
-		min-height: 50px;
-		transition: all 0.3s ease;
-		overflow: hidden;
+		gap: 24px;
+		border-top: 1px solid var(--lf-line);
+		padding-top: 25px;
 	}
-
-	.submit-btn:hover:not(:disabled) {
-		transform: translateY(-2px);
-		box-shadow: var(--shadow-lg);
+	.form-bottom > small {
+		font-size: 10px;
+		color: var(--lf-muted);
 	}
-
-	.submit-btn:disabled {
-		opacity: 0.7;
-		cursor: not-allowed;
-		transform: none;
+	.form-status {
+		font-size: 15px;
+		padding: 24px;
+		background: var(--lf-success-surface, #e3ece7);
+		border-radius: 12px;
+		margin-top: 24px;
+		line-height: 1.8;
 	}
-
-	.btn-text {
-		transition: opacity 0.3s ease;
+	.form-status[data-error] {
+		background: var(--lf-error-surface, #f8e9df);
+		color: var(--lf-error-text, #733a24);
 	}
-
-	.btn-loader {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		opacity: 0;
-		transition: opacity 0.3s ease;
+	.form-status[hidden] {
+		display: none;
 	}
-
-	.btn-icon {
-		display: inline-block;
-		margin-left: var(--s2);
-		transition: transform 0.3s ease;
-		display: flex;
-		align-items: center;
+	button[aria-busy='true'] svg {
+		animation: busy 1.2s linear infinite;
 	}
-
-	.submit-btn:hover .btn-icon {
-		transform: translateX(4px);
-	}
-
-	.submit-btn.loading .btn-text,
-	.submit-btn.loading .btn-icon {
-		opacity: 0;
-	}
-
-	.submit-btn.loading .btn-loader {
-		opacity: 1;
-	}
-
-	.spinner {
-		width: 20px;
-		height: 20px;
-		border: 2px solid transparent;
-		border-top: 2px solid currentColor;
-		border-radius: 50%;
-		animation: spin 1s linear infinite;
-	}
-
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
+	@keyframes busy {
+		to {
 			transform: rotate(360deg);
 		}
 	}
-
-	/* Success Message */
-	.success-message {
-		display: none;
-		align-items: center;
-		justify-content: center;
-		gap: var(--s4);
-		background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-		border: 2px solid #16a34a;
-		border-radius: var(--theme-shape-radius);
-		padding: var(--s6);
-		margin-top: var(--s6);
-		animation: slideInUp 0.5s ease;
-	}
-
-	.success-message.show {
-		display: flex;
-	}
-
-	.success-icon {
-		width: 48px;
-		height: 48px;
-		background: #16a34a;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: white;
-		flex-shrink: 0;
-	}
-
-	.success-text h4 {
-		color: #166534;
-		margin: 0 0 var(--s2) 0;
-		font-size: var(--font-size-md);
-	}
-
-	.success-text p {
-		color: #15803d;
-		margin: 0;
-		font-size: var(--font-size-base);
-	}
-
-	/* Error Message */
-	.error-message-box {
-		display: none;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--s4);
-		background: linear-gradient(135deg, #fef2f2, #fee2e2);
-		border: 2px solid var(--theme-error, #dc2626);
-		border-radius: var(--theme-shape-radius);
-		padding: var(--s6);
-		margin-top: var(--s6);
-		animation: slideInUp 0.5s ease;
-		position: relative;
-	}
-
-	.error-message-box.show {
-		display: flex;
-	}
-
-	.error-icon {
-		width: 48px;
-		height: 48px;
-		background: var(--theme-error, #dc2626);
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: white;
-		flex-shrink: 0;
-	}
-
-	.error-text {
-		flex: 1;
-		color: var(--theme-on-error-container, #410e0b);
-	}
-
-	.error-text h4 {
-		color: #991b1b;
-		margin: 0 0 var(--s2) 0;
-		font-size: var(--font-size-md);
-	}
-
-	.error-text p {
-		color: var(--theme-error-dark, #b91c1c);
-		margin: 0;
-		font-size: var(--font-size-base);
-	}
-
-	.error-close {
-		background: none;
-		border: none;
-		color: #991b1b;
-		cursor: pointer;
-		padding: var(--s2);
-		border-radius: 50%;
-		width: 32px;
-		height: 32px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.2s ease;
-		flex-shrink: 0;
-	}
-
-	.error-close:hover {
-		background: rgba(153, 27, 27, 0.1);
-		color: #7f1d1d;
-	}
-
-	@keyframes slideInUp {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	/* Responsive Design */
-	@media (max-width: 768px) {
-		.contact-form-container {
-			padding: var(--s4) var(--s3);
-		}
-
-		.laguntza-fisio-contact-form {
-			padding: var(--s6) var(--s4);
-		}
-
-		.form-grid {
+	@media (max-width: 500px) {
+		.form-row {
 			grid-template-columns: 1fr;
-			gap: var(--s3);
+			gap: 0;
 		}
-
-		.form-input,
-		.form-select,
-		.form-textarea {
-			padding: var(--s3) var(--s3) var(--s3) var(--s7);
-			min-height: 45px;
+		.form-heading h2 {
+			font-size: 33px;
 		}
-
-		.submit-btn {
-			width: 100%;
-			min-width: auto;
+		.form-bottom {
+			gap: 14px;
 		}
-
-		.success-message,
-		.error-message-box {
-			flex-direction: column;
-			text-align: center;
-		}
-
-		.error-close {
-			position: absolute;
-			top: var(--s3);
-			right: var(--s3);
-		}
-	}
-
-	@media (max-width: 480px) {
-		.laguntza-fisio-contact-form {
-			padding: var(--s5) var(--s3);
+		.form-bottom .ed-pill {
+			gap: 20px;
+			padding-inline: 20px;
 		}
 	}
 </style>
-
 <script>
-	document.addEventListener('astro:page-load', () => {
-		const form: HTMLFormElement | null = document.getElementById(
-			'contactForm'
-		) as HTMLFormElement;
-		if (!form) return;
-
-		const lang = document.documentElement.lang === 'eu' ? 'eu' : 'es';
-		const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
-		const successMessage = document.getElementById(
-			'successMessage'
-		) as HTMLElement;
-		const errorMessage = document.getElementById('errorMessage') as HTMLElement;
-		const errorTitle = document.getElementById('errorTitle') as HTMLElement;
-		const errorDescription = document.getElementById(
-			'errorDescription'
-		) as HTMLElement;
-		const errorClose = document.getElementById(
-			'errorClose'
-		) as HTMLButtonElement;
-
-		const API_ENDPOINT =
-			'https://test.laguntzafisioterapia.com/api/contact-form';
-		//'http://localhost:3000/api/contact-form'
-
-		// Error message functions
-		function showErrorMessage(title: string, description: string) {
-			if (errorTitle && errorDescription && errorMessage) {
-				errorTitle.textContent = title;
-				errorDescription.textContent = description;
-				errorMessage.classList.add('show');
-				errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			}
-		}
-
-		function hideErrorMessage() {
-			if (errorMessage) {
-				errorMessage.classList.remove('show');
-			}
-		}
-
-		// Error close button handler
-		if (errorClose) {
-			errorClose.addEventListener('click', hideErrorMessage);
-		}
-
-		// File upload handling
-		const attachmentsInput = document.getElementById(
-			'attachments'
-		) as HTMLInputElement;
-		const fileList = document.getElementById('fileList') as HTMLElement;
-		const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
-		let selectedFiles: File[] = [];
-
-		function formatFileSize(bytes: number): string {
-			if (bytes === 0) return '0 Bytes';
-			const k = 1024;
-			const sizes = ['Bytes', 'KB', 'MB'];
-			const i = Math.floor(Math.log(bytes) / Math.log(k));
-			return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-		}
-
-		function updateFileList() {
-			if (!fileList) return;
-
-			fileList.innerHTML = '';
-
-			selectedFiles.forEach((file, index) => {
-				const fileItem = document.createElement('div');
-				fileItem.className = 'file-item';
-
-				fileItem.innerHTML = `
-					<div class="file-info">
-						<span class="file-name">${file.name}</span>
-						<span class="file-size">${formatFileSize(file.size)}</span>
-					</div>
-					<button type="button" class="file-remove" data-index="${index}" aria-label="${lang === 'eu' ? 'Kendu fitxategia' : 'Eliminar archivo'}">
-						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<line x1="18" y1="6" x2="6" y2="18"></line>
-							<line x1="6" y1="6" x2="18" y2="18"></line>
-						</svg>
-					</button>
-				`;
-
-				fileList.appendChild(fileItem);
-			});
-
-			// Add event listeners to remove buttons
-			fileList.querySelectorAll('.file-remove').forEach(button => {
-				button.addEventListener('click', e => {
-					const index = parseInt(
-						(e.target as HTMLElement)
-							.closest('.file-remove')
-							?.getAttribute('data-index') || '0'
-					);
-					selectedFiles.splice(index, 1);
-					updateFileList();
-					updateFileInput();
-				});
-			});
-		}
-
-		function updateFileInput() {
-			if (!attachmentsInput) return;
-
-			const dt = new DataTransfer();
-			selectedFiles.forEach(file => dt.items.add(file));
-			attachmentsInput.files = dt.files;
-		}
-
-		if (attachmentsInput) {
-			attachmentsInput.addEventListener('change', e => {
-				const files = (e.target as HTMLInputElement).files;
-				if (!files) return;
-
-				const newFiles = Array.from(files);
-				const validFiles: File[] = [];
-				const errors: string[] = [];
-
-				newFiles.forEach(file => {
-					if (file.size > maxFileSize) {
-						errors.push(
-							`${file.name}: ${lang === 'eu' ? 'Fitxategia handiegia da (maks. 5MB)' : 'Archivo demasiado grande (máx. 5MB)'}`
-						);
-					} else if (selectedFiles.length + validFiles.length >= 5) {
-						errors.push(
-							lang === 'eu' ? 'Gehienez 5 fitxategi' : 'Máximo 5 archivos'
-						);
-					} else {
-						validFiles.push(file);
-					}
-				});
-
-				if (errors.length > 0) {
-					showErrorMessage(
-						lang === 'eu' ? 'Fitxategien errorea' : 'Error en archivos',
-						errors.join(', ')
-					);
-				}
-
-				selectedFiles.push(...validFiles);
-				updateFileList();
-			});
-		}
-
-		const messages = {
-			es: {
-				nameRequired: 'El nombre es obligatorio',
-				emailRequired: 'El email es obligatorio',
-				emailInvalid: 'Por favor, introduce un email válido',
-				messageRequired: 'El mensaje es obligatorio',
-				networkError: 'Error de conexión. Verifica tu internet.',
-				serverError: 'Error del servidor. Inténtalo más tarde.',
-				success: '¡Mensaje enviado correctamente!',
-				errorTitle: 'Error al enviar el mensaje',
-				networkErrorTitle: 'Error de conexión',
-				serverErrorTitle: 'Error del servidor',
-				rateLimitErrorTitle: 'Demasiadas solicitudes',
-				networkErrorDesc:
-					'No se pudo conectar con el servidor. Verifica tu conexión a internet e inténtalo de nuevo.',
-				serverErrorDesc:
-					'Hubo un problema en el servidor. Por favor, inténtalo de nuevo en unos minutos.',
-				rateLimitErrorDesc:
-					'Has enviado demasiadas solicitudes en poco tiempo. Por favor, espera unos minutos antes de intentar de nuevo.'
-			},
-			eu: {
-				nameRequired: 'Izena derrigorrezkoa da',
-				emailRequired: 'Email-a derrigorrezkoa da',
-				emailInvalid: 'Mesedez, sartu email egoki bat',
-				messageRequired: 'Mezua derrigorrezkoa da',
-				networkError: 'Konexio errorea. Egiaztatu interneteko konexioa.',
-				serverError: 'Zerbitzariaren errorea. Saiatu berriro geroago.',
-				success: 'Mezua ondo bidali da!',
-				errorTitle: 'Errorea mezua bidaltzean',
-				networkErrorTitle: 'Konexio errorea',
-				serverErrorTitle: 'Zerbitzariaren errorea',
-				rateLimitErrorTitle: 'Eskaera gehiegi',
-				networkErrorDesc:
-					'Ezin izan da zerbitzariarekin konektatu. Egiaztatu interneteko konexioa eta saiatu berriro.',
-				serverErrorDesc:
-					'Arazoren bat egon da zerbitzarian. Mesedez, saiatu berriro minutu batzuen buruan.',
-				rateLimitErrorDesc:
-					'Eskaera gehiegi bidali dituzu denbora gutxian. Mesedez, itxaron minutu batzuk berriro saiatu aurretik.'
-			}
-		};
-
-		// Enhanced validation functions
-		function showError(fieldName: string, message: string) {
-			const errorElement = document.getElementById(`${fieldName}-error`);
-			const field = document.getElementById(fieldName);
-
-			if (errorElement && field) {
-				errorElement.textContent = message;
-				errorElement.classList.add('show');
-				field.classList.add('error');
-				field.setAttribute('aria-invalid', 'true');
-			}
-		}
-
-		function clearError(fieldName: string) {
-			const errorElement = document.getElementById(`${fieldName}-error`);
-			const field = document.getElementById(fieldName);
-
-			if (errorElement && field) {
-				errorElement.textContent = '';
-				errorElement.classList.remove('show');
-				field.classList.remove('error');
-				field.setAttribute('aria-invalid', 'false');
-			}
-		}
-
-		function validateField(
-			field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-		) {
-			const name = field.id;
-			const value = field.value.trim();
-			let isValid = true;
-
-			clearError(name);
-
-			// Required field validation
-			if (field.hasAttribute('required') || field.type === 'checkbox') {
-				const isCheckbox = field.type === 'checkbox';
-				const checkboxField = isCheckbox ? (field as HTMLInputElement) : null;
-				if (
-					(isCheckbox && checkboxField && !checkboxField.checked) ||
-					(!isCheckbox && !value)
-				) {
-					let errorMsg = '';
-					switch (name) {
-						case 'name':
-							errorMsg = messages[lang].nameRequired;
-							break;
-						case 'email':
-							errorMsg = messages[lang].emailRequired;
-							break;
-						case 'message':
-							errorMsg = messages[lang].messageRequired;
-							break;
-					}
-					showError(name, errorMsg);
-					isValid = false;
-				}
-			}
-
-			// Email format validation
-			if (field.type === 'email' && value) {
-				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				if (!emailRegex.test(value)) {
-					showError(name, messages[lang].emailInvalid);
-					isValid = false;
-				}
-			}
-
-			// Phone format validation (optional)
-			if (field.type === 'tel' && value) {
-				const phoneRegex = /^[+]?[\d\s\-()]{9,}$/;
-				if (!phoneRegex.test(value)) {
-					// Phone validation is optional, so we don't show error
-					// but we could add a warning
-				}
-			}
-
-			return isValid;
-		}
-
-		// Real-time validation with debouncing
-		let validationTimeout: NodeJS.Timeout;
-		function setupFieldValidation(field: Element) {
-			const typedField = field as
-				| HTMLInputElement
-				| HTMLTextAreaElement
-				| HTMLSelectElement;
-			const validateWithDelay = () => {
-				clearTimeout(validationTimeout);
-				validationTimeout = setTimeout(() => validateField(typedField), 300);
-			};
-
-			typedField.addEventListener('blur', () => validateField(typedField));
-			typedField.addEventListener('input', () => {
-				if (typedField.classList.contains('error')) {
-					validateWithDelay();
-				}
-			});
-
-			// Special handling for checkbox
-			if (typedField.type === 'checkbox') {
-				typedField.addEventListener('change', () => validateField(typedField));
-			}
-		}
-
-		// Setup validation for all form fields
-		form
-			.querySelectorAll('input, textarea, select')
-			.forEach(setupFieldValidation);
-
-		// Form submission with API integration
-		form.addEventListener('submit', async e => {
-			e.preventDefault();
-
-			if (!submitBtn) return;
-
-			// Hide any previous messages
-			hideErrorMessage();
-			if (successMessage) {
-				successMessage.classList.remove('show');
-			}
-
-			// Validate all fields
-			const requiredFields: NodeListOf<HTMLInputElement | HTMLTextAreaElement> =
-				form.querySelectorAll('input[required], textarea[required]');
-			let isFormValid = true;
-
-			requiredFields.forEach(field => {
-				if (!validateField(field)) {
-					isFormValid = false;
-				}
-			});
-
-			if (!isFormValid) {
-				// Focus on first error field
-				const firstError: HTMLElement | null = form.querySelector('.error');
-				if (firstError) {
-					firstError.focus();
-					firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-				}
-				return;
-			}
-
-			// Collect form data
-			const formData = new FormData(form);
-
-			// Process attachments - read file contents
-			const attachments = [];
-			for (const file of selectedFiles) {
-				try {
-					// Convert file to base64 using browser-compatible method
-					const base64Content = await new Promise<string>((resolve, reject) => {
-						const reader = new FileReader();
-						reader.onload = () => {
-							const result = reader.result as string;
-							// Remove data URL prefix (data:type;base64,)
-							const base64 = result.split(',')[1];
-							resolve(base64);
-						};
-						reader.onerror = reject;
-						reader.readAsDataURL(file);
-					});
-
-					attachments.push({
-						filename: file.name,
-						content: base64Content,
-						contentType: file.type || 'application/octet-stream',
-						size: file.size
-					});
-				} catch (error) {
-					console.error('Error reading file:', file.name, error);
-					// Skip this file if there's an error reading it
-				}
-			}
-
-			const data = {
-				name: formData.get('name')?.toString().trim() || '',
-				email: formData.get('email')?.toString().trim() || '',
-				phone: formData.get('phone')?.toString().trim() || '',
-				message: formData.get('message')?.toString().trim() || '',
-				attachments: attachments
-			};
-
-			// Show loading state
-			submitBtn.disabled = true;
-			submitBtn.classList.add('loading');
-
-			try {
-				const response = await fetch(API_ENDPOINT, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						templateName: 'laguntza-fisioterapia',
-						to: data.email,
-						lang: lang,
-						data: data
-					})
-				});
-
-				if (!response.ok) {
-					if (response.status === 429) {
-						throw new Error(`Too many requests: ${response.status}`);
-					}
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-
-				const result = await response.json();
-				console.log('Form submitted successfully:', result);
-
-				// Show success message
-				if (successMessage) {
-					successMessage.classList.add('show');
-					successMessage.scrollIntoView({
-						behavior: 'smooth',
-						block: 'center'
-					});
-				}
-
-				// Reset form
-				form.reset();
-
-				// Clear attachments
-				selectedFiles = [];
-				updateFileList();
-				if (attachmentsInput) {
-					attachmentsInput.value = '';
-				}
-
-				// Clear any remaining errors
-				form.querySelectorAll('.error').forEach(field => {
-					field.classList.remove('error');
-					field.setAttribute('aria-invalid', 'false');
-				});
-				form.querySelectorAll('.error-message.show').forEach(error => {
-					error.classList.remove('show');
-					error.textContent = '';
-				});
-
-				// Hide success message after 10 seconds
-				setTimeout(() => {
-					if (successMessage) {
-						successMessage.classList.remove('show');
-					}
-				}, 10000);
-			} catch (error) {
-				console.error('Form submission error:', error);
-
-				let errorTitle = messages[lang].serverErrorTitle;
-				let errorDesc = messages[lang].serverErrorDesc;
-
-				// Check for specific error types
-				if (
-					error instanceof TypeError ||
-					(error as Error)?.message?.includes('NetworkError')
-				) {
-					errorTitle = messages[lang].networkErrorTitle;
-					errorDesc = messages[lang].networkErrorDesc;
-				} else if (
-					(error as any)?.status === 429 ||
-					(error as Error)?.message?.includes('429') ||
-					(error as Error)?.message
-						?.toLowerCase()
-						?.includes('too many requests')
-				) {
-					errorTitle = messages[lang].rateLimitErrorTitle;
-					errorDesc = messages[lang].rateLimitErrorDesc;
-				}
-
-				// Show error message
-				showErrorMessage(errorTitle, errorDesc);
-			} finally {
-				// Reset button state
-				if (submitBtn) {
-					submitBtn.disabled = false;
-					submitBtn.classList.remove('loading');
-				}
-			}
-		});
-
-		// Accessibility improvements
-		form.addEventListener('keydown', e => {
-			// Allow form submission with Ctrl/Cmd + Enter
-			if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-				e.preventDefault();
-				form.dispatchEvent(new Event('submit'));
-			}
-		});
-
-		// Auto-resize textarea
-		const messageField = document.getElementById('message');
-		if (messageField) {
-			messageField.addEventListener('input', function () {
-				this.style.height = 'auto';
-				this.style.height = Math.min(this.scrollHeight, 200) + 'px';
-			});
-		}
-
-		// Format phone number as user types
-		const phoneField = document.getElementById('phone') as HTMLInputElement;
-		if (phoneField) {
-			phoneField.addEventListener('input', function (this: HTMLInputElement) {
-				let value = this.value.replace(/\D/g, '');
-				if (value.length > 0) {
-					if (value.length <= 3) {
-						value = value;
-					} else if (value.length <= 6) {
-						value = value.slice(0, 3) + ' ' + value.slice(3);
-					} else if (value.length <= 9) {
-						value =
-							value.slice(0, 3) +
-							' ' +
-							value.slice(3, 6) +
-							' ' +
-							value.slice(6);
-					} else {
-						value =
-							value.slice(0, 3) +
-							' ' +
-							value.slice(3, 6) +
-							' ' +
-							value.slice(6, 9);
-					}
-				}
-				this.value = value;
-			});
-		}
-	});
+	import './contact-form';
 </script>

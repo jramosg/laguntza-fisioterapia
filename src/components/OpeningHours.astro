@@ -38,21 +38,19 @@ const schedule = [
 		</div>
 	</header>
 	<dl class="opening-hours__list">
-		{
-			schedule.map(({ days, times }) => (
-				<div class="opening-hours__row">
-					<dt>{days}</dt>
-					<dd>
-						{times.map(time => (
-							<span>
-								<Icon name="ic:round-access-time" aria-hidden="true" />
-								{time}
-							</span>
-						))}
-					</dd>
-				</div>
-			))
-		}
+		{schedule.map(({ days, times }) => (
+			<div class="opening-hours__row">
+				<dt>{days}</dt>
+				<dd>
+					{times.map(time => (
+						<span>
+							<Icon name="ic:round-access-time" aria-hidden="true" />
+							{time}
+						</span>
+					))}
+				</dd>
+			</div>
+		))}
 	</dl>
 </section>
 

@@ -1,303 +1,250 @@
 ---
-import Container from '../core/Container.astro';
 import { Image } from 'astro:assets';
-import JokinImage from '@images/jokin.webp';
-import { useTranslations } from '@i18n/utils';
+import { Icon } from 'astro-icon/components';
 import { Practitioner } from '@config/practitioner';
-
+import { useTranslations } from '@i18n/utils';
+import Rehab from '@images/rehab.webp';
+import Interview from '@images/interview.webp';
 interface Props {
-	lang: 'es' | 'eu';
+	lang: 'eu' | 'es';
 }
-
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const chapters = ['journey', 'philosophy', 'community'];
 ---
 
-<Container tag="article">
-	<div class="about-section__content">
-		<aside class="about-section__image-wrapper">
-			<div class="about-section__image-container">
-				<Image
-					src={JokinImage}
-					alt={Practitioner.name}
-					sizes="(max-width: 1024px) 100vw, 400px"
-					class="about-section__image"
-					width={2343}
-					height={1562}
-				/>
-			</div>
-		</aside>
-
-		<div class="about-section__text">
-			<section class="about-section__intro">
-				<p class="about-section__lead">
-					{t('about.intro')}
-				</p>
-			</section>
-
-			<section class="about-section__card">
-				<h2 class="about-section__card-title title--highlight">
-					{t('about.journey-title')}
-				</h2>
-				<p class="about-section__paragraph">
-					{t('about.journey-text')}
-				</p>
-				<p class="about-section__paragraph about-section__sports-role">
-					{Practitioner.sportsRole[lang]}
-				</p>
-			</section>
-
-			<section class="about-section__card about-section__card--highlight">
-				<h2 class="about-section__card-title title--highlight">
-					{t('about.philosophy-title')}
-				</h2>
-				<p class="about-section__paragraph">
-					{t('about.philosophy-text')}
-				</p>
-			</section>
-
-			<section class="about-section__card">
-				<h2 class="about-section__card-title title--highlight">
-					{t('about.community-title')}
-				</h2>
-				<p class="about-section__paragraph">
-					{t('about.community-text')}
-				</p>
-			</section>
-
-			<section class="about-section__card about-section__card--highlight">
-				<h2 class="about-section__card-title title--highlight">
-					{t('about.credentials-title')}
-				</h2>
-				<p class="about-section__paragraph">
-					{t('about.credentials-text')}
-				</p>
-				<p class="about-section__registration">
-					{
-						lang === 'eu'
-							? `COFPVko kolegiatua, ${Practitioner.registrationNumber} zk.`
-							: `Colegiado COFPV n.º ${Practitioner.registrationNumber}`
-					}
-					<br />
-					{Practitioner.collegeNameLocalized[lang]}
-				</p>
-				<ul class="about-section__qualifications">
-					{
-						Practitioner.qualifications.map(qualification => (
-							<li>{qualification[lang]}</li>
-						))
-					}
-				</ul>
-			</section>
-		</div>
+<article class="ed-shell ed-section about-story">
+	<div class="story-rail ed-sticky">
+		<p class="ed-kicker">JOKIN RAMOS GONZÁLEZ</p>
+		<p class="registration">
+			{lang === 'eu' ? 'Fisioterapeuta kolegiatua' : 'Fisioterapeuta colegiado'}
+			<br />
+			<span>COFPV · {Practitioner.registrationNumber}</span>
+		</p>
+		<a class="ed-link" href="#formacion">
+			{lang === 'eu' ? 'Nire prestakuntza' : 'Mi formación'}
+			<Icon name="mdi:arrow-down" aria-hidden="true" />
+		</a>
+		<figure class="story-photo" data-parallax>
+			<Image
+				src={Interview}
+				alt={
+					lang === 'eu'
+						? 'Jokin paziente baten balorazioa prestatzen'
+						: 'Jokin preparando la valoración de un paciente'
+				}
+				width={700}
+				widths={[400, 700]}
+				sizes="(max-width:760px) 80vw, 30vw"
+			/>
+		</figure>
 	</div>
-</Container>
-
+	<div>
+		<p class="ed-lead ed-reveal story-lead">{t('about.intro')}</p>
+		{chapters.map((chapter, i) => (
+			<section class="story-chapter ed-reveal">
+				<p>{t(`about.${chapter}-text`)}</p>
+				{i === 0 && <p>{Practitioner.sportsRole[lang]}</p>}
+			</section>
+		))}
+	</div>
+</article>
+<section class="ed-dark ed-section" id="formacion">
+	<div class="ed-shell qualifications-layout">
+		<div class="ed-reveal">
+			<p class="ed-kicker">
+				{lang === 'eu' ? 'ETENGABE IKASTEN' : 'SEGUIR APRENDIENDO'}
+			</p>
+			<h2 class="ed-heading">
+				{lang === 'eu' ? 'Zaintzeko,' : 'Formarme para'}
+				<br />
+				<span>{lang === 'eu' ? 'prestatzen.' : 'cuidarte mejor.'}</span>
+			</h2>
+			<p class="qualification-note">
+				{Practitioner.collegeNameLocalized[lang]}
+				<br />
+				COFPV · {Practitioner.registrationNumber}
+			</p>
+		</div>
+		<ol class="qualifications" role="list">
+			{Practitioner.qualifications.map((qualification, i) => (
+				<li class="ed-reveal">
+					<>
+						<span>0{i + 1}</span>
+						<p>{qualification[lang]}</p>
+					</>
+				</li>
+			))}
+		</ol>
+	</div>
+</section>
+<section class="ed-shell ed-section personal-note ed-reveal">
+	<figure class="personal-photo" data-parallax>
+		<Image
+			src={Rehab}
+			alt={
+				lang === 'eu'
+					? 'Jokin paziente batekin eskuzko tratamendu batean'
+					: 'Jokin trabajando con una paciente durante un tratamiento manual'
+			}
+			width={1000}
+			widths={[400, 700, 1000]}
+			sizes="(max-width:760px) 100vw, 50vw"
+		/>
+	</figure>
+	<div>
+		<p class="ed-kicker">
+			{lang === 'eu' ? 'LAGUNTZA, URNIETAN' : 'LAGUNTZA, EN URNIETA'}
+		</p>
+		<p class="ed-lead">
+			{lang === 'eu'
+				? 'Tratamenduaren atzean, beti pertsona bat. Eta aurrean, zu.'
+				: 'Detrás del tratamiento, siempre una persona. Y delante, tú.'}
+		</p>
+	</div>
+</section>
 <style>
-	.about-section__content {
+	.about-story {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--s9);
+		grid-template-columns: 0.7fr 1.3fr;
+		gap: 120px;
 		align-items: start;
-		margin-top: var(--s7);
-		margin-bottom: var(--s4);
 	}
-
-	@media (min-width: 1024px) {
-		.about-section__content {
-			grid-template-columns: 400px 1fr;
-			gap: var(--s10);
-		}
+	.registration {
+		font-size: 15px;
+		color: var(--lf-muted);
+		line-height: 1.8;
+		margin: 0 0 18px;
 	}
-
-	.about-section__image-wrapper {
-		position: relative;
-		width: 100%;
-		display: flex;
-		justify-content: center;
+	.registration span {
+		color: var(--lf-teal);
 	}
-
-	@media (min-width: 1024px) {
-		.about-section__image-wrapper {
-			position: sticky;
-			top: calc(var(--header-height) + var(--s6));
-			align-self: start;
-		}
-	}
-
-	.about-section__image-container {
-		position: relative;
-		width: 100%;
-		max-width: 400px;
-		aspect-ratio: 3/4;
-		border-radius: 2rem;
+	.story-photo {
+		margin: 40px 0 0;
+		border-radius: 20px 80px 20px 20px;
 		overflow: hidden;
-		box-shadow:
-			0 0 0 1px rgba(69, 130, 149, 0.1),
-			0 20px 60px -10px rgba(69, 130, 149, 0.3);
+		height: 300px;
 	}
-
-	.about-section__image-container::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			180deg,
-			transparent 0%,
-			transparent 50%,
-			rgba(0, 0, 0, 0.4) 100%
-		);
-		pointer-events: none;
-	}
-
-	.about-section__image {
+	.story-photo img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		display: block;
+		object-position: 25% center;
 	}
-
-	.about-section__text {
-		display: flex;
-		flex-direction: column;
-		gap: var(--s7);
+	.story-lead {
+		margin-bottom: 48px;
 	}
-
-	.about-section__card {
-		position: relative;
-		padding: 0;
-		background: transparent;
+	.story-chapter {
+		border-top: 1px solid var(--lf-line);
+		padding-top: 28px;
+		margin-top: 36px;
 	}
-
-	.about-section__card::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		width: 3px;
-		background: linear-gradient(
-			180deg,
-			var(--theme-primary),
-			var(--theme-secondary)
-		);
-		opacity: 0.3;
-		transition: opacity var(--theme-transition);
+	.story-chapter > span {
+		font-size: 10px;
+		color: var(--lf-teal);
 	}
-
-	.about-section__card:hover::before {
-		opacity: 1;
+	.story-chapter h2 {
+		font-size: 30px;
+		margin: 14px 0 20px;
 	}
-
-	.about-section__card--highlight {
-		padding: var(--s6);
-		background: linear-gradient(
-			135deg,
-			rgba(69, 130, 149, 0.03),
-			rgba(232, 148, 74, 0.03)
-		);
-		border-radius: 1.5rem;
-		border: 1px solid rgba(69, 130, 149, 0.1);
+	.story-chapter p {
+		font-size: 16px;
+		color: var(--lf-muted);
+		margin-bottom: 18px;
 	}
-
-	.about-section__card--highlight::before {
-		display: none;
+	.qualifications-layout {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 100px;
 	}
-
-	.about-section__card-title {
-		font-size: var(--font-size-xl);
-		font-weight: 700;
-		color: var(--theme-on-bg);
-		margin-bottom: var(--s4);
-		padding-left: var(--s5);
-		letter-spacing: -0.01em;
+	.qualifications-layout .ed-heading {
+		color: #f6f5ee;
 	}
-
-	.title--highlight {
-		background: linear-gradient(
-			135deg,
-			var(--theme-primary),
-			var(--theme-primary-800)
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+	.qualifications-layout h2 span {
+		color: #a3c6d3;
 	}
-
-	:global([data-theme='dark']) .title--highlight {
-		background: linear-gradient(
-			135deg,
-			var(--theme-primary),
-			var(--theme-primary-200)
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-
-	.about-section__paragraph {
+	.qualification-note {
+		font-size: 12px;
 		line-height: 1.8;
-		color: var(--theme-on-bg);
-		font-size: var(--font-size-md);
+		color: #a9b2ae;
+		margin-top: 32px;
+		max-width: 300px;
+	}
+	.qualifications {
+		list-style: none;
 		margin: 0;
-		padding-left: var(--s5);
-		opacity: 0.85;
+		padding: 0;
 	}
-
-	.about-section__card--highlight .about-section__paragraph {
-		padding-left: 0;
-		opacity: 0.9;
+	.qualifications li {
+		display: flex;
+		gap: 24px;
+		align-items: baseline;
+		border-top: 1px solid #ffffff26;
+		padding: 24px 0;
 	}
-
-	.about-section__sports-role {
-		margin-top: var(--s4);
+	.qualifications li:last-child {
+		border-bottom: 1px solid #ffffff26;
 	}
-
-	.about-section__registration {
-		margin: var(--s4) 0;
-		color: var(--theme-primary-dark);
-		font-size: var(--font-size-base);
-		font-weight: 600;
-		line-height: 1.6;
+	.qualifications li > span {
+		font-size: 10px;
+		color: #e8944a;
 	}
-
-	.about-section__qualifications {
+	.qualifications p {
+		font-size: 18px;
+		letter-spacing: -0.025em;
 		margin: 0;
-		padding-left: var(--s5);
-		font-size: var(--font-size-base);
-		line-height: 1.6;
 	}
-
-	.about-section__qualifications li + li {
-		margin-top: var(--s3);
+	.personal-note {
+		display: grid;
+		grid-template-columns: 1fr 0.8fr;
+		gap: 100px;
+		align-items: center;
 	}
-
-	.about-section__qualifications li::marker {
-		color: var(--theme-primary);
+	.personal-photo {
+		height: 400px;
+		border-radius: 20px 20px 90px 20px;
+		overflow: hidden;
+		margin: 0;
 	}
-
-	@media (max-width: 767px) {
-		.about-section {
-			padding: var(--s8) 0;
+	.personal-photo img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 60% center;
+	}
+	@media (max-width: 1100px) {
+		.about-story {
+			gap: 64px;
 		}
-
-		.about-section__content {
-			gap: var(--s7);
-			margin-top: var(--s6);
+		.qualifications-layout,
+		.personal-note {
+			gap: 50px;
 		}
-
-		.about-section__text {
-			gap: var(--s6);
+	}
+	@media (max-width: 760px) {
+		.about-story,
+		.qualifications-layout,
+		.personal-note {
+			grid-template-columns: 1fr;
+			gap: 36px;
 		}
-
-		.about-section__card-title {
-			font-size: var(--font-size-lg);
-			padding-left: var(--s4);
+		.story-photo {
+			display: none;
 		}
-
-		.about-section__paragraph {
-			padding-left: var(--s4);
-			font-size: var(--font-size-base);
+		.story-rail .ed-kicker {
+			margin-bottom: 12px;
+		}
+		.story-lead {
+			font-size: 24px;
+		}
+		.qualifications p {
+			font-size: 16px;
+		}
+		.personal-photo {
+			height: 320px;
+		}
+		.personal-note .ed-lead {
+			font-size: 25px;
 		}
 	}
 </style>

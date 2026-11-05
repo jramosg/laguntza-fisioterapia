@@ -1,2 +1,2 @@
-# Root domain redirect to Spanish version (HTTP 301)
-/ /es/ 301!
+# The static root page respects the visitor's saved language choice.
+# Keep / free of a forced redirect to a specific language.

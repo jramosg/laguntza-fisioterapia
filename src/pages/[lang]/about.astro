@@ -7,6 +7,7 @@ import {
 } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
 import SectionHero from '@components/SectionHero.astro';
+import NextStep from '@components/editorial/NextStep.astro';
 import AboutSection from '@components/sections/AboutSection.astro';
 import JokinImage from '@images/jokin.webp';
 import { Practitioner } from '@config/practitioner';
@@ -43,15 +44,16 @@ const seo = {
 		id="about-hero"
 		image={JokinImage}
 		imageAlt={Practitioner.name}
-		imagePosition="center 34%"
+		imagePosition="center 15%"
 		imageMobilePosition="center 24%"
 	>
-		<h1 slot="title" class="title--highlight">
-			{t('about.title')}
+		<h1 slot="title">
+			{lang === 'eu' ? 'Jokin naiz.' : 'Soy Jokin.'}
+			<br />
+			<span>{lang === 'eu' ? 'Zuri laguntzeko.' : 'Aquí para ayudarte.'}</span>
 		</h1>
-		<Fragment slot="desc">
-			{t('about.subtitle')}
-		</Fragment>
+		<Fragment slot="desc">{t('about.subtitle')}</Fragment>
 	</SectionHero>
 	<AboutSection lang={lang} />
+	<NextStep />
 </Layout>

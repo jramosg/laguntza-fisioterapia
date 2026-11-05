@@ -44,112 +44,99 @@ const structuredData = hasVideo
 	]}
 	id={hash}
 >
-	{
-		hasVideo ? (
-			<figure>
-				<video
-					autoplay
-					muted
-					loop
-					playsinline
-					preload="metadata"
-					poster={image.src}
-					class="service-card__media desktop-video"
-					aria-label={t('video.puncture-aria-label')}
-				>
-					<source src={punctureWebm} type="video/webm" />
-					<source src={punctureMp4} type="video/mp4" />
-					<a href={punctureMp4}>
-						{lang === 'eu' ? 'Bideoa deskargatu' : 'Descargar el vídeo'}
-					</a>
-				</video>
-				<video
-					autoplay
-					muted
-					loop
-					playsinline
-					preload="metadata"
-					poster={PunctureMobile.src}
-					class="service-card__media mobile-video"
-					aria-label={t('video.puncture-aria-label')}
-				>
-					<source src={punctureWebm} type="video/webm" />
-					<source src={punctureMp4} type="video/mp4" />
-					<a href={punctureMp4}>
-						{lang === 'eu' ? 'Bideoa deskargatu' : 'Descargar el vídeo'}
-					</a>
-				</video>
-				<figcaption class="sr-only">
-					{t('video.puncture-transcript')}
-				</figcaption>
-			</figure>
-		) : (
-			<Picture
-				src={image}
-				formats={['avif', 'webp']}
-				fallbackFormat="webp"
-				alt={section.title}
-				class="service-card__media"
-				sizes="(min-width: 1024px) 50vw, 100vw"
-			/>
-		)
-	}
+	{hasVideo ? (
+		<figure>
+			<video
+				autoplay
+				muted
+				loop
+				playsinline
+				preload="metadata"
+				poster={image.src}
+				class="service-card__media desktop-video"
+				aria-label={t('video.puncture-aria-label')}
+			>
+				<source src={punctureWebm} type="video/webm" />
+				<source src={punctureMp4} type="video/mp4" />
+				<a href={punctureMp4}>
+					{lang === 'eu' ? 'Bideoa deskargatu' : 'Descargar el vídeo'}
+				</a>
+			</video>
+			<video
+				autoplay
+				muted
+				loop
+				playsinline
+				preload="metadata"
+				poster={PunctureMobile.src}
+				class="service-card__media mobile-video"
+				aria-label={t('video.puncture-aria-label')}
+			>
+				<source src={punctureWebm} type="video/webm" />
+				<source src={punctureMp4} type="video/mp4" />
+				<a href={punctureMp4}>
+					{lang === 'eu' ? 'Bideoa deskargatu' : 'Descargar el vídeo'}
+				</a>
+			</video>
+			<figcaption class="sr-only">{t('video.puncture-transcript')}</figcaption>
+		</figure>
+	) : (
+		<Picture
+			src={image}
+			formats={['avif', 'webp']}
+			fallbackFormat="webp"
+			alt={section.title}
+			class="service-card__media"
+			sizes="(min-width: 1024px) 50vw, 100vw"
+		/>
+	)}
 	<div class="service-card__desc">
 		<h2>{section.title}</h2>
 		<p>{section.desc}</p>
-		{
-			section.bullets?.length && (
-				<ul>
-					{section.bullets?.map((bullet: ServiceBullet) => {
-						return (
-							<li class="service-card__bullet">
-								<CircleCheck color="currentColor" />
-								<div>
-									{bullet.href ? (
-										<a
-											href={`/${lang}/services/${bullet.href}/`}
-											class="bullet-link"
-										>
-											<h3>{bullet.title}</h3>
-										</a>
-									) : (
+		{section.bullets?.length && (
+			<ul>
+				{section.bullets?.map((bullet: ServiceBullet) => {
+					return (
+						<li class="service-card__bullet">
+							<CircleCheck color="currentColor" />
+							<div>
+								{bullet.href ? (
+									<a
+										href={`/${lang}/services/${bullet.href}/`}
+										class="bullet-link"
+									>
 										<h3>{bullet.title}</h3>
-									)}
-									{bullet.desc && (
-										<>
-											<p>{bullet.desc}</p>
-										</>
-									)}
-								</div>
-							</li>
-						);
-					})}
-				</ul>
-			)
-		}
-		{
-			section.href && (
-				<div class="service-card__cta">
-					<a
-						href={`/${lang}/services/${section.href}/`}
-						class="learn-more-link"
-					>
-						{t('Ikusi gehiago')} →
-					</a>
-				</div>
-			)
-		}
+									</a>
+								) : (
+									<h3>{bullet.title}</h3>
+								)}
+								{bullet.desc && (
+									<>
+										<p>{bullet.desc}</p>
+									</>
+								)}
+							</div>
+						</li>
+					);
+				})}
+			</ul>
+		)}
+		{section.href && (
+			<div class="service-card__cta">
+				<a href={`/${lang}/services/${section.href}/`} class="learn-more-link">
+					{t('Ikusi gehiago')} →
+				</a>
+			</div>
+		)}
 	</div>
 </section>
 
-{
-	structuredData && (
-		<script
-			type="application/ld+json"
-			set:html={JSON.stringify(structuredData)}
-		/>
-	)
-}
+{structuredData && (
+	<script
+		type="application/ld+json"
+		set:html={JSON.stringify(structuredData)}
+	/>
+)}
 
 <style>
 	.service-card {

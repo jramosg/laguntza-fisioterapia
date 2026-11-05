@@ -1,30 +1,23 @@
 ---
-
+import { themeStorageKey } from '@lib/theme';
 ---
 
-<script is:inline>
-	function getStoredTheme() {
-		const localStorageTheme = localStorage.getItem('theme');
-		return (
-			localStorageTheme ??
-			(window.matchMedia('(prefers-color-scheme: dark)').matches
-				? 'dark'
-				: null)
-		);
+<script is:inline define:vars={{ themeStorageKey }}>
+	if (!['light', 'dark'].includes(document.documentElement.dataset.theme)) {
+		let theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+			? 'dark'
+			: 'light';
+		try {
+			const saved = window.localStorage.getItem(themeStorageKey);
+			if (saved === 'light' || saved === 'dark') theme = saved;
+		} catch {
+			// The system preference remains available without browser storage.
+		}
+		document.documentElement.dataset.theme = theme;
 	}
+</script>
 
-	function setTheme(theme = null) {
-		if (theme) {
-			localStorage.setItem('theme', theme);
-		}
-		const doc = document.firstElementChild;
-		theme = theme ?? getStoredTheme();
-		if (theme) {
-			doc.setAttribute('data-theme', theme);
-		}
-	}
-	setTheme();
-	document.addEventListener('astro:after-swap', () => {
-		setTheme();
-	});
+<script>
+	import { initializeTheme } from '@lib/theme';
+	initializeTheme();
 </script>

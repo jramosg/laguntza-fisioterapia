@@ -1,0 +1,112 @@
+---
+import Layout from '@layouts/Page.astro';
+import { getSecret } from 'astro:env/server';
+import { Address, Email, Phone } from '@config/company';
+import { Practitioner } from '@config/practitioner';
+
+export const prerender = false;
+const language = Astro.params.lang;
+if (language !== 'es' && language !== 'eu')
+	return new Response(null, { status: 404 });
+const eu = language === 'eu';
+const nif = getSecret('LEGAL_NIF');
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+if (!nif) Astro.response.status = 503;
+const title = eu ? 'Lege-oharra' : 'Aviso legal';
+---
+
+<Layout seo={{ title: `${title} | Laguntza Fisioterapia`, noindex: true }}>
+	<article class="legal-copy shell">
+		<p class="eyebrow">LAGUNTZA FISIOTERAPIA</p>
+		<h1>{title}</h1>
+		<h2>{eu ? 'Webgunearen titularra' : 'Titular del sitio web'}</h2>
+		<dl>
+			<dt>{eu ? 'Izena' : 'Nombre'}</dt>
+			<dd>Jokin Ramos Gonzalez</dd>
+			{nif && (
+				<>
+					<dt>NIF</dt>
+					<dd>{nif}</dd>
+				</>
+			)}
+			<dt>{eu ? 'Helbidea' : 'Dirección'}</dt>
+			<dd>{Address.name}</dd>
+			<dt>Email</dt>
+			<dd>
+				<a href={Email.url}>{Email.name}</a>
+			</dd>
+			<dt>{eu ? 'Telefonoa' : 'Teléfono'}</dt>
+			<dd>
+				<a href={Phone.url}>{Phone.name}</a>
+			</dd>
+		</dl>
+		<h2>{eu ? 'Lanbideari buruzko informazioa' : 'Información profesional'}</h2>
+		<p>
+			{eu
+				? 'Fisioterapeuta. Fisioterapiako Gradua Nafarroako Unibertsitate Publikoan (Espainia).'
+				: 'Fisioterapeuta. Graduado en Fisioterapia por la Universidad Pública de Navarra (España).'}
+		</p>
+		<p>
+			{eu ? Practitioner.collegeNameLocalized.eu : Practitioner.collegeName} ·{' '}
+			{eu ? 'Elkargokide-zenbakia' : 'Número de colegiado'}:{' '}
+			{Practitioner.registrationNumber}.
+		</p>
+		<p>
+			<a
+				href="https://cofpv.org/codigo-deontologico"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{eu
+					? 'Elkargoa eta lanbide-arauak'
+					: 'Colegio profesional y normativa aplicable'}
+			</a>
+		</p>
+		<h2>{eu ? 'Webgunearen erabilera' : 'Uso de la web'}</h2>
+		<p>
+			{eu
+				? 'Webgune honek Laguntza Fisioterapiaren zerbitzuei buruzko informazioa ematen du eta kontsultarekin harremanetan jartzea ahalbidetzen du. Edukiak ez du banakako balorazio profesionala ordezten.'
+				: 'Esta web informa sobre los servicios de Laguntza Fisioterapia y permite contactar con la consulta. Su contenido no sustituye una valoración profesional individual.'}
+		</p>
+		<p>
+			<a href={`/${language}/privacy/`}>
+				{eu ? 'Pribatutasun-politika' : 'Política de privacidad'}
+			</a>
+		</p>
+	</article>
+</Layout>
+<style>
+	.legal-copy {
+		max-width: 880px;
+		padding-block: 90px 120px;
+	}
+	.legal-copy h1 {
+		font-size: clamp(42px, 7vw, 80px);
+		letter-spacing: -0.055em;
+		line-height: 1.05;
+		margin: 24px 0 58px;
+	}
+	.legal-copy h2 {
+		font-size: 24px;
+		letter-spacing: -0.025em;
+		margin: 42px 0 18px;
+	}
+	.legal-copy p,
+	.legal-copy dl {
+		font-size: 17px;
+		line-height: 1.8;
+		color: var(--lf-muted);
+	}
+	.legal-copy a {
+		color: var(--lf-ink);
+		text-underline-offset: 0.2em;
+	}
+	.legal-copy dt {
+		font-weight: 650;
+		color: var(--lf-ink);
+	}
+	.legal-copy dd {
+		margin: 0 0 18px;
+		overflow-wrap: anywhere;
+	}
+</style>

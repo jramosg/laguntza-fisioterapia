@@ -36,13 +36,11 @@ const siteName = 'Laguntza Fisioterapia';
 	content="Laguntza Fisioterapia - Centro de Fisioterapia en Urnieta, Gipuzkoa"
 />
 <meta property="og:locale" content={lang === 'eu' ? 'eu_ES' : 'es_ES'} />
-{
-	lang === 'eu' ? (
-		<meta property="og:locale:alternate" content="es_ES" />
-	) : (
-		<meta property="og:locale:alternate" content="eu_ES" />
-	)
-}
+{lang === 'eu' ? (
+	<meta property="og:locale:alternate" content="es_ES" />
+) : (
+	<meta property="og:locale:alternate" content="eu_ES" />
+)}
 
 <!-- Additional business-specific Open Graph tags -->
 <meta

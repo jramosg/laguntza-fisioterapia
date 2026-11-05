@@ -1,0 +1,138 @@
+---
+import { Icon } from 'astro-icon/components';
+import { home } from '@config/home';
+import { WhatsApp, Phone } from '@config/company';
+import { getLangFromUrl } from '@i18n/utils';
+interface Props {
+	contained?: boolean;
+	title?: string;
+	text?: string;
+}
+const { contained = false, title, text } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const c = home[lang];
+const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
+---
+
+<section class:list={['next-step', { 'next-step--contained': contained }]}>
+	<div class="next-inner">
+		<div>
+			<p class="ed-kicker">{c.contactLabel}</p>
+			<h2>
+				{title ||
+					(lang === 'eu'
+						? 'Zure hurrengo pausoa, elkarrekin.'
+						: 'Tu siguiente paso, juntos.')}
+			</h2>
+		</div>
+		<div>
+			<p>{text || c.contactText}</p>
+			<a
+				class="ed-pill"
+				href={bookingUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{c.book}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<a class="next-phone" href={Phone.url}>
+				{Phone.name}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<a class="next-phone" href={WhatsApp.urlCall}>
+				{WhatsApp.name}
+				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+			</a>
+			<small>{c.contactNote}</small>
+		</div>
+	</div>
+</section>
+<style>
+	.next-step {
+		background: var(--lf-surface-accent, #dce7e6);
+		padding: 78px 0;
+	}
+	.next-inner {
+		width: min(100% - 128px, 1312px);
+		margin: auto;
+		display: grid;
+		grid-template-columns: 1.2fr 1fr;
+		gap: 100px;
+		align-items: center;
+	}
+	.next-step--contained {
+		padding: 56px;
+		border-radius: 22px 80px 22px 22px;
+	}
+	.next-step--contained .next-inner {
+		width: 100%;
+		gap: 60px;
+	}
+	.next-inner h2 {
+		font-size: clamp(40px, 4.4vw, 64px);
+		letter-spacing: -0.06em;
+		line-height: 1.07;
+		max-width: 600px;
+		margin: 0;
+		color: var(--lf-text-primary, #263432);
+	}
+	.next-inner > div:last-child > p {
+		font-size: 19px;
+		letter-spacing: -0.025em;
+		line-height: 1.6;
+		margin: 0 0 24px;
+		max-width: 330px;
+	}
+	.next-phone {
+		display: flex;
+		gap: 32px;
+		align-items: center;
+		min-height: 44px;
+		text-decoration: none;
+		width: fit-content;
+		font-size: 20px;
+		margin-top: 14px;
+	}
+	.next-phone svg {
+		width: 19px;
+		height: 19px;
+	}
+	small {
+		display: block;
+		font-size: 10px;
+		color: var(--lf-text-muted, #63726b);
+		margin-top: 16px;
+	}
+	@media (max-width: 1100px) {
+		.next-inner {
+			width: calc(100% - 72px);
+			gap: 50px;
+		}
+		.next-step--contained {
+			padding: 40px;
+		}
+	}
+	@media (max-width: 760px) {
+		.next-step {
+			padding: 60px 0;
+		}
+		.next-inner {
+			width: calc(100% - 48px);
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+		.next-step--contained {
+			padding: 32px 24px;
+		}
+		.next-step--contained .next-inner {
+			gap: 32px;
+		}
+		.next-inner h2 {
+			font-size: 40px;
+		}
+		.next-inner > div:last-child > p {
+			font-size: 17px;
+		}
+	}
+</style>

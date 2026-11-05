@@ -1,400 +1,317 @@
 ---
 import { Image, getImage } from 'astro:assets';
-import Container from './core/Container.astro';
-
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '@i18n/utils';
+import { home } from '@config/home';
+import { WhatsApp } from '@config/company';
 const {
 	id,
-	class: className,
 	image,
 	imageAlt = '',
 	imagePosition = 'center',
 	imageMobile,
 	imageMobilePosition,
-	video,
-	...rest
+	imageLayout = 'wide',
+	showImageCaption = true,
+	eyebrow,
+	book = true,
+	compact = false
 } = Astro.props;
-
-const hasMedia = Boolean(image || video);
-const isPortrait = Boolean(image && image.height > image.width);
-
-// Art direction: serve a different photo below 768px when provided
-const mobileVariant = imageMobile
+const lang = getLangFromUrl(Astro.url);
+const c = home[lang];
+const isService = Astro.url.pathname.split('/').filter(Boolean).length > 2;
+const section = Astro.url.pathname.split('/').filter(Boolean)[1];
+const pageLabel =
+	c.services.find(service => Astro.url.pathname.includes(service.slug))
+		?.title ||
+	(
+		{
+			services: c.nav[0],
+			about: c.nav[1],
+			consulta: c.nav[2],
+			contact: c.nav[3]
+		} as Record<string, string>
+	)[section] ||
+	c.nav[0];
+const mobile = imageMobile
 	? await getImage({
 			src: imageMobile,
-			widths: [640, 960, 1536],
-			sizes: '100vw',
+			width: Math.min(800, imageMobile.width),
 			format: 'webp'
 		})
 	: null;
+const maxImageWidth = image
+	? Math.min(image.width, imageLayout === 'portrait' ? 1600 : 2880)
+	: 0;
+const imageWidths = [640, 960, 1280, 1600, 1920, 2560].filter(
+	width => width < maxImageWidth
+);
+if (maxImageWidth) imageWidths.push(maxImageWidth);
+const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
 ---
 
-<section
-	id={id}
-	class:list={[
-		'hero-header-section',
-		{ 'hero-header-section--media': hasMedia }
-	]}
->
-	{
-		image && !video && (
-			<div class:list={['hero-media', { 'hero-media--portrait': isPortrait }]}>
-				{isPortrait && (
-					<Image
-						src={image}
-						alt=""
-						aria-hidden="true"
-						class="hero-media__img hero-media__blur"
-						layout="full-width"
-						loading="eager"
-						sizes="100vw"
-					/>
+<section {id} class:list={['ed-hero', { 'ed-hero--compact': compact }]}>
+	<div class:list={['ed-shell', { 'hero-split': imageLayout === 'portrait' }]}>
+		<nav
+			class="hero-breadcrumb"
+			aria-label={lang === 'eu' ? 'Nabigazio bidea' : 'Ruta de navegación'}
+		>
+			<a href={`/${lang}/`}>Laguntza</a>
+			<span>/</span>
+			{isService && (
+				<>
+					<>
+						<a href={`/${lang}/services/`}>{c.nav[0]}</a>
+						<span>/</span>
+					</>
+				</>
+			)}
+			<span>{eyebrow || pageLabel}</span>
+		</nav>
+		<div class="hero-type">
+			<div>
+				<p class="ed-kicker">
+					{lang === 'eu'
+						? 'FISIOTERAPIA · URNIETA, GIPUZKOA'
+						: 'FISIOTERAPIA · URNIETA, GIPUZKOA'}
+				</p>
+				<slot name="title" />
+			</div>
+			<div class="hero-aside">
+				<p>
+					<slot name="desc" />
+				</p>
+				{book && (
+					<a
+						class="ed-pill"
+						href={bookingUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{c.book}
+						<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+					</a>
 				)}
-				<picture class="hero-media__picture">
-					{mobileVariant && (
-						<source
-							media="(max-width: 768px)"
-							srcset={mobileVariant.srcSet.attribute}
-							sizes="100vw"
-						/>
-					)}
-					<Image
-						src={image}
-						alt={imageAlt}
-						class="hero-media__img hero-media__main"
-						layout="full-width"
-						loading="eager"
-						fetchpriority="high"
-						sizes="100vw"
-						style={`--hero-pos: ${imagePosition}; --hero-pos-m: ${imageMobilePosition || imagePosition}`}
-					/>
-				</picture>
+				<slot name="chips" />
 			</div>
-		)
-	}
-	{
-		video && (
-			<div class="hero-media" aria-hidden="true">
-				<video
-					class="hero-media__video"
-					autoplay
-					muted
-					loop
-					playsinline
-					preload="metadata"
-					poster={video.poster}
-				>
-					{video.webm && <source src={video.webm} type="video/webm" />}
-					{video.mp4 && <source src={video.mp4} type="video/mp4" />}
-				</video>
-			</div>
-		)
-	}
-	{hasMedia && <div class="hero-media-overlay" aria-hidden="true" />}
-	{hasMedia && <div class="hero-header-glow" aria-hidden="true" />}
-	<Container class=`hero-header-container ${className || ''}` {...rest}>
-		<slot name="title" />
-		<p><slot name="desc" /></p>
-		<div class="chips-container">
-			<slot name="chips" />
 		</div>
-	</Container>
+		{image && (
+			<figure
+				class="hero-photo"
+				data-parallax={imageLayout === 'portrait' ? undefined : ''}
+			>
+				<>
+					<picture>
+						{mobile && <source media="(max-width:760px)" srcset={mobile.src} />}
+						<Image
+							src={image}
+							alt={imageAlt}
+							priority
+							width={Math.min(1600, image.width)}
+							widths={imageWidths}
+							quality={85}
+							sizes={
+								imageLayout === 'portrait'
+									? '(max-width:760px) calc(100vw - 48px), (max-width:1100px) 42vw, 480px'
+									: '(max-width:760px) calc(100vw - 48px), (max-width:1440px) calc(100vw - 128px), 1312px'
+							}
+							style={`--hero-pos:${imagePosition};--hero-pos-m:${imageMobilePosition || imagePosition}`}
+						/>
+					</picture>
+					{showImageCaption && (
+						<figcaption>
+							Laguntza Fisioterapia <span>Urnieta · 20130</span>
+						</figcaption>
+					)}
+				</>
+			</figure>
+		)}
+	</div>
 </section>
-
 <style>
-	.hero-header-section {
+	.ed-hero {
+		padding-top: 34px;
+		padding-bottom: 10px;
+	}
+	.hero-breadcrumb {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		flex-wrap: wrap;
+		font-size: 11px;
+		color: var(--lf-text-muted, #66756e);
+		margin-bottom: 60px;
+	}
+	.hero-breadcrumb a {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		text-decoration: none;
+	}
+	.hero-breadcrumb a:hover {
+		color: var(--lf-text-accent, #37697a);
+	}
+	.hero-breadcrumb > span:last-child {
+		color: var(--lf-text-primary, #263432);
+	}
+	.hero-type {
+		display: grid;
+		grid-template-columns: 1.5fr 0.8fr;
+		gap: 80px;
+		align-items: end;
+		margin-bottom: 56px;
+	}
+	.hero-type .ed-kicker {
+		margin-bottom: 26px;
+	}
+	.hero-type :global(h1) {
+		font-size: clamp(48px, 5.8vw, 84px);
+		line-height: 1.04;
+		letter-spacing: -0.065em;
+		color: var(--lf-text-primary, #263432);
+		max-width: 900px;
+		margin: 0;
+	}
+	.hero-type :global(h1 span) {
+		color: var(--lf-text-accent, #37697a);
+	}
+	.hero-aside > p {
+		margin: 0 0 26px;
+		color: var(--lf-text-muted, #5c6b64);
+		font-size: 16px;
+		line-height: 1.85;
+	}
+	.hero-aside :global(.chip) {
+		margin: 8px 8px 0 0;
+	}
+	.hero-photo {
 		position: relative;
 		overflow: hidden;
-		background: var(--theme-container-gradient);
-		background-size: 200% 200%;
-		animation: gradientMove 3s ease-in-out infinite alternate;
-		padding: var(--s9) 0 var(--s8);
-		text-align: center;
-		color: var(--theme-on-container-gradient);
+		height: 390px;
+		border-radius: 22px 22px 100px 22px;
+		margin: 0;
+		background: var(--lf-surface-soft, #e3e8e2);
 	}
-
-	.hero-header-section--media {
-		min-height: clamp(440px, 64vh, 680px);
-		display: grid;
-		align-items: center;
-		background: linear-gradient(180deg, #060a0c 0%, #0a0e10 60%, #0b1013 100%);
-		animation: none;
-		color: #fff;
-	}
-
-	@keyframes gradientMove {
-		0% {
-			background-position: 0% 50%;
-		}
-		100% {
-			background-position: 100% 50%;
-		}
-	}
-
-	/* Full-bleed media, oversized so the parallax never shows edges */
-	.hero-media {
-		position: absolute;
-		inset: -12% 0;
-		z-index: 0;
-		will-change: transform;
-	}
-	.hero-media__picture {
+	.hero-photo picture {
 		display: contents;
 	}
-	.hero-media :global(img),
-	.hero-media__video {
+	.hero-photo :global(img) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		object-position: center;
-		display: block;
-	}
-
-	.hero-media :global(img.hero-media__main) {
 		object-position: var(--hero-pos, center);
 	}
-	@media (max-width: 768px) {
-		.hero-media :global(img.hero-media__main) {
-			object-position: var(--hero-pos-m, var(--hero-pos, center));
-		}
-	}
-
-	.hero-media :global(img.hero-media__blur) {
+	.hero-photo figcaption {
 		position: absolute;
-		inset: 0;
-		display: none;
-		filter: blur(26px) brightness(0.6) saturate(1.1);
-		transform: scale(1.15);
-	}
-
-	/* Portrait photos on wide screens: show the full frame over a blurred
-	   self-backdrop instead of a tight, context-less crop */
-	@media (min-width: 769px) {
-		.hero-media--portrait :global(img.hero-media__blur) {
-			display: block;
-		}
-		.hero-media--portrait :global(img.hero-media__main) {
-			position: relative;
-			object-fit: contain;
-		}
-	}
-
-	/* Dark diagonal wash, same recipe as the homepage service cards */
-	.hero-media-overlay {
-		position: absolute;
-		inset: 0;
-		z-index: 1;
-		background: linear-gradient(
-			120deg,
-			rgba(3, 9, 11, 0.84) 0%,
-			rgba(3, 9, 11, 0.62) 52%,
-			rgba(6, 10, 12, 0.88) 100%
-		);
-	}
-
-	/* Subtle fractal-noise grain, same texture as the homepage dark stream */
-	.hero-header-section--media::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		z-index: 2;
-		pointer-events: none;
-		opacity: 0.03;
-		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-		background-repeat: repeat;
-		background-size: 200px;
-	}
-
-	.hero-header-glow {
-		position: absolute;
-		inset: 0;
-		z-index: 2;
-		pointer-events: none;
-		background:
-			radial-gradient(
-				ellipse 60% 80% at 15% 0%,
-				rgba(69, 130, 149, 0.22) 0%,
-				transparent 60%
-			),
-			radial-gradient(
-				ellipse 50% 70% at 90% 100%,
-				rgba(232, 148, 74, 0.1) 0%,
-				transparent 60%
-			);
-	}
-
-	.hero-header-container {
-		&:global(.content__container) {
-			padding: 0;
-		}
-		width: 100%;
-		/* As a grid item it must be allowed to shrink below its content,
-		   or wide content (the services chip carousel) pushes the whole
-		   hero off-screen on mobile */
-		min-width: 0;
-		max-width: 100%;
-		position: relative;
-		z-index: 3;
-	}
-
-	/* Staggered rise-in: pure CSS so it also runs without JS */
-	.hero-header-container > :global(*) {
-		animation: hero-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-	}
-	.hero-header-container > :global(*:nth-child(2)) {
-		animation-delay: 0.12s;
-	}
-	.hero-header-container > :global(*:nth-child(3)) {
-		animation-delay: 0.24s;
-	}
-
-	.hero-header-container :global(h1) {
-		padding: var(--container-padding);
-		margin: 0 auto;
-		max-width: 22ch;
-		color: #fff;
-		letter-spacing: -0.02em;
-		line-height: 1.1;
-		text-wrap: balance;
-	}
-
-	.hero-header-section--media :global(h1),
-	.hero-header-section--media > :global(.hero-header-container) > p {
-		text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
-	}
-
-	.hero-header-container > p {
-		padding: var(--container-padding);
-		margin: 0 auto;
-		max-width: 64ch;
-		color: rgba(255, 255, 255, 0.82);
-		line-height: 1.7;
-	}
-
-	.hero-header-container :global(.chip) {
-		color: var(--theme-on-container-gradient);
-		svg {
-			fill: var(--theme-on-container-gradient);
-		}
-	}
-
-	:global(.hero-section__remark) {
-		background-image: linear-gradient(
-			to right,
-			var(--theme-secondary),
-			var(--theme-secondary-300, #f2c79a)
-		);
-		background-clip: text;
-		color: transparent;
-	}
-
-	.chips-container {
+		bottom: 0;
+		left: 0;
+		right: 0;
 		display: flex;
-		justify-content: center;
-		gap: var(--s2);
-		flex-wrap: wrap;
-		padding-top: var(--s4);
+		justify-content: space-between;
+		padding: 32px;
+		color: #fff;
+		background: linear-gradient(#0a0e1080, #0a0e10d9);
+		font-size: 11px;
 	}
-
-	@keyframes hero-rise {
-		from {
-			opacity: 0;
-			transform: translateY(28px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
+	.ed-hero--compact .hero-breadcrumb {
+		margin-bottom: 38px;
+	}
+	.hero-split {
+		display: grid;
+		grid-template-columns: 1.1fr 1fr;
+		column-gap: 80px;
+		align-items: start;
+	}
+	.hero-split .hero-breadcrumb {
+		grid-column: 1 / -1;
+		margin-bottom: 40px;
+	}
+	.hero-split .hero-type {
+		display: block;
+		margin-bottom: 0;
+		padding-top: 56px;
+	}
+	.hero-split .hero-type :global(h1) {
+		font-size: clamp(44px, 4.3vw, 66px);
+	}
+	.hero-split .hero-aside {
+		max-width: 460px;
+		margin-top: 28px;
+	}
+	.hero-split .hero-photo {
+		width: 100%;
+		max-width: 480px;
+		height: auto;
+		aspect-ratio: 2 / 3;
+		justify-self: end;
+		border-radius: 100px 22px 22px 22px;
+	}
+	@media (min-width: 1600px) {
+		.hero-photo {
+			height: 440px;
 		}
 	}
-
-	/* Entry "Ken Burns" settle — pure CSS so it never touches the main thread
-	   or delays the hero LCP (the JS version did both). */
-	@media (prefers-reduced-motion: no-preference) {
-		.hero-media :global(img.hero-media__main) {
-			animation: hero-kenburns 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+	@media (max-width: 1100px) {
+		.hero-split {
+			column-gap: 40px;
+		}
+		.hero-type {
+			gap: 40px;
+			grid-template-columns: 1.3fr 1fr;
 		}
 	}
-	@keyframes hero-kenburns {
-		from {
-			transform: scale(1.06);
+	@media (max-width: 760px) {
+		.hero-split {
+			grid-template-columns: 1fr;
+			gap: 0;
 		}
-		to {
-			transform: scale(1);
+		.hero-split .hero-type :global(h1) {
+			font-size: clamp(34px, 8.5vw, 60px);
 		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.hero-header-container > :global(*) {
-			animation: none;
+		.hero-split .hero-type {
+			padding-top: 0;
 		}
-	}
-
-	@media (max-width: 768px) {
-		.chips-container {
-			overflow-x: auto;
-			flex-wrap: nowrap;
-			gap: var(--s2);
-			padding-bottom: var(--s2);
-			-webkit-overflow-scrolling: touch;
-			scrollbar-width: none;
+		.hero-split .hero-photo {
+			height: auto;
+			aspect-ratio: 2 / 3;
+			margin-top: 32px;
+			border-top-left-radius: 70px;
 		}
-		.chips-container::-webkit-scrollbar {
-			display: none;
+		.ed-hero {
+			padding-top: 16px;
 		}
-		.chips-container > * {
-			flex: 0 0 auto;
+		.hero-breadcrumb {
+			margin-bottom: 32px;
+			font-size: 10px;
+			gap: 8px;
+		}
+		.hero-type {
+			grid-template-columns: 1fr;
+			gap: 26px;
+			margin-bottom: 32px;
+		}
+		.hero-type :global(h1) {
+			font-size: clamp(41px, 8.5vw, 60px);
+			overflow-wrap: anywhere;
+		}
+		.hero-type .ed-kicker {
+			font-size: 9px;
+			margin-bottom: 20px;
+		}
+		.hero-aside > p {
+			font-size: 15px;
+			max-width: 500px;
+		}
+		.hero-photo {
+			height: 330px;
+			border-bottom-right-radius: 70px;
+		}
+		.hero-photo :global(img) {
+			object-position: var(--hero-pos-m, center);
+		}
+		.hero-photo figcaption {
+			padding: 22px;
+			font-size: 9px;
 		}
 	}
 </style>
-
-<script>
-	document.addEventListener('astro:page-load', () => {
-		const prefersReducedMotion = window.matchMedia(
-			'(prefers-reduced-motion: reduce)'
-		).matches;
-
-		const video =
-			document.querySelector<HTMLVideoElement>('.hero-media__video');
-		if (prefersReducedMotion) {
-			video?.pause();
-			return;
-		}
-
-		// The scroll parallax is a desktop-only flourish. Skip it entirely on
-		// touch/mobile — that keeps GSAP (~85 KB) and ScrollTrigger's per-scroll
-		// cost off the devices Lighthouse measures. The entry Ken Burns is now
-		// pure CSS, so nothing here is on the LCP critical path.
-		const wantsParallax = window.matchMedia(
-			'(min-width: 1024px) and (pointer: fine)'
-		).matches;
-		if (!wantsParallax) return;
-
-		const hero = document.querySelector('.hero-header-section--media');
-		const media = hero?.querySelector('.hero-media');
-		if (!hero || !media) return;
-
-		const setup = async () => {
-			const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-				import('gsap'),
-				import('gsap/ScrollTrigger')
-			]);
-			gsap.registerPlugin(ScrollTrigger);
-			gsap.to(media, {
-				yPercent: 9,
-				ease: 'none',
-				scrollTrigger: {
-					trigger: hero,
-					start: 'top top',
-					end: 'bottom top',
-					scrub: true
-				}
-			});
-		};
-
-		// Load GSAP off the critical path, after the page has settled.
-		const idle: (cb: () => void) => void =
-			(window as any).requestIdleCallback?.bind(window) ||
-			(cb => window.setTimeout(cb, 200));
-		if (document.readyState === 'complete') idle(setup);
-		else window.addEventListener('load', () => idle(setup), { once: true });
-	});
-</script>

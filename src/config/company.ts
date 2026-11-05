@@ -1,4 +1,4 @@
-import Prevention from '@images/prevention.webp';
+import Prevention from '@images/therapeutic-exercise.webp';
 import Rehab from '@images/rehab.webp';
 import Puncture from '@images/puncture.webp';
 import Interview from '@images/interview.webp';

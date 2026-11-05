@@ -1,4 +1,5 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
+import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
 import { execSync } from 'node:child_process';
 import icon from 'astro-icon';
@@ -7,10 +8,55 @@ import icon from 'astro-icon';
 export default defineConfig({
 	site: 'https://laguntzafisioterapia.com/',
 	trailingSlash: 'always',
+	compressHTML: true,
+	adapter: node({ mode: 'standalone', bodySizeLimit: 16 * 1024 * 1024 }),
+	security: {
+		actionBodySizeLimit: 16 * 1024 * 1024,
+		allowedDomains: [
+			{ hostname: 'laguntzafisioterapia.com', protocol: 'https' },
+			{ hostname: 'www.laguntzafisioterapia.com', protocol: 'https' },
+			{ hostname: 'test.laguntzafisioterapia.com', protocol: 'https' },
+			{ hostname: 'localhost' },
+			{ hostname: '127.0.0.1' }
+		]
+	},
+	env: {
+		schema: {
+			LEGAL_NIF: envField.string({
+				context: 'server',
+				access: 'secret',
+				optional: true
+			}),
+			EMAIL_ENABLED: envField.boolean({
+				context: 'server',
+				access: 'secret',
+				default: false
+			}),
+			RESEND_API_KEY: envField.string({
+				context: 'server',
+				access: 'secret',
+				optional: true
+			}),
+			FROM_EMAIL: envField.string({
+				context: 'server',
+				access: 'secret',
+				optional: true
+			}),
+			COMPANY_EMAIL: envField.string({
+				context: 'server',
+				access: 'secret',
+				optional: true
+			}),
+			BCC_EMAIL: envField.string({
+				context: 'server',
+				access: 'secret',
+				optional: true
+			})
+		}
+	},
 	prefetch: {
 		defaultStrategy: 'viewport'
 	},
-	sitemap: true,
 	integrations: [
 		sitemap({
 			// lastmod is the one sitemap field Google actually uses, and only
@@ -53,10 +99,8 @@ export default defineConfig({
 	],
 	i18n: {
 		locales: ['es', 'eu'],
-		defaultLocale: 'es'
-	},
-	routing: {
-		prefixDefaultLocale: true
+		defaultLocale: 'es',
+		routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false }
 	},
 	image: { layout: 'constrained' }
 });

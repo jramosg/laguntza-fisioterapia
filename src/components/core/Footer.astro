@@ -22,22 +22,20 @@ const props = Astro.props;
 	<Container narrow class="footer-container">
 		<nav aria-label={t('social-media-links')}>
 			<ul class="footer-socials__list">
-				{
-					footerSocials.map(social => (
-						<li class="footer-socials__item">
-							<a
-								href={social.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="footer-socials__link"
-								title={`Open ${social.name} profile`}
-								aria-label={`Open ${social.name} profile`}
-							>
-								<Icon name={social.icon} width={24} height={24} />
-							</a>
-						</li>
-					))
-				}
+				{footerSocials.map(social => (
+					<li class="footer-socials__item">
+						<a
+							href={social.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="footer-socials__link"
+							title={`Open ${social.name} profile`}
+							aria-label={`Open ${social.name} profile`}
+						>
+							<Icon name={social.icon} width={24} height={24} />
+						</a>
+					</li>
+				))}
 			</ul>
 		</nav>
 		<address>
@@ -79,20 +77,18 @@ const props = Astro.props;
 		</address>
 		<nav aria-label={t('quick-links')}>
 			<div class="quick-links">
-				{
-					footerLists.map((item, index) => (
-						<>
-							<a
-								href={`/${lang}${item.slug}`}
-								title={t(item.title)}
-								aria-label={t(item.title)}
-							>
-								{t(item.title)}
-							</a>
-							{index !== footerLists.length - 1 && <span> — </span>}
-						</>
-					))
-				}
+				{footerLists.map((item, index) => (
+					<>
+						<a
+							href={`/${lang}${item.slug}`}
+							title={t(item.title)}
+							aria-label={t(item.title)}
+						>
+							{t(item.title)}
+						</a>
+						{index !== footerLists.length - 1 && <span> — </span>}
+					</>
+				))}
 			</div>
 		</nav>
 		<div class="theme-toggle-container" aria-label={t('theme-switcher')}>
@@ -108,33 +104,31 @@ const props = Astro.props;
 				{t('developed-by')}
 
 				<ul class="footer-author-list">
-					{
-						authors.map(author => (
-							<li class="footer-author-list__single-author">
-								<strong>{author.name}</strong>
-								<ul class="footer-socials__list">
-									{author.socials.map(social => (
-										<li>
-											<a
-												href={social.url}
-												target="_blank"
-												rel="author noopener noreferrer"
-												class="footer-socials__link"
-												title={social.title}
-												aria-label={social.title}
-											>
-												{social.iconType === 'component' ? (
-													<social.icon fill="currentColor" />
-												) : (
-													<Icon name={social.icon} width={24} height={24} />
-												)}
-											</a>
-										</li>
-									))}
-								</ul>
-							</li>
-						))
-					}
+					{authors.map(author => (
+						<li class="footer-author-list__single-author">
+							<strong>{author.name}</strong>
+							<ul class="footer-socials__list">
+								{author.socials.map(social => (
+									<li>
+										<a
+											href={social.url}
+											target="_blank"
+											rel="author noopener noreferrer"
+											class="footer-socials__link"
+											title={social.title}
+											aria-label={social.title}
+										>
+											{social.iconType === 'component' ? (
+												<social.icon fill="currentColor" />
+											) : (
+												<Icon name={social.icon} width={24} height={24} />
+											)}
+										</a>
+									</li>
+								))}
+							</ul>
+						</li>
+					))}
 				</ul>
 			</section>
 			<small class="footer-copyright__text">

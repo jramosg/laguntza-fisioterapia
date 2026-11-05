@@ -23,13 +23,11 @@ const Tag = href ? 'a' : 'button';
 	{...rest}
 >
 	<slot />
-	{
-		customIcon && (
-			<span class="custom-icon__span">
-				<slot name="icon">custom_icon</slot>
-			</span>
-		)
-	}
+	{customIcon && (
+		<span class="custom-icon__span">
+			<slot name="icon">custom_icon</slot>
+		</span>
+	)}
 </Tag>
 
 <style>

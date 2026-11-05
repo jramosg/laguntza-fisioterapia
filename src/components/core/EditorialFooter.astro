@@ -1,0 +1,211 @@
+---
+import BrandLogo from '@images/logos/logo-white-horizontal.svg';
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl } from '@i18n/utils';
+import { home } from '@config/home';
+import { Address, Phone, WhatsApp, Email } from '@config/company';
+import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const c = home[lang];
+const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
+const paths = ['services/', 'about/', 'consulta/', 'contact/'];
+---
+
+<footer class="editorial-footer">
+	<div class="footer-main">
+		<div class="footer-brand">
+			<a href={`/${lang}/`} aria-label={c.homeLabel}>
+				<BrandLogo aria-hidden="true" />
+			</a>
+			<p>{c.footerLine}</p>
+		</div>
+		<div class="footer-address">
+			<p class="label">URNIETA, GIPUZKOA</p>
+			<a href={Address.url} target="_blank" rel="noopener noreferrer">
+				Zubitxo Plaza, 3 · {lang === 'eu' ? '2. etxabea' : 'Bajo 2'}
+				<br />
+				20130 Urnieta
+			</a>
+			<a
+				class="map-link"
+				href={Address.url}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<Icon name="mdi:map-marker-outline" aria-hidden="true" />
+				<span>{c.maps}</span>
+			</a>
+		</div>
+		<div>
+			<p class="label">{c.footerContact}</p>
+			<a href={WhatsApp.urlCall}>
+				<Icon name="mdi:phone-outline" aria-hidden="true" />
+				{WhatsApp.name}
+			</a>
+			<a href={Phone.url}>
+				<Icon name="mdi:phone-outline" aria-hidden="true" />
+				{Phone.name}
+			</a>
+			<a href={bookingUrl} target="_blank" rel="noopener noreferrer">
+				<Icon name="mdi:whatsapp" aria-hidden="true" />
+				WhatsApp
+			</a>
+			<a class="footer-email" href={Email.url}>
+				<Icon name="mdi:email-outline" aria-hidden="true" />
+				<span>{Email.name}</span>
+			</a>
+		</div>
+		<nav aria-label={c.footerExplore}>
+			<p class="label">{c.footerExplore}</p>
+			{paths.map((path, i) => (
+				<a href={`/${lang}/${path}`}>{c.nav[i]}</a>
+			))}
+			<a
+				href="https://www.instagram.com/laguntzafisioterapia"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<Icon name="mdi:instagram" aria-hidden="true" />
+				Instagram
+			</a>
+		</nav>
+	</div>
+	<div class="footer-bottom">
+		<span>© {new Date().getFullYear()} Laguntza Fisioterapia</span>
+		<span>{c.languages}</span>
+		<a href={`/${lang}/privacy/`}>
+			{lang === 'eu' ? 'Pribatutasuna' : 'Privacidad'}
+		</a>
+		<a href={`/${lang}/legal/`}>
+			{lang === 'eu' ? 'Lege-oharra' : 'Aviso legal'}
+		</a>
+		<ThemeSwitcher />
+		<span>{c.footerCredits} · Nerea Dorronsoro & Jon Ramos</span>
+	</div>
+</footer>
+
+<style>
+	.editorial-footer {
+		background: var(--theme-primary-800, #234652);
+		color: #f5f6f3;
+		padding: 80px max(24px, calc((100% - 1312px) / 2)) 24px;
+	}
+	:global(.laguntza-interior) .editorial-footer {
+		padding-bottom: 100px;
+	}
+	.footer-main {
+		display: grid;
+		grid-template-columns: 1.5fr 1fr 1.3fr 0.8fr;
+		gap: 48px;
+		padding-bottom: 64px;
+	}
+	.footer-brand > a {
+		width: 188px;
+	}
+	.footer-brand :global(svg) {
+		width: 100%;
+		height: auto;
+	}
+	.footer-brand p {
+		margin-top: 24px;
+		color: #c9d9dc;
+		font-size: 15px;
+		letter-spacing: -0.02em;
+	}
+	a {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		width: fit-content;
+		min-height: 44px;
+		text-decoration: none;
+		color: #d7ddda;
+		font-size: 13px;
+		line-height: 1.8;
+		transition: color 200ms;
+	}
+	a:hover {
+		color: #f2b177;
+	}
+	.label {
+		margin-bottom: 20px;
+		font-size: 10px;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: #bdd0d5;
+	}
+	.map-link {
+		margin-top: 16px;
+		line-height: 1.4;
+	}
+	.map-link span {
+		line-height: 1;
+		text-decoration: underline;
+		text-underline-offset: 5px;
+	}
+	:global(.editorial-footer svg[data-icon]) {
+		width: 15px;
+		height: 15px;
+		flex-shrink: 0;
+	}
+	.map-link :global(svg) {
+		/* The marker fills 20 of its 24 viewBox units: match the cap height. */
+		width: 1.2cap;
+		height: 1.2cap;
+	}
+	.footer-email {
+		max-width: 100%;
+	}
+	.footer-email span {
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+	.footer-bottom {
+		border-top: 1px solid #ffffff24;
+		padding-top: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		flex-wrap: wrap;
+		font-size: 10px;
+		color: #bdd0d5;
+	}
+	@media (max-width: 1100px) {
+		.editorial-footer {
+			padding-inline: 36px;
+		}
+		.footer-main {
+			gap: 28px;
+		}
+	}
+	@media (max-width: 800px) {
+		.footer-main {
+			grid-template-columns: 1fr 1fr;
+			row-gap: 48px;
+		}
+		.editorial-footer {
+			padding: 56px 24px 100px;
+		}
+		.footer-bottom {
+			justify-content: flex-start;
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 10px;
+		}
+	}
+	@media (max-width: 420px) {
+		.footer-main {
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+		.footer-main nav {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+		}
+		nav .label {
+			grid-column: 1/-1;
+		}
+	}
+</style>

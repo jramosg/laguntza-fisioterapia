@@ -18,14 +18,17 @@ const { latitude, longitude, zoom, tileLayer } = Astro.props;
 	data-longitude={longitude}
 	data-zoom={zoom}
 	data-tiles={tileLayer}
->
-</leaflet-map>
+></leaflet-map>
 <div class="leaflet-attribution">
-	&copy; <a
+	&copy;{' '}
+	<a
 		href="https://www.openstreetmap.org/copyright"
 		target="_blank"
-		rel="noopener noreferrer">OpenStreetMap</a
-	> contributors
+		rel="noopener noreferrer"
+	>
+		OpenStreetMap
+	</a>{' '}
+	contributors
 </div>
 
 <script>
@@ -33,7 +36,9 @@ const { latitude, longitude, zoom, tileLayer } = Astro.props;
 	import L, { type LatLngTuple } from 'leaflet';
 
 	class LeafletMap extends HTMLElement {
+		private map?: L.Map;
 		connectedCallback() {
+			if (this.map) return;
 			const { latitude, longitude, zoom } = this.dataset;
 			const latlng: LatLngTuple = [Number(latitude), Number(longitude)];
 
@@ -43,6 +48,7 @@ const { latitude, longitude, zoom, tileLayer } = Astro.props;
 				attributionControl: false
 			}).setView(latlng, Number(zoom));
 
+			this.map = map;
 			// Habilitar interactividad al hacer clic
 			map.once('click', () => {
 				map.scrollWheelZoom.enable();
@@ -70,9 +76,14 @@ const { latitude, longitude, zoom, tileLayer } = Astro.props;
 					`<a href=${Address.url} target="_blank" rel="noopener noreferrer">Laguntza Fisioterapia</a>`
 				);
 		}
+		disconnectedCallback() {
+			this.map?.remove();
+			this.map = undefined;
+		}
 	}
 
-	window.customElements.define('leaflet-map', LeafletMap);
+	if (!customElements.get('leaflet-map'))
+		customElements.define('leaflet-map', LeafletMap);
 </script>
 
 <style>
@@ -117,14 +128,14 @@ const { latitude, longitude, zoom, tileLayer } = Astro.props;
 	a.leaflet-control-zoom-in,
 	a.leaflet-control-zoom-out {
 		background-color: var(--theme-primary-100);
-		color: var(--theme-primary);
-		border-color: var(--theme-primary);
+		color: var(--theme-primary-800, #234652);
+		border-color: var(--theme-primary-800, #234652);
 	}
 
 	a.leaflet-control-zoom-in:hover,
 	a.leaflet-control-zoom-out:hover {
-		background-color: var(--theme-primary);
-		color: var(--theme-on-primary);
+		background-color: var(--theme-primary-800, #234652);
+		color: #fff;
 		border-color: var(--theme-primary-100);
 	}
 </style>

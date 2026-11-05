@@ -21,32 +21,32 @@ const {
 
 <section class:list={['faq', { 'faq--compact': compact }]} aria-labelledby={id}>
 	<Container narrow class={compact ? 'faq__container--compact' : undefined}>
-		<h2 {id} class="faq__title">{title}</h2>
+		<h2 {id} class="faq__title">
+			{title}
+		</h2>
 		<div class="faq__list">
-			{
-				items.map(({ q, a }) => (
-					<details class="faq__item">
-						<summary class="faq__q">
-							<span>{q}</span>
-							<svg
-								class="faq__icon"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								aria-hidden="true"
-							>
-								<path d="m6 9 6 6 6-6" />
-							</svg>
-						</summary>
-						<p class="faq__a">{a}</p>
-					</details>
-				))
-			}
+			{items.map(({ q, a }) => (
+				<details class="faq__item">
+					<summary class="faq__q">
+						<span>{q}</span>
+						<svg
+							class="faq__icon"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="m6 9 6 6 6-6" />
+						</svg>
+					</summary>
+					<p class="faq__a">{a}</p>
+				</details>
+			))}
 		</div>
 	</Container>
 </section>

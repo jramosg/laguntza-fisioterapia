@@ -32,13 +32,11 @@ const t = useTranslations(lang);
 	<div class="header-nav__container">
 		<nav aria-label={t('nav.main')}>
 			<ul>
-				{
-					navData.map(navItem => (
-						<li class="header-nav__item">
-							<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
-						</li>
-					))
-				}
+				{navData.map(navItem => (
+					<li class="header-nav__item">
+						<a href={`/${lang}${navItem.slug}`}>{t(navItem.title)}</a>
+					</li>
+				))}
 			</ul>
 		</nav>
 	</div>

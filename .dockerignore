@@ -1,3 +1,12 @@
 .DS_Store
 node_modules
 dist
+.env*
+.aws
+.codex
+.git
+.github
+.pnpm-store
+booking-api
+deliverables
+design-system

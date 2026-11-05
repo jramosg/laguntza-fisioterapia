@@ -1,31 +1,28 @@
 ---
 import Layout from '@layouts/Page.astro';
-
-import {
-	getLangFromUrl,
-	getStaticLangPaths,
-	useTranslations
-} from '@i18n/utils';
-import Container from '@components/core/Container.astro';
-import Chip from '@components/Chip.astro';
-import { Langs } from '@i18n/ui';
 import SectionHero from '@components/SectionHero.astro';
-import { generateSlug } from '@utils/helpers';
-import Button from '@components/buttons/Button.astro';
-import { SERVICES } from '@config/company';
-import ServiceCard from '@components/ServiceCard.astro';
 import FAQ from '@components/sections/FAQ.astro';
 import FAQSchema from '@components/head/FAQSchema.astro';
-import KristalaLateralez from '@images/kristala-lateralez.jpg';
-import KristalaFrentez from '@images/kristala-frentez.jpg';
-
+import NextStep from '@components/editorial/NextStep.astro';
+import SpecializedTechniques from '@components/services/SpecializedTechniques.astro';
+import { SERVICES } from '@config/company';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import { home } from '@config/home';
+import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
+import Interview from '@images/interview.webp';
+import Rehab from '@images/rehab.webp';
+import Osteopathy from '@images/osteopathy-manual-care.webp';
+import Prevention from '@images/therapeutic-exercise.webp';
 export function getStaticPaths() {
 	return getStaticLangPaths();
 }
-const lang: Langs = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
-// SEO data for services page - optimized for target keywords
+const lang = getLangFromUrl(Astro.url);
+const c = home[lang];
+const specialized = SERVICES[lang].sections.find(
+	service => service.id === 'specialized-techniques'
+)!;
+const images = [Interview, Rehab, Osteopathy, Prevention];
 const seo = {
 	title:
 		lang === 'eu'
@@ -33,209 +30,259 @@ const seo = {
 			: 'Fisioterapia, osteopatía y terapia manual en Urnieta | Laguntza',
 	description:
 		lang === 'eu'
-			? 'Fisioterapia, osteopatia, eskuzko terapia eta errehabilitazioa Urnietan. Zure beharretara egokitutako arreta, Donostia, Hernani eta Andoaindik gertu.'
-			: 'Fisioterapia, terapia manual, osteopatía y rehabilitación en Urnieta. Atención personalizada cerca de Donostia, Hernani y Andoain.',
+			? 'Fisioterapia, terapia manuala, osteopatia eta errehabilitazioa Urnietan. Jokin Ramosekin, zure egoerara egokitutako arreta.'
+			: 'Fisioterapia, terapia manual, osteopatía y rehabilitación en Urnieta. Atención adaptada a ti con Jokin Ramos, fisioterapeuta colegiado.',
 	breadcrumb: [
 		{ name: 'Laguntza Fisioterapia', url: `/${lang}/` },
-		{
-			name: lang === 'eu' ? 'Zerbitzuak' : 'Servicios',
-			url: `/${lang}/services/`
-		}
+		{ name: c.nav[0], url: `/${lang}/services/` }
 	]
 };
 ---
 
 <Layout {seo}>
 	<FAQSchema slot="head" />
-	<SectionHero
-		id="services-hero"
-		image={KristalaLateralez}
-		imageMobile={KristalaFrentez}
-		imageAlt={lang === 'eu'
-			? 'Laguntza Fisioterapia klinikaren kristala Urnietan (Gipuzkoa)'
-			: 'Cristalera de la clínica Laguntza Fisioterapia en Urnieta (Gipuzkoa)'}
-		imagePosition="72% center"
-		imageMobilePosition="60% center"
-	>
-		<h1 slot="title" set:html={t('service.main.hero-title')} />
-		<Fragment slot="desc">
-			{SERVICES[lang].intro}
-		</Fragment>
-		<div slot="chips" class="carousel">
-			<div class="group">
-				{
-					SERVICES[lang].sections.map(service => {
-						const hash = generateSlug(service.title);
-						return <Chip href={`#${hash}`} text={service.title} />;
-					})
-				}
+	<SectionHero compact eyebrow={c.nav[0]}>
+		<h1 slot="title">
+			{lang === 'eu' ? 'Zure gorputza.' : 'Tu cuerpo.'}
+			<br />
+			<span>{lang === 'eu' ? 'Zure tratamendua.' : 'Tu tratamiento.'}</span>
+		</h1>
+		<Fragment slot="desc">{c.servicesIntro}</Fragment>
+	</SectionHero>
+	<nav class="service-index ed-shell" aria-label={c.nav[0]}>
+		{c.services.map((service, i) => (
+			<a href={`#service-${i}`}>
+				<span>0{i + 1}</span>
+				{service.title}
+				<Icon name="mdi:arrow-down" aria-hidden="true" />
+			</a>
+		))}
+		<a href={`#${specialized.id}`}>
+			<span>05</span>
+			{specialized.title}
+			<Icon name="mdi:arrow-down" aria-hidden="true" />
+		</a>
+	</nav>
+	<div class="ed-shell treatments">
+		{c.services.map((service, i) => (
+			<section
+				class:list={[
+					'treatment ed-reveal',
+					{ 'treatment--reverse': i % 2 === 1 }
+				]}
+				id={`service-${i}`}
+			>
+				<>
+					<a
+						class="treatment-image"
+						href={`/${lang}/services/${service.slug}/`}
+						aria-label={service.title}
+						data-parallax
+					>
+						<Image
+							src={images[i]}
+							alt={
+								i === 3
+									? lang === 'eu'
+										? 'Hanketako ariketa erresistentzia-bandarekin'
+										: 'Ejercicio de piernas con banda de resistencia'
+									: i === 2
+										? lang === 'eu'
+											? 'Burua eskuekin eutsita eskuzko tratamendu batean'
+											: 'Apoyo manual de la cabeza durante un tratamiento'
+										: lang === 'eu'
+											? `${service.title} Laguntza Fisioterapian, Urnietan`
+											: `${service.title} en Laguntza Fisioterapia, Urnieta`
+							}
+							style={
+								i === 3
+									? 'object-position:center 20%'
+									: i === 2
+										? 'object-position:55% center'
+										: undefined
+							}
+							width={1000}
+							widths={[400, 640, 1000, 1280]}
+							sizes="(max-width:760px) calc(100vw - 48px), 45vw"
+						/>
+					</a>
+					<div class="treatment-copy">
+						<>
+							<span class="treatment-number">0{i + 1}</span>
+							<h2>{service.title}</h2>
+							<p>{service.description}</p>
+							<a class="ed-link" href={`/${lang}/services/${service.slug}/`}>
+								{lang === 'eu'
+									? 'Tratamendua ezagutu'
+									: 'Conoce el tratamiento'}
+								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+							</a>
+						</>
+					</div>
+				</>
+			</section>
+		))}
+	</div>
+	<SpecializedTechniques />
+	<section class="ed-section ed-sage">
+		<div class="ed-shell ed-intro ed-reveal">
+			<div>
+				<p class="ed-kicker">{c.approachLabel}</p>
+				<h2 class="ed-heading">
+					{lang === 'eu'
+						? 'Zurekin adostutako bidea.'
+						: 'Un plan que acordamos contigo.'}
+				</h2>
 			</div>
-			<div aria-hidden="true" class="group">
-				{
-					SERVICES[lang].sections.map(service => {
-						return <Chip text={service.title} />;
-					})
-				}
+			<div>
+				<p class="ed-lead">
+					{lang === 'eu'
+						? 'Ez duzu jakin behar zein teknika behar duzun. Horretarako dago balorazioa.'
+						: 'No necesitas saber qué técnica necesitas. Para eso está la valoración.'}
+				</p>
+				<p class="ed-prose">
+					{lang === 'eu'
+						? 'Zer gertatzen zaizun eta zure helburuak ezagutu ondoren, aukerak azalduko dizkizut. Tratamendua zure egoerara, lehentasunetara eta bilakaerara egokituko dugu.'
+						: 'Después de conocer tu situación y tus objetivos, te explicaré las opciones. Adaptaremos el tratamiento a tus necesidades, tus preferencias y tu evolución.'}
+				</p>
+				<a class="ed-link" href={`/${lang}/about/`}>
+					{c.aboutLink}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
 			</div>
 		</div>
-	</SectionHero>
-	<Container class="services-grid" tag="section">
-		{
-			SERVICES[lang].sections.map((section, idx) => {
-				const isEven = idx % 2 === 0;
-
-				return <ServiceCard section={section} isEven={isEven} />;
-			})
-		}
-	</Container>
-	<Button class="services-cta" href={`/${lang}/contact/`}>
-		{t('nav.contact')}
-	</Button>
-	<FAQ />
+	</section>
+	<div class="ed-shell">
+		<FAQ />
+	</div>
+	<NextStep />
 </Layout>
-
 <style>
-	ul {
-		margin: 0;
-		padding: 0;
-	}
-	li {
-		list-style: none;
-	}
-
-	.services-list__container {
-		display: flex;
-		flex-direction: column;
-		gap: 2.5em;
-	}
-
-	.services-cta {
-		margin: var(--s6) 0;
-		padding: var(--s4) var(--s7);
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.services-cta__btn:hover {
-		background: var(--theme-primary-hover);
-	}
-
-	.services-grid {
+	.service-index {
 		display: grid;
-		gap: var(--s7);
-		margin-top: var(--s5);
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: 26px;
+		margin-top: 10px;
+		padding-block: 24px 40px;
+		border-bottom: 1px solid var(--lf-line);
 	}
-
-	.group[aria-hidden='true'] {
-		display: none;
+	.service-index a {
+		font-size: 12px;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		text-decoration: none;
+		min-height: 48px;
+		line-height: 1.5;
+	}
+	.service-index a > span {
+		font-size: 9px;
+		color: var(--lf-muted);
+	}
+	.service-index svg {
+		width: 17px;
+		height: 17px;
+		margin-left: auto;
+		flex-shrink: 0;
+	}
+	.treatments {
+		padding-block: 80px 100px;
+	}
+	.treatment {
+		display: grid;
+		grid-template-columns: 1.1fr 1fr;
+		gap: 100px;
+		align-items: center;
+		padding-block: 40px 70px;
+	}
+	.treatment--reverse .treatment-image {
+		order: 2;
+	}
+	.treatment-image {
+		display: block;
+		height: 440px;
+		border-radius: 22px 100px 22px 22px;
+		overflow: hidden;
+		background: var(--lf-surface-soft, #e3e8e2);
+	}
+	.treatment--reverse .treatment-image {
+		border-radius: 100px 22px 22px 22px;
+	}
+	.treatment-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 65% center;
+		transition: filter 0.4s;
+	}
+	.treatment-image:hover img {
+		filter: brightness(1.06);
+	}
+	.treatment-copy {
+		max-width: 480px;
+	}
+	.treatment-number {
+		font-size: 13px;
+		color: var(--lf-teal);
+		display: block;
+		padding-bottom: 24px;
+		margin-bottom: 28px;
+		border-bottom: 1px solid var(--lf-line);
+	}
+	.treatment h2 {
+		font-size: clamp(34px, 3.5vw, 50px);
+		line-height: 1.1;
+		margin: 0 0 26px;
+	}
+	.treatment p {
+		font-size: 17px;
+		color: var(--lf-muted);
+		max-width: 350px;
+		margin-bottom: 26px;
 	}
 	@media (max-width: 1100px) {
-		.carousel {
-			margin: 0 auto;
-			overflow: hidden;
-			display: flex;
-			-webkit-mask-image: linear-gradient(
-				90deg,
-				rgba(0, 0, 0, 0) 0%,
-				rgba(0, 0, 0, 1) 15%,
-				rgba(0, 0, 0, 1) 85%,
-				rgba(0, 0, 0, 0) 100%
-			);
-			> * {
-				flex: 0 0 100%;
-			}
-			&:hover .group {
-				animation-play-state: paused;
-			}
+		.treatment {
+			gap: 50px;
 		}
-		.group {
-			gap: var(--s2);
-			display: flex;
-			padding-right: var(--s2);
-			will-change: transform;
-			animation: scrolling 15s linear infinite;
-		}
-		.group[aria-hidden='true'] {
-			display: flex;
+		.treatment-image {
+			height: 390px;
 		}
 	}
-
-	@keyframes scrolling {
-		0% {
-			transform: translateX(0);
+	@media (max-width: 760px) {
+		.service-index {
+			grid-template-columns: 1fr 1fr;
+			gap: 8px 22px;
+			padding-bottom: 28px;
 		}
-		100% {
-			transform: translateX(-100%);
+		.service-index a {
+			font-size: 11px;
+		}
+		.service-index a:last-child {
+			grid-column: 1 / -1;
+		}
+		.treatments {
+			padding-block: 32px 60px;
+		}
+		.treatment {
+			grid-template-columns: 1fr;
+			gap: 30px;
+			padding-block: 25px 45px;
+		}
+		.treatment--reverse .treatment-image {
+			order: 0;
+		}
+		.treatment-image {
+			height: 320px;
+		}
+		.treatment-number {
+			margin-bottom: 20px;
+			padding-bottom: 16px;
+		}
+		.treatment h2 {
+			font-size: 36px;
+		}
+		.treatment p {
+			font-size: 16px;
 		}
 	}
 </style>
-
-<script>
-	import { gsap } from 'gsap';
-	import { ScrollTrigger } from 'gsap/ScrollTrigger';
-	gsap.registerPlugin(ScrollTrigger);
-
-	document.addEventListener('astro:page-load', () => {
-		const cards = document.querySelectorAll('.service-card');
-		cards.forEach(card => {
-			const desc = card.querySelector('.service-card__desc');
-			if (!desc) return;
-
-			const heading = desc.querySelector('h2');
-			const paragraph = desc.querySelector('p');
-			const targets = [heading, paragraph].filter(Boolean);
-
-			const tl = gsap.timeline({
-				ease: 'power2.out',
-				scrollTrigger: {
-					trigger: card,
-					start: 'top 70%',
-					toggleActions: 'play none none none'
-				}
-			});
-
-			if (targets.length) {
-				tl.fromTo(
-					targets,
-					{
-						opacity: 0,
-						y: 60,
-						scale: 0.96,
-						filter: 'blur(6px)'
-					},
-					{
-						opacity: 1,
-						y: 0,
-						scale: 1,
-						filter: 'blur(0px)',
-						duration: 0.2,
-						ease: 'power3.out',
-						stagger: 0.08
-					}
-				);
-			}
-
-			const bullets = desc.querySelectorAll('.service-card__bullet');
-			const tlB = gsap.timeline({
-				ease: 'power2.out',
-				scrollTrigger: {
-					trigger: card,
-					start: 'top 50%',
-					toggleActions: 'play none none none'
-				}
-			});
-			bullets.forEach(bullet => {
-				tlB.from(
-					bullet,
-					{
-						opacity: 0,
-						y: 30,
-						filter: 'blur(4px)',
-						duration: 0.2
-					},
-					'>'
-				);
-			});
-		});
-	});
-</script>
