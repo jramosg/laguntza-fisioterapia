@@ -115,7 +115,9 @@ alternating between two per environment (test 4410/4411, production
 4420/4421) so the Nginx upstream survives reboots, and checks it before switching Nginx and the static-directory symlink. Previous
 hashed assets remain available to open browser tabs. Failed checks restore
 the old files, Nginx configuration and runtime. The previous container is
-stopped only after the new release passes checks.
+stopped only after the new release passes checks. A successful release then
+removes older static releases and `laguntza-web` images, keeping the current
+and previous ones of each environment and any image a container uses.
 
 ### Restricted publication identities
 

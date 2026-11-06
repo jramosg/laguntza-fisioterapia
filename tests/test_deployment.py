@@ -120,6 +120,77 @@ class DeploymentTests(unittest.TestCase):
                 docker_run = next(call.args for call in run.call_args_list if call.args[:2] == ('docker', 'run'))
                 self.assertIn('127.0.0.1:4410:4321', docker_run)
 
+    def test_pruning_keeps_rollback_releases_and_images_in_use(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            releases, state = base / 'releases', base / 'state'
+            for name in ('current', 'previous', 'older', 'legacy-1'):
+                (releases / 'test' / name / 'client').mkdir(parents=True)
+            (releases / 'production' / 'other').mkdir(parents=True)
+            state.mkdir()
+            (state / 'production.json').write_text(json.dumps({'image': 'laguntza-web:prod'}))
+            listed = 'laguntza-web:new\nlaguntza-web:prev\nlaguntza-web:prod\nlaguntza-web:used\nlaguntza-web:old\n'
+
+            def command(*args):
+                if args[:2] == ('docker', 'ps'):
+                    return 'laguntza-web:used\nnginx:alpine\n'
+                return listed
+
+            with (patch.object(deployment, 'RELEASES', releases),
+                  patch.object(deployment, 'STATE', state),
+                  patch.object(deployment, 'run', side_effect=command),
+                  patch.object(deployment.subprocess, 'run') as remove):
+                deployment.prune_old_releases(
+                    'test', {releases / 'test' / 'current', releases / 'test' / 'previous'},
+                    {'laguntza-web:new', 'laguntza-web:prev'})
+            self.assertEqual(sorted(p.name for p in (releases / 'test').iterdir()), ['current', 'previous'])
+            self.assertTrue((releases / 'production' / 'other').is_dir())
+            removed = [call.args[0] for call in remove.call_args_list]
+            self.assertEqual(removed, [['docker', 'image', 'rm', 'laguntza-web:old']])
+
+    def test_successful_release_prunes_without_failing_on_cleanup_errors(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            releases = base / 'releases'
+            previous_client = releases / 'test' / 'previous-release' / 'client'
+            previous_client.mkdir(parents=True)
+            root = base / 'site'
+            root.symlink_to(previous_client)
+            config = base / 'nginx.conf'
+            config.write_text('server { server_name test.laguntzafisioterapia.com; }')
+            certificates = base / 'certificates/test.laguntzafisioterapia.com'
+            certificates.mkdir(parents=True)
+            (certificates / 'fullchain.pem').write_text('public certificate')
+            bundle = base / 'bundle'
+            bundle.mkdir()
+            with tarfile.open(bundle / 'client.tar.gz', 'w:gz') as archive:
+                for name in ('es/index.html', 'eu/index.html', '404.html'):
+                    item = tarfile.TarInfo(name)
+                    item.size = 3
+                    archive.addfile(item, io.BytesIO(b'new'))
+            state = base / 'state'
+            state.mkdir()
+            (state / 'test.json').write_text(json.dumps({'container': 'old-runtime', 'image': 'laguntza-web:old', 'port': 4410}))
+            with (patch.object(deployment, 'TARGETS', {'test': ('test.laguntzafisioterapia.com', str(root), str(config))}),
+                  patch.object(deployment, 'CERTIFICATES', base / 'certificates'),
+                  patch.object(deployment, 'STATE', state),
+                  patch.object(deployment, 'RELEASES', releases),
+                  patch.object(deployment, 'prepare_environment', return_value=base / 'test.env'),
+                  patch.object(deployment, 'run', return_value=''),
+                  patch.object(deployment, 'wait_for_runtime'),
+                  patch.object(deployment, 'verify_site'),
+                  patch.object(deployment, 'content_security_policy', return_value="default-src 'self'"),
+                  patch.object(deployment.subprocess, 'run'),
+                  patch.object(deployment, 'prune_old_releases', side_effect=OSError('busy')) as prune):
+                deployment.deploy('test', 'b' * 40, bundle)
+            environment, kept_releases, kept_images = prune.call_args.args
+            self.assertEqual(environment, 'test')
+            kept = {path.resolve() for path in kept_releases}
+            self.assertIn(previous_client.parent.resolve(), kept)
+            self.assertIn(root.resolve().parent, kept)
+            self.assertEqual(kept_images, {'laguntza-web:' + 'b' * 40, 'laguntza-web:old'})
+            self.assertEqual(json.loads((state / 'test.json').read_text())['port'], 4411)
+
     def test_runtime_alternates_between_fixed_ports(self):
         self.assertEqual(deployment.runtime_port('test', {}), 4410)
         self.assertEqual(deployment.runtime_port('test', {'port': 32776}), 4410)

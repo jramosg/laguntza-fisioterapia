@@ -33,6 +33,27 @@ def runtime_port(environment, previous):
     return second if previous.get("port") == first else first
 
 
+def prune_old_releases(environment, keep_releases, keep_images):
+    """Remove static releases and runtime images no rollback can use.
+
+    Keeps the given releases of this environment, the given images, the
+    current image of every environment and any image a container uses.
+    """
+    keep_paths = {path.resolve() for path in keep_releases if path}
+    for path in (RELEASES / environment).iterdir():
+        if path.is_dir() and path.resolve() not in keep_paths:
+            shutil.rmtree(path)
+    keep = set(keep_images)
+    for target in TARGETS:
+        state = STATE / f"{target}.json"
+        if state.exists():
+            keep.add(json.loads(state.read_text()).get("image"))
+    keep |= set(run("docker", "ps", "-a", "--format", "{{.Image}}").split())
+    listed = run("docker", "image", "ls", "laguntza-web", "--format", "{{.Repository}}:{{.Tag}}")
+    for image in set(listed.split()) - keep:
+        subprocess.run(["docker", "image", "rm", image], capture_output=True)
+
+
 def run(*args):
     return subprocess.run(args, check=True, capture_output=True, text=True).stdout
 
@@ -298,6 +319,11 @@ def deploy(environment, sha, bundle):
     if previous.get("container"):
         subprocess.run(["docker", "stop", "--timeout", "20", previous["container"]], capture_output=True)
         subprocess.run(["docker", "rm", previous["container"]], capture_output=True)
+    previous_release = old_root.parent if old_root and old_root.name == "client" else old_root
+    try:
+        prune_old_releases(environment, {release, previous_release}, {image, previous.get("image")})
+    except Exception as error:
+        print(f"Warning: release cleanup failed; deployment is healthy: {error}")
     print(f"Deployed {sha} to {environment}; Node bound to loopback:{port}; memory limit 192 MiB")
 
 
