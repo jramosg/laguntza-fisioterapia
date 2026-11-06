@@ -1,5 +1,5 @@
 ---
-import Layout from '@layouts/Page.astro';
+import LegalDocument from '@layouts/LegalDocument.astro';
 import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
 import { Address, Email } from '@config/company';
 export function getStaticPaths() {
@@ -8,13 +8,34 @@ export function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const eu = lang === 'eu';
 const title = eu ? 'Pribatutasuna' : 'Privacidad';
+
+const sections = [
+	{ id: 'controller', label: eu ? 'Arduraduna' : 'Responsable' },
+	{ id: 'contact-data', label: eu ? 'Formularioa' : 'El formulario' },
+	{ id: 'legal-basis', label: eu ? 'Lege-oinarria' : 'Base jurídica' },
+	{ id: 'recipients', label: eu ? 'Hartzaileak' : 'Destinatarios' },
+	{ id: 'retention', label: eu ? 'Kontserbazioa' : 'Conservación' },
+	{ id: 'rights', label: eu ? 'Zure eskubideak' : 'Tus derechos' },
+	{ id: 'preferences', label: eu ? 'Hobespenak' : 'Preferencias' }
+];
+const introduction = eu
+	? 'Zure datuak nola erabiltzen ditugun eta zer eskubide dituzun, argi eta garbi.'
+	: 'Cómo usamos tus datos y cuáles son tus derechos, con claridad.';
+const updated = eu
+	? 'Azken eguneraketa: 2026ko azaroaren 5a.'
+	: 'Última actualización: 5 de noviembre de 2026.';
 ---
 
-<Layout seo={{ title: `${title} | Laguntza Fisioterapia`, noindex: true }}>
-	<article class="privacy-copy shell">
-		<p class="eyebrow">LAGUNTZA FISIOTERAPIA</p>
-		<h1>{title}</h1>
-		<h2>
+<LegalDocument
+	lang={lang}
+	kind="privacy"
+	{title}
+	{introduction}
+	{sections}
+	{updated}
+>
+	<section id="controller" aria-labelledby="controller-title">
+		<h2 id="controller-title">
 			{eu
 				? 'Nor da zure datuen arduraduna?'
 				: '¿Quién es responsable de tus datos?'}
@@ -25,7 +46,9 @@ const title = eu ? 'Pribatutasuna' : 'Privacidad';
 			{Address.name}.<br />
 			<a href={Email.url}>{Email.name}</a>.
 		</p>
-		<h2>
+	</section>
+	<section id="contact-data" aria-labelledby="contact-data-title">
+		<h2 id="contact-data-title">
 			{eu
 				? 'Zertarako erabiltzen dugu formularioa?'
 				: '¿Para qué usamos el formulario?'}
@@ -40,13 +63,19 @@ const title = eu ? 'Pribatutasuna' : 'Privacidad';
 				? 'Txosten klinikoak partekatu behar badituzu, adostu lehenik Jokinekin biderik egokiena eta bidali beharrezkoa den informazioa soilik. Eranskinak ez dira webgunean argitaratzen.'
 				: 'Si necesitas compartir informes clínicos, acuerda primero con Jokin el medio más adecuado y envía solo la información necesaria. Los adjuntos no se publican en la web.'}
 		</p>
-		<h2>{eu ? 'Tratamenduaren oinarria' : 'Base del tratamiento'}</h2>
+	</section>
+	<section id="legal-basis" aria-labelledby="legal-basis-title">
+		<h2 id="legal-basis-title">
+			{eu ? 'Tratamenduaren oinarria' : 'Base del tratamiento'}
+		</h2>
 		<p>
 			{eu
 				? 'Zure ekimenez Laguntzaren zerbitzuei buruz egiten dituzun eskaerei erantzuten diegu, kontratu aurreko edo kontratuko harremanaren barruan (DBEOren 6.1.b artikulua). Asistentzia-harremana dagoenean, osasun-datuak osasun-arreta emateko tratatzen dira, lanbide-sekretuaren menpe (DBEOren 9.2.h artikulua).'
 				: 'Atendemos las solicitudes que haces por iniciativa propia sobre los servicios de Laguntza, en el marco de medidas precontractuales o de la relación contractual (art. 6.1.b del RGPD). Cuando existe una relación asistencial, los datos de salud se tratan para prestar asistencia sanitaria bajo el deber de secreto profesional (art. 9.2.h del RGPD).'}
 		</p>
-		<h2>
+	</section>
+	<section id="recipients" aria-labelledby="recipients-title">
+		<h2 id="recipients-title">
 			{eu ? 'Nork jasotzen du informazioa?' : '¿Quién recibe la información?'}
 		</h2>
 		<p>
@@ -64,7 +93,9 @@ const title = eu ? 'Pribatutasuna' : 'Privacidad';
 			</a>
 			.
 		</p>
-		<h2>
+	</section>
+	<section id="retention" aria-labelledby="retention-title">
+		<h2 id="retention-title">
 			{eu
 				? 'Zenbat denboraz gordetzen dira?'
 				: '¿Durante cuánto tiempo se conservan?'}
@@ -74,7 +105,9 @@ const title = eu ? 'Pribatutasuna' : 'Privacidad';
 				? 'Eskaera kudeatzeko eta zurekin harremana mantentzeko beharrezkoa den denboraz. Informazioa historia klinikoaren parte bihurtzen bada, osasun-dokumentazioari dagozkion legezko epeak aplikatuko dira. Bidalketa-hornitzaileak bere zerbitzuan argitaratutako kontserbazio-epeak aplikatzen ditu.'
 				: 'Durante el tiempo necesario para gestionar la solicitud y mantener la relación contigo. Si la información pasa a formar parte de la historia clínica, se aplicarán los plazos legales de conservación de la documentación sanitaria. El proveedor de envío aplica los plazos publicados para su servicio.'}
 		</p>
-		<h2>{eu ? 'Zure eskubideak' : 'Tus derechos'}</h2>
+	</section>
+	<section id="rights" aria-labelledby="rights-title">
+		<h2 id="rights-title">{eu ? 'Zure eskubideak' : 'Tus derechos'}</h2>
 		<p>
 			{eu
 				? 'Datuak eskuratzeko, zuzentzeko, ezabatzeko, tratamendua mugatzeko, aurka egiteko eta eramangarritasuna eskatzeko, hala dagokionean, idatzi helbide honetara:'
@@ -92,7 +125,11 @@ const title = eu ? 'Pribatutasuna' : 'Privacidad';
 			</a>
 			.
 		</p>
-		<h2>{eu ? 'Hobespenak eta mapa' : 'Preferencias y mapa'}</h2>
+	</section>
+	<section id="preferences" aria-labelledby="preferences-title">
+		<h2 id="preferences-title">
+			{eu ? 'Hobespenak eta mapa' : 'Preferencias y mapa'}
+		</h2>
 		<p>
 			{eu
 				? 'Eskuz aukeratutako hizkuntza urtebetez gordetzen dugu cookie batean. Argitasun- edo iluntasun-hobespena nabigatzailean gordetzen da, aldatu edo gunearen datuak ezabatu arte. Ez dugu publizitate- edo analitika-cookierik erabiltzen.'
@@ -103,40 +140,5 @@ const title = eu ? 'Pribatutasuna' : 'Privacidad';
 				? 'Mapa erakustean, nabigatzaileak irudiak OpenStreetMap hornitzaileari eskatzen dizkio, eta hark zure IP helbidea jasotzen du. WhatsApp, Instagram eta kanpoko mapetarako estekek zerbitzu horien pribatutasun-baldintzak dituzte.'
 				: 'Al mostrar el mapa, el navegador solicita imágenes a OpenStreetMap, que recibe tu dirección IP. Los enlaces a WhatsApp, Instagram y mapas externos quedan sujetos a las condiciones de privacidad de esos servicios.'}
 		</p>
-		<p class="updated">
-			{eu
-				? 'Azken eguneraketa: 2026ko azaroaren 5a.'
-				: 'Última actualización: 5 de noviembre de 2026.'}
-		</p>
-	</article>
-</Layout>
-<style>
-	.privacy-copy {
-		max-width: 880px;
-		padding-block: 90px 120px;
-	}
-	.privacy-copy h1 {
-		font-size: clamp(42px, 7vw, 80px);
-		letter-spacing: -0.055em;
-		line-height: 1.05;
-		margin: 24px 0 58px;
-	}
-	.privacy-copy h2 {
-		font-size: 24px;
-		letter-spacing: -0.025em;
-		margin: 42px 0 18px;
-	}
-	.privacy-copy p {
-		font-size: 17px;
-		line-height: 1.8;
-		color: var(--lf-muted);
-	}
-	.privacy-copy a {
-		color: var(--lf-ink);
-		text-underline-offset: 0.2em;
-	}
-	.updated {
-		margin-top: 48px;
-		font-size: 14px !important;
-	}
-</style>
+	</section>
+</LegalDocument>
