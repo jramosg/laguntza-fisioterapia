@@ -126,9 +126,9 @@ export const home = {
 	},
 	es: {
 		eyebrow: 'Fisioterapia y osteopatía · Gipuzkoa',
-		title: ['Vuelve a moverte.', 'Vuelve a ti.'],
+		title: ['Vuelve a moverte.', 'Vuelve a ser tú.'],
 		intro:
-			'Tu cuerpo tiene algo que contarte. Vamos a escucharlo. Fisioterapia personal y cercana para volver a lo que te gusta.',
+			'Tu cuerpo tiene algo que contar, vamos a escucharlo. Fisioterapia personal y cercana para volver a poder hacer lo que te gusta.',
 		book: 'Pedir cita',
 		call: 'Llamar',
 		discover: 'Descubre Laguntza',
