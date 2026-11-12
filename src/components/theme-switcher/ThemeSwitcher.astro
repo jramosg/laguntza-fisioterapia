@@ -1,50 +1,108 @@
 ---
+/**
+ * System / light / dark segmented switch with a sliding thumb.
+ * Colours come from --switch-* custom properties so it fits both light
+ * surfaces (mobile menu) and the dark footer.
+ */
 import { Icon } from 'astro-icon/components';
 import { getLangFromUrl } from '@i18n/utils';
+
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
 const eu = getLangFromUrl(Astro.url) === 'eu';
+const choices = [
+	{ value: 'system', icon: 'mdi:laptop', label: 'Sistema' },
+	{
+		value: 'light',
+		icon: 'mdi:white-balance-sunny',
+		label: eu ? 'Argia' : 'Claro'
+	},
+	{ value: 'dark', icon: 'mdi:weather-night', label: eu ? 'Iluna' : 'Oscuro' }
+];
 ---
 
-<laguntza-theme-switcher role="group" aria-label={eu ? 'Itxura' : 'Apariencia'}>
-	<button type="button" data-theme-choice="light" aria-pressed="false">
-		<Icon name="mdi:white-balance-sunny" aria-hidden="true" />
-		{eu ? 'Argia' : 'Claro'}
-	</button>
-	<button type="button" data-theme-choice="dark" aria-pressed="false">
-		<Icon name="mdi:weather-night" aria-hidden="true" />
-		{eu ? 'Iluna' : 'Oscuro'}
-	</button>
+<laguntza-theme-switcher
+	class={className}
+	role="group"
+	aria-label={eu ? 'Itxura' : 'Apariencia'}
+>
+	<span class="thumb" aria-hidden="true"></span>
+	{choices.map(({ value, icon, label }) => (
+		<button
+			type="button"
+			data-theme-choice={value}
+			aria-label={label}
+			title={label}
+			aria-pressed="false"
+		>
+			<Icon name={icon} aria-hidden="true" />
+		</button>
+	))}
 </laguntza-theme-switcher>
 
 <script>
-	import { chooseTheme, themeChangeEvent } from '@lib/theme';
+	import {
+		chooseTheme,
+		currentThemeChoice,
+		followSystemTheme,
+		themeChangeEvent
+	} from '@lib/theme';
+
+	const reducedMotion = () =>
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	/**
+	 * Crossfade the whole page between themes where supported. The switcher
+	 * itself is lifted out of the crossfade and stays live, so its thumb
+	 * slides once instead of ghosting between the old and new snapshots.
+	 */
+	function withThemeTransition(switcher: HTMLElement, change: () => void) {
+		if (!document.startViewTransition || reducedMotion()) {
+			change();
+			return;
+		}
+		switcher.style.viewTransitionName = 'theme-switcher';
+		document
+			.startViewTransition(change)
+			.finished.finally(() =>
+				switcher.style.removeProperty('view-transition-name')
+			);
+	}
+
 	class LaguntzaThemeSwitcher extends HTMLElement {
 		private controller?: AbortController;
 		connectedCallback() {
 			this.controller?.abort();
 			this.controller = new AbortController();
 			const { signal } = this.controller;
-			const buttons = this.querySelectorAll<HTMLButtonElement>('button');
+			const buttons = [
+				...this.querySelectorAll<HTMLButtonElement>('[data-theme-choice]')
+			];
 			const sync = () => {
-				buttons.forEach(button => {
-					button.setAttribute(
-						'aria-pressed',
-						String(
-							button.dataset.themeChoice ===
-								document.documentElement.dataset.theme
-						)
-					);
+				const choice = currentThemeChoice();
+				buttons.forEach((button, i) => {
+					const active = button.dataset.themeChoice === choice;
+					button.setAttribute('aria-pressed', String(active));
+					if (active) this.style.setProperty('--i', String(i));
 				});
 			};
 			buttons.forEach(button =>
 				button.addEventListener(
 					'click',
 					() => {
-						const theme = button.dataset.themeChoice;
-						if (theme === 'light' || theme === 'dark') chooseTheme(theme);
+						const choice = button.dataset.themeChoice;
+						withThemeTransition(this, () => {
+							if (choice === 'light' || choice === 'dark') chooseTheme(choice);
+							else followSystemTheme();
+						});
+						sync();
 					},
 					{ signal }
 				)
 			);
+			// Other switchers on the page change the theme too.
 			document.addEventListener(themeChangeEvent, sync, { signal });
 			sync();
 		}
@@ -59,44 +117,74 @@ const eu = getLangFromUrl(Astro.url) === 'eu';
 
 <style>
 	laguntza-theme-switcher {
+		--i: 0;
+		--size: 44px;
+		--gap: 2px;
+		position: relative;
 		display: inline-flex;
 		width: fit-content;
-		border: 1px solid #bdd0d580;
+		gap: var(--gap);
+		padding: 4px;
 		border-radius: 50px;
-		padding: 3px;
-		gap: 2px;
+		background: var(--switch-bg, var(--lf-surface-soft, #eef1eb));
 	}
-	laguntza-theme-switcher:not(:defined) {
-		display: none;
+	laguntza-theme-switcher:not(:defined) .thumb {
+		visibility: hidden;
+	}
+	.thumb {
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		width: var(--size);
+		height: var(--size);
+		border-radius: 50%;
+		background: var(--switch-thumb, var(--lf-surface-paper, #fff));
+		box-shadow:
+			0 1px 2px #0000001f,
+			0 2px 8px #0000000f;
+		transform: translateX(calc(var(--i) * (var(--size) + var(--gap))));
+		transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+	}
+	:global(html[data-theme='dark']) .thumb {
+		background: var(--switch-thumb-dark, var(--lf-border-strong, #6d8b90));
 	}
 	button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
-		min-height: 44px;
-		padding: 0 13px;
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: var(--size);
+		height: var(--size);
+		padding: 0;
 		border: 0;
-		border-radius: 30px;
+		border-radius: 50%;
 		background: transparent;
-		color: inherit;
-		font: inherit;
-		font-size: 11px;
+		color: var(--switch-fg, var(--lf-text-muted, #617779));
 		cursor: pointer;
+		-webkit-tap-highlight-color: transparent;
+		transition: color 150ms;
 	}
+	button:hover,
 	button[aria-pressed='true'] {
-		background: #ffffff24;
-		color: #fff;
-	}
-	button:hover {
-		background: #ffffff17;
+		color: var(--switch-fg-active, var(--lf-text-primary, #202e30));
 	}
 	button:focus-visible {
-		outline: 2px solid #f2b177;
-		outline-offset: 3px;
+		outline: 2px solid #e8944a;
+		outline-offset: 2px;
 	}
 	button :global(svg) {
-		width: 15px;
-		height: 15px;
+		width: 18px;
+		height: 18px;
+	}
+	:global(::view-transition-group(theme-switcher)),
+	:global(::view-transition-new(theme-switcher)) {
+		animation: none;
+	}
+	:global(::view-transition-old(theme-switcher)) {
+		display: none;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.thumb {
+			transition: none;
+		}
 	}
 </style>

@@ -1,4 +1,5 @@
 export type Theme = 'light' | 'dark';
+export type ThemeChoice = Theme | 'system';
 export const themeStorageKey = 'theme';
 export const themeChangeEvent = 'laguntza:theme-change';
 
@@ -37,6 +38,21 @@ export function chooseTheme(theme: Theme) {
 		// Keep the choice for this visit when persistent storage is blocked.
 	}
 	applyTheme(theme);
+}
+
+/** Follow the operating system again, forgetting any saved choice. */
+export function followSystemTheme() {
+	manualTheme = null;
+	try {
+		window.localStorage.removeItem(themeStorageKey);
+	} catch {
+		// Nothing was persisted when storage is blocked.
+	}
+	applyTheme(preferredTheme());
+}
+
+export function currentThemeChoice(): ThemeChoice {
+	return manualTheme || savedTheme() || 'system';
 }
 
 export function initializeTheme() {

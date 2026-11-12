@@ -2,6 +2,7 @@
 import BrandLogo from '@images/logos/main-logo-horizontal.svg';
 import WhiteBrandLogo from '@images/logos/logo-white-horizontal.svg';
 import { Icon } from 'astro-icon/components';
+import ThemeSwitcher from '@components/theme-switcher/ThemeSwitcher.astro';
 import { getLangFromUrl, switchLanguage } from '@i18n/utils';
 import { home } from '@config/home';
 import { WhatsApp } from '@config/company';
@@ -10,6 +11,7 @@ const lang = getLangFromUrl(Astro.url);
 const c = home[lang];
 const paths = ['services/', 'about/', 'consulta/', 'contact/'];
 const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)}`;
+const eu = lang === 'eu';
 ---
 
 <header class="editorial-header">
@@ -59,24 +61,37 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				<Icon name="mdi:arrow-top-right" aria-hidden="true" />
 			</a>
 			<laguntza-navigation>
-				<details class="mobile-menu">
-					<summary
-						aria-label={c.menu}
-						data-open-label={c.menu}
-						data-close-label={c.close}
-					>
-						<Icon name="mdi:menu" class="open-icon" aria-hidden="true" />
-						<Icon name="mdi:close" class="close-icon" aria-hidden="true" />
-					</summary>
-					<nav
-						class="mobile-nav"
-						aria-label={
-							lang === 'eu' ? 'Nabigazio nagusia' : 'Navegación principal'
-						}
-					>
+				<button
+					type="button"
+					class="menu-trigger"
+					aria-label={c.menu}
+					aria-haspopup="dialog"
+					aria-expanded="false"
+					aria-controls="mobile-menu"
+				>
+					{eu ? 'Menua' : 'Menú'}
+				</button>
+				<dialog
+					id="mobile-menu"
+					class="mobile-menu"
+					aria-label={eu ? 'Nabigazio nagusia' : 'Navegación principal'}
+				>
+					<div class="menu-top" data-reveal>
+						<ThemeSwitcher />
+						<button
+							type="button"
+							class="menu-close"
+							aria-label={c.close}
+							autofocus
+						>
+							<Icon name="mdi:close" aria-hidden="true" />
+						</button>
+					</div>
+					<nav class="mobile-nav">
 						{paths.map((path, i) => (
 							<a
 								href={`/${lang}/${path}`}
+								data-reveal
 								aria-current={
 									Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
 								}
@@ -86,17 +101,18 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
 							</a>
 						))}
-						<a
-							class="mobile-book"
-							href={bookingUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{c.book}
-							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-						</a>
 					</nav>
-				</details>
+					<a
+						class="mobile-book"
+						href={bookingUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						data-reveal
+					>
+						{c.book}
+						<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+					</a>
+				</dialog>
 			</laguntza-navigation>
 		</div>
 	</div>
@@ -243,70 +259,124 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		laguntza-navigation {
 			display: block;
 		}
-		summary {
-			list-style: none;
-			cursor: pointer;
-			display: grid;
-			place-items: center;
-			width: 44px;
-			height: 44px;
-		}
-		summary::-webkit-details-marker {
-			display: none;
-		}
-		summary :global(svg) {
-			width: 25px;
-			height: 25px;
-		}
-		.close-icon,
-		details[open] .open-icon {
-			display: none;
-		}
-		details[open] .close-icon {
-			display: block;
-		}
-		.mobile-nav {
-			position: absolute;
-			top: 100%;
-			left: 0;
-			width: 100%;
-			max-height: calc(100dvh - 80px);
-			overflow: auto;
-			padding: 16px 24px 32px;
-			background: var(--lf-surface-paper, #fbfbf8);
-			border-bottom: 1px solid var(--lf-border, #d9dfda);
-			box-shadow: 0 30px 40px #182d3212;
-		}
-		.mobile-nav a {
-			display: flex;
-			gap: 18px;
+		.menu-trigger {
+			display: inline-flex;
 			align-items: center;
-			padding-block: 22px;
-			border-bottom: 1px solid var(--lf-border, #d9dfda);
-			font-size: 25px;
-			font-weight: 500;
-			letter-spacing: -0.04em;
-		}
-		.mobile-nav a span {
-			font-size: 11px;
-			color: var(--lf-text-muted, #617779);
-			letter-spacing: 0;
-		}
-		.mobile-nav a :global(svg) {
-			width: 23px;
-			height: 23px;
-			margin-left: auto;
-		}
-		.mobile-nav a.mobile-book {
-			background: #e8944a;
-			color: #202e30;
-			border-radius: 50px;
+			min-height: 44px;
+			padding: 0 20px;
 			border: 0;
-			padding: 17px 24px;
-			margin-top: 24px;
-			font-size: 17px;
-			letter-spacing: -0.02em;
+			border-radius: 50px;
+			background: var(--lf-text-primary, #202e30);
+			color: var(--lf-surface-paper, #fbfbf8);
+			font: inherit;
+			font-size: 13px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: transform 200ms var(--menu-ease);
 		}
+		.menu-trigger:active {
+			transform: scale(0.96);
+		}
+		.menu-trigger:focus-visible,
+		.mobile-menu :is(button, a):focus-visible {
+			outline: 2px solid #e8944a;
+			outline-offset: 3px;
+		}
+	}
+	laguntza-navigation {
+		--menu-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.mobile-menu {
+		position: fixed;
+		inset: 12px 12px auto auto;
+		width: min(420px, calc(100% - 24px));
+		max-width: none;
+		max-height: calc(100dvh - 24px);
+		margin: 0;
+		padding: 20px 24px 28px;
+		overflow: auto;
+		overscroll-behavior: contain;
+		border: 0;
+		border-radius: 28px;
+		background: var(--lf-surface-paper, #fbfbf8);
+		color: var(--lf-text-primary, #202e30);
+		box-shadow:
+			0 0 0 1px var(--lf-border, #263b3417),
+			0 12px 24px #0000001a,
+			0 42px 60px #00000017;
+	}
+	.mobile-menu:not([open]) {
+		display: none;
+	}
+	.mobile-menu::backdrop {
+		background: #1b2b301f;
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+	}
+	:global(html[data-theme='dark']) .mobile-menu::backdrop {
+		background: #0006;
+	}
+	:global(html.menu-open) {
+		overflow: hidden;
+	}
+	.menu-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 8px;
+	}
+	.menu-close {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: var(--lf-surface-soft, #eef1eb);
+		color: var(--lf-text-primary, #202e30);
+		cursor: pointer;
+	}
+	.menu-close :global(svg) {
+		width: 20px;
+		height: 20px;
+	}
+	.mobile-nav a {
+		display: flex;
+		gap: 18px;
+		align-items: center;
+		padding-block: 20px;
+		border-bottom: 1px solid var(--lf-border, #d9dfda);
+		font-size: 25px;
+		font-weight: 500;
+		letter-spacing: -0.04em;
+	}
+	.mobile-nav a[aria-current] {
+		color: var(--lf-text-accent, #37697a);
+	}
+	.mobile-nav a span {
+		flex: 0 0 18px;
+		font-variant-numeric: tabular-nums;
+		font-size: 11px;
+		color: var(--lf-text-muted, #617779);
+		letter-spacing: 0;
+	}
+	.mobile-menu a :global(svg) {
+		width: 23px;
+		height: 23px;
+		margin-left: auto;
+	}
+	.mobile-book {
+		display: flex;
+		align-items: center;
+		background: #e8944a;
+		color: #202e30;
+		border-radius: 50px;
+		padding: 17px 24px;
+		margin-top: 24px;
+		font-size: 17px;
+		font-weight: 500;
+		letter-spacing: -0.02em;
 	}
 	@media (max-width: 380px) {
 		.header-inner {
@@ -318,6 +388,9 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		}
 		.header-actions {
 			gap: 4px;
+		}
+		.menu-trigger {
+			padding-inline: 16px;
 		}
 		.languages a {
 			width: 44px;
@@ -334,53 +407,165 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		if (link instanceof HTMLAnchorElement) rememberLanguage(link.lang);
 	});
 
+	const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
+	const radius = '28px';
+	const reducedMotion = () =>
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	/** Clip the open card down to the trigger's pill so it grows out of it. */
+	function triggerClip(trigger: Element, dialog: Element) {
+		const t = trigger.getBoundingClientRect();
+		const d = dialog.getBoundingClientRect();
+		const px = (n: number) => `${Math.max(0, n)}px`;
+		return (
+			`inset(${px(t.top - d.top)} ${px(d.right - t.right)} ` +
+			`${px(d.bottom - t.bottom)} ${px(t.left - d.left)} ` +
+			`round ${t.height / 2}px)`
+		);
+	}
+
 	class LaguntzaNavigation extends HTMLElement {
 		private controller?: AbortController;
+		private animations: Animation[] = [];
+		private closing = false;
+
 		connectedCallback() {
 			this.controller = new AbortController();
 			const { signal } = this.controller;
-			const details = this.querySelector('details');
-			const summary = this.querySelector('summary');
-			if (!details || !summary) return;
-			const close = () => {
-				details.open = false;
-			};
-			details.addEventListener(
-				'toggle',
-				() => {
-					summary.setAttribute(
-						'aria-label',
-						(details.open
-							? summary.dataset.closeLabel
-							: summary.dataset.openLabel) || 'Menu'
-					);
-				},
-				{ signal }
+			const trigger = this.querySelector<HTMLButtonElement>('.menu-trigger');
+			const dialog = this.querySelector('dialog');
+			if (!trigger || !dialog) return;
+			const on = (target: EventTarget, type: string, fn: (e: Event) => void) =>
+				target.addEventListener(type, fn, { signal });
+
+			on(trigger, 'click', () => this.open(trigger, dialog));
+			on(dialog.querySelector('.menu-close')!, 'click', () =>
+				this.close(trigger, dialog)
 			);
-			document.addEventListener(
-				'keydown',
-				event => {
-					if (event.key === 'Escape' && details.open) {
-						close();
-						summary.focus();
-					}
-				},
-				{ signal }
-			);
-			document.addEventListener(
-				'click',
-				event => {
-					if (event.target instanceof Node && !this.contains(event.target))
-						close();
-				},
-				{ signal }
-			);
-			this.querySelectorAll('a').forEach(link =>
-				link.addEventListener('click', close, { signal })
+			on(dialog, 'cancel', event => {
+				event.preventDefault();
+				this.close(trigger, dialog);
+			});
+			on(dialog, 'click', event => {
+				if (event.target !== dialog) return;
+				const r = dialog.getBoundingClientRect();
+				const { clientX: x, clientY: y } = event as MouseEvent;
+				if (x < r.left || x > r.right || y < r.top || y > r.bottom)
+					this.close(trigger, dialog);
+			});
+			dialog
+				.querySelectorAll('a')
+				.forEach(link => on(link, 'click', () => this.close(trigger, dialog)));
+			on(document, 'astro:before-swap', () => this.reset(trigger, dialog));
+			on(window.matchMedia('(min-width: 961px)'), 'change', () =>
+				this.reset(trigger, dialog)
 			);
 		}
+
 		disconnectedCallback() {
 			this.controller?.abort();
+		}
+
+		private run(
+			el: Element,
+			frames: Keyframe[],
+			opts: KeyframeAnimationOptions
+		) {
+			const animation = el.animate(frames, opts);
+			this.animations.push(animation);
+			return animation;
+		}
+
+		private clear() {
+			this.animations.forEach(a => a.cancel());
+			this.animations = [];
+		}
+
+		private open(trigger: HTMLButtonElement, dialog: HTMLDialogElement) {
+			if (dialog.open) return;
+			this.clear();
+			this.closing = false;
+			dialog.showModal();
+			document.documentElement.classList.add('menu-open');
+			trigger.setAttribute('aria-expanded', 'true');
+
+			if (reducedMotion()) {
+				this.run(dialog, [{ opacity: 0 }, { opacity: 1 }], { duration: 150 });
+				return;
+			}
+			const pill = getComputedStyle(trigger).backgroundColor;
+			const paper = getComputedStyle(dialog).backgroundColor;
+			this.run(
+				dialog,
+				[
+					{ clipPath: triggerClip(trigger, dialog), backgroundColor: pill },
+					{ backgroundColor: paper, offset: 0.45 },
+					{ clipPath: `inset(0 round ${radius})`, backgroundColor: paper }
+				],
+				{ duration: 460, easing: ease }
+			);
+			this.run(dialog, [{ opacity: 0 }, { opacity: 1 }], {
+				pseudoElement: '::backdrop',
+				duration: 320,
+				easing: 'linear'
+			});
+			dialog.querySelectorAll('[data-reveal]').forEach((el, i) =>
+				this.run(
+					el,
+					[
+						{ opacity: 0, transform: 'translateY(14px)', filter: 'blur(6px)' },
+						{ opacity: 1, transform: 'none', filter: 'blur(0)' }
+					],
+					{
+						duration: 440,
+						delay: 110 + i * 45,
+						easing: ease,
+						fill: 'backwards'
+					}
+				)
+			);
+		}
+
+		private async close(trigger: HTMLButtonElement, dialog: HTMLDialogElement) {
+			if (!dialog.open || this.closing) return;
+			this.closing = true;
+			if (!reducedMotion()) {
+				this.clear();
+				const fill = 'forwards' as const;
+				dialog
+					.querySelectorAll('[data-reveal]')
+					.forEach(el =>
+						this.run(el, [{ opacity: 0 }], { duration: 120, fill })
+					);
+				this.run(dialog, [{ opacity: 0 }], {
+					pseudoElement: '::backdrop',
+					duration: 300,
+					easing: 'linear',
+					fill
+				});
+				const shrink = this.run(
+					dialog,
+					[
+						{ clipPath: `inset(0 round ${radius})` },
+						{ clipPath: triggerClip(trigger, dialog) }
+					],
+					{ duration: 300, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill }
+				);
+				try {
+					await shrink.finished;
+				} catch {
+					return; // Cancelled by a reopen or reset.
+				}
+			}
+			this.reset(trigger, dialog);
+		}
+
+		private reset(trigger: HTMLButtonElement, dialog: HTMLDialogElement) {
+			this.clear();
+			this.closing = false;
+			if (dialog.open) dialog.close();
+			document.documentElement.classList.remove('menu-open');
+			trigger.setAttribute('aria-expanded', 'false');
 		}
 	}
 	if (!customElements.get('laguntza-navigation'))
