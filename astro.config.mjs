@@ -9,6 +9,9 @@ export default defineConfig({
 	site: 'https://laguntzafisioterapia.com/',
 	trailingSlash: 'always',
 	compressHTML: true,
+	// Inline the stylesheets: two fewer render-blocking requests on
+	// first paint.
+	build: { inlineStylesheets: 'always' },
 	adapter: node({ mode: 'standalone', bodySizeLimit: 16 * 1024 * 1024 }),
 	security: {
 		actionBodySizeLimit: 16 * 1024 * 1024,
