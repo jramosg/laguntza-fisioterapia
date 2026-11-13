@@ -1,0 +1,134 @@
+---
+import Layout from '@layouts/Page.astro';
+import Container from '@components/core/Container.astro';
+import SectionHero from '@components/SectionHero.astro';
+import { getLangFromUrl, getStaticLangPaths } from '@i18n/utils';
+import type { Langs } from '@i18n/ui';
+import { treatments, type Treatment } from '@config/treatments';
+import ServiceIntro from '@components/services/ServiceIntro.astro';
+import ServiceGridSection from '@components/services/ServiceGridSection.astro';
+import ServiceBenefits from '@components/services/ServiceBenefits.astro';
+import ServiceLocation from '@components/services/ServiceLocation.astro';
+import ServiceCTA from '@components/services/ServiceCTA.astro';
+import ServiceStepper from '@components/services/ServiceStepper.astro';
+import ServiceTextSection from '@components/services/ServiceTextSection.astro';
+import FAQ from '@components/sections/FAQ.astro';
+import ServiceSchema from '@components/head/ServiceSchema.astro';
+import ClinicalCareNotice from '@components/services/ClinicalCareNotice.astro';
+import RelatedServices from '@components/services/RelatedServices.astro';
+
+// One page per entry in src/config/treatments.ts, in both languages. The
+// hand-written service pages next to this file take priority over this route.
+export function getStaticPaths() {
+	return getStaticLangPaths().flatMap(({ params }) =>
+		treatments.map(treatment => ({
+			params: { lang: params.lang, treatment: treatment.slug },
+			props: { treatment }
+		}))
+	);
+}
+
+interface Props {
+	treatment: Treatment;
+}
+
+const lang: Langs = getLangFromUrl(Astro.url);
+const { treatment } = Astro.props;
+const c = treatment.copy[lang];
+
+const seo = {
+	title: c.seoTitle,
+	description: c.seoDescription,
+	breadcrumb: [
+		{ name: 'Laguntza Fisioterapia', url: `/${lang}/` },
+		{
+			name: lang === 'eu' ? 'Zerbitzuak' : 'Servicios',
+			url: `/${lang}/services/`
+		},
+		{ name: c.heroTitle, url: `/${lang}/services/${treatment.slug}/` }
+	]
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: c.faq.map(({ q, a }) => ({
+		'@type': 'Question',
+		name: q,
+		acceptedAnswer: { '@type': 'Answer', text: a }
+	}))
+};
+---
+
+<Layout {seo}>
+	<ServiceSchema
+		slot="head"
+		name={c.heroTitle}
+		description={c.seoDescription}
+	/>
+	<script
+		slot="head"
+		type="application/ld+json"
+		set:html={JSON.stringify(faqSchema)}
+	/>
+	<SectionHero
+		id={`${treatment.slug}-hero`}
+		image={treatment.image}
+		imageAlt={c.imageAlt}
+		imagePosition={treatment.imagePosition}
+		imageLayout={treatment.imageLayout}
+		showImageCaption={treatment.imageLayout === 'wide'}
+		eyebrow={c.label}
+	>
+		<h1 slot="title">{c.heroTitle}</h1>
+		<Fragment slot="desc">{c.heroSubtitle}</Fragment>
+	</SectionHero>
+
+	<Container class="service-page">
+		<article class="service-content">
+			<ServiceIntro
+				title={c.whatIsTitle}
+				text={c.whatIsText}
+				detailText={c.detailText}
+				image={treatment.introImage}
+				imageAlt={c.introAlt}
+				imagePosition={treatment.introPosition}
+			/>
+
+			<ClinicalCareNotice {lang} />
+
+			<ServiceStepper title={c.sessionTitle} items={c.session} />
+
+			<ServiceGridSection title={c.forWhomTitle} items={c.forWhom} />
+
+			<ServiceBenefits title={c.goalsTitle} benefits={c.goals} />
+
+			<ServiceTextSection title={c.safetyTitle} paragraphs={c.safety} />
+
+			<FAQ
+				id={`${treatment.slug}-faq-title`}
+				title={c.faqTitle}
+				items={c.faq}
+				compact
+			/>
+
+			<RelatedServices current={treatment.slug} />
+
+			<ServiceLocation />
+
+			<ServiceCTA />
+		</article>
+	</Container>
+</Layout>
+
+<style>
+	.service-page {
+		padding-top: var(--s6);
+		padding-bottom: var(--s6);
+	}
+
+	.service-content {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+</style>

@@ -1,15 +1,10 @@
 ---
 import ServiceGridSection from './ServiceGridSection.astro';
 import { getLangFromUrl } from '@i18n/utils';
-
-type ServiceId =
-	| 'fisioterapia-gipuzkoa'
-	| 'osteopatia-gipuzkoa'
-	| 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
-	| 'terapia-manual-gipuzkoa';
+import { treatments } from '@config/treatments';
 
 interface Props {
-	current: ServiceId;
+	current: string;
 }
 
 const { current } = Astro.props;
@@ -69,7 +64,14 @@ const content = {
 } as const;
 
 const localizedContent = content[lang];
-const items = localizedContent.services
+const items = [
+	...localizedContent.services,
+	...treatments.map(treatment => ({
+		id: treatment.slug,
+		title: treatment.copy[lang].label,
+		text: treatment.copy[lang].card
+	}))
+]
 	.filter(service => service.id !== current)
 	.map(service => ({
 		title: service.title,

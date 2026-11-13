@@ -13,16 +13,16 @@ const lang = getLangFromUrl(Astro.url);
 const seo = {
 	title:
 		lang === 'eu'
-			? 'Fisioterapia eta osteopatia Gipuzkoan | Laguntza · Urnieta'
-			: 'Fisioterapia y osteopatía en Gipuzkoa | Laguntza · Urnieta',
+			? 'Fisioterapia eta osteopatia Urnietan, Gipuzkoa | Laguntza'
+			: 'Fisioterapia y osteopatía en Urnieta, Gipuzkoa | Laguntza',
 	description:
 		lang === 'eu'
-			? 'Jokin Ramos naiz, Urnietako fisioterapeuta. Fisioterapia eta osteopatia Gipuzkoan, Hernani, Andoain eta Donostiatik gertu. Hartu hitzordua Laguntzan.'
-			: 'Soy Jokin Ramos, fisioterapeuta en Urnieta. Fisioterapia y osteopatía en Gipuzkoa, cerca de Hernani, Andoain y Donostia. Pide cita en Laguntza.'
+			? 'Fisioterapia, osteopatia eta puntzio lehorra Urnietan, Jokin Ramos fisioterapeuta elkargokidearekin. Hernani, Andoain eta Donostiatik gertu. Hartu hitzordua WhatsApp bidez.'
+			: 'Fisioterapia, osteopatía y punción seca en Urnieta con Jokin Ramos, fisioterapeuta colegiado. Cerca de Hernani, Andoain y Donostia. Pide cita por WhatsApp.'
 };
 ---
 
-<Layout {seo} showWhatsApp={false} bodyClass="laguntza-home">
+<Layout {seo} bodyClass="laguntza-home">
 	<script
 		slot="head"
 		type="application/ld+json"

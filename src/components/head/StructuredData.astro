@@ -1,5 +1,5 @@
 ---
-import { Address, Phone, Email } from '@config/company';
+import { Address, Phone, Email, WhatsApp } from '@config/company';
 import { Practitioner } from '@config/practitioner';
 import { getLangFromUrl } from '@i18n/utils';
 
@@ -18,6 +18,11 @@ const pageImage = new URL(
 	Astro.site
 ).toString();
 const businessId = `${siteUrl}#business`;
+// E.164 numbers. The mobile is the number on the Google Business Profile, so
+// it leads here too: the listing and the markup have to name the same phone.
+const mobile = WhatsApp.urlCall.replace('tel:', '');
+const landline = Phone.url.replace('tel:', '');
+const serviceUrl = (slug: string) => `${siteUrl}/${lang}/services/${slug}/`;
 const personId = `${siteUrl}#jokin-ramos`;
 
 const structuredData = {
@@ -25,11 +30,7 @@ const structuredData = {
 	'@type': ['Physiotherapy', 'MedicalClinic', 'LocalBusiness'],
 	'@id': businessId,
 	name: 'Laguntza Fisioterapia',
-	alternateName: [
-		'Centro de Fisioterapia Laguntza',
-		'Fisioterapia Gipuzkoa Laguntza',
-		'Osteopatía Gipuzkoa Laguntza'
-	],
+	alternateName: ['Laguntza Fisio', 'Centro de Fisioterapia Laguntza'],
 	description:
 		lang === 'eu'
 			? 'Fisioterapia, osteopatia eta terapia manuala Gipuzkoan. Errehabilitazioan eta ariketa terapeutikoetan espezializatutako zentroa Urnietan.'
@@ -45,19 +46,19 @@ const structuredData = {
 		`${siteUrl}/main-logo-horizontal.png`,
 		`${siteUrl}/og-image-teal.jpeg`
 	],
-	sameAs: ['https://www.instagram.com/laguntzafisioterapia', Address.url],
-	telephone: Phone.name,
+	sameAs: ['https://www.instagram.com/laguntzafisioterapia'],
+	telephone: mobile,
 	email: Email.name.replace('mailto:', ''),
 	founder: {
 		'@id': personId
 	},
-	contactPoint: {
+	contactPoint: [mobile, landline].map(telephone => ({
 		'@type': 'ContactPoint',
-		telephone: Phone.name,
-		contactType: 'customer service',
+		telephone,
+		contactType: 'reservations',
 		availableLanguage: ['Spanish', 'Basque'],
 		areaServed: 'ES'
-	},
+	})),
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: 'Zubitxo Plaza, 3, Bajo 2',
@@ -176,63 +177,31 @@ const structuredData = {
 	],
 	medicalSpecialty: 'Physiotherapy',
 	availableService: [
+		{ name: 'Fisioterapia', slug: 'fisioterapia-gipuzkoa' },
+		{ name: 'Osteopatía', slug: 'osteopatia-gipuzkoa' },
+		{ name: 'Terapia manual', slug: 'terapia-manual-gipuzkoa' },
 		{
-			'@type': 'MedicalTherapy',
-			name: 'Fisioterapia General en Gipuzkoa',
-			description:
-				'Tratamiento integral de lesiones y dolor mediante técnicas de fisioterapia avanzada en Urnieta, Gipuzkoa'
+			name: 'Rehabilitación y ejercicio terapéutico',
+			slug: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
 		},
-		{
-			'@type': 'MedicalTherapy',
-			name: 'Osteopatía Gipuzkoa',
-			description:
-				'Servicio de osteopatía en Gipuzkoa. Tratamiento holístico para recuperar el equilibrio corporal en Urnieta, Guipúzcoa'
-		},
-		{
-			'@type': 'MedicalTherapy',
-			name: 'Terapia Manual Gipuzkoa',
-			description:
-				'Servicio de terapia manual en Gipuzkoa. Técnicas especializadas para mejorar articulaciones, músculos y sistema nervioso en Urnieta'
-		},
-		{
-			'@type': 'MedicalTherapy',
-			name: 'Rehabilitación y Ejercicio Terapéutico Gipuzkoa',
-			description:
-				'Programas de rehabilitación y ejercicio terapéutico personalizados en Gipuzkoa. Recuperación funcional en Urnieta, Guipúzcoa'
-		},
-		{
-			'@type': 'MedicalTherapy',
-			name: 'Punción Seca Gipuzkoa',
-			description:
-				'Técnica especializada de punción seca para tratar puntos gatillo miofasciales en Gipuzkoa'
-		},
-		{
-			'@type': 'MedicalTherapy',
-			name: 'Neuromodulación Gipuzkoa',
-			description:
-				'Técnicas avanzadas de neuromodulación y estimulación del sistema nervioso en Gipuzkoa'
-		},
-		{
-			'@type': 'MedicalTherapy',
-			name: 'Fisioterapia Deportiva Gipuzkoa',
-			description:
-				'Recuperación específica y rehabilitación para atletas y deportistas en Gipuzkoa, Guipúzcoa'
-		}
-	],
+		{ name: 'Punción seca', slug: 'puncion-seca-gipuzkoa' },
+		{ name: 'Fisioterapia deportiva', slug: 'fisioterapia-deportiva-gipuzkoa' },
+		{ name: 'Neuromodulación' }
+	].map(({ name, slug }) => ({
+		'@type': 'MedicalTherapy',
+		name,
+		...(slug && { url: serviceUrl(slug) })
+	})),
 	hasMap: Address.url,
 	knowsAbout: [
 		'Fisioterapia',
-		'Fisioterapia Gipuzkoa',
 		'Osteopatía',
-		'Osteopatía Gipuzkoa',
-		'Terapia Manual',
-		'Terapia Manual Gipuzkoa',
+		'Terapia manual',
 		'Rehabilitación',
-		'Rehabilitación Gipuzkoa',
-		'Ejercicio Terapéutico',
-		'Punción Seca',
+		'Ejercicio terapéutico',
+		'Punción seca',
 		'Neuromodulación',
-		'Medicina Deportiva'
+		'Fisioterapia deportiva'
 	]
 };
 
@@ -277,7 +246,7 @@ const professionalData = {
 		}))
 	],
 	email: Email.name.replace('mailto:', ''),
-	telephone: Phone.name
+	telephone: mobile
 };
 
 const websiteData = {

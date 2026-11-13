@@ -1,0 +1,361 @@
+---
+import { Icon } from 'astro-icon/components';
+import { home } from '@config/home';
+import { treatments } from '@config/treatments';
+import { WhatsApp } from '@config/company';
+import { getLangFromUrl } from '@i18n/utils';
+
+// The site-wide message bar: the visitor writes what is wrong and WhatsApp
+// opens with their own words. It also owns the behaviour and the base styles
+// of every `[data-ask]` box, including the one in the homepage hero.
+const lang = getLangFromUrl(Astro.url);
+const c = home[lang];
+const [, section, slug] = Astro.url.pathname.split('/').filter(Boolean);
+
+// Pages that are already a contact form, or legal text, do not need it.
+const hidden = ['contact', 'privacy', 'legal'].includes(section);
+
+// On a service page an empty message still says which service it is about.
+const topic =
+	section === 'services' && slug
+		? (c.services.find(service => service.slug === slug)?.title ??
+			treatments.find(treatment => treatment.slug === slug)?.copy[lang].label)
+		: undefined;
+const fallback = topic
+	? `${c.whatsappMessage.replace(/\.$/, '')}: ${topic.toLowerCase()}.`
+	: c.whatsappMessage;
+---
+
+{!hidden && (
+	<>
+		<div class="ask-sentinel" data-ask-sentinel aria-hidden="true" />
+		<form
+			class="ask ask-float"
+			action={WhatsApp.url}
+			method="get"
+			target="_blank"
+			inert
+			data-ask
+			data-ask-float
+			data-greeting={c.askGreeting}
+			data-fallback={fallback}
+			data-examples={JSON.stringify(c.askExamples)}
+		>
+			<label for="ask-float-input">{c.askLabel}</label>
+			<input
+				id="ask-float-input"
+				name="text"
+				type="text"
+				autocomplete="off"
+				maxlength="400"
+				placeholder={`${c.askLabel}…`}
+			/>
+			<span class="ask-example" aria-hidden="true" />
+			<a
+				class="ask-phone"
+				href={WhatsApp.urlCall}
+				aria-label={`${c.call} ${WhatsApp.name}`}
+			>
+				<Icon name="mdi:phone-outline" aria-hidden="true" />
+			</a>
+			<button type="submit" aria-label={c.askSend}>
+				<Icon name="mdi:whatsapp" aria-hidden="true" />
+			</button>
+		</form>
+	</>
+)}
+
+<script>
+	// Without this script a `[data-ask]` form still works as a plain GET to
+	// wa.me; the floating bar simply stays hidden.
+	const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+	let rotation: number | undefined;
+	let observer: IntersectionObserver | undefined;
+
+	document.addEventListener('astro:page-load', () => {
+		window.clearInterval(rotation);
+		observer?.disconnect();
+		const forms = [...document.querySelectorAll<HTMLFormElement>('[data-ask]')];
+		if (!forms.length) return;
+		const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		for (const form of forms) {
+			const input = form.querySelector('input')!;
+			form.addEventListener('submit', event => {
+				event.preventDefault();
+				const text = input.value.trim();
+				const message = text
+					? `${form.dataset.greeting} ${text}`
+					: form.dataset.fallback || '';
+				window.open(
+					`${form.action}?text=${encodeURIComponent(message)}`,
+					'_blank',
+					'noopener'
+				);
+			});
+		}
+
+		// The bar takes over once the top of the page has scrolled away (the
+		// hero box on the homepage, the first screen elsewhere) and steps
+		// aside where the page has its own contact block.
+		const float = document.querySelector<HTMLFormElement>('[data-ask-float]');
+		const top =
+			document.querySelector('[data-ask-hero]') ??
+			document.querySelector('[data-ask-sentinel]');
+		if (float && top) {
+			const endings = [
+				...document.querySelectorAll(
+					'.contact-section, .next-step, .editorial-footer'
+				)
+			];
+			const seen = new Map<Element, boolean>();
+			observer = new IntersectionObserver(entries => {
+				for (const entry of entries) {
+					seen.set(entry.target, entry.isIntersecting);
+				}
+				const show =
+					!seen.get(top) && !endings.some(ending => seen.get(ending));
+				float.classList.toggle('is-visible', show);
+				float.inert = !show;
+			});
+			observer.observe(top);
+			endings.forEach(ending => observer!.observe(ending));
+		}
+
+		// Example prompts swap inside the empty boxes.
+		const examples: string[] = JSON.parse(forms[0].dataset.examples || '[]');
+		if (!examples.length || calm) return;
+		const boxes = forms.map(form => {
+			const input = form.querySelector('input')!;
+			const example = form.querySelector<HTMLElement>('.ask-example')!;
+			const label = input.placeholder;
+			input.placeholder = ' ';
+			example.textContent = label;
+			// A running swap would paint over what the visitor is typing.
+			input.addEventListener('focus', () => {
+				input.placeholder = label;
+				example.getAnimations().forEach(animation => animation.cancel());
+			});
+			input.addEventListener('blur', () => (input.placeholder = ' '));
+			return { input, example };
+		});
+		let index = 0;
+		rotation = window.setInterval(() => {
+			const text = `«${examples[index]}»`;
+			index = (index + 1) % examples.length;
+			for (const { input, example } of boxes) {
+				if (document.activeElement === input || input.value) {
+					example.textContent = text;
+					continue;
+				}
+				const leave = example.animate(
+					[
+						{ opacity: 1, transform: 'translateY(0)' },
+						{ opacity: 0, transform: 'translateY(-12px)' }
+					],
+					{ duration: 260, easing: 'ease-in', fill: 'forwards' }
+				);
+				leave.onfinish = () => {
+					example.textContent = text;
+					leave.cancel();
+					example.animate(
+						[
+							{ opacity: 0, transform: 'translateY(14px)' },
+							{ opacity: 1, transform: 'translateY(0)' }
+						],
+						{ duration: 620, easing: EASE }
+					);
+				};
+			}
+		}, 3400);
+	});
+</script>
+
+<style is:global>
+	/* Marks the first screen of a page that has no hero message box. */
+	.ask-sentinel {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 1px;
+		height: 70vh;
+		pointer-events: none;
+	}
+	.ask {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		min-height: 68px;
+		margin: 0;
+		padding: 8px 8px 8px 28px;
+		border-radius: 60px;
+		background: var(--lf-surface-paper, var(--lf-paper, #fbfbf8));
+		box-shadow: 0 12px 34px #0f1f2430;
+		font-family: inherit;
+		line-height: 1.4;
+	}
+	.ask:focus-within {
+		outline: 2px solid var(--lf-teal, #37697a);
+		outline-offset: 2px;
+	}
+	.ask label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.ask input {
+		flex: 1;
+		min-width: 0;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		outline: 0;
+		background: none;
+		box-shadow: none;
+		color: var(--lf-ink, #263432);
+		font: inherit;
+		font-size: 17px;
+	}
+	.ask input::placeholder {
+		color: var(--lf-muted, #56665f);
+		opacity: 1;
+	}
+	.ask-example {
+		position: absolute;
+		inset: 0 76px 0 28px;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		color: var(--lf-muted, #56665f);
+		font-size: 17px;
+		white-space: nowrap;
+		text-align: left;
+		pointer-events: none;
+		/* Long examples fade out at the edge instead of being cut mid-letter. */
+		mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+		transition: opacity 200ms;
+	}
+	.ask-example:empty,
+	.ask input:focus ~ .ask-example,
+	.ask input:not(:placeholder-shown) ~ .ask-example {
+		opacity: 0;
+	}
+	.ask button {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 52px;
+		height: 52px;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: #e8944a;
+		color: #202e30;
+		cursor: pointer;
+		transition:
+			background 250ms,
+			transform 350ms var(--lf-ease, cubic-bezier(0.16, 1, 0.3, 1));
+	}
+	.ask button:hover {
+		background: #f2a35e;
+		transform: scale(1.06);
+	}
+	.ask button:active {
+		transform: scale(0.94);
+	}
+	.ask svg {
+		width: 21px;
+		height: 21px;
+	}
+	.ask-phone {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 46px;
+		height: 46px;
+		border-radius: 50%;
+		color: var(--lf-ink, #263432);
+		transition:
+			background 200ms,
+			color 200ms;
+	}
+	.ask-phone:hover {
+		background: var(--lf-hover-fill, #263b3410);
+		color: var(--lf-teal, #37697a);
+	}
+	.ask.ask-float {
+		position: fixed;
+		z-index: 1000;
+		bottom: calc(22px + env(safe-area-inset-bottom));
+		left: 50%;
+		width: min(680px, calc(100% - 32px));
+		border: 1px solid var(--lf-line, #263b342b);
+		box-shadow:
+			0 18px 50px #0f1f2433,
+			0 2px 8px #0f1f2414;
+		opacity: 0;
+		visibility: hidden;
+		transform: translate(-50%, 28px) scale(0.94);
+		transition:
+			opacity 300ms,
+			transform 700ms var(--lf-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			box-shadow 300ms,
+			width 500ms var(--lf-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			visibility 0s 300ms;
+	}
+	.ask.ask-float.is-visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translate(-50%, 0) scale(1);
+		transition:
+			opacity 400ms,
+			transform 700ms var(--lf-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			box-shadow 300ms,
+			width 500ms var(--lf-ease, cubic-bezier(0.16, 1, 0.3, 1));
+	}
+	.ask.ask-float:focus-within {
+		width: min(760px, calc(100% - 32px));
+		box-shadow:
+			0 24px 64px #0f1f2447,
+			0 2px 8px #0f1f2414;
+	}
+	.ask.ask-float .ask-example {
+		right: 132px;
+	}
+	@media (max-width: 760px) {
+		.ask {
+			min-height: 58px;
+			padding: 6px 6px 6px 20px;
+		}
+		.ask input {
+			font-size: 16px;
+		}
+		.ask button {
+			width: 46px;
+			height: 46px;
+		}
+		.ask-example {
+			inset: 0 62px 0 20px;
+			font-size: 16px;
+		}
+		.ask.ask-float,
+		.ask.ask-float:focus-within {
+			bottom: calc(12px + env(safe-area-inset-bottom));
+			width: calc(100% - 24px);
+		}
+		.ask.ask-float .ask-example {
+			right: 108px;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.ask.ask-float,
+		.ask.ask-float.is-visible {
+			transform: translate(-50%, 0);
+			transition: opacity 200ms;
+		}
+	}
+</style>

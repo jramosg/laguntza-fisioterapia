@@ -14,5 +14,29 @@
 		"licenseUrl": "https://www.pexels.com/license/",
 		"downloadedAt": "2026-11-04",
 		"originalDimensions": [4000, 6000]
+	},
+	"sports-taping.webp": {
+		"author": "cottonbro studio",
+		"source": "https://www.pexels.com/photo/overhead-shot-of-a-person-putting-a-kinesio-tape-on-a-person-s-injured-knee-7339489/",
+		"license": "Pexels License",
+		"licenseUrl": "https://www.pexels.com/license/",
+		"downloadedAt": "2026-11-13",
+		"downloadedDimensions": [1600, 2400]
+	},
+	"shoulder-manual-therapy.webp": {
+		"author": "Cansu Hangül",
+		"source": "https://www.pexels.com/photo/professional-shoulder-physiotherapy-session-30483023/",
+		"license": "Pexels License",
+		"licenseUrl": "https://www.pexels.com/license/",
+		"downloadedAt": "2026-11-13",
+		"downloadedDimensions": [1600, 2842]
+	},
+	"ankle-resistance-band.webp": {
+		"author": "Cansu Hangül",
+		"source": "https://www.pexels.com/photo/physical-therapy-session-with-resistance-band-30483061/",
+		"license": "Pexels License",
+		"licenseUrl": "https://www.pexels.com/license/",
+		"downloadedAt": "2026-11-13",
+		"downloadedDimensions": [1600, 2842]
 	}
 }

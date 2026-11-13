@@ -24,60 +24,75 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 
 <div class="home">
 	<section class="hero shell" aria-labelledby="hero-title">
-		<div class="hero-copy">
-			<p class="eyebrow hero-eyebrow">
-				<span class="location-dot"></span>
-				{c.eyebrow}
-			</p>
-			<h1 id="hero-title">
-				<span>{c.title[0]}</span>
-				<span class="teal">{c.title[1]}</span>
-			</h1>
-			<p class="hero-description">{c.intro}</p>
-			<div class="hero-actions">
-				<a
-					class="pill pill-orange"
-					href={bookingUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					{c.book}
-					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-				</a>
-				<a class="pill pill-outline" href={Phone.url}>
-					{c.call}
-					<Icon name="mdi:phone-outline" aria-hidden="true" />
-				</a>
+		<div class="hero-panel">
+			<div class="hero-copy">
+				<h1 id="hero-title">
+					<span class="eyebrow hero-eyebrow">
+						<span class="location-dot"></span>
+						{c.eyebrow}
+					</span>
+					<span>{c.title[0]}</span>
+					<span class="teal">{c.title[1]}</span>
+				</h1>
+				<p class="hero-description">{c.intro}</p>
 			</div>
-			<a class="hero-discover" href="#cuidarte">
-				<span class="discover-circle">
-					<Icon name="mdi:arrow-down" aria-hidden="true" />
-				</span>
-				{c.discover}
-			</a>
-		</div>
-		<div class="hero-visual">
-			<div class="portrait-frame">
-				<Image
-					src={Jokin}
-					alt={c.portraitAlt}
-					width={1000}
-					widths={[400, 640, 800, 1000]}
-					sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1440px) 43vw, 600px"
-					priority
-					class="hero-portrait"
-				/>
-				<div class="portrait-caption">
-					<span class="portrait-caption-mark"></span>
-					<div>
-						<strong>{c.portraitLabel}</strong>
-						<span>{c.portraitDetail}</span>
+			<div class="hero-visual">
+				<div class="portrait-frame">
+					<form
+						class="ask"
+						data-ask-hero
+						action={WhatsApp.url}
+						method="get"
+						target="_blank"
+						data-ask
+						data-greeting={c.askGreeting}
+						data-fallback={c.whatsappMessage}
+						data-examples={JSON.stringify(c.askExamples)}
+					>
+						<label for="ask-input">{c.askLabel}</label>
+						<input
+							id="ask-input"
+							name="text"
+							type="text"
+							autocomplete="off"
+							maxlength="400"
+							placeholder={`${c.askLabel}…`}
+						/>
+						<span class="ask-example" aria-hidden="true"></span>
+						<button type="submit" aria-label={c.askSend}>
+							<Icon name="mdi:whatsapp" aria-hidden="true" />
+						</button>
+					</form>
+					<Image
+						src={Jokin}
+						alt={c.portraitAlt}
+						width={1200}
+						widths={[480, 800, 1200, 1760]}
+						sizes="(max-width: 760px) calc(100vw - 56px), 880px"
+						priority
+						class="hero-portrait"
+					/>
+					<div class="portrait-caption">
+						<span class="portrait-caption-mark"></span>
+						<div>
+							<strong>{c.portraitLabel}</strong>
+							<span>{c.portraitDetail}</span>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="image-footnote">
-				<span>URNIETA · GIPUZKOA</span>
-			</div>
+			<ul class="hero-meta" role="list">
+				{c.heroMeta.map(item => (
+					<li>{item}</li>
+				))}
+			</ul>
+			<p class="hero-call">
+				<Icon name="mdi:phone-outline" aria-hidden="true" />
+				{c.askCall}
+				<a href={WhatsApp.urlCall}>{WhatsApp.name}</a>
+				<span aria-hidden="true">·</span>
+				<a href={Phone.url}>{Phone.name}</a>
+			</p>
 		</div>
 	</section>
 
@@ -169,6 +184,16 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 					</span>
 				</a>
 			</div>
+		</div>
+		<div class="reasons">
+			<h3 class="eyebrow">{c.reasonsLabel}</h3>
+			<ul role="list">
+				{c.reasons.map(reason => (
+					<li>
+						<a href={`/${lang}/services/${reason.slug}/`}>{reason.title}</a>
+					</li>
+				))}
+			</ul>
 		</div>
 	</section>
 
@@ -308,6 +333,56 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		</div>
 	</section>
 
+	<section class="visit shell" aria-labelledby="visit-title">
+		<div class="visit-heading">
+			<p class="eyebrow">{c.visitLabel}</p>
+			<h2 id="visit-title">{c.visitTitle}</h2>
+		</div>
+		<div class="visit-grid">
+			<div>
+				<h3 class="eyebrow">{c.visitAddressLabel}</h3>
+				<address>
+					Zubitxo Plaza, 3 · Bajo 2
+					<br />
+					20130 Urnieta, Gipuzkoa
+				</address>
+				<p class="visit-note">{c.visitNote}</p>
+				<a
+					class="text-link underlined"
+					href={Address.url}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{c.maps}
+					<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+				</a>
+			</div>
+			<div>
+				<h3 class="eyebrow">{c.visitHoursLabel}</h3>
+				<dl>
+					{c.visitHours.map(row => (
+						<div>
+							<dt>{row.days}</dt>
+							<dd>{row.times}</dd>
+						</div>
+					))}
+				</dl>
+				<p class="visit-note">{c.heroMeta[0]}</p>
+			</div>
+			<div>
+				<h3 class="eyebrow">{c.visitNearLabel}</h3>
+				<dl>
+					{c.visitNear.map(row => (
+						<div>
+							<dt>{row.town}</dt>
+							<dd>{row.distance}</dd>
+						</div>
+					))}
+				</dl>
+			</div>
+		</div>
+	</section>
+
 	<section class="faq section-space shell" aria-labelledby="faq-title">
 		<div>
 			<p class="eyebrow">{c.faqLabel}</p>
@@ -370,21 +445,6 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			</div>
 		</div>
 	</section>
-	<div class="mobile-booking">
-		<a class="mobile-call" href={Phone.url}>
-			<Icon name="mdi:phone-outline" aria-hidden="true" />
-			{c.call}
-		</a>
-		<a
-			class="pill pill-orange"
-			href={bookingUrl}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			{c.book}
-			<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-		</a>
-	</div>
 </div>
 
 <style>
@@ -452,25 +512,108 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	.muted {
 		color: var(--muted);
 	}
-	.hero {
+	.reasons {
+		margin-top: 72px;
+		padding-top: 32px;
+		border-top: 1px solid var(--line);
 		display: grid;
-		grid-template-columns: 1.13fr 1fr;
-		gap: 38px;
-		padding-top: 64px;
-		padding-bottom: 52px;
-		align-items: center;
+		grid-template-columns: 220px 1fr;
+		gap: 40px;
+		align-items: start;
 	}
-	.hero-copy {
-		position: relative;
-		z-index: 1;
-		padding-block: 16px;
+	.reasons h3 {
+		padding-top: 12px;
+		color: var(--lf-text-muted, #5c6b64);
 	}
-	.hero-eyebrow {
+	.reasons ul {
 		display: flex;
-		align-items: center;
+		flex-wrap: wrap;
 		gap: 10px;
-		margin-bottom: 34px;
-		font-size: 10px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.reasons a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 20px;
+		border: 1px solid var(--lf-border-strong, #263b3440);
+		border-radius: 60px;
+		font-size: 13px;
+		font-weight: 500;
+		color: var(--ink);
+		transition:
+			background 200ms,
+			border-color 200ms,
+			color 200ms;
+	}
+	.reasons a:hover {
+		background: var(--lf-hover-fill, #263b3408);
+		border-color: var(--teal);
+		color: var(--teal);
+	}
+	.visit {
+		padding-block: 110px 20px;
+	}
+	.visit-heading .eyebrow {
+		margin-bottom: 26px;
+	}
+	.visit-heading h2 {
+		max-width: 760px;
+		font-size: clamp(32px, 3.3vw, 46px);
+	}
+	.visit-grid {
+		display: grid;
+		grid-template-columns: 1.1fr 1.2fr 1fr;
+		gap: 56px;
+		margin-top: 56px;
+		padding-top: 32px;
+		border-top: 1px solid var(--line);
+	}
+	.visit-grid h3 {
+		margin-bottom: 22px;
+		color: var(--lf-text-muted, #5c6b64);
+	}
+	.visit-grid address {
+		font-style: normal;
+		font-size: 17px;
+		line-height: 1.6;
+		font-weight: 500;
+		letter-spacing: -0.02em;
+	}
+	.visit-note {
+		margin-top: 14px;
+		max-width: 320px;
+		font-size: 13px;
+		line-height: 1.75;
+		color: var(--lf-text-muted, #5c6b64);
+	}
+	.visit-grid .text-link {
+		margin-top: 14px;
+	}
+	.visit-grid dl {
+		margin: 0;
+	}
+	.visit-grid dl > div {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+		padding-block: 12px;
+		border-bottom: 1px solid var(--line);
+		font-size: 14px;
+	}
+	.visit-grid dl > div:first-child {
+		padding-top: 0;
+	}
+	.visit-grid dt {
+		font-weight: 500;
+	}
+	.visit-grid dd {
+		margin: 0;
+		text-align: right;
+		color: var(--lf-text-muted, #5c6b64);
+		font-variant-numeric: tabular-nums;
 	}
 	.location-dot {
 		width: 6px;
@@ -487,20 +630,6 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 	}
 	h1 > span {
 		display: block;
-	}
-	.hero-description {
-		max-width: 380px;
-		margin-top: 32px;
-		color: var(--lf-text-muted, #65726d);
-		font-size: 16px;
-		line-height: 1.85;
-	}
-	.hero-actions {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 16px;
-		margin-top: 32px;
 	}
 	.pill {
 		white-space: nowrap;
@@ -558,49 +687,6 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		padding-block: 10px;
 		border-bottom: 1px solid currentColor;
 	}
-	.hero-discover {
-		display: flex;
-		align-items: center;
-		gap: 14px;
-		margin-top: 58px;
-		color: var(--lf-text-muted, #62716b);
-		font-size: 10px;
-		letter-spacing: 0.02em;
-		width: fit-content;
-		min-height: 44px;
-	}
-	.discover-circle {
-		display: grid;
-		place-items: center;
-		border: 1px solid var(--lf-border, #c8d1c9);
-		border-radius: 50%;
-		width: 34px;
-		height: 34px;
-		transition: transform 300ms var(--ease);
-	}
-	.hero-discover:hover .discover-circle {
-		transform: translateY(4px);
-	}
-	.hero-discover :global(svg) {
-		width: 15px;
-		height: 15px;
-	}
-	.hero-visual {
-		min-width: 0;
-	}
-	.portrait-frame {
-		position: relative;
-		height: 570px;
-		border-radius: 160px 20px 20px 20px;
-		overflow: hidden;
-		background: var(--lf-surface-soft, #e6e8df);
-	}
-	.hero-portrait {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: 41% center;
-	}
 	.portrait-caption {
 		position: absolute;
 		bottom: 24px;
@@ -633,14 +719,6 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		margin-top: 2px;
 		font-size: 10px;
 		color: var(--lf-text-muted, #5c6b64);
-	}
-	.image-footnote {
-		display: flex;
-		justify-content: flex-end;
-		margin-top: 14px;
-		color: var(--lf-text-muted, #687670);
-		font-size: 8px;
-		letter-spacing: 0.08em;
 	}
 	.principles {
 		padding-block: 30px;
@@ -1141,31 +1219,12 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		display: block;
 		margin-top: 18px;
 	}
-	.mobile-booking {
-		display: none;
-	}
-	@media (min-width: 1600px) {
-		.hero {
-			padding-block: 80px 64px;
-		}
-		.portrait-frame {
-			height: 640px;
-		}
-	}
 	@media (max-width: 1100px) {
 		.shell {
 			width: calc(100% - 72px);
 		}
-		.hero {
-			gap: 28px;
-			padding-top: 48px;
-		}
 		h1 {
 			font-size: clamp(50px, 6.4vw, 76px);
-		}
-		.portrait-frame {
-			height: 520px;
-			border-top-left-radius: 120px;
 		}
 		.services-layout {
 			gap: 40px;
@@ -1193,10 +1252,6 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		:global(.laguntza-home .main-content) {
 			padding-top: 80px;
 		}
-		.hero-eyebrow {
-			font-size: 9px;
-			letter-spacing: 0.07em;
-		}
 		.principles-caption {
 			display: none;
 		}
@@ -1212,33 +1267,10 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		.section-space {
 			padding-block: 76px;
 		}
-		.hero {
-			grid-template-columns: 1fr;
-			gap: 34px;
-			padding-top: 40px;
-			padding-bottom: 34px;
-		}
-		.hero-copy {
-			padding: 0;
-		}
-		.hero-eyebrow {
-			font-size: 9px;
-			margin-bottom: 25px;
-		}
 		h1 {
 			font-size: clamp(45px, 9.5vw, 70px);
 			line-height: 1.08;
 			letter-spacing: -0.06em;
-		}
-		.hero-description {
-			font-size: 14px;
-			line-height: 1.8;
-			margin-top: 23px;
-			max-width: 360px;
-		}
-		.hero-actions {
-			gap: 20px;
-			margin-top: 26px;
 		}
 		.pill {
 			min-height: 52px;
@@ -1246,25 +1278,11 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			gap: 20px;
 			font-size: 12px;
 		}
-		.hero-discover {
-			display: none;
-		}
-		.portrait-frame {
-			height: 420px;
-			border-radius: 100px 18px 18px 18px;
-		}
-		.hero-portrait {
-			object-position: 40% 40%;
-		}
 		.portrait-caption {
 			left: 16px;
 			right: 16px;
 			bottom: 16px;
 			padding: 13px 16px;
-		}
-		.image-footnote {
-			font-size: 7px;
-			margin-top: 12px;
 		}
 		.principles {
 			padding-block: 24px;
@@ -1398,6 +1416,25 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			margin-top: 24px;
 			font-size: 11px;
 		}
+		.reasons {
+			grid-template-columns: 1fr;
+			gap: 16px;
+			margin-top: 48px;
+		}
+		.reasons h3 {
+			padding-top: 0;
+		}
+		.reasons a {
+			padding: 0 16px;
+		}
+		.visit {
+			padding-block: 72px 0;
+		}
+		.visit-grid {
+			grid-template-columns: 1fr;
+			gap: 44px;
+			margin-top: 36px;
+		}
 		.space-images {
 			height: 450px;
 		}
@@ -1445,62 +1482,161 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		.contact-aside small {
 			font-size: 10px;
 		}
-		.mobile-booking {
-			display: flex;
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			z-index: 1000;
-			padding: 10px 20px calc(10px + env(safe-area-inset-bottom));
-			gap: 16px;
-			justify-content: space-between;
-			align-items: center;
-			background: var(--lf-surface-header, #fbfbf8f5);
-			backdrop-filter: blur(12px);
-			border-top: 1px solid var(--lf-border, #263b342b);
-		}
-		.mobile-call {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 8px;
-			min-height: 48px;
-			font-size: 12px;
-			flex: 0.6;
-		}
-		.mobile-call :global(svg) {
-			width: 17px;
-			height: 17px;
-		}
-		.mobile-booking .pill {
-			flex: 1.4;
-			padding-inline: 18px;
-			gap: 14px;
-			min-height: 48px;
-		}
 	}
 	@media (max-width: 360px) {
 		.shell {
 			width: calc(100% - 36px);
 		}
-		.hero-actions {
-			flex-direction: column;
-			align-items: stretch;
-			gap: 12px;
-		}
 		h1 {
 			font-size: 41px;
-		}
-		.hero-eyebrow {
-			font-size: 8px;
 		}
 		.principles-words > span {
 			font-size: 14px;
 			gap: 5px;
 		}
+	}
+
+	/* Hero: one centred panel with a single action, the message box. */
+	.hero {
+		padding-top: 28px;
+		padding-bottom: 56px;
+	}
+	.hero-panel {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 76px 48px 44px;
+		border-radius: 56px;
+		background: var(--lf-surface-soft, #eef1eb);
+		text-align: center;
+	}
+	.hero-copy h1 {
+		max-width: none;
+	}
+	.hero-eyebrow {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		margin-bottom: 30px;
+		font-size: 11px;
+	}
+	.hero-description {
+		max-width: 520px;
+		margin: 28px auto 0;
+		color: var(--lf-text-muted, #65726d);
+		font-size: 17px;
+		line-height: 1.7;
+	}
+	.hero-visual {
+		width: min(100%, 880px);
+		margin-top: 44px;
+	}
+	.portrait-frame {
+		position: relative;
+		aspect-ratio: 16 / 10;
+		border-radius: 44px;
+		overflow: hidden;
+		background: var(--lf-surface-accent, #dfe6e1);
+	}
+	.hero-portrait {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 41% 35%;
+	}
+	.hero-visual .portrait-caption {
+		right: auto;
+		text-align: left;
+	}
+	/* Base look and behaviour of the box live in AskBar.astro. */
+	.portrait-frame :global(.ask) {
+		position: absolute;
+		z-index: 1;
+		top: 16px;
+		left: 16px;
+		right: 16px;
+	}
+	.hero-meta {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 6px 22px;
+		margin: 30px 0 0;
+		padding: 0;
+		list-style: none;
+		font-size: 12px;
+		color: var(--lf-text-muted, #62716b);
+	}
+	.hero-meta li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.hero-meta li::before {
+		content: '';
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background: #e8944a;
+	}
+	.hero-call {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		min-height: 44px;
+		margin-top: 8px;
+		color: var(--ink);
+		font-size: 13px;
+		font-weight: 600;
+	}
+	.hero-call a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: inherit;
+		border-bottom: 1px solid transparent;
+		transition: color 200ms;
+	}
+	.hero-call a:hover {
+		color: var(--teal);
+	}
+	.hero-call :global(svg) {
+		width: 17px;
+		height: 17px;
+	}
+	@media (max-width: 760px) {
+		.hero {
+			width: calc(100% - 24px);
+			padding-top: 12px;
+			padding-bottom: 36px;
+		}
+		.hero-panel {
+			padding: 44px 16px 24px;
+			border-radius: 32px;
+		}
+		.hero-eyebrow {
+			margin-bottom: 22px;
+			font-size: 9px;
+		}
+		.hero-description {
+			margin-top: 20px;
+			font-size: 15px;
+		}
+		.hero-visual {
+			margin-top: 30px;
+		}
 		.portrait-frame {
-			height: 370px;
+			aspect-ratio: 4 / 5;
+			border-radius: 28px;
+		}
+		.hero-portrait {
+			object-position: 40% 40%;
+		}
+		.portrait-frame :global(.ask) {
+			top: 10px;
+			left: 10px;
+			right: 10px;
 		}
 	}
 	@media (prefers-reduced-motion: no-preference) {

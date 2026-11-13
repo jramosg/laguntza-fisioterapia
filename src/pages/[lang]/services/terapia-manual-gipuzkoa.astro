@@ -9,6 +9,7 @@ import {
 } from '@i18n/utils';
 import { Langs } from '@i18n/ui';
 import Rehab from '@images/rehab.webp';
+import Shoulder from '@images/shoulder-manual-therapy.webp';
 import ServiceIntro from '@components/services/ServiceIntro.astro';
 import ServiceGridSection from '@components/services/ServiceGridSection.astro';
 import ServiceBenefits from '@components/services/ServiceBenefits.astro';
@@ -108,8 +109,13 @@ const manualTherapyFaq = [1, 2, 3, 4].map(item => ({
 				title={t('service.manual-therapy.what-is-title')}
 				text={t('service.manual-therapy.what-is-text')}
 				detailText={t('service.manual-therapy.deep-text')}
-				image={Rehab}
-				imageAlt={t('service.manual-therapy.hero-title')}
+				image={Shoulder}
+				imageAlt={
+					lang === 'eu'
+						? 'Sorbaldaren eskuzko tratamendua'
+						: 'Tratamiento manual del hombro'
+				}
+				imagePosition="center 68%"
 			/>
 
 			<ClinicalCareNotice {lang} />

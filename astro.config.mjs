@@ -2,6 +2,7 @@ import { defineConfig, envField } from 'astro/config';
 import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
 import { execSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import icon from 'astro-icon';
 
 // https://astro.build/config
@@ -120,7 +121,15 @@ function lastModifiedFor(url) {
 		.replace(/^\/(es|eu)/, '')
 		.replace(/\/$/, '');
 	const route = path === '' ? 'index' : path.replace(/^\//, '');
-	const candidates = [`src/pages/[lang]/${route}.astro`, 'src/i18n/ui.ts'];
+	// Pages without a route file of their own come from the dynamic
+	// treatment route, whose prose lives in src/config/treatments.ts.
+	const routeFile = `src/pages/[lang]/${route}.astro`;
+	const candidates = existsSync(routeFile)
+		? [routeFile, 'src/i18n/ui.ts']
+		: [
+				'src/pages/[lang]/services/[treatment].astro',
+				'src/config/treatments.ts'
+			];
 	const dates = candidates
 		.map(file => {
 			try {

@@ -2,17 +2,16 @@
 import BaseHead from '../components/head/BaseHead.astro';
 import type { Props as BaseHeadProps } from '../components/head/BaseHead.astro';
 import { getLangFromUrl } from '@i18n/utils';
-import WhatsAppFab from '@components/WhatsAppFab.astro';
+import AskBar from '@components/AskBar.astro';
 import '@fontsource-variable/inter';
 import '../styles/editorial.css';
 import SiteMotion from '@components/core/SiteMotion.astro';
 export interface Props {
 	seo?: BaseHeadProps;
-	showWhatsApp?: boolean;
 	bodyClass?: string;
 }
 
-const { seo, showWhatsApp = true, bodyClass } = Astro.props;
+const { seo, bodyClass } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 ---
 
@@ -30,7 +29,7 @@ const lang = getLangFromUrl(Astro.url);
 		<main id="content" class="main-content">
 			<slot />
 		</main>
-		{showWhatsApp && <WhatsAppFab />}
+		<AskBar />
 		<slot name="footer" />
 		<SiteMotion />
 	</body>

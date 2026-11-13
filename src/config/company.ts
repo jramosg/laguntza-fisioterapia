@@ -81,11 +81,17 @@ export const SERVICES = {
 					},
 					{
 						title: 'Puntzio lehorra',
-						desc: 'Puntzio lehor teknika Gipuzkoan muskuluetako tentsio eta min puntuak tratatzeko. Orratz finak erabiliz puntu miofaszialak askatzeko eta mina arintzeko. Puntzio lehorra beti balorazio pertsonalizatuaren arabera aplikatzen da gure Urnietako zentroan.'
+						desc: 'Puntzio lehor teknika Gipuzkoan muskuluetako tentsio eta min puntuak tratatzeko. Orratz finak erabiliz puntu miofaszialak askatzeko eta mina arintzeko. Puntzio lehorra beti balorazio pertsonalizatuaren arabera aplikatzen da gure Urnietako zentroan.',
+						href: 'puncion-seca-gipuzkoa'
 					},
 					{
 						title: 'Neuromodulazioa',
 						desc: 'Sistema nerbiosoaren jarduera erregulatzeko teknika aurreratuak, mina eta disfuntzio neurologikoak arintzeko. Neuromodulazio perkutaneoa, besteak beste, elektroestimulazioa erabiliz egiten da, eta mugimenduaren eta funtzioaren hobekuntza bilatzen du, pazientearen egoerara egokituta.'
+					},
+					{
+						title: 'Kirol-fisioterapia',
+						desc: 'Kirol-lesioen tratamendua eta erreadaptazioa, entrenatzera eta lehiatzera itzultzeko. Deusto FCko senior taldearekin lan egiteak ematen duen esperientziarekin.',
+						href: 'fisioterapia-deportiva-gipuzkoa'
 					}
 				],
 				href: 'terapia-manual-gipuzkoa'
@@ -122,7 +128,7 @@ export const SERVICES = {
 			{
 				id: 'rehab-readaptation',
 				title: 'Rehabilitación y Readaptación Funcional',
-				desc: `Servicio de rehabilitación en Gipuzkoa con tratamientos personalizados para recuperar la capacidad funcional and la autonomía tras una lesión, intervención quirúrgica o enfermedad. Combinamos ejercicio terapéutico, terapia manual y técnicas avanzadas para que puedas volver a tu actividad física o deportiva habitual. Se trabajan la fuerza, la coordinación y la seguridad para evitar recaídas. Rehabilitación completa en nuestra clínica de Urnieta, Guipúzcoa.`,
+				desc: `Servicio de rehabilitación en Gipuzkoa con tratamientos personalizados para recuperar la capacidad funcional y la autonomía tras una lesión, intervención quirúrgica o enfermedad. Combinamos ejercicio terapéutico, terapia manual y técnicas avanzadas para que puedas volver a tu actividad física o deportiva habitual. Se trabajan la fuerza, la coordinación y la seguridad para evitar recaídas. Rehabilitación completa en nuestra clínica de Urnieta, Guipúzcoa.`,
 				href: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
 			},
 			{
@@ -142,11 +148,17 @@ export const SERVICES = {
 					},
 					{
 						title: 'Punción Seca',
-						desc: 'Técnica invasiva de fisioterapia en Gipuzkoa para tratar puntos de tensión y dolor muscular. Utilizamos agujas finas para liberar puntos miofasciales y aliviar el dolor. Punción seca siempre aplicada según una valoración personalizada en nuestra clínica de Urnieta.'
+						desc: 'Técnica invasiva de fisioterapia en Gipuzkoa para tratar puntos de tensión y dolor muscular. Utilizamos agujas finas para liberar puntos miofasciales y aliviar el dolor. Punción seca siempre aplicada según una valoración personalizada en nuestra clínica de Urnieta.',
+						href: 'puncion-seca-gipuzkoa'
 					},
 					{
 						title: 'Neuromodulación',
 						desc: 'Técnicas avanzadas para regular la actividad del sistema nervioso, aliviar el dolor y tratar disfunciones neurológicas. La neuromodulación percutanea, entre otras, se realiza mediante electroestimulación y busca mejorar el movimiento y la función, adaptándose a la situación del paciente.'
+					},
+					{
+						title: 'Fisioterapia deportiva',
+						desc: 'Tratamiento de lesiones deportivas y readaptación para volver a entrenar y competir. Con la experiencia de trabajar con el equipo sénior del Deusto FC.',
+						href: 'fisioterapia-deportiva-gipuzkoa'
 					}
 				],
 				href: 'terapia-manual-gipuzkoa'

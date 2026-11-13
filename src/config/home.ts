@@ -1,7 +1,66 @@
 // Homepage copy is kept together so both languages share the same structure.
 export const home = {
 	eu: {
-		eyebrow: 'Fisioterapia eta osteopatia · Gipuzkoa',
+		eyebrow: 'Fisioterapia eta osteopatia Urnietan · Gipuzkoa',
+		askLabel: 'Kontaidazu zer gertatzen zaizun',
+		askExamples: [
+			'Bizkarreko mina dut jaikitzean',
+			'Orkatila bihurritu dut futbolean',
+			'Lepoa kargatuta daukat aspalditik',
+			'Belauneko ebakuntza egin didate',
+			'Minik gabe korrika egin nahi dut berriro'
+		],
+		askSend: 'Bidali WhatsApp bidez',
+		askGreeting: 'Kaixo Jokin.',
+		askCall: 'Edo deitu:',
+		heroMeta: [
+			'Aldez aurreko hitzorduarekin',
+			'Astelehenetik ostiralera',
+			'Zubitxo Plaza 3, Urnieta'
+		],
+		reasonsLabel: 'Kontsultara etortzeko ohiko arrazoiak',
+		reasons: [
+			{ title: 'Gerrialdeko mina eta ziatika', slug: 'fisioterapia-gipuzkoa' },
+			{ title: 'Lepoko mina', slug: 'terapia-manual-gipuzkoa' },
+			{ title: 'Sorbaldako mina', slug: 'fisioterapia-gipuzkoa' },
+			{
+				title: 'Belauna eta orkatila',
+				slug: 'fisioterapia-deportiva-gipuzkoa'
+			},
+			{ title: 'Kirol-lesioak', slug: 'fisioterapia-deportiva-gipuzkoa' },
+			{
+				title: 'Kontrakturak eta gatillo-puntuak',
+				slug: 'puncion-seca-gipuzkoa'
+			},
+			{
+				title: 'Ebakuntza ondorengo errekuperazioa',
+				slug: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
+			},
+			{
+				title: 'Adinekoentzako ariketa',
+				slug: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
+			}
+		],
+		visitLabel: 'NOLA ETORRI',
+		visitTitle: 'Fisioterapia Urnietan, inguruko herrietatik gertu.',
+		visitAddressLabel: 'Helbidea',
+		visitHoursLabel: 'Ordutegia',
+		visitHours: [
+			{
+				days: 'Astelehena eta asteazkena',
+				times: '08:00–13:30 · 19:30–21:30'
+			},
+			{ days: 'Asteartea eta osteguna', times: '08:00–13:30' },
+			{ days: 'Ostirala', times: '15:00–21:30' }
+		],
+		visitNearLabel: 'Hemendik gertu',
+		visitNear: [
+			{ town: 'Hernani', distance: '3 km' },
+			{ town: 'Andoain', distance: '4 km' },
+			{ town: 'Lasarte-Oria', distance: '6 km' },
+			{ town: 'Donostia', distance: '10 km' }
+		],
+		visitNote: 'Urnietako erdigunean, Zubitxo plazan.',
 		title: ['Mugitu berriro.', 'Izan zu berriro.'],
 		intro:
 			'Zure gorputzak badu zer kontatu. Entzun diezaiogun. Fisioterapia pertsonala eta hurbila, gustuko duzun horretara itzul zaitezen.',
@@ -104,6 +163,16 @@ export const home = {
 				question: 'Euskaraz artatzen duzu?',
 				answer:
 					'Bai. Euskaraz zein gaztelaniaz hitz egin dezakegu, erosoen sentitzen zaren hizkuntzan.'
+			},
+			{
+				question: 'Non dago kontsulta?',
+				answer:
+					'Urnietako Zubitxo Plaza 3an (behea 2), herriaren erdigunean. Hernanitik eta Andoaindik minutu gutxira dago, eta Lasarte-Oria eta Donostiatik ere gertu. Astelehenetik ostiralera artatzen dut, aldez aurreko hitzorduarekin.'
+			},
+			{
+				question: 'Medikuaren bolantea behar dut?',
+				answer:
+					'Ez. Zuzenean har dezakezu hitzordua. Txosten edo proba medikoak badituzu, ekarri, balorazioan lagunduko baitute.'
 			}
 		],
 		contactLabel: 'HEMENDIK HASTEN DA',
@@ -125,7 +194,63 @@ export const home = {
 		homeLabel: 'Laguntza · Hasiera'
 	},
 	es: {
-		eyebrow: 'Fisioterapia y osteopatía · Gipuzkoa',
+		eyebrow: 'Fisioterapia y osteopatía en Urnieta · Gipuzkoa',
+		askLabel: 'Cuéntame qué te pasa',
+		askExamples: [
+			'Me duele la espalda al levantarme',
+			'Me torcí el tobillo jugando a fútbol',
+			'Tengo el cuello cargado desde hace semanas',
+			'Me han operado de la rodilla',
+			'Quiero volver a correr sin dolor'
+		],
+		askSend: 'Enviar por WhatsApp',
+		askGreeting: 'Hola Jokin.',
+		askCall: 'O llama:',
+		heroMeta: [
+			'Con cita previa',
+			'De lunes a viernes',
+			'Zubitxo Plaza 3, Urnieta'
+		],
+		reasonsLabel: 'Motivos de consulta habituales',
+		reasons: [
+			{ title: 'Dolor lumbar y ciática', slug: 'fisioterapia-gipuzkoa' },
+			{ title: 'Dolor cervical', slug: 'terapia-manual-gipuzkoa' },
+			{ title: 'Dolor de hombro', slug: 'fisioterapia-gipuzkoa' },
+			{ title: 'Rodilla y tobillo', slug: 'fisioterapia-deportiva-gipuzkoa' },
+			{
+				title: 'Lesiones deportivas',
+				slug: 'fisioterapia-deportiva-gipuzkoa'
+			},
+			{
+				title: 'Contracturas y puntos gatillo',
+				slug: 'puncion-seca-gipuzkoa'
+			},
+			{
+				title: 'Recuperación tras una operación',
+				slug: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
+			},
+			{
+				title: 'Ejercicio para personas mayores',
+				slug: 'rehabilitacion-ejercicio-terapeutico-gipuzkoa'
+			}
+		],
+		visitLabel: 'CÓMO LLEGAR',
+		visitTitle: 'Fisioterapia en Urnieta, cerca de los pueblos de alrededor.',
+		visitAddressLabel: 'Dirección',
+		visitHoursLabel: 'Horario',
+		visitHours: [
+			{ days: 'Lunes y miércoles', times: '08:00–13:30 · 19:30–21:30' },
+			{ days: 'Martes y jueves', times: '08:00–13:30' },
+			{ days: 'Viernes', times: '15:00–21:30' }
+		],
+		visitNearLabel: 'Cerca de',
+		visitNear: [
+			{ town: 'Hernani', distance: '3 km' },
+			{ town: 'Andoain', distance: '4 km' },
+			{ town: 'Lasarte-Oria', distance: '6 km' },
+			{ town: 'Donostia', distance: '10 km' }
+		],
+		visitNote: 'En el centro de Urnieta, en la plaza Zubitxo.',
 		title: ['Vuelve a moverte.', 'Vuelve a ser tú.'],
 		intro:
 			'Tu cuerpo tiene algo que contar, vamos a escucharlo. Fisioterapia personal y cercana para volver a poder hacer lo que te gusta.',
@@ -230,6 +355,16 @@ export const home = {
 				question: '¿Puedo hablar contigo en euskera?',
 				answer:
 					'Por supuesto. Podemos hablar en euskera o en castellano, como te sientas más a gusto.'
+			},
+			{
+				question: '¿Dónde está la consulta?',
+				answer:
+					'En Zubitxo Plaza 3 (bajo 2), en el centro de Urnieta. Está a pocos minutos de Hernani y Andoain, y cerca de Lasarte-Oria y Donostia. Atiendo de lunes a viernes, con cita previa.'
+			},
+			{
+				question: '¿Necesito un volante médico?',
+				answer:
+					'No. Puedes pedir cita directamente. Si tienes informes o pruebas médicas, tráelos porque ayudan en la valoración.'
 			}
 		],
 		contactLabel: 'EMPEZAMOS POR AQUÍ',
