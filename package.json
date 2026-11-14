@@ -26,18 +26,18 @@
 		"@types/node": "^26.6.6",
 		"@types/three": "^0.187.0",
 		"astro-icon": "^1.2.0",
-		"prettier": "^3.9.10",
+		"prettier": "^3.10.1",
 		"prettier-plugin-astro": "^1.1.2",
 		"sharp": "^0.35.5",
 		"typescript": "^7.0.2"
 	},
 	"dependencies": {
-		"@astrojs/node": "^11.1.11",
+		"@astrojs/node": "^11.1.12",
 		"@fontsource-variable/inter": "^5.3.0",
-		"astro": "^7.4.8",
+		"astro": "^7.4.11",
 		"gsap": "^3.15.1",
 		"leaflet": "^1.9.4",
-		"resend": "^6.37.0",
+		"resend": "^6.38.0",
 		"three": "^0.187.0"
 	},
 	"type": "module",
