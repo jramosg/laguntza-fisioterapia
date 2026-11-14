@@ -17,11 +17,11 @@ GSAP, Leaflet and Three.js. Local photographs are optimized during the build.
 
 ## Development and checks
 
-Use Node **26.13.0 LTS** (`.nvmrc`) and **pnpm 12.16.1** (`packageManager`).
+Use Node **26.13.0 LTS** (`.nvmrc`) and **pnpm 12.18.0** (`packageManager`).
 
 ```sh
 nvm use
-npm install --global pnpm@12.16.1
+npm install --global pnpm@12.18.0
 pnpm install --frozen-lockfile
 pnpm dev
 ```

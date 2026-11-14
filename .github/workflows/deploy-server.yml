@@ -37,7 +37,7 @@ jobs:
           node-version-file: .nvmrc
       - name: Validate and build
         run: |
-          npm install --global pnpm@12.16.1
+          npm install --global pnpm@12.18.0
           pnpm install --frozen-lockfile
           pnpm audit --audit-level=moderate
           pnpm run format:check

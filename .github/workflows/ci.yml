@@ -22,7 +22,7 @@ jobs:
         with:
           node-version-file: .nvmrc
       - name: Install pnpm
-        run: npm install --global pnpm@12.16.1
+        run: npm install --global pnpm@12.18.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm audit --audit-level=moderate
       - run: pnpm run format:check

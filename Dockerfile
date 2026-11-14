@@ -1,6 +1,6 @@
 FROM node:26.13.0-bookworm-slim AS build
 WORKDIR /app
-RUN npm install -g pnpm@12.16.1
+RUN npm install -g pnpm@12.18.0
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
@@ -8,7 +8,7 @@ RUN pnpm run build
 
 FROM node:26.13.0-bookworm-slim AS production-deps
 WORKDIR /app
-RUN npm install -g pnpm@12.16.1
+RUN npm install -g pnpm@12.18.0
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 
