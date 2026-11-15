@@ -178,34 +178,32 @@ const lightboxImages = await Promise.all(
 			</div>
 
 			<div class="consulta__photos">
-				{galleryImages.map((image, index) => (
-					<button
-						class={`consulta__photo ${image.class}`}
-						type="button"
-						data-gallery-item
-						data-index={index}
-						data-full-src={lightboxImages[index].src}
-						data-full-width={image.src.width}
-						data-full-height={image.src.height}
-						aria-label={
-							lang === 'eu'
-								? `Ireki argazkia ${index + 1}/${galleryImages.length}`
-								: `Abrir foto ${index + 1}/${galleryImages.length}`
-						}
-					>
-						<Image
-							src={image.src}
-							class="consulta__photo-image"
-							alt={image.alt}
-							widths={image.widths}
-							sizes={image.sizes}
-							loading="lazy"
-						/>
-						<span class="consulta__photo-overlay" aria-hidden="true">
-							<Icon name="mdi:magnify-plus-outline" />
-						</span>
-					</button>
-				))}
+				{galleryImages.map((image, index) => <button
+					class={`consulta__photo ${image.class}`}
+					type="button"
+					data-gallery-item
+					data-index={index}
+					data-full-src={lightboxImages[index].src}
+					data-full-width={image.src.width}
+					data-full-height={image.src.height}
+					aria-label={
+						lang === 'eu'
+							? `Ireki argazkia ${index + 1}/${galleryImages.length}`
+							: `Abrir foto ${index + 1}/${galleryImages.length}`
+					}
+				>
+					<Image
+						src={image.src}
+						class="consulta__photo-image"
+						alt={image.alt}
+						widths={image.widths}
+						sizes={image.sizes}
+						loading="lazy"
+					/>
+					<span class="consulta__photo-overlay" aria-hidden="true">
+						<Icon name="mdi:magnify-plus-outline" />
+					</span>
+				</button>)}
 			</div>
 
 			<dialog

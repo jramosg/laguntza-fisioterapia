@@ -29,21 +29,19 @@ const section = SERVICES[lang].sections.find(
 		</p>
 	</div>
 	<div class="techniques">
-		{section.bullets?.map(technique => (
-			<article class="technique ed-reveal">
-				<h3>
-					{technique.href ? (
-						<a href={`/${lang}/services/${technique.href}/`}>
-							{technique.title}
-							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-						</a>
-					) : (
-						technique.title
-					)}
-				</h3>
-				<p>{technique.desc}</p>
-			</article>
-		))}
+		{section.bullets?.map(technique => <article class="technique ed-reveal">
+			<h3>
+				{technique.href ? (
+					<a href={`/${lang}/services/${technique.href}/`}>
+						{technique.title}
+						<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+					</a>
+				) : (
+					technique.title
+				)}
+			</h3>
+			<p>{technique.desc}</p>
+		</article>)}
 	</div>
 </section>
 

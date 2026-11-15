@@ -50,13 +50,11 @@ const seo = {
 		<Fragment slot="desc">{c.servicesIntro}</Fragment>
 	</SectionHero>
 	<nav class="service-index ed-shell" aria-label={c.nav[0]}>
-		{c.services.map((service, i) => (
-			<a href={`#service-${i}`}>
-				<span>0{i + 1}</span>
-				{service.title}
-				<Icon name="mdi:arrow-down" aria-hidden="true" />
-			</a>
-		))}
+		{c.services.map((service, i) => <a href={`#service-${i}`}>
+			<span>0{i + 1}</span>
+			{service.title}
+			<Icon name="mdi:arrow-down" aria-hidden="true" />
+		</a>)}
 		<a href={`#${specialized.id}`}>
 			<span>05</span>
 			{specialized.title}
@@ -64,64 +62,60 @@ const seo = {
 		</a>
 	</nav>
 	<div class="ed-shell treatments">
-		{c.services.map((service, i) => (
-			<section
-				class:list={[
-					'treatment ed-reveal',
-					{ 'treatment--reverse': i % 2 === 1 }
-				]}
-				id={`service-${i}`}
-			>
-				<>
-					<a
-						class="treatment-image"
-						href={`/${lang}/services/${service.slug}/`}
-						aria-label={service.title}
-						data-parallax
-					>
-						<Image
-							src={images[i]}
-							alt={
-								i === 3
+		{c.services.map((service, i) => <section
+			class:list={[
+				'treatment ed-reveal',
+				{ 'treatment--reverse': i % 2 === 1 }
+			]}
+			id={`service-${i}`}
+		>
+			<>
+				<a
+					class="treatment-image"
+					href={`/${lang}/services/${service.slug}/`}
+					aria-label={service.title}
+					data-parallax
+				>
+					<Image
+						src={images[i]}
+						alt={
+							i === 3
+								? lang === 'eu'
+									? 'Hanketako ariketa erresistentzia-bandarekin'
+									: 'Ejercicio de piernas con banda de resistencia'
+								: i === 2
 									? lang === 'eu'
-										? 'Hanketako ariketa erresistentzia-bandarekin'
-										: 'Ejercicio de piernas con banda de resistencia'
-									: i === 2
-										? lang === 'eu'
-											? 'Burua eskuekin eutsita eskuzko tratamendu batean'
-											: 'Apoyo manual de la cabeza durante un tratamiento'
-										: lang === 'eu'
-											? `${service.title} Laguntza Fisioterapian, Urnietan`
-											: `${service.title} en Laguntza Fisioterapia, Urnieta`
-							}
-							style={
-								i === 3
-									? 'object-position:center 20%'
-									: i === 2
-										? 'object-position:55% center'
-										: undefined
-							}
-							width={1000}
-							widths={[400, 640, 1000, 1280]}
-							sizes="(max-width:760px) calc(100vw - 48px), 45vw"
-						/>
-					</a>
-					<div class="treatment-copy">
-						<>
-							<span class="treatment-number">0{i + 1}</span>
-							<h2>{service.title}</h2>
-							<p>{service.description}</p>
-							<a class="ed-link" href={`/${lang}/services/${service.slug}/`}>
-								{lang === 'eu'
-									? 'Tratamendua ezagutu'
-									: 'Conoce el tratamiento'}
-								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-							</a>
-						</>
-					</div>
-				</>
-			</section>
-		))}
+										? 'Burua eskuekin eutsita eskuzko tratamendu batean'
+										: 'Apoyo manual de la cabeza durante un tratamiento'
+									: lang === 'eu'
+										? `${service.title} Laguntza Fisioterapian, Urnietan`
+										: `${service.title} en Laguntza Fisioterapia, Urnieta`
+						}
+						style={
+							i === 3
+								? 'object-position:center 20%'
+								: i === 2
+									? 'object-position:55% center'
+									: undefined
+						}
+						width={1000}
+						widths={[400, 640, 1000, 1280]}
+						sizes="(max-width:760px) calc(100vw - 48px), 45vw"
+					/>
+				</a>
+				<div class="treatment-copy">
+					<>
+						<span class="treatment-number">0{i + 1}</span>
+						<h2>{service.title}</h2>
+						<p>{service.description}</p>
+						<a class="ed-link" href={`/${lang}/services/${service.slug}/`}>
+							{lang === 'eu' ? 'Tratamendua ezagutu' : 'Conoce el tratamiento'}
+							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+						</a>
+					</>
+				</div>
+			</>
+		</section>)}
 	</div>
 	<SpecializedTechniques />
 	<section class="ed-section ed-sage">

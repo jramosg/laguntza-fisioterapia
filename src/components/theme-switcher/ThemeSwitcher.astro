@@ -29,17 +29,15 @@ const choices = [
 	aria-label={eu ? 'Itxura' : 'Apariencia'}
 >
 	<span class="thumb" aria-hidden="true"></span>
-	{choices.map(({ value, icon, label }) => (
-		<button
-			type="button"
-			data-theme-choice={value}
-			aria-label={label}
-			title={label}
-			aria-pressed="false"
-		>
-			<Icon name={icon} aria-hidden="true" />
-		</button>
-	))}
+	{choices.map(({ value, icon, label }) => <button
+		type="button"
+		data-theme-choice={value}
+		aria-label={label}
+		title={label}
+		aria-pressed="false"
+	>
+		<Icon name={icon} aria-hidden="true" />
+	</button>)}
 </laguntza-theme-switcher>
 
 <script>
