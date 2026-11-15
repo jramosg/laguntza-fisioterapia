@@ -24,32 +24,26 @@ const eu = lang === 'eu';
 			class="desktop-nav"
 			aria-label={lang === 'eu' ? 'Nabigazio nagusia' : 'Navegación principal'}
 		>
-			{paths.map((path, i) => (
-				<a
-					href={`/${lang}/${path}`}
-					aria-current={
-						Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
-					}
-				>
-					{c.nav[i]}
-				</a>
-			))}
+			{paths.map((path, i) => <a
+				href={`/${lang}/${path}`}
+				aria-current={
+					Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
+				}
+			>
+				{c.nav[i]}
+			</a>)}
 		</nav>
 		<div class="header-actions">
 			<nav class="languages" aria-label={c.languageLabel}>
-				{(['eu', 'es'] as const).map(code => (
-					<a
-						href={
-							code === lang ? Astro.url.pathname : switchLanguage(Astro.url)
-						}
-						lang={code}
-						hreflang={code}
-						aria-current={code === lang ? 'page' : undefined}
-						aria-label={code === 'eu' ? 'Euskara' : 'Castellano'}
-					>
-						{code.toUpperCase()}
-					</a>
-				))}
+				{(['eu', 'es'] as const).map(code => <a
+					href={code === lang ? Astro.url.pathname : switchLanguage(Astro.url)}
+					lang={code}
+					hreflang={code}
+					aria-current={code === lang ? 'page' : undefined}
+					aria-label={code === 'eu' ? 'Euskara' : 'Castellano'}
+				>
+					{code.toUpperCase()}
+				</a>)}
 			</nav>
 			<a
 				class="header-book"
@@ -88,19 +82,17 @@ const eu = lang === 'eu';
 						</button>
 					</div>
 					<nav class="mobile-nav">
-						{paths.map((path, i) => (
-							<a
-								href={`/${lang}/${path}`}
-								data-reveal
-								aria-current={
-									Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
-								}
-							>
-								<span>0{i + 1}</span>
-								{c.nav[i]}
-								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-							</a>
-						))}
+						{paths.map((path, i) => <a
+							href={`/${lang}/${path}`}
+							data-reveal
+							aria-current={
+								Astro.url.pathname === `/${lang}/${path}` ? 'page' : undefined
+							}
+						>
+							<span>0{i + 1}</span>
+							{c.nav[i]}
+							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+						</a>)}
 					</nav>
 					<a
 						class="mobile-book"

@@ -93,41 +93,32 @@ const structuredData = hasVideo
 	<div class="service-card__desc">
 		<h2>{section.title}</h2>
 		<p>{section.desc}</p>
-		{section.bullets?.length && (
-			<ul>
-				{section.bullets?.map((bullet: ServiceBullet) => {
-					return (
-						<li class="service-card__bullet">
-							<CircleCheck color="currentColor" />
-							<div>
-								{bullet.href ? (
-									<a
-										href={`/${lang}/services/${bullet.href}/`}
-										class="bullet-link"
-									>
-										<h3>{bullet.title}</h3>
-									</a>
-								) : (
-									<h3>{bullet.title}</h3>
-								)}
-								{bullet.desc && (
-									<>
-										<p>{bullet.desc}</p>
-									</>
-								)}
-							</div>
-						</li>
-					);
-				})}
-			</ul>
-		)}
-		{section.href && (
-			<div class="service-card__cta">
-				<a href={`/${lang}/services/${section.href}/`} class="learn-more-link">
-					{t('Ikusi gehiago')} →
-				</a>
-			</div>
-		)}
+		{section.bullets?.length && <ul>
+			{section.bullets?.map((bullet: ServiceBullet) => {
+				return <li class="service-card__bullet">
+					<CircleCheck color="currentColor" />
+					<div>
+						{bullet.href ? (
+							<a href={`/${lang}/services/${bullet.href}/`} class="bullet-link">
+								<h3>{bullet.title}</h3>
+							</a>
+						) : (
+							<h3>{bullet.title}</h3>
+						)}
+						{bullet.desc && (
+							<>
+								<p>{bullet.desc}</p>
+							</>
+						)}
+					</div>
+				</li>;
+			})}
+		</ul>}
+		{section.href && <div class="service-card__cta">
+			<a href={`/${lang}/services/${section.href}/`} class="learn-more-link">
+				{t('Ikusi gehiago')} →
+			</a>
+		</div>}
 	</div>
 </section>
 

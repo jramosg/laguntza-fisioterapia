@@ -121,14 +121,12 @@ const schedule = [
 			<div class="schedule">
 				<h3>{eu ? 'Ordutegia' : 'Horario'}</h3>
 				<dl>
-					{schedule.map(row => (
-						<div>
-							<>
-								<dt>{row.days}</dt>
-								<dd>{row.times}</dd>
-							</>
-						</div>
-					))}
+					{schedule.map(row => <div>
+						<>
+							<dt>{row.days}</dt>
+							<dd>{row.times}</dd>
+						</>
+					</div>)}
 				</dl>
 				<p>
 					{eu ? 'Aldez aurreko hitzorduarekin' : 'Atención con cita previa'}

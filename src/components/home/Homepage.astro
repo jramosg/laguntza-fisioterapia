@@ -82,9 +82,7 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				</div>
 			</div>
 			<ul class="hero-meta" role="list">
-				{c.heroMeta.map(item => (
-					<li>{item}</li>
-				))}
+				{c.heroMeta.map(item => <li>{item}</li>)}
 			</ul>
 			<p class="hero-call">
 				<Icon name="mdi:phone-outline" aria-hidden="true" />
@@ -104,12 +102,10 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			{c.languages}
 		</div>
 		<div class="principles-words">
-			{c.principles.map((word, i) => (
-				<span>
-					<small>0{i + 1}</small>
-					{word}
-				</span>
-			))}
+			{c.principles.map((word, i) => <span>
+				<small>0{i + 1}</small>
+				{word}
+			</span>)}
 		</div>
 	</div>
 
@@ -153,22 +149,23 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				</figcaption>
 			</figure>
 			<div class="service-list">
-				{c.services.map((service, i) => (
-					<a class="service-row" href={`/${lang}/services/${service.slug}/`}>
-						<>
-							<span class="service-number">0{i + 1}</span>
-							<div>
-								<>
-									<h3>{service.title}</h3>
-									<p>{service.description}</p>
-								</>
-							</div>
-							<span class="service-arrow">
-								<Icon name="mdi:arrow-top-right" aria-hidden="true" />
-							</span>
-						</>
-					</a>
-				))}
+				{c.services.map((service, i) => <a
+					class="service-row"
+					href={`/${lang}/services/${service.slug}/`}
+				>
+					<>
+						<span class="service-number">0{i + 1}</span>
+						<div>
+							<>
+								<h3>{service.title}</h3>
+								<p>{service.description}</p>
+							</>
+						</div>
+						<span class="service-arrow">
+							<Icon name="mdi:arrow-top-right" aria-hidden="true" />
+						</span>
+					</>
+				</a>)}
 				<a class="service-row" href={`/${lang}/services/#${specialized.id}`}>
 					<span class="service-number">05</span>
 					<div>
@@ -188,11 +185,9 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 		<div class="reasons">
 			<h3 class="eyebrow">{c.reasonsLabel}</h3>
 			<ul role="list">
-				{c.reasons.map(reason => (
-					<li>
-						<a href={`/${lang}/services/${reason.slug}/`}>{reason.title}</a>
-					</li>
-				))}
+				{c.reasons.map(reason => <li>
+					<a href={`/${lang}/services/${reason.slug}/`}>{reason.title}</a>
+				</li>)}
 			</ul>
 		</div>
 	</section>
@@ -234,12 +229,10 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 				<p class="about-lead">{c.aboutLead}</p>
 				<p class="about-description">{c.aboutBody}</p>
 				<ul class="credentials" role="list">
-					{c.credentials.map(credential => (
-						<li>
-							<span />
-							{credential}
-						</li>
-					))}
+					{c.credentials.map(credential => <li>
+						<span />
+						{credential}
+					</li>)}
 				</ul>
 				<a class="text-link underlined light-link" href={`/${lang}/about/`}>
 					{c.aboutLink}
@@ -270,18 +263,16 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			</p>
 		</div>
 		<ol class="steps" role="list">
-			{c.steps.map((step, i) => (
-				<li>
-					<>
-						<span class="step-number">
-							0{i + 1}
-							<span />
-						</span>
-						<h3>{step.title}</h3>
-						<p>{step.description}</p>
-					</>
-				</li>
-			))}
+			{c.steps.map((step, i) => <li>
+				<>
+					<span class="step-number">
+						0{i + 1}
+						<span />
+					</span>
+					<h3>{step.title}</h3>
+					<p>{step.description}</p>
+				</>
+			</li>)}
 		</ol>
 	</section>
 
@@ -360,24 +351,20 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			<div>
 				<h3 class="eyebrow">{c.visitHoursLabel}</h3>
 				<dl>
-					{c.visitHours.map(row => (
-						<div>
-							<dt>{row.days}</dt>
-							<dd>{row.times}</dd>
-						</div>
-					))}
+					{c.visitHours.map(row => <div>
+						<dt>{row.days}</dt>
+						<dd>{row.times}</dd>
+					</div>)}
 				</dl>
 				<p class="visit-note">{c.heroMeta[0]}</p>
 			</div>
 			<div>
 				<h3 class="eyebrow">{c.visitNearLabel}</h3>
 				<dl>
-					{c.visitNear.map(row => (
-						<div>
-							<dt>{row.town}</dt>
-							<dd>{row.distance}</dd>
-						</div>
-					))}
+					{c.visitNear.map(row => <div>
+						<dt>{row.town}</dt>
+						<dd>{row.distance}</dd>
+					</div>)}
 				</dl>
 			</div>
 		</div>
@@ -393,19 +380,17 @@ const bookingUrl = `${WhatsApp.url}?text=${encodeURIComponent(c.whatsappMessage)
 			</a>
 		</div>
 		<div class="faq-list">
-			{c.faqs.map(faq => (
-				<details>
-					<>
-						<summary>
-							{faq.question}
-							<Icon name="mdi:plus" aria-hidden="true" />
-						</summary>
-						<div class="faq-answer">
-							<p>{faq.answer}</p>
-						</div>
-					</>
-				</details>
-			))}
+			{c.faqs.map(faq => <details>
+				<>
+					<summary>
+						{faq.question}
+						<Icon name="mdi:plus" aria-hidden="true" />
+					</summary>
+					<div class="faq-answer">
+						<p>{faq.answer}</p>
+					</div>
+				</>
+			</details>)}
 		</div>
 	</section>
 

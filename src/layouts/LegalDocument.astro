@@ -25,14 +25,12 @@ const documents = [
 			<div class="document-meta">
 				<p class="ed-kicker">LAGUNTZA FISIOTERAPIA</p>
 				<nav aria-label={eu ? 'Lege-informazioa' : 'Información legal'}>
-					{documents.map(document => (
-						<a
-							href={`/${lang}/${document.id}/`}
-							aria-current={kind === document.id ? 'page' : undefined}
-						>
-							{document.label}
-						</a>
-					))}
+					{documents.map(document => <a
+						href={`/${lang}/${document.id}/`}
+						aria-current={kind === document.id ? 'page' : undefined}
+					>
+						{document.label}
+					</a>)}
 				</nav>
 			</div>
 			<h1 id="document-title">{title}</h1>
@@ -47,16 +45,14 @@ const documents = [
 				>
 					<p class="ed-kicker">{eu ? 'ORRIALDE HONETAN' : 'EN ESTA PÁGINA'}</p>
 					<ol>
-						{sections.map((section, index) => (
-							<li>
-								<a href={`#${section.id}`}>
-									<span class="section-number" aria-hidden="true">
-										{String(index + 1).padStart(2, '0')}
-									</span>
-									<span>{section.label}</span>
-								</a>
-							</li>
-						))}
+						{sections.map((section, index) => <li>
+							<a href={`#${section.id}`}>
+								<span class="section-number" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<span>{section.label}</span>
+							</a>
+						</li>)}
 					</ol>
 				</nav>
 				<div class="document-help">

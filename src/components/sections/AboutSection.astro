@@ -41,12 +41,10 @@ const chapters = ['journey', 'philosophy', 'community'];
 	</div>
 	<div>
 		<p class="ed-lead ed-reveal story-lead">{t('about.intro')}</p>
-		{chapters.map((chapter, i) => (
-			<section class="story-chapter ed-reveal">
-				<p>{t(`about.${chapter}-text`)}</p>
-				{i === 0 && <p>{Practitioner.sportsRole[lang]}</p>}
-			</section>
-		))}
+		{chapters.map((chapter, i) => <section class="story-chapter ed-reveal">
+			<p>{t(`about.${chapter}-text`)}</p>
+			{i === 0 && <p>{Practitioner.sportsRole[lang]}</p>}
+		</section>)}
 	</div>
 </article>
 <section class="ed-dark ed-section" id="formacion">
@@ -67,14 +65,14 @@ const chapters = ['journey', 'philosophy', 'community'];
 			</p>
 		</div>
 		<ol class="qualifications" role="list">
-			{Practitioner.qualifications.map((qualification, i) => (
-				<li class="ed-reveal">
-					<>
-						<span>0{i + 1}</span>
-						<p>{qualification[lang]}</p>
-					</>
-				</li>
-			))}
+			{Practitioner.qualifications.map((qualification, i) => <li
+				class="ed-reveal"
+			>
+				<>
+					<span>0{i + 1}</span>
+					<p>{qualification[lang]}</p>
+				</>
+			</li>)}
 		</ol>
 	</div>
 </section>

@@ -34,12 +34,10 @@ const introduction = eu
 				<dt>{eu ? 'Izena' : 'Nombre'}</dt>
 				<dd>Jokin Ramos Gonzalez</dd>
 			</div>
-			{nif && (
-				<div>
-					<dt>NIF</dt>
-					<dd>{nif}</dd>
-				</div>
-			)}
+			{nif && <div>
+				<dt>NIF</dt>
+				<dd>{nif}</dd>
+			</div>}
 			<div>
 				<dt>{eu ? 'Helbidea' : 'Dirección'}</dt>
 				<dd>{Address.name}</dd>
@@ -68,8 +66,8 @@ const introduction = eu
 				: 'Fisioterapeuta. Graduado en Fisioterapia por la Universidad Pública de Navarra (España).'}
 		</p>
 		<p>
-			{eu ? Practitioner.collegeNameLocalized.eu : Practitioner.collegeName} ·{' '}
-			{eu ? 'Elkargokide-zenbakia' : 'Número de colegiado'}:{' '}
+			{eu ? Practitioner.collegeNameLocalized.eu : Practitioner.collegeName}
+			·{' '} {eu ? 'Elkargokide-zenbakia' : 'Número de colegiado'}:{' '}
 			{Practitioner.registrationNumber}.
 		</p>
 		<p>
