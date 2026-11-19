@@ -185,8 +185,8 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       resend:
-        specifier: ^6.38.0
-        version: 6.38.0
+        specifier: ^6.38.1
+        version: 6.38.1
       three:
         specifier: ^0.187.0
         version: 0.187.0
@@ -1496,8 +1496,8 @@ packages:
   regex@6.1.0:
     resolution: {integrity: sha512-6VwtthbV4o/7+OaAF9I5L5V3llLEsoPyq9P1JVXkedTP33c7MfCG0/5NOPcSJn0TzXcG9YUrR0gQSWioew3LDg==}
 
-  resend@6.38.0:
-    resolution: {integrity: sha512-+t1bz6unmYcyYrLqrZtkn73ODZhUgKJTViuRf+a4ewgo3mT/Bpg64WkBtAVQlXQcmUkeuorO1eLAd2+1h4jgNQ==}
+  resend@6.38.1:
+    resolution: {integrity: sha512-166POyY8qTbxQQwYXQJ6hx7y1vnL51iB9WW76Xe1/bJsW03lCOWYW3eJW7nNlfvWM5ohI3WtUHnqO3rofiO8Lw==}
     engines: {node: '>=20'}
     peerDependencies:
       '@react-email/render': '*'
@@ -2957,7 +2957,7 @@ snapshots:
     dependencies:
       regex-utilities: 2.3.0
 
-  resend@6.38.0:
+  resend@6.38.1:
     dependencies:
       postal-mime: 2.7.6
       standardwebhooks: 1.1.1
